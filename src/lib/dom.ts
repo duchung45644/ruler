@@ -32,3 +32,11 @@ export function siblingOf(
   while (n && skip(n, isOwn));
   return n;
 }
+
+/** Every open shadow root under root, nested, in tree order (port of legacy oe(), content.js:1548). */
+export function shadowRoots(root: Document | ShadowRoot, depth = 0): ShadowRoot[] {
+  if (depth > 32) return [];
+  return [...root.querySelectorAll('*')].flatMap((el) =>
+    el.shadowRoot ? [el.shadowRoot, ...shadowRoots(el.shadowRoot, depth + 1)] : [],
+  );
+}

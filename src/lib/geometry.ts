@@ -33,14 +33,14 @@ export function gapLines(a: Rect, b: Rect): Line[] {
   return out;
 }
 
-// Port of legacy positionInspectPanel (content.js:47784), scale 1.
-// Legacy's fixed control-bar height is replaced by the `avoid` rects.
 /** Port of positionPopover (content.js:38491): centre over the button, kept inside the dock. */
 export function popoverLeft(btn: Rect, dock: Rect, width: number): number {
   const v = btn.x + btn.width / 2 - dock.x - width / 2;
   return Math.max(0, Math.min(dock.width - width, v));
 }
 
+// Port of legacy positionInspectPanel (content.js:47784), scale 1.
+// Legacy's fixed control-bar height is replaced by the `avoid` rects.
 export function placeNear(
   p: Pt,
   size: { width: number; height: number },

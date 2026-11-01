@@ -5,7 +5,7 @@ import { themePref } from '../../lib/settings';
 import { detectPageIsDark, resolveTheme, type ThemePref } from '../../lib/theme';
 import { installDragGuard, resetDrag } from './drag';
 import { routeKey } from './keys';
-import { mountLayer } from './overlay';
+import { mountLayer, requestPaint } from './overlay';
 import { setPaused } from './registry.svelte';
 import { state } from './state.svelte';
 
@@ -39,6 +39,7 @@ async function start(ctx: ContentScriptContext): Promise<void> {
   if (signal.aborted) return ui.remove(); // stopped while mounting
   onStop(ui.remove);
   onStop(mountLayer(ui.shadow));
+  window.addEventListener('resize', requestPaint, { signal });
   window.addEventListener('keydown', routeKey, { signal });
   // isolateEvents stops keydown at our shadow root (page never sees our typing), so route it here too
   ui.shadow.addEventListener('keydown', routeKey as EventListener, { signal });

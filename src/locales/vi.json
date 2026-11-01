@@ -25,6 +25,10 @@
     "contrast": "Tương phản",
     "natural": "Kích thước gốc",
     "fileSize": "Dung lượng",
-    "format": "Định dạng"
+    "format": "Định dạng",
+    "pinHint": "Nhấn Space để ghim"
+  },
+  "common": {
+    "close": "Đóng"
   }
 }

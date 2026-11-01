@@ -4,7 +4,7 @@ import ArrowDownToLine from '@lucide/svelte/icons/arrow-down-to-line';
 import { firstChildOf, isRendered, parentOf, siblingOf } from '../../../lib/dom';
 import { mount, unmount } from 'svelte';
 import { placeNear, sizeLabels, type Rect } from '../../../lib/geometry';
-import { getSettings, updateSettings } from '../../../lib/settings';
+import { getSettings, pinHintDone, updateSettings } from '../../../lib/settings';
 import { detectPageIsDark, measureColor } from '../../../lib/theme';
 import { isOwnEvent, pageElementAt } from '../../core/events';
 import { onKey } from '../../core/keys';
@@ -13,6 +13,8 @@ import { registerItem } from '../../core/registry.svelte';
 import { onStop, sessionSignal } from '../../core/session';
 import { panelTarget, state } from '../../core/state.svelte';
 import InspectPanel from './InspectPanel.svelte';
+import PinnedInspector from './PinnedInspector.svelte';
+import { addPin, clearPins, pinUi, signature } from './pins.svelte';
 import { initDistance } from '../distance';
 
 let host: Element | null = null;
@@ -30,7 +32,10 @@ function select(el: Element | null, keepStack = false): void {
 
 export function setInspect(on: boolean): void {
   state.inspectOn = on;
-  if (!on) state.hovered = null;
+  if (!on) {
+    state.hovered = null;
+    clearPins(); // 2.13 turning the inspector off drops every pin
+  }
   void updateSettings({ inspectIsOn: on });
   requestPaint();
 }
@@ -139,10 +144,7 @@ function paintHover(box: HTMLElement, el: Element, color: string): void {
     'rgba(147,196,125,.3)',
   );
   frame(box, r, color);
-  const tag =
-    el.tagName.toLowerCase() +
-    (el.id ? `#${el.id}` : '') +
-    [...el.classList].map((c) => `.${c}`).join('');
+  const tag = signature(el);
   // below the element (the width number owns the top edge); flip above when there is no room
   const below = r.bottom + 22 < innerHeight;
   draw(
@@ -188,16 +190,34 @@ export async function initInspector(): Promise<void> {
   if (shadow instanceof ShadowRoot) {
     const box = document.createElement('div');
     box.style.cssText = 'position:fixed;left:0;top:0;pointer-events:auto;visibility:hidden';
-    shadow.append(box);
+    const pinBox = document.createElement('div'); // below the live panel
+    shadow.append(pinBox, box);
     const app = mount(InspectPanel, { target: box });
+    const pinApp = mount(PinnedInspector, { target: pinBox, props: {} });
     const ro = new ResizeObserver(() => requestPaint()); // async content (image size) changes height
     ro.observe(box);
     onStop(() => {
       ro.disconnect();
       void unmount(app);
+      void unmount(pinApp);
+      clearPins();
       box.remove();
+      pinBox.remove();
     });
     addPainter('inspect-panel', () => placePanel(box, shadow, mouse));
+
+    // 2.13 Space pins the visible panel (port of pinCurrentInspector :43481)
+    onStop(
+      onKey('Space', () => {
+        const t = panelTarget();
+        if (!state.inspectOn || !t || box.style.visibility === 'hidden') return false;
+        const r = box.getBoundingClientRect();
+        addPin(t, { x: r.left, y: r.top }, { width: r.width, height: r.height });
+        void pinHintDone.setValue(true); // 2.14 first pin ends the hint
+        box.style.visibility = 'hidden'; // until the next paint, like legacy
+        return true;
+      }),
+    );
   }
 
   const hover = (el: Element | null) => {
@@ -212,7 +232,7 @@ export async function initInspector(): Promise<void> {
   document.addEventListener(
     'mousemove',
     (e) => {
-      if (!live() || !host) return;
+      if (!live() || !host || pinUi.dragging) return; // spec §9: no hover-inspect while dragging
       if (isOwnEvent(e, host)) return hover(null);
       mouse = { x: e.clientX, y: e.clientY };
       hitTest();
@@ -300,6 +320,9 @@ export async function initInspector(): Promise<void> {
     }
     const h = state.hovered;
     if (h && h !== state.selected && h.isConnected && live()) paintHover(box, h, color);
+    // 2.13 hovering a pin highlights its source element
+    const src = pinUi.hovered;
+    if (src && src !== h && src.isConnected) paintHover(box, src, color);
   });
   initDistance(color);
 

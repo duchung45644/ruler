@@ -121,9 +121,20 @@
   import Copy from '@lucide/svelte/icons/copy';
   import { copyText } from '../../../lib/clipboard';
   import { cssSnippet, inspectGroups, renderedFont } from '../../../lib/css/inspect';
+  import Info from '@lucide/svelte/icons/info';
+  import { pinHintDone } from '../../../lib/settings';
   import { panelTarget } from '../../core/state.svelte';
 
-  const el = $derived(panelTarget());
+  /** `el` set = content of a pinned inspector (fixed element, no frame, no hint). */
+  let { el: fixed, pinned = false }: { el?: Element; pinned?: boolean } = $props();
+  const el = $derived(fixed ?? panelTarget());
+
+  let hintDone = $state(true);
+  $effect(() => {
+    if (pinned) return;
+    void pinHintDone.getValue().then((v) => (hintDone = v));
+    return pinHintDone.watch((v) => (hintDone = v));
+  });
   const info = $derived.by(() => {
     if (!el) return null;
     const s = getComputedStyle(el);
@@ -174,7 +185,9 @@
 
 {#if info}
   <div
-    class="flex max-h-[inherit] w-[260px] flex-col gap-2 overflow-y-auto rounded-panel border border-line bg-surface p-3 font-sans text-[11px] text-fg shadow-[0_10px_28px_rgba(0,0,0,.35)] backdrop-blur-surface"
+    class={pinned
+      ? 'flex flex-col gap-2 px-3 pb-3'
+      : 'flex max-h-[inherit] w-[260px] flex-col gap-2 overflow-y-auto rounded-panel border border-line bg-surface p-3 font-sans text-[11px] text-fg shadow-[0_10px_28px_rgba(0,0,0,.35)] backdrop-blur-surface'}
   >
     <button
       type="button"
@@ -216,6 +229,11 @@
         {#if size}{@render row(i18n.t('inspect.fileSize'), size)}{/if}
         {#if info.img.format}{@render row(i18n.t('inspect.format'), info.img.format)}{/if}
       </section>
+    {/if}
+    {#if !pinned && !hintDone}
+      <div class="flex items-center gap-1 border-t border-line pt-2 text-fg-muted">
+        <Info size={13} />{i18n.t('inspect.pinHint')}
+      </div>
     {/if}
   </div>
 {/if}

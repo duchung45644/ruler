@@ -25,6 +25,10 @@
     "contrast": "Contrast",
     "natural": "Natural size",
     "fileSize": "File size",
-    "format": "Format"
+    "format": "Format",
+    "pinHint": "Press Space to pin"
+  },
+  "common": {
+    "close": "Close"
   }
 }

@@ -91,7 +91,7 @@ Document (cây phần tử, đi tới cha/con) · Text content · Box model · C
 
 ### 4.5 Side panel — tab Trang — giữ
 
-Meta tags (SEO / Open Graph / Twitter) · Xem trước khi share (Facebook, LinkedIn, X) · 17 kiểm tra SEO (title, description, H1, alt, canonical, lang, viewport, noindex, OG…) · Nhận diện >150 công nghệ (`detect-technologies.js` chạy MAIN world) · Dung lượng trang theo loại tài nguyên.
+Meta tags (SEO / Open Graph / Twitter) · Xem trước khi share (Facebook, LinkedIn, X) · 16 kiểm tra SEO (title, description, H1, alt, canonical, lang, viewport, noindex, OG…) · Nhận diện >150 công nghệ (`detect-technologies.js` chạy MAIN world) · Dung lượng trang theo loại tài nguyên.
 
 Side panel tách ra cửa sổ riêng / gắn lại được.
 

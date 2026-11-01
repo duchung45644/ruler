@@ -1,0 +1,7 @@
+{
+  "extName": "Bo doi - Measure and Inspect the Web",
+  "extNameShort": "Bo doi",
+  "extDescription": "Web inspector for designers & developers. Measure elements, extract CSS & colors, capture screenshots & more.",
+  "cmdSelectParent": "Move selection to parent element.",
+  "cmdSelectChild": "Move selection to child element."
+}

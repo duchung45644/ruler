@@ -2,3 +2,6 @@
 *.crx
 *.pem
 .superpowers/
+node_modules/
+.output/
+.wxt/

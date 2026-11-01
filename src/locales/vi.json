@@ -15,7 +15,8 @@
     "selectChild": "Chọn Phần tử Con",
     "xray": "Chế độ X-Ray",
     "breakpoints": "Breakpoints",
-    "eyedropper": "Chọn Màu"
+    "eyedropper": "Chọn Màu",
+    "grid": "Lưới Bố cục"
   },
   "inspect": {
     "layout": "Box Model",
@@ -33,5 +34,13 @@
   },
   "common": {
     "close": "Đóng"
+  },
+  "grid": {
+    "columns": "Cột",
+    "maxWidth": "Chiều rộng Tối đa",
+    "gutter": "Khoảng cách",
+    "margin": "Margin",
+    "color": "Màu sắc",
+    "opacity": "Độ mờ"
   }
 }

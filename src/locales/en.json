@@ -15,7 +15,8 @@
     "selectChild": "Select Child",
     "xray": "X-Ray Mode",
     "breakpoints": "Breakpoints",
-    "eyedropper": "Color Picker"
+    "eyedropper": "Color Picker",
+    "grid": "Layout Grid"
   },
   "inspect": {
     "layout": "Box Model",
@@ -33,5 +34,13 @@
   },
   "common": {
     "close": "Close"
+  },
+  "grid": {
+    "columns": "Columns",
+    "maxWidth": "Max Width",
+    "gutter": "Gutter",
+    "margin": "Margin",
+    "color": "Color",
+    "opacity": "Opacity"
   }
 }

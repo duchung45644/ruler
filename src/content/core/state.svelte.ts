@@ -1,3 +1,5 @@
+import { DEFAULT_SETTINGS } from '../../lib/settings';
+
 export const state = $state({
   active: false,
   paused: false,
@@ -9,6 +11,7 @@ export const state = $state({
   theme: 'dark' as 'light' | 'dark',
   xrayOn: false,
   breakpointsOn: false,
+  grid: { ...DEFAULT_SETTINGS.layoutGrid },
   /** Chip above the dock button `id` for 1500ms (legacy showButtonNotification :34691). */
   dockNotice: null as { id: string; color: string; text: string } | null,
 });

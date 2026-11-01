@@ -13,7 +13,7 @@ afterEach(() => {
 it('registers inspectTools in legacy dock order', async () => {
   await initTools();
   const ids = items.filter((i) => i.group === 'inspectTools').map((i) => i.id);
-  expect(ids).toEqual(['xray', 'breakpoints']);
+  expect(ids).toEqual(['xray', 'grid', 'breakpoints']);
 });
 
 const flush = () => new Promise((r) => setTimeout(r, 50));

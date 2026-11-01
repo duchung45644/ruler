@@ -48,7 +48,12 @@ export function handleMessages<T extends Target>(
   const listener = (msg: unknown, _sender: unknown, sendResponse: (r?: unknown) => void) => {
     const p = msg as Packet | null;
     if (!p || p.target !== target || !Object.hasOwn(table, p.type)) return false; // unknown: no reply
-    Promise.resolve(table[p.type]!(...(p.data ?? []))).then(sendResponse);
+    Promise.resolve()
+      .then(() => table[p.type]!(...(p.data ?? [])))
+      .then(sendResponse, (e) => {
+        console.error(`[bo-doi] handler "${p.type}" failed`, e);
+        sendResponse(undefined); // ponytail: sender gets undefined, not a hung promise
+      });
     return true;
   };
   browser.runtime.onMessage.addListener(listener);

@@ -9,6 +9,7 @@ const AREAS: Record<string, Source[]> = {
     { file: 'legacy-src/options.js' },
     { file: 'unpacked/options/index.html' },
   ],
+  'content: controller': [{ file: 'legacy-src/content.js', from: 'key: "handleAction"' }],
 };
 
 const inventory = readFileSync('docs/inventory.md', 'utf8');

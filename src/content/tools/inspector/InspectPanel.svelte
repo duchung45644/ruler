@@ -1,10 +1,11 @@
 <script module lang="ts">
   import {
-    blend,
+    compositeBackground,
     contrastRatio,
     parseColor,
     toHex,
     wcagLevel,
+    type BgLayer,
     type Rgba,
   } from '../../../lib/color';
 
@@ -26,21 +27,41 @@
     return !kids.length;
   }
 
-  const hasImage = (s: CSSStyleDeclaration) => /gradient\(|url\(/.test(s.backgroundImage);
-
-  // ponytail: walks ancestors, not the elementsFromPoint stack of legacy findBackgroundColor
-  // (:43977), so absolutely-positioned backdrops are missed. Switch to the point stack if it matters.
-  function backgroundOf(el: Element): Rgba | null {
-    const layers: Rgba[] = [];
-    for (let n: Element | null = el; n; n = n.parentElement) {
-      const s = getComputedStyle(n);
-      if (hasImage(s)) return null; // legacy bails on image/gradient backgrounds
-      const c = parseColor(s.backgroundColor);
-      if (c && c.a > 0) layers.push(c);
-      if (c && c.a >= 0.99) break;
+  /** Pseudo-element (with content) and own background layers of `n`, top → bottom. */
+  function layersOf(n: Element): BgLayer[] {
+    const out: BgLayer[] = [];
+    for (const pseudo of ['::before', '::after']) {
+      const ps = getComputedStyle(n, pseudo);
+      if (ps.content !== 'none') out.push({ color: ps.backgroundColor, image: ps.backgroundImage });
     }
-    if (!layers.length) return null;
-    return layers.reduceRight((under, c) => blend(c, under), { r: 255, g: 255, b: 255, a: 1 });
+    const s = getComputedStyle(n);
+    out.push({ color: s.backgroundColor, image: s.backgroundImage });
+    return out;
+  }
+
+  /**
+   * Port of findBackgroundColor (:43977): the target, then everything painted under its centre
+   * (elementsFromPoint), skipping its descendants, our UI and invisible elements. Off-screen
+   * centre falls back to the ancestor chain like legacy (:44010).
+   */
+  function backgroundOf(el: Element): Rgba | null {
+    const r = el.getBoundingClientRect();
+    if (r.width <= 0 || r.height <= 0) return null;
+    const x = r.left + r.width / 2;
+    const y = r.top + r.height / 2;
+    const onScreen = x >= 0 && y >= 0 && x <= innerWidth && y <= innerHeight;
+    const under: Element[] = [];
+    if (onScreen) under.push(...document.elementsFromPoint(x, y));
+    else for (let n = el.parentElement; n; n = n.parentElement) under.push(n);
+    const layers = layersOf(el);
+    for (const n of under) {
+      if (n === el || el.contains(n) || n.tagName.toLowerCase() === 'bo-doi-ui') continue;
+      const s = getComputedStyle(n);
+      if (s.display === 'none' || s.visibility === 'hidden' || parseFloat(s.opacity) < 0.05)
+        continue;
+      layers.push(...layersOf(n));
+    }
+    return compositeBackground(layers);
   }
 
   /** Port of getTextColorWithAccessibility (:43944) + renderAccessibilityInfo (:43350). */
@@ -173,7 +194,7 @@
       <section>
         <div class="mb-1 font-semibold">{i18n.t('inspect.accessibility')}</div>
         <div class="flex items-center justify-between gap-3">
-          <span class="text-fg-muted">contrast:</span>
+          <span class="text-fg-muted">{i18n.t('inspect.contrast')}:</span>
           <span class="flex items-center gap-2 font-mono">
             <span
               class="rounded-[4px] border border-line px-1"
@@ -191,9 +212,9 @@
     {#if info.img}
       <section>
         <div class="mb-1 font-semibold">{i18n.t('inspect.image')}</div>
-        {#if info.img.natural}{@render row('natural', info.img.natural)}{/if}
-        {#if size}{@render row('file size', size)}{/if}
-        {#if info.img.format}{@render row('format', info.img.format)}{/if}
+        {#if info.img.natural}{@render row(i18n.t('inspect.natural'), info.img.natural)}{/if}
+        {#if size}{@render row(i18n.t('inspect.fileSize'), size)}{/if}
+        {#if info.img.format}{@render row(i18n.t('inspect.format'), info.img.format)}{/if}
       </section>
     {/if}
   </div>

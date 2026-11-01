@@ -48,3 +48,23 @@ export function wcagLevel(ratio: number, largeText: boolean): 'AAA' | 'AA' | 'fa
   if (ratio >= (largeText ? 4.5 : 7)) return 'AAA';
   return ratio >= (largeText ? 3 : 4.5) ? 'AA' : 'fail';
 }
+
+export type BgLayer = { color: string; image: string };
+
+/**
+ * Port of legacy findBackgroundColor's blend (:43977-44134). `layers` run top → bottom.
+ * Any url()/gradient layer → null (ratio would be a guess); otherwise blend down to the first
+ * opaque layer, over white. No coloured layer → null.
+ */
+export function compositeBackground(layers: BgLayer[]): Rgba | null {
+  const stack: Rgba[] = [];
+  for (const l of layers) {
+    if (/gradient\(|url\(/.test(l.image)) return null;
+    const c = parseColor(l.color);
+    if (!c || c.a === 0) continue;
+    stack.push(c);
+    if (c.a >= 0.99) break;
+  }
+  if (!stack.length) return null;
+  return stack.reduceRight((under, c) => blend(c, under), { r: 255, g: 255, b: 255, a: 1 });
+}

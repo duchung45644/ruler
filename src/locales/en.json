@@ -21,6 +21,10 @@
     "accessibility": "Accessibility",
     "image": "Image",
     "copyCss": "Copy CSS",
-    "copied": "Copied!"
+    "copied": "Copied!",
+    "contrast": "Contrast",
+    "natural": "Natural size",
+    "fileSize": "File size",
+    "format": "Format"
   }
 }

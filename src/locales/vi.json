@@ -21,6 +21,10 @@
     "accessibility": "Trợ năng",
     "image": "Hình ảnh",
     "copyCss": "Copy CSS",
-    "copied": "Đã copy!"
+    "copied": "Đã copy!",
+    "contrast": "Tương phản",
+    "natural": "Kích thước gốc",
+    "fileSize": "Dung lượng",
+    "format": "Định dạng"
   }
 }

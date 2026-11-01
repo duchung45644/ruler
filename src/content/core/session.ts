@@ -22,6 +22,15 @@ export function onStop(fn: () => void): void {
 export async function startSession(ctx: ContentScriptContext): Promise<void> {
   if (state.active) return;
   state.active = true; // set before await: a second call is a no-op
+  try {
+    await start(ctx);
+  } catch (e) {
+    stopSession(); // a failed start must not leave state.active stuck on
+    throw e;
+  }
+}
+
+async function start(ctx: ContentScriptContext): Promise<void> {
   const signal = sessionSignal();
   const ui = await mountUi(ctx, Dock);
   if (signal.aborted) return ui.remove(); // stopped while mounting

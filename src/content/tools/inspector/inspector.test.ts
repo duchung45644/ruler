@@ -27,6 +27,8 @@ it('blocks page mousedown only while inspecting', async () => {
   let seen = 0;
   p.addEventListener('mousedown', () => seen++);
   await initInspector();
+  // a page listener on window capture runs before any document-level block
+  window.addEventListener('mousedown', () => seen++, true);
   const press = () =>
     p.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, composed: true }));
   state.inspectOn = true;
@@ -34,7 +36,7 @@ it('blocks page mousedown only while inspecting', async () => {
   expect(seen).toBe(0);
   state.inspectOn = false;
   press();
-  expect(seen).toBe(1);
+  expect(seen).toBe(2);
 });
 
 it('mounts the panel in the shadow root and shows the selection', async () => {

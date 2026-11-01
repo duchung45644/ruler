@@ -211,6 +211,7 @@ export async function initInspector(): Promise<void> {
       box.remove();
       pinBox.remove();
     });
+    // off fn dropped on purpose: mountLayer's stop clears all painters
     addPainter('inspect-panel', () => placePanel(box, shadow, mouse));
 
     // 2.13 Space pins the visible panel (port of pinCurrentInspector :43481)
@@ -256,7 +257,7 @@ export async function initInspector(): Promise<void> {
   const block = (e: Event) => {
     if (!live() || !host || isOwnEvent(e, host)) return;
     e.preventDefault();
-    e.stopPropagation();
+    e.stopImmediatePropagation(); // also stops page listeners on window registered after ours
   };
   for (const type of [
     'pointerdown',
@@ -265,15 +266,18 @@ export async function initInspector(): Promise<void> {
     'mouseup',
     'dblclick',
     'contextmenu',
+    'auxclick',
+    'touchstart',
   ])
-    document.addEventListener(type, block, opts);
+    window.addEventListener(type, block, opts); // window capture: the earliest point; page window-capture listeners added before ours still run first
+
   // 2.07 click to select / deselect
-  document.addEventListener(
+  window.addEventListener(
     'click',
     (e) => {
       if (!live() || !host || isOwnEvent(e, host)) return;
       e.preventDefault();
-      e.stopPropagation();
+      e.stopImmediatePropagation(); // also stops page listeners on window registered after ours
       const el = pageElementAt(e.clientX, e.clientY, host);
       if (el) select(el === state.selected ? null : el);
     },
@@ -284,6 +288,8 @@ export async function initInspector(): Promise<void> {
   window.addEventListener('scroll', refresh, opts);
   // 1.24 arrow keys scroll like the wheel; any key (e.g. Esc) may change the selection
   window.addEventListener('keydown', () => requestPaint(), opts);
+  // isolateEvents stops keys typed in our UI at the shadow root (routeKey listens there too)
+  layer.getRootNode().addEventListener('keydown', () => requestPaint(), opts);
   window.addEventListener(
     'keyup',
     (e) => {
@@ -318,6 +324,7 @@ export async function initInspector(): Promise<void> {
     panelHidden = false;
   });
 
+  // off fn dropped on purpose: mountLayer's stop clears all painters
   addPainter('inspector', (box) => {
     const sel = state.selected;
     if (sel && !isRendered(sel)) {

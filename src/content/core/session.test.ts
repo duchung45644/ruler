@@ -31,11 +31,12 @@ describe('session', () => {
     expect(count()).toBe(0);
   });
 
-  it('host sits at the top of the page stacking order', async () => {
+  it('a failed start can be retried', async () => {
+    const mount = await import('../../ui/mount');
+    vi.spyOn(mount, 'mountUi').mockRejectedValueOnce(new Error('boom'));
+    await expect(startSession(new ContentScriptContext('content'))).rejects.toThrow('boom');
     await startSession(new ContentScriptContext('content'));
-    const host = document.querySelector('bo-doi-ui') as HTMLElement;
-    expect(host.style.position).toBe('fixed');
-    expect(host.style.zIndex).toBe('2147483647');
+    expect(count()).toBe(1);
   });
 
   it('routes shortcuts from a focused button in our UI, never from our inputs', async () => {

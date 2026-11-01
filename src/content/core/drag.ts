@@ -16,6 +16,7 @@ export function startDrag(
   const ac = (drag = new AbortController());
   const opts = { capture: true, signal: ac.signal };
   const end = (u: Event) => {
+    if (u.type === 'blur' && u.target instanceof Node) return; // capture also sees element blurs; only the window's own ends it
     if (drag !== ac) return; // already ended (guard and own listener both see pointerup)
     ac.abort();
     drag = null;

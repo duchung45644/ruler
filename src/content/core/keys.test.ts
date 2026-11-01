@@ -64,6 +64,48 @@ describe('routeKey', () => {
     expect(run).toHaveBeenCalledOnce();
   });
 
+  it('matches letter keys case-insensitively', () => {
+    const run = vi.fn();
+    registerItem({
+      id: 't1',
+      icon: {} as never,
+      label: 'dock.quit',
+      key: 'o',
+      group: 'utilities',
+      run,
+    });
+    state.paused = false;
+    const div = document.body.appendChild(document.createElement('div'));
+    routeKey(keyFrom(div, { key: 'O', shiftKey: true }));
+    routeKey(keyFrom(div, { key: 'o' }));
+    expect(run).toHaveBeenCalledTimes(2);
+  });
+
+  it('calls runKey instead of run when present', () => {
+    const run = vi.fn();
+    const runKey = vi.fn();
+    registerItem({
+      id: 't1',
+      icon: {} as never,
+      label: 'dock.quit',
+      key: '3',
+      group: 'utilities',
+      run,
+      runKey,
+    });
+    state.paused = false;
+    routeKey(keyFrom(document.body, { key: '3' }));
+    expect(runKey).toHaveBeenCalledOnce();
+    expect(run).not.toHaveBeenCalled();
+  });
+
+  it('Esc with no selection closes the popover', () => {
+    state.selected = null;
+    state.popover = 'find';
+    routeKey(keyFrom(document.body, { key: 'Escape', cancelable: true }));
+    expect(state.popover).toBeNull();
+  });
+
   it('Esc releases the selection', () => {
     state.selected = document.body;
     const ev = keyFrom(document.body, { key: 'Escape', cancelable: true });

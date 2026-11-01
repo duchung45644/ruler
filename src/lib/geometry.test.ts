@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { gapLines, placeNear, sizeLabels } from './geometry';
+import { gapLines, placeNear, popoverLeft, sizeLabels } from './geometry';
 
 describe('sizeLabels', () => {
   it('anchors width top-center and height right-middle', () => {
@@ -37,5 +37,14 @@ describe('placeNear', () => {
     const dock = { x: 700, y: 700, width: 300, height: 80 };
     const p = placeNear({ x: 950, y: 690 }, size, vp, [dock]);
     expect(p.y + size.height).toBeLessThanOrEqual(dock.y);
+  });
+});
+
+describe('popoverLeft', () => {
+  const dock = { x: 50, y: 0, width: 400, height: 34 };
+  it('centres over the button, clamped inside the dock', () => {
+    expect(popoverLeft({ x: 100, y: 0, width: 26, height: 26 }, dock, 200)).toBe(0);
+    expect(popoverLeft({ x: 250, y: 0, width: 26, height: 26 }, dock, 100)).toBe(163);
+    expect(popoverLeft({ x: 430, y: 0, width: 26, height: 26 }, dock, 200)).toBe(200);
   });
 });

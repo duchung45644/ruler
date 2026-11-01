@@ -1,6 +1,7 @@
 <script lang="ts">
   import { i18n } from '#i18n';
   import type { DockItem } from '../content/core/registry.svelte';
+  import { state as app } from '../content/core/state.svelte';
 
   let { item, disabled }: { item: DockItem; disabled: boolean } = $props();
   const active = $derived(item.isActive?.() ?? false);
@@ -26,6 +27,7 @@
     : ''}"
   class:bg-accent={active}
   class:text-white={active}
+  data-item={item.id}
   aria-label={label}
   aria-pressed={item.isActive ? active : undefined}
   {disabled}
@@ -35,8 +37,11 @@
   <Icon size={15} />
   <span
     bind:this={tip}
+    class:hidden={app.popover === item.id}
     class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-btn border border-line bg-surface px-2 py-1 text-[11px] opacity-0 backdrop-blur-surface group-hover:opacity-100"
   >
-    {label}{#if item.key}&nbsp;<span class="font-mono text-fg-muted">({item.key})</span>{/if}
+    {label}{#if item.key}&nbsp;<span class="font-mono text-fg-muted"
+        >({item.key.toUpperCase()})</span
+      >{/if}
   </span>
 </button>

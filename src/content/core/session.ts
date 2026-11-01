@@ -67,5 +67,6 @@ export function stopSession(): void {
     selected: null,
     inspectOn: false,
     dockCollapsed: false,
+    popover: null,
   });
 }

@@ -2,6 +2,7 @@ export const state = $state({
   active: false,
   paused: false,
   dockCollapsed: false,
+  popover: null as string | null,
   inspectOn: false,
   hovered: null as Element | null,
   selected: null as Element | null,

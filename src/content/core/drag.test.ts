@@ -60,6 +60,19 @@ it('pointercancel and blur end the drag', () => {
   ac.abort();
 });
 
+it("an element's blur does not end the drag", () => {
+  vi.useFakeTimers();
+  const ac = new AbortController();
+  installDragGuard(ac.signal);
+  startDrag(ptr('pointerdown'), () => {});
+  const input = document.body.appendChild(document.createElement('input'));
+  input.dispatchEvent(new FocusEvent('blur'));
+  vi.advanceTimersByTime(60);
+  expect(isDragging()).toBe(true);
+  resetDrag();
+  ac.abort();
+});
+
 it('guard swallows pointerup mid-drag but still ends the drag', () => {
   const ac = new AbortController();
   installDragGuard(ac.signal);

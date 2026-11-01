@@ -34,17 +34,19 @@ export function routeKey(e: KeyboardEvent): void {
   }
   if (shouldIgnoreKey(e, state)) return;
   if (e.key === 'Escape') {
-    if (state.selected) {
-      state.selected = null;
-      e.preventDefault();
-    }
+    if (state.selected) state.selected = null;
+    else if (state.popover)
+      state.popover = null; // legacy executeShortcut :47540
+    else return;
+    e.preventDefault();
     return;
   }
   if (!e.ctrlKey && !e.metaKey && !e.altKey) {
-    const item = items.find((i) => i.key === e.key && !i.isDisabled?.());
+    const key = e.key.toLowerCase();
+    const item = items.find((i) => i.key === key && !i.isDisabled?.());
     if (item) {
       e.preventDefault();
-      return item.run();
+      return item.runKey ? item.runKey() : item.run();
     }
   }
   const name = hookName(e);

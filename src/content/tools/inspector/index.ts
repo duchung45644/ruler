@@ -16,6 +16,8 @@ import { initDistance } from '../distance';
 let host: Element | null = null;
 const isOwn = (n: Element) => n === host;
 /** Elements we came up from, so "child" walks back down the same branch (2.03, 2.04). */
+// Untracked on purpose: every stack change goes through select(), which also sets
+// state.selected, so the dock's isDisabled re-runs anyway.
 let stack: Element[] = [];
 
 function select(el: Element | null, keepStack = false): void {
@@ -152,6 +154,7 @@ function paintHover(box: HTMLElement, el: Element, color: string): void {
 export async function initInspector(): Promise<void> {
   const signal = sessionSignal();
   host = (layer.getRootNode() as ShadowRoot).host ?? null;
+  // ponytail: measure colour computed once per session; re-detect if pages that switch theme live matter
   const color = measureColor(detectPageIsDark(document));
   let mouse: { x: number; y: number } | null = null;
 
@@ -174,6 +177,21 @@ export async function initInspector(): Promise<void> {
     },
     opts,
   );
+  // 1.25 swallow press/menu events so page menus, click-outside handlers, selection and drag don't fire
+  const block = (e: Event) => {
+    if (!live() || !host || isOwnEvent(e, host)) return;
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  for (const type of [
+    'pointerdown',
+    'mousedown',
+    'pointerup',
+    'mouseup',
+    'dblclick',
+    'contextmenu',
+  ])
+    document.addEventListener(type, block, opts);
   // 2.07 click to select / deselect
   document.addEventListener(
     'click',
@@ -239,7 +257,7 @@ export async function initInspector(): Promise<void> {
       frame(box, r, color);
     }
     const h = state.hovered;
-    if (h && h !== state.selected && h.isConnected && state.inspectOn) paintHover(box, h, color);
+    if (h && h !== state.selected && h.isConnected && live()) paintHover(box, h, color);
   });
   initDistance(color);
 

@@ -28,6 +28,8 @@ export async function startSession(ctx: ContentScriptContext): Promise<void> {
   onStop(ui.remove);
   onStop(mountLayer(ui.shadow));
   window.addEventListener('keydown', routeKey, { signal });
+  // isolateEvents stops keydown at our shadow root (page never sees our typing), so route it here too
+  ui.shadow.addEventListener('keydown', routeKey as EventListener, { signal });
 
   const applyTheme = (pref: ThemePref) => {
     const prefersDark = matchMedia('(prefers-color-scheme: dark)').matches;

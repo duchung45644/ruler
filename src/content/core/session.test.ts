@@ -3,6 +3,7 @@ import { ContentScriptContext } from 'wxt/utils/content-script-context';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 
 import { themePref } from '../../lib/settings';
+import { onKey } from './keys';
 import { onStop, sessionSignal, startSession, stopSession } from './session';
 
 const count = () => document.querySelectorAll('bo-doi-ui').length;
@@ -28,6 +29,36 @@ describe('session', () => {
     window.dispatchEvent(new KeyboardEvent('keydown'));
     expect(fn).not.toHaveBeenCalled();
     expect(count()).toBe(0);
+  });
+
+  it('host sits at the top of the page stacking order', async () => {
+    await startSession(new ContentScriptContext('content'));
+    const host = document.querySelector('bo-doi-ui') as HTMLElement;
+    expect(host.style.position).toBe('fixed');
+    expect(host.style.zIndex).toBe('2147483647');
+  });
+
+  it('routes shortcuts from a focused button in our UI, never from our inputs', async () => {
+    await startSession(new ContentScriptContext('content'));
+    const run = vi.fn(() => true);
+    onStop(onKey('Space', run));
+    const shadow = document.querySelector('bo-doi-ui')!.shadowRoot!;
+    const press = (el: Element) =>
+      el.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
+    press(shadow.appendChild(document.createElement('button')));
+    expect(run).toHaveBeenCalledOnce();
+    press(shadow.appendChild(document.createElement('input')));
+    expect(run).toHaveBeenCalledOnce();
+  });
+
+  it('pressing a button in our UI does not move focus to it', async () => {
+    await startSession(new ContentScriptContext('content'));
+    const b = document.querySelector('bo-doi-ui')!.shadowRoot!.appendChild(
+      document.createElement('button'),
+    );
+    const e = new MouseEvent('mousedown', { bubbles: true, composed: true, cancelable: true });
+    b.dispatchEvent(e);
+    expect(e.defaultPrevented).toBe(true);
   });
 
   it('onStop runs exactly once', async () => {

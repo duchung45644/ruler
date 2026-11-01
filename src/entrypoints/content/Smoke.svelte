@@ -9,4 +9,3 @@
   <Ruler size={16} />
   {i18n.t('extNameShort')}
 </div>
-```

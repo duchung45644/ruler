@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { isQuitKey, routeKey, shouldIgnoreKey } from './keys';
 import { items, registerItem } from './registry.svelte';
 import { state } from './state.svelte';
@@ -41,6 +41,11 @@ describe('shouldIgnoreKey', () => {
 });
 
 describe('routeKey', () => {
+  afterEach(() => {
+    const i = items.findIndex((x) => x.id === 't1');
+    if (i >= 0) items.splice(i, 1);
+  });
+
   it('runs the item bound to the key, not with Ctrl', () => {
     const run = vi.fn();
     registerItem({
@@ -57,10 +62,6 @@ describe('routeKey', () => {
     expect(run).toHaveBeenCalledOnce();
     routeKey(keyFrom(div, { key: '1', ctrlKey: true }));
     expect(run).toHaveBeenCalledOnce();
-    items.splice(
-      items.findIndex((i) => i.id === 't1'),
-      1,
-    );
   });
 
   it('Esc releases the selection', () => {

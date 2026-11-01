@@ -13,7 +13,8 @@
     tip.style.transform = '';
     const r = tip.getBoundingClientRect();
     const dx = r.right > innerWidth - 8 ? innerWidth - 8 - r.right : r.left < 8 ? 8 - r.left : 0;
-    if (dx) tip.style.transform = `translateX(calc(-50% + ${Math.round(dx)}px))`;
+    // Tailwind -translate-x-1/2 sets `translate`; transform composes on top, so only the offset.
+    if (dx) tip.style.transform = `translateX(${Math.round(dx)}px)`;
   }
 </script>
 

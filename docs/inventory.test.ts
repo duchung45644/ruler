@@ -11,6 +11,13 @@ const AREAS: Record<string, Source[]> = {
   ],
   'content: trước controller': [{ file: 'legacy-src/content.js', to: 'key: "handleAction"' }],
   'content: controller': [{ file: 'legacy-src/content.js', from: 'key: "handleAction"' }],
+  'side panel': [
+    { file: 'legacy-src/sidepanel.js' },
+    { file: 'legacy-src/detect-technologies.js' },
+    { file: 'unpacked/sidepanel/index.html' },
+    { file: 'unpacked/sidepanel/editor.html' },
+    { file: 'unpacked/sidepanel/box-model.html' },
+  ],
 };
 
 const inventory = readFileSync('docs/inventory.md', 'utf8');

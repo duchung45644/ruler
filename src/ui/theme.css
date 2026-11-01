@@ -34,3 +34,7 @@
   overflow: visible !important;
   z-index: 2147483647 !important;
 }
+/* Eyedropper hides the whole UI while picking (3.07). */
+:host([data-hidden]) {
+  visibility: hidden !important;
+}

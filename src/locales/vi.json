@@ -12,7 +12,10 @@
     "show": "Hiện dock",
     "inspect": "Trình kiểm tra",
     "selectParent": "Chọn Phần tử Cha",
-    "selectChild": "Chọn Phần tử Con"
+    "selectChild": "Chọn Phần tử Con",
+    "xray": "Chế độ X-Ray",
+    "breakpoints": "Breakpoints",
+    "eyedropper": "Chọn Màu"
   },
   "inspect": {
     "layout": "Box Model",

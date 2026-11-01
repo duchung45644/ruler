@@ -8,6 +8,13 @@
   const Icon = $derived((active && item.activeIcon) || item.icon);
   const label = $derived(i18n.t((active && item.activeLabel) || item.label));
   let tip: HTMLElement;
+  const notice = $derived(app.dockNotice?.id === item.id ? app.dockNotice : null);
+  $effect(() => {
+    const n = notice;
+    if (!n) return;
+    const t = setTimeout(() => app.dockNotice === n && (app.dockNotice = null), 1500);
+    return () => clearTimeout(t);
+  });
 
   /** Keep the tooltip 8px inside the viewport (port of attachTooltipClamp, content.js:35658). */
   function clamp() {
@@ -44,4 +51,11 @@
         >({item.key.toUpperCase()})</span
       >{/if}
   </span>
+  {#if notice}
+    <span
+      class="pointer-events-none absolute -top-8 left-1/2 flex -translate-x-1/2 items-center gap-[6px] whitespace-nowrap rounded-full border border-line bg-surface px-2 py-[6px] font-mono text-[12px] leading-[12px] font-medium text-fg backdrop-blur-surface"
+    >
+      <span class="size-[12px] rounded-[3px]" style:background={notice.color}></span>{notice.text}
+    </span>
+  {/if}
 </button>

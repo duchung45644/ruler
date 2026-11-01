@@ -12,7 +12,10 @@
     "show": "Show Dock",
     "inspect": "Inspector",
     "selectParent": "Select Parent",
-    "selectChild": "Select Child"
+    "selectChild": "Select Child",
+    "xray": "X-Ray Mode",
+    "breakpoints": "Breakpoints",
+    "eyedropper": "Color Picker"
   },
   "inspect": {
     "layout": "Box Model",

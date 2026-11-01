@@ -1,6 +1,9 @@
 export type Rgba = { r: number; g: number; b: number; a: number };
 
-/** Parses computed-style colours (`rgb()/rgba()`, `transparent`, `#hex`). Port of legacy parseColor. */
+/**
+ * Parses computed-style colours: `rgb()/rgba()`, `transparent`, `#hex` (port of legacy parseColor),
+ * plus `oklch()`, `oklab()`, `color(srgb …)` that modern pages (Tailwind 4) compute to.
+ */
 export function parseColor(css: string): Rgba | null {
   const s = css.trim().toLowerCase();
   if (s === 'transparent') return { r: 0, g: 0, b: 0, a: 0 };
@@ -10,13 +13,38 @@ export function parseColor(css: string): Rgba | null {
     const n = (i: number) => parseInt(full.slice(i, i + 2), 16);
     return { r: n(0), g: n(2), b: n(4), a: full.length === 8 ? n(6) / 255 : 1 };
   }
-  const m = /^rgba?\(([^)]+)\)$/.exec(s);
-  if (!m) return null;
-  const p = m[1]!.split(/[\s,/]+/).filter(Boolean);
+  const m = /^(rgba?|oklch|oklab|color)\(\s*(srgb\s)?([^)]+)\)$/.exec(s);
+  if (!m || (m[1] === 'color' && !m[2])) return null;
+  const p = m[3]!.split(/[\s,/]+/).filter(Boolean);
   if (p.length < 3) return null;
-  const [r, g, b] = p.slice(0, 3).map(Number) as [number, number, number];
-  const a = p[3] === undefined ? 1 : p[3].endsWith('%') ? parseFloat(p[3]) / 100 : Number(p[3]);
+  // `none` → 0; a percentage is a fraction of 1 (only alpha / L / srgb channels use them)
+  const n = (v: string) => (v === 'none' ? 0 : v.endsWith('%') ? parseFloat(v) / 100 : Number(v));
+  const a = p[3] === undefined ? 1 : n(p[3]);
+  let rgb: number[];
+  if (m[1]!.startsWith('rgb')) rgb = p.slice(0, 3).map(Number);
+  else if (m[1] === 'color') rgb = p.slice(0, 3).map((v) => n(v) * 255);
+  else {
+    const [L, x, y] = p.slice(0, 3).map(n) as [number, number, number];
+    const h = (y * Math.PI) / 180;
+    rgb = m[1] === 'oklch' ? oklabToRgb(L, x * Math.cos(h), x * Math.sin(h)) : oklabToRgb(L, x, y);
+  }
+  const [r, g, b] = rgb as [number, number, number];
   return [r, g, b, a].some(Number.isNaN) ? null : { r, g, b, a };
+}
+
+/** OKLab → sRGB 0–255, out-of-gamut channels clamped (Björn Ottosson's reference matrices). */
+function oklabToRgb(L: number, a: number, b: number): number[] {
+  const l = (L + 0.3963377774 * a + 0.2158037573 * b) ** 3;
+  const m = (L - 0.1055613458 * a - 0.0638541728 * b) ** 3;
+  const s = (L - 0.0894841775 * a - 1.291485548 * b) ** 3;
+  return [
+    4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+    -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+    -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s,
+  ].map((v) => {
+    v = Math.min(1, Math.max(0, v));
+    return 255 * (v <= 0.0031308 ? 12.92 * v : 1.055 * v ** (1 / 2.4) - 0.055);
+  });
 }
 
 export function toHex(c: Rgba): string {

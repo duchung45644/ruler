@@ -8,6 +8,17 @@ describe('color', () => {
     expect(parseColor('transparent')!.a).toBe(0);
     expect(parseColor('nope')).toBeNull();
   });
+  it('converts oklch/oklab/color(srgb) to sRGB hex', () => {
+    const hex = (css: string) => toHex(parseColor(css)!);
+    expect(hex('oklch(1 0 0)')).toBe('#ffffff');
+    expect(hex('oklch(0 0 0)')).toBe('#000000');
+    expect(hex('oklch(0.21 0.006 285.885)')).toBe('#18181b'); // Tailwind zinc-900
+    expect(hex('oklab(0.627955 0.224863 0.125846)')).toBe('#ff0000');
+    expect(hex('oklch(62.7955% 0.257683 29.2339 / 0.5)')).toBe('#ff000080');
+    expect(hex('oklch(0.9 0.4 150)')).toMatch(/^#[\da-f]{6}$/); // out of gamut: clamped
+    expect(hex('color(srgb 1 0.5 0)')).toBe('#ff8000');
+    expect(parseColor('lab(50 20 30)')).toBeNull();
+  });
   it('formats hex', () => {
     expect(toHex({ r: 99, g: 102, b: 241, a: 1 })).toBe('#6366f1');
     expect(toHex({ r: 0, g: 0, b: 0, a: 0.5 })).toBe('#00000080');

@@ -178,7 +178,10 @@
           class="size-[10px] shrink-0 rounded-[3px] border border-line"
           style:background={value}
         ></span>{/if}
-      <span class="truncate">{value}</span>
+      <!-- an unparsed colour (not HEX) wraps in full instead of being cut -->
+      <span class={swatch && !value.startsWith('#') ? 'text-[10px] break-all' : 'truncate'}
+        >{value}</span
+      >
     </span>
   </div>
 {/snippet}

@@ -1,7 +1,7 @@
 import RulerIcon from '@lucide/svelte/icons/ruler';
 import { guideGaps, nearestGuide, RULER, snapPos, ticks, type Guide } from '../../../lib/guides';
 import { getSettings, updateSettings } from '../../../lib/settings';
-import { startDrag } from '../../core/drag';
+import { resetDrag, startDrag } from '../../core/drag';
 import { isOwnEvent, pageElementAt } from '../../core/events';
 import { addPainter, draw, layer, requestPaint } from '../../core/overlay';
 import { registerItem } from '../../core/registry.svelte';
@@ -13,7 +13,7 @@ const HOT = '#FF3B6B';
 const CHIP =
   "font:600 11px/1 'Bo doi Geist Mono',ui-monospace,monospace;color:#fff;padding:3px 5px;border-radius:4px;white-space:nowrap;transform:translate(-50%,-50%)";
 
-/** Page guides: kept for the session, shown only while the ruler is on (3.05 / 3.16). */
+/** Page guides: kept and drawn for the session; created/dragged only while the ruler is on (3.05 / 3.16). */
 let guides: Guide[] = [];
 let hot: Guide | null = null;
 let rulers: HTMLElement | null = null;
@@ -57,7 +57,7 @@ function strip(vertical: boolean): void {
         s,
         `font:9px/1 var(--font-mono);color:var(--color-fg-muted);white-space:nowrap;${
           vertical
-            ? `left:2px;top:${at + 2}px;transform:rotate(-90deg) translateX(-100%);transform-origin:0 0`
+            ? `left:2px;top:${at + 2}px;transform:rotate(-90deg);transform-origin:left top`
             : `left:${at + 2}px;top:2px`
         }`,
         String(at),
@@ -91,6 +91,8 @@ function apply(on: boolean): void {
     rulers?.remove();
     rulers = crossX = crossY = null;
     setCursor(false);
+    if (hot) resetDrag(); // legacy core.js:44 ends the drag
+    hot = null;
   }
   requestPaint();
 }
@@ -183,10 +185,12 @@ export async function initRuler(): Promise<void> {
     hot = null;
   });
   addPainter('ruler', (box) => {
-    if (!state.rulerOn) return;
-    const zone = 'background:rgba(0,179,255,.08)';
-    draw(box, `left:0;top:0;width:100%;height:${RULER}px;${zone}`);
-    draw(box, `left:0;top:0;width:${RULER}px;height:100%;${zone}`);
+    // legacy measure-guides.js:30-57: only the zone tint follows the ruler; guides always draw
+    if (state.rulerOn) {
+      const zone = 'background:rgba(0,179,255,.08)';
+      draw(box, `left:0;top:0;width:100%;height:${RULER}px;${zone}`);
+      draw(box, `left:0;top:0;width:${RULER}px;height:100%;${zone}`);
+    }
     for (const g of guides) {
       const c = g === hot ? HOT : GUIDE;
       const p = g.pos - (g.axis === 'h' ? scrollY : scrollX);

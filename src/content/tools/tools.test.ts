@@ -79,6 +79,10 @@ it('ruler: drag a guide out of the top strip, swallow the click, drop back to re
   document.body.dispatchEvent(ev('pointerup', 300, 150));
   expect(currentGuides()).toEqual([{ axis: 'h', pos: 150 }]);
   window.dispatchEvent(new MouseEvent('mousemove', { clientX: 300, clientY: 151 }));
+  items.find((i) => i.id === 'ruler')!.run(); // off: the guide stays painted (legacy)
+  expect(state.rulerOn).toBe(false);
+  await flush();
+  expect(layer.textContent).toContain('150');
   stopSession();
   expect(document.documentElement.style.cursor).toBe('');
   expect(currentGuides()).toEqual([]);

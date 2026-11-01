@@ -1,20 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ContentScriptContext } from 'wxt/utils/content-script-context';
-// vitest has no svelte plugin; a component is just a function
-vi.mock('../../ui/Dock.svelte', () => ({ default: () => {} }));
-// ponytail: runes need the svelte compiler too; plain object of the same shape
-vi.mock('./state.svelte', () => ({
-  state: {
-    active: false,
-    paused: false,
-    dockCollapsed: false,
-    inspectOn: false,
-    hovered: null,
-    selected: null,
-    theme: 'dark',
-  },
-}));
 
+import { themePref } from '../../lib/settings';
 import { onStop, sessionSignal, startSession, stopSession } from './session';
 
 const count = () => document.querySelectorAll('bo-doi-ui').length;
@@ -46,5 +33,14 @@ describe('session', () => {
     stopSession();
     stopSession();
     expect(fn).toHaveBeenCalledTimes(1);
+  });
+
+  it('stop during start leaves no host and no theme watcher', async () => {
+    const watch = vi.spyOn(themePref, 'watch');
+    const p = startSession(new ContentScriptContext('content'));
+    stopSession();
+    await p;
+    expect(count()).toBe(0);
+    expect(watch).not.toHaveBeenCalled();
   });
 });

@@ -29,7 +29,9 @@ export async function startSession(ctx: ContentScriptContext): Promise<void> {
     state.theme = resolveTheme(pref, detectPageIsDark(document), prefersDark);
     ui.host.dataset.theme = state.theme;
   };
-  applyTheme(await themePref.getValue());
+  const pref = await themePref.getValue();
+  if (signal.aborted) return; // stopped while reading the pref
+  applyTheme(pref);
   onStop(themePref.watch(applyTheme));
 }
 

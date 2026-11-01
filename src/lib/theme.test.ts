@@ -2,10 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { detectPageIsDark, measureColor, resolveTheme } from './theme';
 
 describe('resolveTheme', () => {
-  it('system is opposite of page, falls back to prefersDark', () => {
+  it('system is opposite of page, unreadable page assumed to match prefersDark', () => {
     expect(resolveTheme('system', true, false)).toBe('light');
     expect(resolveTheme('system', false, true)).toBe('dark');
-    expect(resolveTheme('system', null, true)).toBe('dark');
+    expect(resolveTheme('system', null, true)).toBe('light');
+    expect(resolveTheme('system', null, false)).toBe('dark');
     expect(resolveTheme('dark', false, false)).toBe('dark');
   });
 });

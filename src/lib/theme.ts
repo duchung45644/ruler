@@ -18,14 +18,14 @@ export function detectPageIsDark(doc: Document): boolean | null {
   return l == null ? null : l < 0.5;
 }
 
-// legacy :21166 — "system" is opposite of the page; unreadable page follows prefersDark (9.23)
+// legacy :21166 — "system" is opposite of the page; unreadable page is assumed to match prefersDark
 export function resolveTheme(
   pref: ThemePref,
   pageIsDark: boolean | null,
   prefersDark: boolean,
 ): 'light' | 'dark' {
   if (pref !== 'system') return pref;
-  const dark = pageIsDark ?? !prefersDark;
+  const dark = pageIsDark ?? prefersDark; // unreadable page: assume it follows the OS scheme (legacy)
   return dark ? 'light' : 'dark';
 }
 

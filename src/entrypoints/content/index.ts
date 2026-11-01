@@ -17,6 +17,11 @@ export default defineContentScript({
   async main(ctx) {
     if (window.__BO_DOI__) return; // 9.20: injected twice; background talks to the first via toggle_script
     window.__BO_DOI__ = true;
+    // extension reload/update: old context dies, isolated world survives; let the re-injection take over
+    ctx.onInvalidated(() => {
+      stopSession();
+      delete window.__BO_DOI__;
+    });
     loadFonts();
     handleMessages('content', {
       ping: () => ({ active: state.active }),

@@ -10,7 +10,7 @@ import { state } from '../../core/state.svelte';
 
 const GUIDE = '#00B3FF';
 const HOT = '#FF3B6B';
-const CHIP =
+export const CHIP =
   "font:600 11px/1 'Bo doi Geist Mono',ui-monospace,monospace;color:#fff;padding:3px 5px;border-radius:4px;white-space:nowrap;transform:translate(-50%,-50%)";
 
 /** Page guides: kept and drawn for the session; created/dragged only while the ruler is on (3.05 / 3.16). */

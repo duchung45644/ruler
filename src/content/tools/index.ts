@@ -1,6 +1,7 @@
 import { initBreakpoints } from './breakpoints';
 import { initEyedropper } from './eyedropper';
 import { initGrid } from './grid';
+import { initMeasure } from './measure';
 import { initRuler } from './ruler';
 import { initXray } from './xray';
 
@@ -16,5 +17,6 @@ export async function initTools(): Promise<void> {
   await initRuler();
   await initBreakpoints();
   initEyedropper();
-  // initOverlayImages, initMeasure, initFind, initAudit: later tasks
+  await initMeasure(); // designTools: overlay images (Task 8) goes before it
+  // initOverlayImages, initFind, initAudit: later tasks
 }

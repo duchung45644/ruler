@@ -87,3 +87,9 @@ it('ruler: drag a guide out of the top strip, swallow the click, drop back to re
   expect(document.documentElement.style.cursor).toBe('');
   expect(currentGuides()).toEqual([]);
 });
+
+it('registers measure in designTools on M', async () => {
+  await initTools();
+  const m = items.find((i) => i.id === 'measure')!;
+  expect([m.group, m.key, m.label]).toEqual(['designTools', 'm', 'dock.measure']);
+});

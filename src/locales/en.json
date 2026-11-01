@@ -17,7 +17,8 @@
     "ruler": "Page Rulers",
     "breakpoints": "Breakpoints",
     "eyedropper": "Color Picker",
-    "grid": "Layout Grid"
+    "grid": "Layout Grid",
+    "measure": "Measure area (drag)"
   },
   "inspect": {
     "layout": "Box Model",
@@ -43,5 +44,15 @@
     "margin": "Margin",
     "color": "Color",
     "opacity": "Opacity"
+  },
+  "measure": {
+    "title": "Measure",
+    "leftTop": "Left / Top",
+    "toEdge": "To right / bottom edge",
+    "boxColor": "Box color",
+    "edgeGuides": "Edge guides",
+    "edgeGuidesTitle": "Extend the box edges across the page",
+    "clear": "Clear",
+    "hint": "Drag to draw. Arrows move 1px (Shift: 10px), Ctrl+arrows expand, Ctrl+Alt+arrows shrink. Shift+↑/↓ in a field steps 10. Esc clears."
   }
 }

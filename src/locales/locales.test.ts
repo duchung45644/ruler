@@ -13,7 +13,13 @@ describe('locales', () => {
   });
   it('en có các khoá manifest dùng', () => {
     expect(keys(en)).toEqual(
-      expect.arrayContaining(['extName', 'extNameShort', 'extDescription', 'cmdSelectParent', 'cmdSelectChild']),
+      expect.arrayContaining([
+        'extName',
+        'extNameShort',
+        'extDescription',
+        'cmdSelectParent',
+        'cmdSelectChild',
+      ]),
     );
   });
 });

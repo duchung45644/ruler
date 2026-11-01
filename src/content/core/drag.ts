@@ -15,23 +15,30 @@ export function startDrag(
   drag?.abort();
   const ac = (drag = new AbortController());
   const opts = { capture: true, signal: ac.signal };
+  const end = (u: Event) => {
+    if (drag !== ac) return; // already ended (guard and own listener both see pointerup)
+    ac.abort();
+    drag = null;
+    finish = null;
+    justDragged = true; // before onEnd: the click is swallowed even if onEnd throws
+    clearTimeout(timer);
+    timer = setTimeout(() => (justDragged = false), 50);
+    if (u instanceof PointerEvent) onEnd?.(u);
+  };
+  finish = end;
   window.addEventListener('pointermove', onMove, opts);
-  window.addEventListener(
-    'pointerup',
-    (u) => {
-      ac.abort();
-      drag = null;
-      onEnd?.(u);
-      justDragged = true;
-      clearTimeout(timer);
-      timer = setTimeout(() => (justDragged = false), 50);
-    },
-    opts,
-  );
+  for (const type of ['pointerup', 'pointercancel', 'blur'])
+    window.addEventListener(type, end, opts);
 }
 
+/** Ends the active drag; set by startDrag so the guard can finish it before swallowing pointerup. */
+let finish: ((u: Event) => void) | null = null;
+
 export function swallowAfterDrag(e: Event): boolean {
-  if (!isDragging()) return false;
+  if (e.type === 'pointerdown' || e.type === 'pointerup' || e.type === 'pointercancel') {
+    if (!drag) return false; // only mid-drag, so a quick re-grab after a drop still works
+    if (e.type !== 'pointerdown') finish?.(e);
+  } else if (!isDragging()) return false;
   e.preventDefault();
   e.stopImmediatePropagation();
   if (e.type === 'click') justDragged = false;
@@ -40,7 +47,15 @@ export function swallowAfterDrag(e: Event): boolean {
 
 /** Install first in session start, so it runs before every tool's window-capture listener. */
 export function installDragGuard(signal: AbortSignal): void {
-  for (const type of ['mousedown', 'mouseup', 'click', 'mousemove'])
+  for (const type of [
+    'pointerdown',
+    'pointerup',
+    'pointercancel',
+    'mousedown',
+    'mouseup',
+    'click',
+    'mousemove',
+  ])
     window.addEventListener(type, swallowAfterDrag, { capture: true, signal });
   signal.addEventListener('abort', resetDrag, { once: true });
 }
@@ -48,6 +63,7 @@ export function installDragGuard(signal: AbortSignal): void {
 export function resetDrag(): void {
   drag?.abort();
   drag = null;
+  finish = null;
   justDragged = false;
   clearTimeout(timer);
 }

@@ -1,4 +1,4 @@
-import { browser } from '#imports';
+import { browser, type Browser } from '#imports';
 
 export interface BackgroundApi {
   close_extension(): void;
@@ -12,7 +12,9 @@ export interface ContentApi {
 }
 
 type Handlers<A extends object> = {
-  [K in keyof A]?: A[K] extends (...a: infer P) => infer R ? (...a: P) => R | Promise<R> : never;
+  [K in keyof A]?: A[K] extends (...a: infer P) => infer R
+    ? (...a: [...P, sender: Browser.runtime.MessageSender]) => R | Promise<R>
+    : never;
 };
 
 type Target = 'background' | 'content';
@@ -44,12 +46,12 @@ export function handleMessages<T extends Target>(
   handlers: Handlers<T extends 'background' ? BackgroundApi : ContentApi>,
   signal?: AbortSignal,
 ): void {
-  const table = handlers as Record<string, (...a: unknown[]) => unknown>;
-  const listener = (msg: unknown, _sender: unknown, sendResponse: (r?: unknown) => void) => {
+  const table = handlers as unknown as Record<string, (...a: unknown[]) => unknown>;
+  const listener = (msg: unknown, sender: unknown, sendResponse: (r?: unknown) => void) => {
     const p = msg as Packet | null;
     if (!p || p.target !== target || !Object.hasOwn(table, p.type)) return false; // unknown: no reply
     Promise.resolve()
-      .then(() => table[p.type]!(...(p.data ?? [])))
+      .then(() => table[p.type]!(...(p.data ?? []), sender))
       .then(sendResponse, (e) => {
         console.error(`[bo-doi] handler "${p.type}" failed`, e);
         sendResponse(undefined); // ponytail: sender gets undefined, not a hung promise

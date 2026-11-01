@@ -65,12 +65,11 @@ export default defineBackground(() => {
     if (info.status === 'loading') void icon(tabId, false);
   });
   handleMessages('background', {
-    async close_extension() {
-      // ponytail: sender tab unknown here; Task 4 adds side panel part
-      const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
-      if (tab?.id === undefined) return;
-      await sendToTab(tab.id, 'toggle_script').catch(() => {});
-      await icon(tab.id, false);
+    async close_extension(sender) {
+      const tabId = sender.tab?.id;
+      if (tabId === undefined) return;
+      await sendToTab(tabId, 'toggle_script').catch(() => {});
+      await icon(tabId, false);
     },
     // Port legacy-src/background.js:3409
     request_clipboard_permission: () =>

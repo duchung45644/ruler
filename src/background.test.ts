@@ -43,3 +43,25 @@ describe('tabs.onUpdated', () => {
     expect(icon).toHaveBeenCalledWith({ tabId: 3, path: 'images/icon32.png' });
   });
 });
+
+describe('close_extension', () => {
+  it('toggles only the sender tab, not the active one', async () => {
+    const { icon } = stubs();
+    for (const ev of [fakeBrowser.contextMenus.onClicked, fakeBrowser.commands.onCommand])
+      vi.spyOn(ev, 'addListener').mockImplementation(() => {});
+    const send = vi
+      .spyOn(fakeBrowser.tabs, 'sendMessage')
+      .mockResolvedValue({ active: false } as never);
+    background.main();
+    const msg = { target: 'background', type: 'close_extension', data: [] };
+    await fakeBrowser.runtime.onMessage.trigger(msg, { tab: { id: 5 } as never }, () => {});
+    await vi.waitFor(() =>
+      expect(icon).toHaveBeenCalledWith({ tabId: 5, path: 'images/icon32.png' }),
+    );
+    expect(send).toHaveBeenCalledTimes(1);
+    expect(send.mock.calls[0]![0]).toBe(5);
+    send.mockClear();
+    await fakeBrowser.runtime.onMessage.trigger(msg, {}, () => {});
+    expect(send).not.toHaveBeenCalled();
+  });
+});

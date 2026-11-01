@@ -6,7 +6,7 @@ import X from '@lucide/svelte/icons/x';
 import PanelBottomClose from '@lucide/svelte/icons/panel-bottom-close';
 import PanelBottomOpen from '@lucide/svelte/icons/panel-bottom-open';
 import { sendToBackground } from '../../lib/messaging';
-import { layer } from './overlay';
+import { layer, requestPaint } from './overlay';
 import { state } from './state.svelte';
 
 export type MessageKey = keyof GeneratedI18nStructure;
@@ -34,10 +34,12 @@ export function registerItem(item: DockItem): void {
   if (!items.some((i) => i.id === item.id)) items.push(item);
 }
 
-/** Pause (1.17): hide overlays; the dock locks everything but pause/quit. */
+/** Pause (1.17, legacy pauseExtension :41937): hide overlays, panel and pins; the dock locks everything but pause/quit. */
 export function setPaused(paused: boolean): void {
+  if (state.paused === paused) return; // stopSession calls it: no stray paint
   state.paused = paused;
   layer.style.display = paused ? 'none' : '';
+  requestPaint(); // the floating panel hides/shows in its painter
 }
 
 registerItem({

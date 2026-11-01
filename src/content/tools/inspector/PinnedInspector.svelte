@@ -3,6 +3,7 @@
   import GripHorizontal from '@lucide/svelte/icons/grip-horizontal';
   import X from '@lucide/svelte/icons/x';
   import { requestPaint } from '../../core/overlay';
+  import { state as session } from '../../core/state.svelte';
   import InspectPanel from './InspectPanel.svelte';
   import PinnedInspector from './PinnedInspector.svelte';
   import { pins, pinUi, raisePin, removePin, signature, type Pin } from './pins.svelte';
@@ -57,7 +58,8 @@
 <svelte:window bind:scrollX={sx} bind:scrollY={sy} />
 
 {#if !pin}
-  {#each pins as p (p.id)}<PinnedInspector pin={p} />{/each}
+  <!-- legacy pauseExtension hides pins while paused; they keep their place for resume -->
+  {#if !session.paused}{#each pins as p (p.id)}<PinnedInspector pin={p} />{/each}{/if}
 {:else}
   <div
     bind:this={box}

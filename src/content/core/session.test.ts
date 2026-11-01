@@ -53,9 +53,9 @@ describe('session', () => {
 
   it('pressing a button in our UI does not move focus to it', async () => {
     await startSession(new ContentScriptContext('content'));
-    const b = document.querySelector('bo-doi-ui')!.shadowRoot!.appendChild(
-      document.createElement('button'),
-    );
+    const b = document
+      .querySelector('bo-doi-ui')!
+      .shadowRoot!.appendChild(document.createElement('button'));
     const e = new MouseEvent('mousedown', { bubbles: true, composed: true, cancelable: true });
     b.dispatchEvent(e);
     expect(e.defaultPrevented).toBe(true);

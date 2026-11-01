@@ -23,9 +23,15 @@ const isOwn = (n: Element) => n === host;
 // Untracked on purpose: every stack change goes through select(), which also sets
 // state.selected, so the dock's isDisabled re-runs anyway.
 let stack: Element[] = [];
+/**
+ * Floating panel stays hidden: pointer is over our UI (a pin, the dock), or a pin was just made.
+ * Cleared by the next page mousemove or select, so a repaint can't bring it back over a pin.
+ */
+let panelHidden = false;
 
 function select(el: Element | null, keepStack = false): void {
   if (!keepStack) stack = [];
+  panelHidden = false;
   state.selected = el;
   requestPaint();
 }
@@ -161,7 +167,7 @@ function placePanel(
   mouse: { x: number; y: number } | null,
 ): void {
   const t = panelTarget();
-  if (!t || !box.firstElementChild) {
+  if (!t || !box.firstElementChild || panelHidden || state.paused) {
     box.style.visibility = 'hidden';
     return;
   }
@@ -184,11 +190,12 @@ export async function initInspector(): Promise<void> {
   // ponytail: measure colour computed once per session; re-detect if pages that switch theme live matter
   const color = measureColor(detectPageIsDark(document));
   let mouse: { x: number; y: number } | null = null;
+  let panelBox: HTMLElement | null = null;
 
   // Panel (2.10–2.12): Svelte content, TS position; pointer-events on so Task 8 can pin it.
   const shadow = layer.getRootNode();
   if (shadow instanceof ShadowRoot) {
-    const box = document.createElement('div');
+    const box = (panelBox = document.createElement('div'));
     box.style.cssText = 'position:fixed;left:0;top:0;pointer-events:auto;visibility:hidden';
     const pinBox = document.createElement('div'); // below the live panel
     shadow.append(pinBox, box);
@@ -214,7 +221,8 @@ export async function initInspector(): Promise<void> {
         const r = box.getBoundingClientRect();
         addPin(t, { x: r.left, y: r.top }, { width: r.width, height: r.height });
         void pinHintDone.setValue(true); // 2.14 first pin ends the hint
-        box.style.visibility = 'hidden'; // until the next paint, like legacy
+        panelHidden = true; // until the pointer is back on the page (not legacy's next paint)
+        requestPaint();
         return true;
       }),
     );
@@ -233,7 +241,12 @@ export async function initInspector(): Promise<void> {
     'mousemove',
     (e) => {
       if (!live() || !host || pinUi.dragging) return; // spec §9: no hover-inspect while dragging
-      if (isOwnEvent(e, host)) return hover(null);
+      if (isOwnEvent(e, host)) {
+        // over a pin / the dock: hide the floating panel; over the panel itself keep it (Copy)
+        if (!panelBox || !e.composedPath().includes(panelBox)) panelHidden = true;
+        return hover(null);
+      }
+      panelHidden = false;
       mouse = { x: e.clientX, y: e.clientY };
       hitTest();
     },
@@ -302,6 +315,7 @@ export async function initInspector(): Promise<void> {
   onStop(() => {
     stack = [];
     host = null;
+    panelHidden = false;
   });
 
   addPainter('inspector', (box) => {

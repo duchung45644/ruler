@@ -32,3 +32,22 @@ it('key 3 toggles the grid without opening the popover', async () => {
   expect(state.grid.isOn).toBe(true);
   expect(state.popover).toBeNull();
 });
+
+it('paints N columns with padding and max-width', async () => {
+  const { layer } = await import('../../core/overlay');
+  layer.replaceChildren(); // boxes left by earlier tests' painters
+  document.body.append(layer);
+  await initGrid();
+  const grid = () => layer.querySelector<HTMLElement>('[style*="grid-template-columns"]')!;
+  const frame = () => new Promise((r) => requestAnimationFrame(() => r(null)));
+  await flush();
+  setGrid({ isOn: true, columns: 4, margin: 30, maxWidth: 'auto' });
+  await frame();
+  expect(grid().children).toHaveLength(4);
+  expect(grid().style.paddingInline || grid().style.paddingLeft).toBe('30px');
+  expect(grid().style.maxWidth).toBe('none');
+  setGrid({ maxWidth: 1200 });
+  await frame();
+  expect(grid().style.maxWidth).toBe('1200px');
+  layer.remove();
+});

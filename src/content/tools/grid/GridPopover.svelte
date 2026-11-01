@@ -20,6 +20,13 @@
     setGrid({ color: `#${hex}` });
   }
   const num = (e: Event) => Number((e.currentTarget as HTMLInputElement).value);
+  /** Clamp to [min,max]; an empty field keeps (and shows) the previous value. */
+  function clamped(e: Event, min: number, max: number, prev: number): number {
+    const el = e.currentTarget as HTMLInputElement;
+    const v = el.value === '' || isNaN(+el.value) ? prev : Math.min(max, Math.max(min, +el.value));
+    el.value = String(v);
+    return v;
+  }
 </script>
 
 <div class="flex w-[220px] flex-col gap-2 font-sans text-[12px]">
@@ -36,20 +43,20 @@
       <button
         type="button"
         aria-label={i18n.t('common.close')}
-        class="text-muted hover:text-fg"
+        class="text-fg-muted hover:text-fg"
         onclick={() => (app.popover = null)}><X size={14} /></button
       >
     </div>
   </div>
   <label class="flex items-center justify-between gap-2"
     >{i18n.t('grid.columns')}
-    <select value={g.columns} onchange={(e) => setGrid({ columns: num(e) })}>
+    <select class="field" value={g.columns} onchange={(e) => setGrid({ columns: num(e) })}>
       {#each COLUMNS as c (c)}<option value={c}>{c}</option>{/each}
     </select>
   </label>
   <label class="flex items-center justify-between gap-2"
     >{i18n.t('grid.maxWidth')}
-    <input type="text" class="w-[80px]" bind:value={maxWidth} onblur={blurMaxWidth} />
+    <input type="text" class="field w-[80px]" bind:value={maxWidth} onblur={blurMaxWidth} />
   </label>
   <label class="flex items-center justify-between gap-2"
     >{i18n.t('grid.gutter')}
@@ -57,9 +64,9 @@
       type="number"
       min="0"
       max="100"
-      class="w-[80px]"
+      class="field w-[80px]"
       value={g.gutter}
-      onchange={(e) => setGrid({ gutter: num(e) })}
+      onchange={(e) => setGrid({ gutter: clamped(e, 0, 100, g.gutter) })}
     />
   </label>
   <label class="flex items-center justify-between gap-2"
@@ -68,9 +75,9 @@
       type="number"
       min="0"
       max="350"
-      class="w-[80px]"
+      class="field w-[80px]"
       value={g.margin}
-      onchange={(e) => setGrid({ margin: num(e) })}
+      onchange={(e) => setGrid({ margin: clamped(e, 0, 350, g.margin) })}
     />
   </label>
   <label class="flex items-center justify-between gap-2"
@@ -80,7 +87,7 @@
       <input
         type="text"
         maxlength="6"
-        class="w-[64px]"
+        class="field w-[64px]"
         bind:value={hex}
         onchange={() => /^[0-9a-f]{6}$/i.test(hex) && setColor(hex)}
       />

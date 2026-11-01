@@ -1,0 +1,249 @@
+import SquareDashedMousePointer from '@lucide/svelte/icons/square-dashed-mouse-pointer';
+import ArrowUpToLine from '@lucide/svelte/icons/arrow-up-to-line';
+import ArrowDownToLine from '@lucide/svelte/icons/arrow-down-to-line';
+import { firstChildOf, isRendered, parentOf, siblingOf } from '../../../lib/dom';
+import { sizeLabels, type Rect } from '../../../lib/geometry';
+import { getSettings, updateSettings } from '../../../lib/settings';
+import { detectPageIsDark, measureColor } from '../../../lib/theme';
+import { isOwnEvent, pageElementAt } from '../../core/events';
+import { onKey } from '../../core/keys';
+import { addPainter, draw, drawNumber, layer, requestPaint } from '../../core/overlay';
+import { registerItem } from '../../core/registry.svelte';
+import { onStop, sessionSignal } from '../../core/session';
+import { state } from '../../core/state.svelte';
+import { initDistance } from '../distance';
+
+let host: Element | null = null;
+const isOwn = (n: Element) => n === host;
+/** Elements we came up from, so "child" walks back down the same branch (2.03, 2.04). */
+let stack: Element[] = [];
+
+function select(el: Element | null, keepStack = false): void {
+  if (!keepStack) stack = [];
+  state.selected = el;
+  requestPaint();
+}
+
+export function setInspect(on: boolean): void {
+  state.inspectOn = on;
+  if (!on) state.hovered = null;
+  void updateSettings({ inspectIsOn: on });
+  requestPaint();
+}
+
+/** Port of selectParent (legacy-src/content.js:46993). */
+export function selectParent(): void {
+  const cur = state.selected;
+  const p = cur && parentOf(cur);
+  if (!cur || !p) return;
+  stack.push(cur);
+  select(p, true);
+}
+
+/** Port of selectChild (legacy-src/content.js:47070). */
+export function selectChild(): void {
+  if (!state.selected) return;
+  const c = stack.pop() ?? firstChildOf(state.selected, isOwn);
+  if (c) select(c, true);
+}
+
+registerItem({
+  id: 'inspect',
+  icon: SquareDashedMousePointer,
+  label: 'dock.inspect',
+  key: '1',
+  group: 'inspectTools',
+  run: () => setInspect(!state.inspectOn),
+  isActive: () => state.inspectOn,
+});
+registerItem({
+  id: 'select_parent',
+  icon: ArrowUpToLine,
+  label: 'dock.selectParent',
+  group: 'selections',
+  run: selectParent,
+  isDisabled: () => !state.selected || !parentOf(state.selected),
+});
+registerItem({
+  id: 'select_child',
+  icon: ArrowDownToLine,
+  label: 'dock.selectChild',
+  group: 'selections',
+  run: selectChild,
+  isDisabled: () => !state.selected || (!stack.length && !firstChildOf(state.selected, isOwn)),
+});
+
+const px = (v: string) => parseFloat(v) || 0;
+
+/** Four rects forming a band inside `o` (margin / padding overlays). */
+function ring(
+  box: HTMLElement,
+  o: Rect,
+  t: number,
+  r: number,
+  b: number,
+  l: number,
+  bg: string,
+): void {
+  const part = (x: number, y: number, w: number, h: number) => {
+    if (w > 0 && h > 0)
+      draw(box, `left:${x}px;top:${y}px;width:${w}px;height:${h}px;background:${bg}`);
+  };
+  part(o.x, o.y, o.width, t);
+  part(o.x, o.y + o.height - b, o.width, b);
+  part(o.x, o.y + t, l, o.height - t - b);
+  part(o.x + o.width - r, o.y + t, r, o.height - t - b);
+}
+
+/** Frame + C-style size numbers (spec §7): solid 1.5px border, ~7% accent fill. */
+function frame(box: HTMLElement, r: Rect, color: string): void {
+  draw(
+    box,
+    `left:${r.x}px;top:${r.y}px;width:${r.width}px;height:${r.height}px;box-sizing:border-box;border:1.5px solid ${color};background:${color}12`,
+  );
+  const l = sizeLabels(r);
+  drawNumber(box, l.width.x, l.width.y, r.width, color, '-50%', '-100%');
+  drawNumber(box, l.height.x, l.height.y, r.height, color, '-100%', '-50%');
+}
+
+/** Hover: margin/padding bands + frame + `tag#id.class` (port of highlightElement :43810, getElementTagOverlay :44937). */
+function paintHover(box: HTMLElement, el: Element, color: string): void {
+  const r = el.getBoundingClientRect();
+  const s = getComputedStyle(el);
+  const [mt, mr, mb, ml] = [s.marginTop, s.marginRight, s.marginBottom, s.marginLeft].map(px) as [
+    number,
+    number,
+    number,
+    number,
+  ];
+  const outer = { x: r.x - ml, y: r.y - mt, width: r.width + ml + mr, height: r.height + mt + mb };
+  ring(box, outer, mt, mr, mb, ml, 'rgba(246,178,107,.3)');
+  const [bt, br, bb, bl] = [
+    s.borderTopWidth,
+    s.borderRightWidth,
+    s.borderBottomWidth,
+    s.borderLeftWidth,
+  ].map(px) as [number, number, number, number];
+  const inner = { x: r.x + bl, y: r.y + bt, width: r.width - bl - br, height: r.height - bt - bb };
+  ring(
+    box,
+    inner,
+    px(s.paddingTop),
+    px(s.paddingRight),
+    px(s.paddingBottom),
+    px(s.paddingLeft),
+    'rgba(147,196,125,.3)',
+  );
+  frame(box, r, color);
+  const tag =
+    el.tagName.toLowerCase() +
+    (el.id ? `#${el.id}` : '') +
+    [...el.classList].map((c) => `.${c}`).join('');
+  // below the element (the width number owns the top edge); flip above when there is no room
+  const below = r.bottom + 22 < innerHeight;
+  draw(
+    box,
+    `left:${Math.max(4, Math.min(r.x, innerWidth - 304))}px;top:${below ? r.bottom + 4 : r.y - 22}px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:2px 6px;border-radius:6px;background:rgba(24,24,27,.9);color:#e4e4e7;font:500 11px/14px 'Bo doi Geist',ui-sans-serif,system-ui,sans-serif`,
+    tag,
+  );
+}
+
+/** Wire listeners/painters for one session (called from startSession after mountLayer). */
+export async function initInspector(): Promise<void> {
+  const signal = sessionSignal();
+  host = (layer.getRootNode() as ShadowRoot).host ?? null;
+  const color = measureColor(detectPageIsDark(document));
+  let mouse: { x: number; y: number } | null = null;
+
+  const hover = (el: Element | null) => {
+    state.hovered = el;
+    requestPaint();
+  };
+  const hitTest = () => hover(mouse && host ? pageElementAt(mouse.x, mouse.y, host) : null);
+  const live = () => state.inspectOn && !state.paused;
+  const opts = { signal, capture: true };
+
+  // 2.06 hover
+  document.addEventListener(
+    'mousemove',
+    (e) => {
+      if (!live() || !host) return;
+      if (isOwnEvent(e, host)) return hover(null);
+      mouse = { x: e.clientX, y: e.clientY };
+      hitTest();
+    },
+    opts,
+  );
+  // 2.07 click to select / deselect
+  document.addEventListener(
+    'click',
+    (e) => {
+      if (!live() || !host || isOwnEvent(e, host)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const el = pageElementAt(e.clientX, e.clientY, host);
+      if (el) select(el === state.selected ? null : el);
+    },
+    opts,
+  );
+  // 2.09 scroll re-measures; re-hover only while inspecting
+  const refresh = () => (live() ? hitTest() : requestPaint());
+  window.addEventListener('scroll', refresh, opts);
+  // 1.24 arrow keys scroll like the wheel; any key (e.g. Esc) may change the selection
+  window.addEventListener('keydown', () => requestPaint(), opts);
+  window.addEventListener(
+    'keyup',
+    (e) => {
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') refresh();
+    },
+    opts,
+  );
+  // 2.09 blur / mouseleave clear hover
+  window.addEventListener('blur', () => hover(null), opts);
+  document.documentElement.addEventListener(
+    'mouseleave',
+    (e) => {
+      if (e.relatedTarget && (e.relatedTarget as Node).nodeName !== 'HTML') return;
+      mouse = null;
+      hover(null);
+    },
+    opts,
+  );
+
+  // 2.05 Alt+Shift+Left/Right: previous / next sibling
+  const sibling = (dir: -1 | 1) => (e: KeyboardEvent) => {
+    if (!state.selected || e.ctrlKey || e.metaKey) return false;
+    const n = siblingOf(state.selected, dir, isOwn);
+    if (n) select(n);
+    return true;
+  };
+  onStop(onKey('Alt+Shift+ArrowLeft', sibling(-1)));
+  onStop(onKey('Alt+Shift+ArrowRight', sibling(1)));
+  onStop(() => {
+    stack = [];
+    host = null;
+  });
+
+  addPainter('inspector', (box) => {
+    const sel = state.selected;
+    if (sel && !isRendered(sel)) {
+      state.selected = null; // 2.15 drop a selection that stopped rendering
+    } else if (sel) {
+      const r = sel.getBoundingClientRect();
+      // solid alignment guides (spec §7: no dashes), port of drawAlignmentLines :45110
+      const line = (css: string) => draw(box, `${css};background:${color};opacity:.5`);
+      line(`left:0;right:0;top:${r.top}px;height:1px`);
+      line(`left:0;right:0;top:${r.bottom - 1}px;height:1px`);
+      line(`top:0;bottom:0;left:${r.left}px;width:1px`);
+      line(`top:0;bottom:0;left:${r.right - 1}px;width:1px`);
+      frame(box, r, color);
+    }
+    const h = state.hovered;
+    if (h && h !== state.selected && h.isConnected && state.inspectOn) paintHover(box, h, color);
+  });
+  initDistance(color);
+
+  // 2.02, 1.26 restore the saved toggle
+  const { inspectIsOn } = await getSettings();
+  if (!signal.aborted) state.inspectOn = inspectIsOn;
+}

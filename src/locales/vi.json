@@ -9,6 +9,9 @@
     "resume": "Tiếp tục",
     "quit": "Thoát",
     "hide": "Ẩn dock",
-    "show": "Hiện dock"
+    "show": "Hiện dock",
+    "inspect": "Trình kiểm tra",
+    "selectParent": "Chọn Phần tử Cha",
+    "selectChild": "Chọn Phần tử Con"
   }
 }

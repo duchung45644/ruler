@@ -36,3 +36,29 @@ export function mountLayer(shadow: ShadowRoot): () => void {
     layer.remove();
   };
 }
+
+/** Append an absolutely positioned div (shared by inspector/distance painters). */
+export function draw(parent: HTMLElement, css: string, text?: string): HTMLElement {
+  const d = document.createElement('div');
+  d.style.cssText = `position:absolute;${css}`;
+  if (text !== undefined) d.textContent = text;
+  parent.append(d);
+  return d;
+}
+
+/** C-style number (spec §7): mono ~10px bold, no background; `tx`/`ty` = translate anchor. */
+export function drawNumber(
+  parent: HTMLElement,
+  x: number,
+  y: number,
+  value: number,
+  color: string,
+  tx: string,
+  ty: string,
+): void {
+  draw(
+    parent,
+    `left:${x}px;top:${y}px;transform:translate(${tx},${ty});font:700 10px/1 'Bo doi Geist Mono',ui-monospace,monospace;color:${color};white-space:nowrap`,
+    String(Math.round(value)),
+  );
+}

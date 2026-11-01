@@ -1,6 +1,7 @@
 import { defineContentScript } from '#imports';
 import { startSession, stopSession } from '../../content/core/session';
 import { state } from '../../content/core/state.svelte';
+import { initInspector, selectChild, selectParent } from '../../content/tools/inspector';
 import { handleMessages } from '../../lib/messaging';
 import { loadFonts } from '../../ui/fonts';
 import './style.css';
@@ -22,15 +23,21 @@ export default defineContentScript({
       stopSession();
       delete window.__BO_DOI__;
     });
+    const start = async () => {
+      await startSession(ctx);
+      if (state.active) await initInspector();
+    };
     loadFonts();
     handleMessages('content', {
       ping: () => ({ active: state.active }),
+      select_parent: selectParent,
+      select_child: selectChild,
       toggle_script: async () => {
         if (state.active) stopSession();
-        else await startSession(ctx);
+        else await start();
         return { active: state.active };
       },
     });
-    await startSession(ctx);
+    await start();
   },
 });

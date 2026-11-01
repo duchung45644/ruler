@@ -8,8 +8,10 @@ import { state } from '../../core/state.svelte';
 declare const EyeDropper: { new (): { open(): Promise<{ sRGBHex: string }> } };
 
 /** 3.07, port of activateEyedropper (legacy-src/content.js:34586). */
+let busy = false;
+
 async function pick(): Promise<void> {
-  if (!('EyeDropper' in window)) return;
+  if (busy || !('EyeDropper' in window)) return;
   const host = (layer.getRootNode() as ShadowRoot).host as HTMLElement | undefined;
   if (!host) return;
   host.dataset.hidden = ''; // theme.css :host([data-hidden]) — inline styles lose to WXT's reset
@@ -26,6 +28,7 @@ async function pick(): Promise<void> {
     document.addEventListener('pointerdown', reveal, { capture: true, signal: ac.signal });
     document.addEventListener('keydown', reveal, { capture: true, signal: ac.signal });
   }, 300);
+  busy = true;
   try {
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
     const { sRGBHex } = await new EyeDropper().open();
@@ -36,14 +39,18 @@ async function pick(): Promise<void> {
     if (await copyText(hex)) state.dockNotice = { id: 'eyedropper', color: hex, text: hex };
   } catch {
     reveal(); // Esc cancels with AbortError
+  } finally {
+    busy = false;
   }
 }
 
-registerItem({
-  id: 'eyedropper',
-  icon: Pipette,
-  label: 'dock.eyedropper',
-  key: '6',
-  group: 'utilities',
-  run: () => void pick(),
-});
+export function initEyedropper(): void {
+  registerItem({
+    id: 'eyedropper',
+    icon: Pipette,
+    label: 'dock.eyedropper',
+    key: '6',
+    group: 'utilities',
+    run: () => void pick(),
+  });
+}

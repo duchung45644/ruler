@@ -27,20 +27,19 @@ function apply(on: boolean): void {
   for (const r of shadowRoots(document, isOwn)) addSheet(r, xraySheet(':host', xrayDepth(r.host)));
 }
 
-registerItem({
-  id: 'xray',
-  icon: ScanEye,
-  label: 'dock.xray',
-  key: '2',
-  group: 'inspectTools',
-  run: () => {
-    apply(!state.xrayOn);
-    void updateSettings({ xrayModeIsOn: state.xrayOn });
-  },
-  isActive: () => state.xrayOn,
-});
-
 export async function initXray(): Promise<void> {
+  registerItem({
+    id: 'xray',
+    icon: ScanEye,
+    label: 'dock.xray',
+    key: '2',
+    group: 'inspectTools',
+    run: () => {
+      apply(!state.xrayOn);
+      void updateSettings({ xrayModeIsOn: state.xrayOn });
+    },
+    isActive: () => state.xrayOn,
+  });
   const signal = sessionSignal();
   onStop(() => apply(false)); // not persisted: next session restores it (1.43)
   const { xrayModeIsOn } = await getSettings();

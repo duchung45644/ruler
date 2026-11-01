@@ -1,22 +1,21 @@
 export type Breakpoint = { width: number; kind: 'min' | 'max' | 'both' };
 
-/**
- * Port of getPageBreakpoints (legacy-src/content.js:48891). Deviation: values are grouped per kind
- * before rounding, so 768 min + 767.98 max stay two lines (legacy merged them into one `both`).
- */
+/** Port of getPageBreakpoints (legacy-src/content.js:48891): grouped by Math.round across kinds. */
 export function parseBreakpoints(conditions: string[]): Breakpoint[] {
-  const raw = new Map<string, number>(); // `${kind}:${round}` → min rawMin / max rawMax
+  const groups = new Map<number, { min: number; max: number }>(); // rawMin / rawMax per rounded width
   for (const c of conditions)
     for (const [, kind, num, unit] of c.matchAll(/(min|max)-width:\s*([\d.]+)(px|em|rem)/g)) {
       const v = parseFloat(num!) * (unit === 'px' ? 1 : 16);
-      const k = `${kind}:${Math.round(v)}`;
-      const prev = raw.get(k);
-      raw.set(k, prev === undefined ? v : kind === 'min' ? Math.min(prev, v) : Math.max(prev, v));
+      let g = groups.get(Math.round(v));
+      if (!g) groups.set(Math.round(v), (g = { min: Infinity, max: -Infinity }));
+      if (kind === 'min') g.min = Math.min(g.min, v);
+      else g.max = Math.max(g.max, v);
     }
   const out = new Map<number, Breakpoint['kind']>();
-  for (const [k, v] of raw) {
-    const kind = k.startsWith('min') ? 'min' : 'max';
-    const w = kind === 'min' ? Math.ceil(v) : Math.floor(v);
+  for (const g of groups.values()) {
+    const hasMin = g.min !== Infinity;
+    const w = hasMin ? Math.ceil(g.min) : Math.floor(g.max);
+    const kind = hasMin ? (g.max !== -Infinity ? 'both' : 'min') : 'max';
     const prev = out.get(w);
     out.set(w, prev && prev !== kind ? 'both' : kind);
   }

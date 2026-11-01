@@ -5,9 +5,10 @@ describe('breakpoints', () => {
   it('merges, rounds and sorts', () => {
     expect(
       parseBreakpoints(['(min-width: 768px)', '(max-width: 767.98px)', '(min-width: 48em)']),
-    ).toEqual([
+    ).toEqual([{ width: 768, kind: 'both' }]);
+    expect(parseBreakpoints(['(max-width: 767.98px)', '(min-width: 1024px)'])).toEqual([
       { width: 767, kind: 'max' },
-      { width: 768, kind: 'min' },
+      { width: 1024, kind: 'min' },
     ]);
     expect(parseBreakpoints(['(min-width: 600px) and (max-width: 600px)'])).toEqual([
       { width: 600, kind: 'both' },

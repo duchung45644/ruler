@@ -4,7 +4,7 @@
   import DockButton from './DockButton.svelte';
   import Popover from './Popover.svelte';
 
-  let dock: HTMLElement;
+  let dock: HTMLElement = $state()!;
   const open = $derived(items.find((i) => i.id === app.popover && i.popover));
   const groups = $derived(
     DOCK_GROUPS.map((g) =>

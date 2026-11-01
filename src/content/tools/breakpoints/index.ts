@@ -23,20 +23,19 @@ function apply(on: boolean): void {
   requestPaint();
 }
 
-registerItem({
-  id: 'breakpoints',
-  icon: RulerDimensionLine,
-  label: 'dock.breakpoints',
-  key: '5',
-  group: 'inspectTools',
-  run: () => {
-    apply(!state.breakpointsOn);
-    void updateSettings({ breakpointsIsOn: state.breakpointsOn });
-  },
-  isActive: () => state.breakpointsOn,
-});
-
 export async function initBreakpoints(): Promise<void> {
+  registerItem({
+    id: 'breakpoints',
+    icon: RulerDimensionLine,
+    label: 'dock.breakpoints',
+    key: '5',
+    group: 'inspectTools',
+    run: () => {
+      apply(!state.breakpointsOn);
+      void updateSettings({ breakpointsIsOn: state.breakpointsOn });
+    },
+    isActive: () => state.breakpointsOn,
+  });
   const signal = sessionSignal();
   window.addEventListener('scroll', requestPaint, { signal, passive: true });
   onStop(() => apply(false));

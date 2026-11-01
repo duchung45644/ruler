@@ -33,7 +33,11 @@ export default defineConfig({
     optional_permissions: ['downloads', 'clipboardWrite'],
     optional_host_permissions: ['<all_urls>'],
     web_accessible_resources: [
-      { resources: ['content-scripts/content.css'], matches: ['<all_urls>'] },
+      {
+        resources: ['content-scripts/content.css'],
+        matches: ['<all_urls>'],
+        use_dynamic_url: true,
+      },
     ],
     commands: {
       _execute_action: { suggested_key: { default: 'Alt+Shift+S', mac: 'Alt+Shift+S' } },

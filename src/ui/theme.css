@@ -1,0 +1,22 @@
+/* Spec §7 tokens. No @font-face here: fonts load via FontFace in fonts.ts. */
+@theme {
+  --color-surface: rgba(24, 24, 27, 0.9);
+  --color-line: rgba(255, 255, 255, 0.1);
+  --color-line-strong: rgba(255, 255, 255, 0.14);
+  --color-fg: var(--color-zinc-200);
+  --color-fg-muted: var(--color-zinc-400);
+  --color-accent: #6366f1;
+  --radius-panel: 13px;
+  --radius-btn: 8px;
+  --blur-surface: 8px;
+  --font-sans: 'Bo doi Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Bo doi Geist Mono', ui-monospace, monospace;
+}
+
+:host([data-theme='light']) {
+  --color-surface: #fff;
+  --color-line: var(--color-zinc-200);
+  --color-line-strong: var(--color-zinc-300);
+  --color-fg: var(--color-zinc-800);
+  --color-fg-muted: var(--color-zinc-500);
+}

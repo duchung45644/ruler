@@ -1,25 +1,31 @@
-import { mount, unmount } from 'svelte';
-import { createShadowRootUi, defineContentScript } from '#imports';
-import Smoke from './Smoke.svelte';
+import { defineContentScript } from '#imports';
+import { startSession, stopSession } from '../../content/core/session';
+import { state } from '../../content/core/state.svelte';
+import { handleMessages } from '../../lib/messaging';
+import { loadFonts } from '../../ui/fonts';
 import './style.css';
 
-// ponytail: UI thử của Đợt 0 — Đợt 1 thay bằng dock + vòng đời thật
+declare global {
+  interface Window {
+    __BO_DOI__?: boolean;
+  }
+}
+
 export default defineContentScript({
   registration: 'runtime',
   cssInjectionMode: 'ui',
   async main(ctx) {
-    const existing = document.querySelector('bo-doi-ui');
-    if (existing) {
-      existing.remove();
-      return;
-    }
-    const ui = await createShadowRootUi(ctx, {
-      name: 'bo-doi-ui',
-      position: 'inline',
-      anchor: 'body',
-      onMount: (container) => mount(Smoke, { target: container }),
-      onRemove: (app) => app && unmount(app),
+    if (window.__BO_DOI__) return; // 9.20: injected twice; background talks to the first via toggle_script
+    window.__BO_DOI__ = true;
+    loadFonts();
+    handleMessages('content', {
+      ping: () => ({ active: state.active }),
+      toggle_script: async () => {
+        if (state.active) stopSession();
+        else await startSession(ctx);
+        return { active: state.active };
+      },
     });
-    ui.mount();
+    await startSession(ctx);
   },
 });

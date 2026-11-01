@@ -1,8 +1,11 @@
+import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'wxt';
+import { shadowDomCss } from './build/shadow-dom-css';
 
 export default defineConfig({
   srcDir: 'src',
-  modules: ['@wxt-dev/i18n/module'],
+  modules: ['@wxt-dev/module-svelte', '@wxt-dev/i18n/module'],
+  vite: () => ({ plugins: [tailwindcss()], css: { postcss: { plugins: [shadowDomCss()] } } }),
   webExt: { disabled: true }, // không tự mở Chrome; load .output/chrome-mv3-dev vào Edge một lần, WXT tự reload
   manifest: {
     name: '__MSG_extName__',
@@ -29,6 +32,9 @@ export default defineConfig({
     ],
     optional_permissions: ['downloads', 'clipboardWrite'],
     optional_host_permissions: ['<all_urls>'],
+    web_accessible_resources: [
+      { resources: ['content-scripts/content.css'], matches: ['<all_urls>'] },
+    ],
     commands: {
       _execute_action: { suggested_key: { default: 'Alt+Shift+S', mac: 'Alt+Shift+S' } },
       select_parent: {

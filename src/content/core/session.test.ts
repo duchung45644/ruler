@@ -1,10 +1,14 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ContentScriptContext } from 'wxt/utils/content-script-context';
+import { fakeBrowser } from 'wxt/testing/fake-browser';
 
 import { themePref } from '../../lib/settings';
 import { onStop, sessionSignal, startSession, stopSession } from './session';
 
 const count = () => document.querySelectorAll('bo-doi-ui').length;
+
+// fakeBrowser has no i18n.getMessage; the dock renders labels
+fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
 
 describe('session', () => {
   afterEach(() => stopSession());

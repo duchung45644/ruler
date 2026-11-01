@@ -3,7 +3,9 @@ import Dock from '../../ui/Dock.svelte';
 import { mountUi } from '../../ui/mount';
 import { themePref } from '../../lib/settings';
 import { detectPageIsDark, resolveTheme, type ThemePref } from '../../lib/theme';
+import { routeKey } from './keys';
 import { mountLayer } from './overlay';
+import { setPaused } from './registry.svelte';
 import { state } from './state.svelte';
 
 let controller: AbortController | null = null;
@@ -25,6 +27,7 @@ export async function startSession(ctx: ContentScriptContext): Promise<void> {
   if (signal.aborted) return ui.remove(); // stopped while mounting
   onStop(ui.remove);
   onStop(mountLayer(ui.shadow));
+  window.addEventListener('keydown', routeKey, { signal });
 
   const applyTheme = (pref: ThemePref) => {
     const prefersDark = matchMedia('(prefers-color-scheme: dark)').matches;
@@ -43,5 +46,12 @@ export function stopSession(): void {
   const fns = cleanups;
   cleanups = [];
   for (const fn of fns) fn();
-  Object.assign(state, { active: false, hovered: null, selected: null, inspectOn: false });
+  setPaused(false);
+  Object.assign(state, {
+    active: false,
+    hovered: null,
+    selected: null,
+    inspectOn: false,
+    dockCollapsed: false,
+  });
 }

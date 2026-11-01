@@ -35,10 +35,9 @@ describe('toggleTab', () => {
 describe('tabs.onUpdated', () => {
   it('resets icon on loading', async () => {
     const { icon } = stubs();
-    for (const ev of [fakeBrowser.contextMenus.onClicked, fakeBrowser.commands.onCommand] as {
-      addListener: () => void;
-    }[])
-      vi.spyOn(ev, 'addListener').mockImplementation(() => {}); // not implemented in fake
+    // not implemented in fake
+    vi.spyOn(fakeBrowser.contextMenus.onClicked, 'addListener').mockImplementation(() => {});
+    vi.spyOn(fakeBrowser.commands.onCommand, 'addListener').mockImplementation(() => {});
     background.main();
     await fakeBrowser.tabs.onUpdated.trigger(3, { status: 'loading' }, {} as never);
     expect(icon).toHaveBeenCalledWith({ tabId: 3, path: 'images/icon32.png' });

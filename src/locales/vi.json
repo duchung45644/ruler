@@ -18,7 +18,8 @@
     "breakpoints": "Breakpoints",
     "eyedropper": "Chọn Màu",
     "grid": "Lưới Bố cục",
-    "measure": "Kéo vùng để đo"
+    "measure": "Kéo vùng để đo",
+    "overlay": "Đè ảnh thiết kế"
   },
   "inspect": {
     "layout": "Box Model",
@@ -54,5 +55,21 @@
     "edgeGuidesTitle": "Kéo dài các cạnh khung ra toàn trang",
     "clear": "Xoá khung",
     "hint": "Kéo chuột để vẽ. Mũi tên dịch 1px (Shift: 10px), Ctrl+mũi tên nới rộng, Ctrl+Alt+mũi tên thu hẹp. Trong ô số, Shift+↑/↓ tăng giảm 10. Esc để xoá."
+  },
+  "overlay": {
+    "image": "Ảnh $1",
+    "drop": "Thả, dán (Ctrl+V) hoặc bấm để chọn ảnh thiết kế",
+    "addAnother": "Thêm ảnh khác…",
+    "opacity": "Độ mờ",
+    "blend": "Chế độ",
+    "normal": "Bình thường",
+    "difference": "Difference",
+    "scale": "Tỉ lệ %",
+    "visible": "Đang hiện",
+    "hidden": "Đang ẩn",
+    "pin": "Ghim theo màn hình",
+    "pinTitle": "Ảnh đứng yên khi cuộn trang",
+    "remove": "Xoá ảnh",
+    "hint": "Bấm vào ảnh (hoặc ảnh nhỏ ở trên) để chọn. Kéo giữa ảnh để di chuyển, kéo góc để co giãn. Phím mũi tên dịch ảnh đang chọn 1px (giữ Shift: 10px)."
   }
 }

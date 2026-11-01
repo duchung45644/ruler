@@ -93,3 +93,11 @@ it('registers measure in designTools on M', async () => {
   const m = items.find((i) => i.id === 'measure')!;
   expect([m.group, m.key, m.label]).toEqual(['designTools', 'm', 'dock.measure']);
 });
+
+it('registers overlay in designTools on O, before measure (its arrow keys win)', async () => {
+  await initTools();
+  const ids = items.filter((i) => i.group === 'designTools').map((i) => i.id);
+  expect(ids).toEqual(['overlay', 'measure']);
+  const o = items.find((i) => i.id === 'overlay')!;
+  expect([o.key, o.label]).toEqual(['o', 'dock.overlay']);
+});

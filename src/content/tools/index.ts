@@ -2,6 +2,7 @@ import { initBreakpoints } from './breakpoints';
 import { initEyedropper } from './eyedropper';
 import { initGrid } from './grid';
 import { initMeasure } from './measure';
+import { initOverlay } from './overlay';
 import { initRuler } from './ruler';
 import { initXray } from './xray';
 
@@ -17,6 +18,7 @@ export async function initTools(): Promise<void> {
   await initRuler();
   await initBreakpoints();
   initEyedropper();
-  await initMeasure(); // designTools: overlay images (Task 8) goes before it
-  // initOverlayImages, initFind, initAudit: later tasks
+  initOverlay(); // designTools: before measure so its arrow keys win (legacy load order)
+  await initMeasure();
+  // initFind, initAudit: later tasks
 }

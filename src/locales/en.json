@@ -18,7 +18,8 @@
     "breakpoints": "Breakpoints",
     "eyedropper": "Color Picker",
     "grid": "Layout Grid",
-    "measure": "Measure area (drag)"
+    "measure": "Measure area (drag)",
+    "overlay": "Design overlay"
   },
   "inspect": {
     "layout": "Box Model",
@@ -54,5 +55,21 @@
     "edgeGuidesTitle": "Extend the box edges across the page",
     "clear": "Clear",
     "hint": "Drag to draw. Arrows move 1px (Shift: 10px), Ctrl+arrows expand, Ctrl+Alt+arrows shrink. Shift+↑/↓ in a field steps 10. Esc clears."
+  },
+  "overlay": {
+    "image": "Image $1",
+    "drop": "Drop, paste or click to choose design images",
+    "addAnother": "Add another image…",
+    "opacity": "Opacity",
+    "blend": "Blend",
+    "normal": "Normal",
+    "difference": "Difference",
+    "scale": "Scale %",
+    "visible": "Visible",
+    "hidden": "Hidden",
+    "pin": "Pin to screen",
+    "pinTitle": "Keep the image fixed while scrolling",
+    "remove": "Remove",
+    "hint": "Click an image (or its thumbnail) to select it. Drag the middle to move, a corner to resize. Arrow keys nudge the selected image 1px (Shift: 10px)."
   }
 }

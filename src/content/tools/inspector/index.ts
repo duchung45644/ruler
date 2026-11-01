@@ -2,7 +2,8 @@ import SquareDashedMousePointer from '@lucide/svelte/icons/square-dashed-mouse-p
 import ArrowUpToLine from '@lucide/svelte/icons/arrow-up-to-line';
 import ArrowDownToLine from '@lucide/svelte/icons/arrow-down-to-line';
 import { firstChildOf, isRendered, parentOf, siblingOf } from '../../../lib/dom';
-import { sizeLabels, type Rect } from '../../../lib/geometry';
+import { mount, unmount } from 'svelte';
+import { placeNear, sizeLabels, type Rect } from '../../../lib/geometry';
 import { getSettings, updateSettings } from '../../../lib/settings';
 import { detectPageIsDark, measureColor } from '../../../lib/theme';
 import { isOwnEvent, pageElementAt } from '../../core/events';
@@ -10,7 +11,8 @@ import { onKey } from '../../core/keys';
 import { addPainter, draw, drawNumber, layer, requestPaint } from '../../core/overlay';
 import { registerItem } from '../../core/registry.svelte';
 import { onStop, sessionSignal } from '../../core/session';
-import { state } from '../../core/state.svelte';
+import { panelTarget, state } from '../../core/state.svelte';
+import InspectPanel from './InspectPanel.svelte';
 import { initDistance } from '../distance';
 
 let host: Element | null = null;
@@ -150,6 +152,29 @@ function paintHover(box: HTMLElement, el: Element, color: string): void {
   );
 }
 
+/** Place the panel near the mouse (hover) or the selection, above the dock (port of positionInspectPanel :47784). */
+function placePanel(
+  box: HTMLElement,
+  shadow: ShadowRoot,
+  mouse: { x: number; y: number } | null,
+): void {
+  const t = panelTarget();
+  if (!t || !box.firstElementChild) {
+    box.style.visibility = 'hidden';
+    return;
+  }
+  const dock = shadow.querySelector('[data-dock]')?.getBoundingClientRect();
+  const avoid = dock && dock.height > 0 ? [dock] : [];
+  // shrink rather than overlap the dock; legacy floor 80px
+  box.style.maxHeight = `${Math.max(80, (avoid[0]?.top ?? innerHeight) - 32)}px`;
+  const r = t.getBoundingClientRect();
+  const p = t === state.hovered && mouse ? mouse : { x: r.right, y: r.top };
+  const size = { width: box.offsetWidth, height: box.offsetHeight };
+  const { x, y } = placeNear(p, size, { width: innerWidth, height: innerHeight }, avoid);
+  box.style.transform = `translate(${x}px,${y}px)`;
+  box.style.visibility = '';
+}
+
 /** Wire listeners/painters for one session (called from startSession after mountLayer). */
 export async function initInspector(): Promise<void> {
   const signal = sessionSignal();
@@ -157,6 +182,23 @@ export async function initInspector(): Promise<void> {
   // ponytail: measure colour computed once per session; re-detect if pages that switch theme live matter
   const color = measureColor(detectPageIsDark(document));
   let mouse: { x: number; y: number } | null = null;
+
+  // Panel (2.10–2.12): Svelte content, TS position; pointer-events on so Task 8 can pin it.
+  const shadow = layer.getRootNode();
+  if (shadow instanceof ShadowRoot) {
+    const box = document.createElement('div');
+    box.style.cssText = 'position:fixed;left:0;top:0;pointer-events:auto;visibility:hidden';
+    shadow.append(box);
+    const app = mount(InspectPanel, { target: box });
+    const ro = new ResizeObserver(() => requestPaint()); // async content (image size) changes height
+    ro.observe(box);
+    onStop(() => {
+      ro.disconnect();
+      void unmount(app);
+      box.remove();
+    });
+    addPainter('inspect-panel', () => placePanel(box, shadow, mouse));
+  }
 
   const hover = (el: Element | null) => {
     state.hovered = el;

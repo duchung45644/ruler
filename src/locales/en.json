@@ -13,5 +13,14 @@
     "inspect": "Inspector",
     "selectParent": "Select Parent",
     "selectChild": "Select Child"
+  },
+  "inspect": {
+    "layout": "Box Model",
+    "appearance": "Appearance",
+    "text": "Text",
+    "accessibility": "Accessibility",
+    "image": "Image",
+    "copyCss": "Copy CSS",
+    "copied": "Copied!"
   }
 }

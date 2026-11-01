@@ -13,5 +13,14 @@
     "inspect": "Trình kiểm tra",
     "selectParent": "Chọn Phần tử Cha",
     "selectChild": "Chọn Phần tử Con"
+  },
+  "inspect": {
+    "layout": "Box Model",
+    "appearance": "Giao diện",
+    "text": "Văn bản",
+    "accessibility": "Trợ năng",
+    "image": "Hình ảnh",
+    "copyCss": "Copy CSS",
+    "copied": "Đã copy!"
   }
 }

@@ -7,3 +7,7 @@ export const state = $state({
   selected: null as Element | null,
   theme: 'dark' as 'light' | 'dark',
 });
+
+/** Element the inspector panel describes: live hover wins, else the selection. */
+export const panelTarget = (): Element | null =>
+  (state.inspectOn && !state.paused && state.hovered) || state.selected;

@@ -29,6 +29,7 @@
 <svelte:window onresize={onResize} />
 
 <div
+  data-dock
   class="fixed bottom-[10px] left-1/2 flex -translate-x-1/2 items-center gap-[2px] rounded-panel border border-line bg-surface p-1 font-sans text-fg shadow-[0_10px_28px_rgba(0,0,0,.35)] backdrop-blur-surface"
   class:transition-all={!resizing}
 >

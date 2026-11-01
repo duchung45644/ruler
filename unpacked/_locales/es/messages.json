@@ -1,0 +1,1326 @@
+{
+  "ALERT_COULDNT_COMMUNICATE_WITH_TAB": {
+    "message": "No se pudo comunicar con la pestaña. Asegúrate de que Bo doi esté activo en la pestaña actual."
+  },
+  "ALERT_ISSUE_ELEMENT_NOT_FOUND": {
+    "message": "No se puede localizar el elemento del problema. Puede haber sido eliminado o la página puede haber cambiado."
+  },
+  "ALERT_NO_SELECTED_ELEMENT": {
+    "message": "No se pudo encontrar el elemento de destino."
+  },
+  "ASSETS_FAILED_PLURAL": {
+    "message": "recursos no se pudieron cargar"
+  },
+  "ASSETS_FAILED_SINGULAR": {
+    "message": "recurso no se pudo cargar"
+  },
+  "BODY_REMOVE_VIEWPORT": {
+    "message": "Se quitará $LABEL$.",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "BODY_RESET_VIEWPORTS": {
+    "message": "Tus ventanas gráficas se restablecerán a los valores predeterminados."
+  },
+  "BUTTON_ADD": {
+    "message": "Añadir"
+  },
+  "BUTTON_CHANGE": {
+    "message": "Cambiar"
+  },
+  "BUTTON_CLEAR_CHANGES": {
+    "message": "Borrar Todos los Cambios"
+  },
+  "BUTTON_COPIED": {
+    "message": "Copiado"
+  },
+  "BUTTON_DOWNLOAD": {
+    "message": "Descargar"
+  },
+  "BUTTON_DOWNLOAD_ALL": {
+    "message": "Descargar Todo"
+  },
+  "BUTTON_REMOVE": {
+    "message": "Quitar"
+  },
+  "BUTTON_RESET": {
+    "message": "Restablecer"
+  },
+  "CHECKLIST_FEATURE_1": {
+    "message": "Inspeccionar propiedades al pasar el cursor"
+  },
+  "CHECKLIST_FEATURE_2": {
+    "message": "Modelo de caja con márgenes, bordes, padding"
+  },
+  "CHECKLIST_FEATURE_3": {
+    "message": "Descargar imágenes y assets SVG"
+  },
+  "CHECKLIST_FEATURE_4": {
+    "message": "Extraer colores como valores HEX, RGBA, HSL"
+  },
+  "CHECKLIST_FEATURE_5": {
+    "message": "Superponer rejilla de diseño en página"
+  },
+  "CHECKLIST_FEATURE_6": {
+    "message": "Capturar elementos con medidas"
+  },
+  "CHECKLIST_FEATURE_7": {
+    "message": "Encontrar elementos por selector CSS"
+  },
+  "CHECKLIST_FEATURE_8": {
+    "message": "Inspector de animaciones con curvas easing"
+  },
+  "CHIP_AUDIT": {
+    "message": "Auditar"
+  },
+  "CHIP_EDIT": {
+    "message": "Editar"
+  },
+  "CHIP_EXTRACT": {
+    "message": "Extraer"
+  },
+  "CHIP_INSPECT": {
+    "message": "Inspeccionar"
+  },
+  "CHIP_MEASURE": {
+    "message": "Medir"
+  },
+  "CHIP_TEST": {
+    "message": "Probar"
+  },
+  "CHIP_VISUALIZE": {
+    "message": "Visualizar"
+  },
+  "COMPARISON_COLUMN_FEATURE": {
+    "message": "Función"
+  },
+  "COMPARISON_TITLE": {
+    "message": "Todo en "
+  },
+  "CONFIRM_CLEAR_ALL_CHANGES": {
+    "message": "¿Seguro que quieres borrar todos los cambios de esta página?"
+  },
+  "CONFIRM_CLEAR_ELEMENT": {
+    "message": "¿Seguro que quieres borrar los cambios de este elemento?"
+  },
+  "CONFIRM_CLEAR_ELEMENTS": {
+    "message": "¿Seguro que quieres borrar los cambios de $1 elementos?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "CONFIRM_PARTIAL_EDITS_FOR_RESPONSIVE": {
+    "message": "Se conservarán tus cambios en reglas CSS. Se descartarán los estilos en línea y las ediciones de marcado y clases."
+  },
+  "CSS_SELECTOR": {
+    "message": "Selector CSS"
+  },
+  "DEFAULT_ASSET_NAME": {
+    "message": "recurso"
+  },
+  "DEFAULT_DOWNLOAD_NAME": {
+    "message": "archivo_descargado"
+  },
+  "DEFAULT_SVG_FILENAME": {
+    "message": "recurso.svg"
+  },
+  "DIALOG_CANCEL_BUTTON": {
+    "message": "Cancelar"
+  },
+  "DIALOG_CLOSE_BUTTON": {
+    "message": "Cerrar"
+  },
+  "DIALOG_CONFIRM": {
+    "message": "Confirmar"
+  },
+  "DIALOG_OK": {
+    "message": "Aceptar"
+  },
+  "DIALOG_SUBMIT_BUTTON": {
+    "message": "Activar"
+  },
+  "DIALOG_TITLE_CLEAR_ALL_CHANGES": {
+    "message": "Borrar todos los cambios"
+  },
+  "DIALOG_TITLE_CLEAR_ELEMENT": {
+    "message": "Borrar elemento"
+  },
+  "DIALOG_TITLE_CUSTOM_VIEWPORT": {
+    "message": "Ventana Gráfica Personalizada"
+  },
+  "DIALOG_TITLE_ELEMENT_NOT_FOUND": {
+    "message": "Elemento no encontrado"
+  },
+  "DIALOG_TITLE_PARTIAL_EDITS_FOR_RESPONSIVE": {
+    "message": "Algunos Cambios No Se Conservarán"
+  },
+  "DIALOG_TITLE_RESET_VIEWPORTS": {
+    "message": "Restablecer Ventanas Gráficas"
+  },
+  "DIALOG_TITLE_TAB_UNAVAILABLE": {
+    "message": "Pestaña no disponible"
+  },
+  "DISMISS_LABEL": {
+    "message": "Descartar"
+  },
+  "DOCK_BREAKPOINTS": {
+    "message": "Puntos de interrupción"
+  },
+  "DOCK_COPY": {
+    "message": "Copiar"
+  },
+  "DOCK_CUT": {
+    "message": "Cut"
+  },
+  "DOCK_DELETE": {
+    "message": "Eliminar"
+  },
+  "DOCK_DETECT_TECH": {
+    "message": "Tecnología"
+  },
+  "DOCK_DETECT_TECH_DETECTING": {
+    "message": "Detectando..."
+  },
+  "DOCK_DETECT_TECH_NONE_DETECTED": {
+    "message": "No se detectaron tecnologías."
+  },
+  "DOCK_DETECT_TECH_RESPONSIVE_ERROR": {
+    "message": "La detección de tecnología no está disponible en el modo receptivo."
+  },
+  "DOCK_DUPLICATE": {
+    "message": "Duplicar"
+  },
+  "DOCK_EDIT_MODE": {
+    "message": "Editar"
+  },
+  "DOCK_EDIT_TEXT": {
+    "message": "Editar texto"
+  },
+  "DOCK_EYEDROPPER": {
+    "message": "Selector de Color"
+  },
+  "DOCK_FIND_ELEMENT": {
+    "message": "Buscar Elemento"
+  },
+  "DOCK_INSPECT_MODE": {
+    "message": "Inspeccionar"
+  },
+  "DOCK_MCP_CONNECTED": {
+    "message": "MCP conectado"
+  },
+  "DOCK_MCP_CONNECT_AGENT": {
+    "message": "Conectar agente"
+  },
+  "DOCK_MCP_OUTDATED": {
+    "message": "MCP desactualizado"
+  },
+  "DOCK_MCP_TITLE": {
+    "message": "MCP"
+  },
+  "DOCK_MCP_WAITING": {
+    "message": "Esperando al agente"
+  },
+  "DOCK_OPEN_PANEL": {
+    "message": "Abrir panel lateral"
+  },
+  "DOCK_OPEN_PANEL_UNSUPPORTED": {
+    "message": "Panel lateral no compatible con este navegador"
+  },
+  "DOCK_PASTE": {
+    "message": "Pegar"
+  },
+  "DOCK_PAUSE": {
+    "message": "Pausar"
+  },
+  "DOCK_QUIT": {
+    "message": "Salir"
+  },
+  "DOCK_REDO": {
+    "message": "Rehacer"
+  },
+  "DOCK_RESPONSIVE_MODE": {
+    "message": "Modo Responsive"
+  },
+  "DOCK_RULER": {
+    "message": "Reglas de Página"
+  },
+  "DOCK_SELECT_CHILD": {
+    "message": "Seleccionar Hijo"
+  },
+  "DOCK_SELECT_PARENT": {
+    "message": "Seleccionar Padre"
+  },
+  "DOCK_TAKE_SCREENSHOT": {
+    "message": "Capturar Captura de Pantalla"
+  },
+  "DOCK_TOGGLE_GRID": {
+    "message": "Cuadrícula de Layout"
+  },
+  "DOCK_TOGGLE_INSPECT": {
+    "message": "Inspector"
+  },
+  "DOCK_UNDO": {
+    "message": "Deshacer"
+  },
+  "DOCK_XRAY_MODE": {
+    "message": "Modo Rayos X"
+  },
+  "EDITOR_CROSS_ORIGIN_MISSING": {
+    "message": "Es posible que falten algunos estilos."
+  },
+  "EDIT_COUNT_NONE": {
+    "message": "Sin cambios"
+  },
+  "EDIT_COUNT_ONE": {
+    "message": "1 cambio"
+  },
+  "EDIT_COUNT_OTHER": {
+    "message": "$1 cambios",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "ELEMENTS": {
+    "message": "Elementos"
+  },
+  "ELEMENTS_COUNT_ONE": {
+    "message": "1 elemento"
+  },
+  "ELEMENTS_COUNT_OTHER": {
+    "message": "$1 elementos",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "EMPTY_CANVAS": {
+    "message": "Añade una ventana gráfica para empezar."
+  },
+  "EMPTY_MESSAGE": {
+    "message": "Selecciona un elemento"
+  },
+  "EMPTY_MESSAGE_EDIT": {
+    "message": "Haz clic en un elemento para seleccionarlo"
+  },
+  "EMPTY_MESSAGE_INSPECT": {
+    "message": "Haz clic en un elemento para seleccionarlo"
+  },
+  "ENABLE_CROSS_ORIGIN": {
+    "message": "Conceder acceso"
+  },
+  "EXT_DESCRIPTION": {
+    "message": "Inspector web para diseñadores y desarrolladores. Mide elementos, extrae CSS y colores, captura pantallas y más."
+  },
+  "EXT_NAME": {
+    "message": "Bo doi - Mide e inspecciona la web"
+  },
+  "EXT_NAME_SHORT": {
+    "message": "Bo doi"
+  },
+  "FEATURES_SUBTITLE": {
+    "message": "Extracción de recursos con un clic, inspección visual de CSS y herramientas de análisis avanzadas. Diseñado para la forma en que los desarrolladores y diseñadores realmente trabajan."
+  },
+  "FEATURES_TITLE": {
+    "message": "Todo incluido con "
+  },
+  "FEATURE_A11Y_TITLE": {
+    "message": "Problemas de accesibilidad"
+  },
+  "FEATURE_ACCESSIBILITY_DESCRIPTION": {
+    "message": "Detecte y resalte automáticamente fallas de contraste WCAG con recomendaciones accionables."
+  },
+  "FEATURE_ACCESSIBILITY_TITLE": {
+    "message": "Problemas de accesibilidad"
+  },
+  "FEATURE_ANIMATION_DESCRIPTION": {
+    "message": "Visualice curvas de tiempo de animación CSS y copie propiedades CSS de animación."
+  },
+  "FEATURE_ANIMATION_TITLE": {
+    "message": "Análisis de animación"
+  },
+  "FEATURE_ASSET_DESCRIPTION": {
+    "message": "Extraiga y descargue imágenes, SVGs y recursos vectoriales directamente desde cualquier página web."
+  },
+  "FEATURE_ASSET_TITLE": {
+    "message": "Extracción de recursos"
+  },
+  "FEATURE_BOX_SHADOW_DESCRIPTION": {
+    "message": "Desglose interactivo de sombras de caja multicapa con vista explotada de cada componente de sombra."
+  },
+  "FEATURE_BOX_SHADOW_TITLE": {
+    "message": "Visualización de sombra de caja"
+  },
+  "FEATURE_BREAKPOINTS_DESCRIPTION": {
+    "message": "Detecta y visualiza los breakpoints de media queries CSS con líneas de límite de colores directamente en la página."
+  },
+  "FEATURE_BREAKPOINTS_TITLE": {
+    "message": "Puntos de interrupción"
+  },
+  "FEATURE_CANVAS_DESCRIPTION": {
+    "message": "Inspeccione elementos HTML5 Canvas. Vea dimensiones, tipos de contexto y extraiga paletas de colores."
+  },
+  "FEATURE_CANVAS_TITLE": {
+    "message": "Inspección de Lienzos"
+  },
+  "FEATURE_COLOR_DESCRIPTION": {
+    "message": "Extraiga y copie paletas de colores de elementos seleccionados con valores hexadecimales, RGB y HSL."
+  },
+  "FEATURE_COLOR_TITLE": {
+    "message": "Extracción de colores"
+  },
+  "FEATURE_COMPUTED_CSS_TITLE": {
+    "message": "CSS calculado"
+  },
+  "FEATURE_CSS_RULES_DESCRIPTION": {
+    "message": "Vea las reglas CSS reales de las hojas de estilo que se aplican a cualquier elemento, agrupadas por archivo fuente."
+  },
+  "FEATURE_CSS_RULES_TITLE": {
+    "message": "Inspector de Reglas CSS"
+  },
+  "FEATURE_DISTANCE_TITLE": {
+    "message": "Medición de distancia"
+  },
+  "FEATURE_EDIT_TITLE": {
+    "message": "Edición de CSS en vivo con seguimiento de cambios"
+  },
+  "FEATURE_ELEMENT_HOVER_TITLE": {
+    "message": "Inspección de elementos"
+  },
+  "FEATURE_ELEMENT_SCREENSHOT_TITLE": {
+    "message": "Capturas de elemento"
+  },
+  "FEATURE_EYEDROPPER_TITLE": {
+    "message": "Selector de color"
+  },
+  "FEATURE_GRADIENT_DESCRIPTION": {
+    "message": "Visualiza degradados CSS con un desglose detallado de los puntos de color y sus posiciones."
+  },
+  "FEATURE_GRADIENT_TITLE": {
+    "message": "Inspector de Degradados"
+  },
+  "FEATURE_GRID_DESCRIPTION": {
+    "message": "Superponga una cuadrícula de columnas personalizable para verificar la alineación y el espaciado del diseño."
+  },
+  "FEATURE_GRID_TITLE": {
+    "message": "Superposición de cuadrícula de diseño"
+  },
+  "FEATURE_HEADING": {
+    "message": "Desbloquea un conjunto completo de herramientas de desarrollo web"
+  },
+  "FEATURE_HTML_TEXT_DESCRIPTION": {
+    "message": "Copia, pega, duplica o elimina elementos directamente en la página. El modo de edición de texto te permite reescribir el contenido de la página en el lugar."
+  },
+  "FEATURE_HTML_TEXT_TITLE": {
+    "message": "Edición de HTML y texto"
+  },
+  "FEATURE_INSPECTOR_DESCRIPTION": {
+    "message": "Propiedades detalladas del elemento al pasar el cursor, incluyendo posición, tamaño, fuente renderizada y colores."
+  },
+  "FEATURE_INSPECTOR_TITLE": {
+    "message": "Inspector flotante"
+  },
+  "FEATURE_LAYOUT_DESCRIPTION": {
+    "message": "Visualiza diseños Flexbox y Grid con un desglose claro de alineación, dirección y estructura."
+  },
+  "FEATURE_LAYOUT_TITLE": {
+    "message": "Visualizador de diseño"
+  },
+  "FEATURE_META_TAGS_TITLE": {
+    "message": "Etiquetas meta"
+  },
+  "FEATURE_PAGE_RULERS_TITLE": {
+    "message": "Reglas de página"
+  },
+  "FEATURE_PAGE_WEIGHT_DESCRIPTION": {
+    "message": "Mira exactamente qué se carga en la página, desglosado por scripts, hojas de estilo, imágenes, fuentes y más, con una barra apilada en vivo que se actualiza a medida que se cargan los recursos."
+  },
+  "FEATURE_PAGE_WEIGHT_TITLE": {
+    "message": "Peso de la página"
+  },
+  "FEATURE_PARENT_CHILD_TITLE": {
+    "message": "Selección padre / hijo"
+  },
+  "FEATURE_RESPONSIVE_DESCRIPTION": {
+    "message": "Pruebe diseños en diferentes ventanas gráficas de dispositivos con un emulador de dispositivos interactivo y dimensiones personalizadas."
+  },
+  "FEATURE_RESPONSIVE_TITLE": {
+    "message": "Modo responsivo"
+  },
+  "FEATURE_SCREENSHOT_DESCRIPTION": {
+    "message": "Capture capturas de pantalla recortadas de elementos seleccionados con márgenes y medidas incluidas."
+  },
+  "FEATURE_SCREENSHOT_TITLE": {
+    "message": "Capturas de pantalla de elementos"
+  },
+  "FEATURE_SELECTOR_DESCRIPTION": {
+    "message": "Encuentre y resalte elementos usando selectores CSS para localizar rápidamente elementos específicos."
+  },
+  "FEATURE_SELECTOR_TITLE": {
+    "message": "Búsqueda de selector CSS"
+  },
+  "FEATURE_SEO_TITLE": {
+    "message": "Problemas de SEO"
+  },
+  "FEATURE_SOCIAL_PREVIEW_TITLE": {
+    "message": "Vista previa social"
+  },
+  "FEATURE_TAILWIND_DESCRIPTION": {
+    "message": "Convierte instantáneamente los estilos de cualquier elemento en clases de utilidad Tailwind."
+  },
+  "FEATURE_TAILWIND_TITLE": {
+    "message": "Generador Tailwind CSS"
+  },
+  "FEATURE_TECH_DETECTION_DESCRIPTION": {
+    "message": "Identifica los frameworks, bibliotecas y herramientas que impulsan cualquier sitio web con más de 150 tecnologías compatibles."
+  },
+  "FEATURE_TECH_DETECTION_TITLE": {
+    "message": "Detección de Tecnología"
+  },
+  "FEATURE_TRANSITION_DESCRIPTION": {
+    "message": "Visualiza transiciones CSS y curvas de tiempo junto con las animaciones."
+  },
+  "FEATURE_TRANSITION_TITLE": {
+    "message": "Inspector de Transiciones"
+  },
+  "FEATURE_TYPOGRAPHY_DESCRIPTION": {
+    "message": "Analice y extraiga todos los estilos tipográficos utilizados en su selección."
+  },
+  "FEATURE_TYPOGRAPHY_TITLE": {
+    "message": "Análisis de tipografía"
+  },
+  "FEATURE_XRAY_DESCRIPTION": {
+    "message": "Revele la estructura subyacente de la página delineando todos los elementos a la vez."
+  },
+  "FEATURE_XRAY_TITLE": {
+    "message": "Modo de rayos X"
+  },
+  "FIND_ELEMENT": {
+    "message": "Buscar Elemento"
+  },
+  "FIND_HIDDEN_COUNT": {
+    "message": "$1 ocultos",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "FOOTER_PRIVACY_POLICY": {
+    "message": "Política de privacidad"
+  },
+  "FOOTER_TERMS": {
+    "message": "Términos"
+  },
+  "HERO_TITLE": {
+    "message": "Mide, inspecciona y edita cualquier cosa de la web"
+  },
+  "INSPECT_PIN_HINT": {
+    "message": "Pulsa Espacio para fijar"
+  },
+  "ISSUE_CONTRAST_FAILURE_AAA_MESSAGE": {
+    "message": "El contraste del texto $RATIO$:1 cumple AA pero no AAA (requiere $REQUIRED$:1 para texto $SIZE$)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "5.2"
+      },
+      "required": {
+        "content": "$2",
+        "example": "7"
+      },
+      "size": {
+        "content": "$3",
+        "example": "normal"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AAA_RECOMMENDATION": {
+    "message": "Considera aumentar el contraste a $RATIO$:1 para cumplir con WCAG AAA",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AA_MESSAGE": {
+    "message": "El texto tiene una relación de contraste insuficiente de $RATIO$:1 (requiere $REQUIRED$:1 para texto $SIZE$)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "3.2"
+      },
+      "required": {
+        "content": "$2",
+        "example": "4.5"
+      },
+      "size": {
+        "content": "$3",
+        "example": "normal"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AA_RECOMMENDATION": {
+    "message": "Aumenta el contraste a al menos $RATIO$:1 para cumplir con WCAG AA",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "4.5"
+      }
+    }
+  },
+  "ISSUE_ICON_CONTRAST_MESSAGE": {
+    "message": "El icono tiene una relación de contraste insuficiente de $RATIO$:1 (requiere $REQUIRED$:1 para elementos no textuales)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "2.5"
+      },
+      "required": {
+        "content": "$2",
+        "example": "3"
+      }
+    }
+  },
+  "ISSUE_ICON_CONTRAST_RECOMMENDATION": {
+    "message": "Aumentar el contraste a al menos $RATIO$:1 para cumplir con WCAG 1.4.11",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "LABEL_ADD_RULE": {
+    "message": "Añadir regla"
+  },
+  "LABEL_ADD_VIEWPORT": {
+    "message": "Añadir Ventana Gráfica"
+  },
+  "LABEL_ANIMATION": {
+    "message": "Animación"
+  },
+  "LABEL_ANIMATIONS": {
+    "message": "Animaciones"
+  },
+  "LABEL_ANIMATIONS_AND_TRANSITIONS": {
+    "message": "Animaciones y Transiciones"
+  },
+  "LABEL_APPEARANCE": {
+    "message": "Apariencia"
+  },
+  "LABEL_ASSET": {
+    "message": "Recurso"
+  },
+  "LABEL_ASSETS": {
+    "message": "Recursos"
+  },
+  "LABEL_BACKGROUNDS": {
+    "message": "Fondos"
+  },
+  "LABEL_BORDER": {
+    "message": "Borde"
+  },
+  "LABEL_BORDERS": {
+    "message": "Bordes"
+  },
+  "LABEL_BOX_SHADOW": {
+    "message": "Sombra de Caja"
+  },
+  "LABEL_BOX_SHADOWS": {
+    "message": "Sombras de Caja"
+  },
+  "LABEL_CANVAS": {
+    "message": "Lienzo"
+  },
+  "LABEL_CANVAS_DIMENSIONS": {
+    "message": "Dimensiones del lienzo"
+  },
+  "LABEL_CHANGES": {
+    "message": "Cambios"
+  },
+  "LABEL_CODE": {
+    "message": "Código"
+  },
+  "LABEL_COLOR": {
+    "message": "Color"
+  },
+  "LABEL_COLORS": {
+    "message": "Colores"
+  },
+  "LABEL_COLUMNS": {
+    "message": "Columnas"
+  },
+  "LABEL_COMPUTED": {
+    "message": "Calculado"
+  },
+  "LABEL_CONTEXT_TYPE": {
+    "message": "Tipo de contexto"
+  },
+  "LABEL_CSS": {
+    "message": "CSS"
+  },
+  "LABEL_DOCUMENT": {
+    "message": "Documento"
+  },
+  "LABEL_EFFECTIVE_STYLES": {
+    "message": "Estilos efectivos"
+  },
+  "LABEL_FLEX_GRID_LAYOUT": {
+    "message": "Diseño"
+  },
+  "LABEL_GRADIENT": {
+    "message": "Degradado"
+  },
+  "LABEL_GRADIENTS": {
+    "message": "Degradados"
+  },
+  "LABEL_GUTTER": {
+    "message": "Canalón"
+  },
+  "LABEL_HEIGHT": {
+    "message": "Alto"
+  },
+  "LABEL_INHERITED_FROM": {
+    "message": "Heredado de $SELECTOR$",
+    "placeholders": {
+      "selector": {
+        "content": "$1",
+        "example": "body"
+      }
+    }
+  },
+  "LABEL_INSTANCES": {
+    "message": "Instancias"
+  },
+  "LABEL_ISSUE": {
+    "message": "Problema"
+  },
+  "LABEL_ISSUES": {
+    "message": "Problemas"
+  },
+  "LABEL_LAYOUT": {
+    "message": "Modelo de Caja"
+  },
+  "LABEL_LOADING": {
+    "message": "..."
+  },
+  "LABEL_MARGIN": {
+    "message": "Margen"
+  },
+  "LABEL_MAX_WIDTH": {
+    "message": "Ancho Máximo"
+  },
+  "LABEL_OPACITY": {
+    "message": "Opacidad"
+  },
+  "LABEL_PADDING": {
+    "message": "Espaciado Interno"
+  },
+  "LABEL_PIXEL_RATIO": {
+    "message": "Relación de píxeles"
+  },
+  "LABEL_PW_CSS": {
+    "message": "Hojas de estilo"
+  },
+  "LABEL_PW_DOCUMENT": {
+    "message": "Documento"
+  },
+  "LABEL_PW_FETCH": {
+    "message": "Fetch/XHR"
+  },
+  "LABEL_PW_FONTS": {
+    "message": "Fuentes"
+  },
+  "LABEL_PW_IMAGES": {
+    "message": "Imágenes"
+  },
+  "LABEL_PW_MEDIA": {
+    "message": "Medios"
+  },
+  "LABEL_PW_OTHER": {
+    "message": "Otros"
+  },
+  "LABEL_PW_SCRIPTS": {
+    "message": "Scripts"
+  },
+  "LABEL_PW_TOTAL": {
+    "message": "Total"
+  },
+  "LABEL_REFRESH_VIEWPORT": {
+    "message": "Recargar"
+  },
+  "LABEL_ROTATE_VIEWPORT": {
+    "message": "Rotar"
+  },
+  "LABEL_RULES": {
+    "message": "Reglas"
+  },
+  "LABEL_SCALABLE": {
+    "message": "escalable"
+  },
+  "LABEL_SELECTION_COLORS": {
+    "message": "Colores"
+  },
+  "LABEL_SOURCE": {
+    "message": "Fuente"
+  },
+  "LABEL_SVG": {
+    "message": "svg"
+  },
+  "LABEL_TAILWIND": {
+    "message": "Tailwind"
+  },
+  "LABEL_TECHNOLOGIES": {
+    "message": "Tecnologías"
+  },
+  "LABEL_TECHNOLOGY": {
+    "message": "Tecnología"
+  },
+  "LABEL_TEXT": {
+    "message": "Texto"
+  },
+  "LABEL_TEXT_CONTENT": {
+    "message": "Contenido de Texto"
+  },
+  "LABEL_TRANSITION": {
+    "message": "Transición"
+  },
+  "LABEL_TRANSITIONS": {
+    "message": "Transiciones"
+  },
+  "LABEL_TYPOGRAPHY_STYLE": {
+    "message": "Estilo Tipográfico"
+  },
+  "LABEL_TYPOGRAPHY_STYLES": {
+    "message": "Estilos Tipográficos"
+  },
+  "LABEL_WHITESPACE_ONLY_CHANGE": {
+    "message": "Solo cambios de espacios en blanco"
+  },
+  "LABEL_WIDTH": {
+    "message": "Ancho"
+  },
+  "LABEL_ZOOM": {
+    "message": "Zoom"
+  },
+  "LABEL_ZOOM_IN": {
+    "message": "Acercar"
+  },
+  "LABEL_ZOOM_OUT": {
+    "message": "Alejar"
+  },
+  "LEGACY_LOGIN_LINK": {
+    "message": "Login antiguo"
+  },
+  "LEGACY_LOGIN_TEXT": {
+    "message": "¿Ya compraste Bo doi Pro antes de v3.0.0?"
+  },
+  "MATCHED_CROSS_ORIGIN_HIDDEN": {
+    "message": "$COUNT$ hojas de estilo de origen cruzado ocultas.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "MCP_CONNECT_HINT": {
+    "message": "Copia este texto y pégalo en tu agente de IA:"
+  },
+  "MCP_UNKNOWN_AGENT": {
+    "message": "Agente de IA"
+  },
+  "MCP_WAITING_FOR_AGENT": {
+    "message": "Esperando a que se conecte el agente..."
+  },
+  "NO_CHANGES_MESSAGE": {
+    "message": "No se encontraron cambios"
+  },
+  "NO_PAGE_INFO_MESSAGE": {
+    "message": "No se encontró información de la página"
+  },
+  "OPTIONS_COLOR_FORMAT_SECONDARY": {
+    "message": "Usado por el inspector y el selector de color"
+  },
+  "OPTIONS_MCP_CONNECT_BUTTON": {
+    "message": "Conectar"
+  },
+  "OPTIONS_MCP_DISCONNECT_BUTTON": {
+    "message": "Desconectar"
+  },
+  "OPTIONS_MCP_SERVER_SECONDARY": {
+    "message": "Permite que agentes de IA inspeccionen o realicen ediciones. <a href=\"https://www.bodoi.com/docs/mcp.html\" target=\"_blank\">Guía de configuración</a>"
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_BODY": {
+    "message": "Tu servidor MCP es la versión $1, pero esta extensión espera $2 o posterior. Actualiza el paquete npm o reinicia tu cliente de IA.",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "required": {
+        "content": "$2"
+      }
+    }
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_TITLE": {
+    "message": "Servidor MCP desactualizado"
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_TOOLTIP": {
+    "message": "Servidor MCP desactualizado. Actualiza desde tu cliente de IA."
+  },
+  "OPTIONS_MCP_VERSION_UNKNOWN": {
+    "message": "desconocida"
+  },
+  "OPTIONS_PAGE_TITLE": {
+    "message": "Configuración"
+  },
+  "OPTIONS_ROW_COLOR_FORMAT": {
+    "message": "Formato de color"
+  },
+  "OPTIONS_ROW_MCP_SERVER": {
+    "message": "Servidor MCP"
+  },
+  "OPTIONS_ROW_SCREENSHOT_HIGHLIGHTS": {
+    "message": "Capturar Resaltados"
+  },
+  "OPTIONS_ROW_SCREENSHOT_PADDING": {
+    "message": "Relleno de Captura"
+  },
+  "OPTIONS_ROW_THEME": {
+    "message": "Tema"
+  },
+  "OPTIONS_SAVED_EDITS_CLEAR": {
+    "message": "Borrar"
+  },
+  "OPTIONS_SAVED_EDITS_CONFIRM_BODY": {
+    "message": "Esto elimina las ediciones de CSS recordadas de todos los sitios."
+  },
+  "OPTIONS_SAVED_EDITS_CONFIRM_TITLE": {
+    "message": "¿Borrar las ediciones guardadas?"
+  },
+  "OPTIONS_SAVED_EDITS_SECONDARY": {
+    "message": "Las ediciones de CSS se recuerdan por sitio y se restauran al activar Bo doi allí."
+  },
+  "OPTIONS_SAVED_EDITS_TITLE": {
+    "message": "Ediciones guardadas"
+  },
+  "OPTIONS_SCREENSHOT_HIGHLIGHTS_SECONDARY": {
+    "message": "Captura medidas en las capturas"
+  },
+  "OPTIONS_SCREENSHOT_PADDING_SECONDARY": {
+    "message": "Añade un fondo con relleno a las capturas"
+  },
+  "OPTIONS_SECTION_APPEARANCE": {
+    "message": "Apariencia"
+  },
+  "OPTIONS_SECTION_EXTENSION": {
+    "message": "Extensión"
+  },
+  "OPTIONS_SECTION_SCREENSHOTS": {
+    "message": "Capturas de pantalla"
+  },
+  "OPTIONS_SECTION_TERMINAL_AI": {
+    "message": "IA de terminal"
+  },
+  "PAGE_TAB_META_OG": {
+    "message": "Open Graph"
+  },
+  "PAGE_TAB_META_SEO": {
+    "message": "SEO"
+  },
+  "PAGE_TAB_META_TAGS": {
+    "message": "Metaetiquetas"
+  },
+  "PAGE_TAB_META_TWITTER": {
+    "message": "Twitter Card"
+  },
+  "PAGE_TAB_NO_METADATA": {
+    "message": "No se encontraron metadatos"
+  },
+  "PAGE_TAB_OG_IMAGE": {
+    "message": "Imagen Open Graph"
+  },
+  "PAGE_TAB_PAGE_WEIGHT": {
+    "message": "Peso de la página"
+  },
+  "PAGE_TAB_SOCIAL_PREVIEW": {
+    "message": "Vista previa social"
+  },
+  "PAGE_TAB_TECHNOLOGIES": {
+    "message": "Tecnologías"
+  },
+  "PAGE_TAB_UNTITLED": {
+    "message": "Página sin título"
+  },
+  "PW_BUFFER_FULL": {
+    "message": "Búfer de recursos lleno, algunas entradas pueden faltar"
+  },
+  "PW_HIDDEN_NOTE": {
+    "message": "$COUNT$ recursos cross-origin ocultos",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "RESPONSIVE_FRAME_BLOCKED_BODY": {
+    "message": "Este sitio bloquea la carga en la vista previa.{br}{grant} para mostrarlo."
+  },
+  "RESPONSIVE_FRAME_BLOCKED_GRANT": {
+    "message": "Conceder acceso"
+  },
+  "RESPONSIVE_FRAME_BLOCKED_STILL": {
+    "message": "Este sitio bloquea la carga en la vista previa.{br}Lo hace con un script o una política en la página que no se puede eliminar."
+  },
+  "RESPONSIVE_FRAME_TIMEOUT": {
+    "message": "Esta página no terminó de cargarse."
+  },
+  "RESTORE_ACCESS_ERROR": {
+    "message": "No se pudo restaurar el acceso. Por favor, intente iniciar sesión."
+  },
+  "RESTORE_ACCESS_LINK": {
+    "message": "Restaurar compra"
+  },
+  "REVIEWS_SUBTITLE": {
+    "message": "Esto es lo que tienen que decir sobre usar Bo doi."
+  },
+  "REVIEWS_TITLE": {
+    "message": "Amado por desarrolladores y diseñadores"
+  },
+  "RULES_COUNT_ONE": {
+    "message": "1 regla"
+  },
+  "RULES_COUNT_OTHER": {
+    "message": "$1 reglas",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "BO_DOI_PRO": {
+    "message": "Bo doi "
+  },
+  "SEO_DESCRIPTION_TOO_LONG_MESSAGE": {
+    "message": "La descripción tiene más de 160 caracteres"
+  },
+  "SEO_DESCRIPTION_TOO_LONG_RECOMMENDATION": {
+    "message": "Los buscadores pueden truncar descripciones largas. Recórtala a 120–160 caracteres."
+  },
+  "SEO_DESCRIPTION_TOO_SHORT_MESSAGE": {
+    "message": "La descripción tiene menos de 70 caracteres"
+  },
+  "SEO_DESCRIPTION_TOO_SHORT_RECOMMENDATION": {
+    "message": "Apunta a 120–160 caracteres para un snippet descriptivo."
+  },
+  "SEO_LABEL_ISSUE": {
+    "message": "Problema de SEO"
+  },
+  "SEO_LABEL_ISSUES": {
+    "message": "Problemas de SEO"
+  },
+  "SEO_MISSING_ALT_MESSAGE": {
+    "message": "La imagen no tiene texto alternativo"
+  },
+  "SEO_MISSING_ALT_RECOMMENDATION": {
+    "message": "Añade un atributo alt a cada img. Usa alt=\"\" para imágenes puramente decorativas."
+  },
+  "SEO_MISSING_CANONICAL_MESSAGE": {
+    "message": "Falta el enlace canonical"
+  },
+  "SEO_MISSING_CANONICAL_RECOMMENDATION": {
+    "message": "Añade <link rel=\"canonical\"> para declarar la URL preferida de esta página."
+  },
+  "SEO_MISSING_DESCRIPTION_MESSAGE": {
+    "message": "Falta la meta description"
+  },
+  "SEO_MISSING_DESCRIPTION_RECOMMENDATION": {
+    "message": "Añade una meta description para resumir la página en los resultados de búsqueda."
+  },
+  "SEO_MISSING_H1_MESSAGE": {
+    "message": "Falta el encabezado H1"
+  },
+  "SEO_MISSING_H1_RECOMMENDATION": {
+    "message": "Cada página debe tener un único H1 que describa su tema principal."
+  },
+  "SEO_MISSING_LANG_MESSAGE": {
+    "message": "Falta el atributo lang en <html>"
+  },
+  "SEO_MISSING_LANG_RECOMMENDATION": {
+    "message": "Establece un atributo lang (p. ej. lang=\"en\") para ayudar a buscadores y lectores de pantalla."
+  },
+  "SEO_MISSING_OG_DESCRIPTION_MESSAGE": {
+    "message": "Falta og:description"
+  },
+  "SEO_MISSING_OG_DESCRIPTION_RECOMMENDATION": {
+    "message": "Añade <meta property=\"og:description\"> para las vistas previas al compartir."
+  },
+  "SEO_MISSING_OG_IMAGE_MESSAGE": {
+    "message": "Falta og:image"
+  },
+  "SEO_MISSING_OG_IMAGE_RECOMMENDATION": {
+    "message": "Añade <meta property=\"og:image\"> para que los enlaces compartidos incluyan una imagen de vista previa."
+  },
+  "SEO_MISSING_OG_TITLE_MESSAGE": {
+    "message": "Falta og:title"
+  },
+  "SEO_MISSING_OG_TITLE_RECOMMENDATION": {
+    "message": "Añade <meta property=\"og:title\"> para que los enlaces compartidos muestren un título claro."
+  },
+  "SEO_MISSING_TITLE_MESSAGE": {
+    "message": "Falta la etiqueta title"
+  },
+  "SEO_MISSING_TITLE_RECOMMENDATION": {
+    "message": "Añade un elemento <title> descriptivo en la cabecera de la página."
+  },
+  "SEO_MISSING_VIEWPORT_MESSAGE": {
+    "message": "Falta la meta viewport"
+  },
+  "SEO_MISSING_VIEWPORT_RECOMMENDATION": {
+    "message": "Añade <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> para la renderización móvil."
+  },
+  "SEO_MULTIPLE_H1_MESSAGE": {
+    "message": "La página tiene más de un H1"
+  },
+  "SEO_MULTIPLE_H1_RECOMMENDATION": {
+    "message": "Usa un solo H1 por página y baja los encabezados secundarios a H2 o H3."
+  },
+  "SEO_ROBOTS_NOINDEX_MESSAGE": {
+    "message": "La página está configurada como noindex"
+  },
+  "SEO_ROBOTS_NOINDEX_RECOMMENDATION": {
+    "message": "Los buscadores no indexarán esta página. Quita noindex si no es intencional."
+  },
+  "SEO_TITLE_TOO_LONG_MESSAGE": {
+    "message": "El título tiene más de 60 caracteres"
+  },
+  "SEO_TITLE_TOO_LONG_RECOMMENDATION": {
+    "message": "Los buscadores pueden truncar títulos largos. Recórtalo a 50–60 caracteres."
+  },
+  "SEO_TITLE_TOO_SHORT_MESSAGE": {
+    "message": "El título tiene menos de 30 caracteres"
+  },
+  "SEO_TITLE_TOO_SHORT_RECOMMENDATION": {
+    "message": "Apunta a 50–60 caracteres para que el título sea descriptivo en los resultados de búsqueda."
+  },
+  "SHORTCUT_CHILD": {
+    "message": "Seleccionar hijo"
+  },
+  "SHORTCUT_COPY": {
+    "message": "Copiar"
+  },
+  "SHORTCUT_DESELECT": {
+    "message": "Deseleccionar"
+  },
+  "SHORTCUT_PARENT": {
+    "message": "Seleccionar padre"
+  },
+  "SHORTCUT_PASTE": {
+    "message": "Pegar"
+  },
+  "SHORTCUT_REDO": {
+    "message": "Rehacer"
+  },
+  "SHORTCUT_TOGGLE_PANEL": {
+    "message": "Alternar panel"
+  },
+  "SHORTCUT_TOGGLE_RULER": {
+    "message": "Alternar extensión"
+  },
+  "SHORTCUT_UNDO": {
+    "message": "Deshacer"
+  },
+  "SOCIAL_PREVIEW_FACEBOOK": {
+    "message": "Facebook"
+  },
+  "SOCIAL_PREVIEW_LINKEDIN": {
+    "message": "LinkedIn"
+  },
+  "SOCIAL_PREVIEW_X": {
+    "message": "X"
+  },
+  "SOCIAL_PROOF_TEXT": {
+    "message": "Usado por más de 50.000 diseñadores y desarrolladores"
+  },
+  "TAB_ELEMENT": {
+    "message": "Elemento"
+  },
+  "TAB_PAGE": {
+    "message": "Página"
+  },
+  "TEXT_SIZE_LARGE": {
+    "message": "grande"
+  },
+  "TEXT_SIZE_NORMAL": {
+    "message": "normal"
+  },
+  "THEME": {
+    "message": "Tema"
+  },
+  "THEME_DARK": {
+    "message": "Oscuro"
+  },
+  "THEME_LIGHT": {
+    "message": "Claro"
+  },
+  "THEME_SYSTEM": {
+    "message": "Sistema"
+  },
+  "TITLE_COLOR_SCHEME": {
+    "message": "Esquema de Color"
+  },
+  "TITLE_FRAME_LAYOUT": {
+    "message": "Disposición de Marcos"
+  },
+  "TITLE_INVALID_PROPERTY": {
+    "message": "Propiedad desconocida"
+  },
+  "TITLE_INVALID_VALUE": {
+    "message": "Valor no válido"
+  },
+  "TITLE_MORE_ACTIONS": {
+    "message": "Más Acciones"
+  },
+  "TITLE_MOVE_LEFT": {
+    "message": "Mover a la Izquierda"
+  },
+  "TITLE_MOVE_RIGHT": {
+    "message": "Mover a la Derecha"
+  },
+  "TITLE_NOT_INHERITED": {
+    "message": "No heredado por este elemento"
+  },
+  "TITLE_OVERRIDDEN_BY": {
+    "message": "Anulado por $SELECTOR$",
+    "placeholders": {
+      "selector": {
+        "content": "$1",
+        "example": ".card"
+      }
+    }
+  },
+  "TITLE_OVERRIDDEN_HIDDEN": {
+    "message": "Anulado por una hoja de estilos que Bo doi no puede ver"
+  },
+  "TITLE_OVERRIDDEN_HIDDEN_GRANT": {
+    "message": "Anulado por una hoja de estilos que Bo doi no puede ver. Concede acceso de origen cruzado para verla."
+  },
+  "TITLE_REMOVE": {
+    "message": "Quitar Ventana Gráfica"
+  },
+  "TITLE_RESET_VIEWPORTS": {
+    "message": "Restablecer Ventanas Gráficas"
+  },
+  "TITLE_SYNC_SCROLLING": {
+    "message": "Sincronizar Desplazamiento"
+  },
+  "TOAST_EDITS_RESTORED_MANY": {
+    "message": "$COUNT$ ediciones guardadas restauradas",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOAST_EDITS_RESTORED_ONE": {
+    "message": "1 edición guardada restaurada"
+  },
+  "TOAST_SCROLL_SYNC_OFF": {
+    "message": "La sincronización de desplazamiento se desactivó porque esta página se desplaza en contra."
+  },
+  "TOOLTIP_CHILD": {
+    "message": "Seleccionar Hijo"
+  },
+  "TOOLTIP_COPY": {
+    "message": "Copiar ($mod$+C)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_CUT": {
+    "message": "Cortar ($mod$+X)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_DELETE": {
+    "message": "Eliminar ($key$)",
+    "placeholders": {
+      "key": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_DUPLICATE": {
+    "message": "Duplicar ($mod$+D)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_PARENT": {
+    "message": "Seleccionar Padre"
+  },
+  "TOOLTIP_PASTE": {
+    "message": "Pegar ($mod$+V)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_REDO": {
+    "message": "Rehacer ($mod$+$shift$+Z)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      },
+      "shift": {
+        "content": "$2"
+      }
+    }
+  },
+  "TOOLTIP_SELECT": {
+    "message": "Modo Selección"
+  },
+  "TOOLTIP_UNDO": {
+    "message": "Deshacer ($mod$+Z)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TRUSTED_BY_TEXT": {
+    "message": "Confiado por profesionales en"
+  },
+  "UNLOCK_PRO_SEE_MORE": {
+    "message": "Obtén Pro para ver $COUNT$ más",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "VIDEO_PLAY_BUTTON": {
+    "message": "Ver Bo doi en acción"
+  },
+  "WARN_OVERFLOW": {
+    "message": "El contenido se desborda horizontalmente"
+  }
+}

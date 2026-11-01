@@ -1,0 +1,57 @@
+{
+   "action": {
+      "default_title": "__MSG_EXT_NAME_SHORT__"
+   },
+   "background": {
+      "service_worker": "background.js"
+   },
+   "commands": {
+      "_execute_action": {
+         "suggested_key": {
+            "default": "Alt+Shift+S",
+            "mac": "Alt+Shift+S"
+         }
+      },
+      "select_child": {
+         "description": "Move selection to child element.",
+         "suggested_key": {
+            "default": "Alt+Shift+Down",
+            "mac": "Alt+Shift+Down"
+         }
+      },
+      "select_parent": {
+         "description": "Move selection to parent element.",
+         "suggested_key": {
+            "default": "Alt+Shift+Up",
+            "mac": "Alt+Shift+Up"
+         }
+      }
+   },
+   "default_locale": "en",
+   "description": "__MSG_EXT_DESCRIPTION__",
+
+   "icons": {
+      "128": "images/icon128.png",
+      "16": "images/icon16.png",
+      "24": "images/icon24.png",
+      "32": "images/icon32.png",
+      "48": "images/icon48.png"
+   },
+   "manifest_version": 3,
+   "minimum_chrome_version": "116",
+   "name": "__MSG_EXT_NAME__",
+   "optional_host_permissions": [ "\u003Call_urls>" ],
+   "optional_permissions": [ "downloads", "clipboardWrite" ],
+   "options_ui": {
+      "page": "options/index.html"
+   },
+   "permissions": [ "scripting", "activeTab", "contextMenus", "storage", "declarativeContent", "sidePanel", "declarativeNetRequestWithHostAccess", "debugger" ],
+   "side_panel": {
+      "default_path": "sidepanel/index.html"
+   },
+   "version": "1.0.0",
+   "web_accessible_resources": [ {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "scripts/patterns/*.svg", "scripts/patterns/*.png", "scripts/patterns/screenshots/*.png", "sidepanel/logos/*.svg", "scripts/detect-technologies.js", "fonts/*.woff2" ]
+   } ]
+}

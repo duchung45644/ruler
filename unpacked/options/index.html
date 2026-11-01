@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>__MSG_OPTIONS_PAGE_TITLE__</title>
+        <link rel="stylesheet" href="styles.css" />
+        <script src="main.js"></script>
+    </head>
+
+    <body style="opacity: 0">
+        <main class="options-page">
+            <section class="settings-section">
+                <h2 class="settings-section-title" data-i18n="OPTIONS_SECTION_APPEARANCE"></h2>
+                <div class="settings-row">
+                    <div class="settings-row-label">
+                        <span class="settings-row-title" data-i18n="OPTIONS_ROW_THEME"></span>
+                    </div>
+                    <div class="settings-row-control">
+                        <div class="input-select-container">
+                            <select id="theme-select" class="input-select">
+                                <option value="system" data-i18n="THEME_SYSTEM"></option>
+                                <option value="light" data-i18n="THEME_LIGHT"></option>
+                                <option value="dark" data-i18n="THEME_DARK"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="settings-section">
+                <h2 class="settings-section-title" data-i18n="OPTIONS_SECTION_EXTENSION"></h2>
+                <div class="settings-row">
+                    <div class="settings-row-label">
+                        <span class="settings-row-title" data-i18n="OPTIONS_ROW_COLOR_FORMAT"></span>
+                        <span class="settings-row-secondary" data-i18n="OPTIONS_COLOR_FORMAT_SECONDARY"></span>
+                    </div>
+                    <div class="settings-row-control">
+                        <div class="input-select-container">
+                            <select id="color-format-select" class="input-select">
+                                <option value="HEX">HEX/HEXA</option>
+                                <option value="RGB">RGB/RGBA</option>
+                                <option value="HSL">HSL/HSLA</option>
+                                <option value="HSB">HSB/HSBA</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-row-label">
+                        <span class="settings-row-title" data-i18n="OPTIONS_ROW_SCREENSHOT_PADDING"></span>
+                        <span class="settings-row-secondary" data-i18n="OPTIONS_SCREENSHOT_PADDING_SECONDARY"></span>
+                    </div>
+                    <div class="settings-row-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="screenshot-padding-toggle" />
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-row-label">
+                        <span class="settings-row-title" data-i18n="OPTIONS_ROW_SCREENSHOT_HIGHLIGHTS"></span>
+                        <span class="settings-row-secondary" data-i18n="OPTIONS_SCREENSHOT_HIGHLIGHTS_SECONDARY"></span>
+                    </div>
+                    <div class="settings-row-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="screenshot-highlights-toggle" />
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-row-label">
+                        <span class="settings-row-title" data-i18n="OPTIONS_ROW_MCP_SERVER"></span>
+                        <span class="settings-row-secondary" data-i18n-html="OPTIONS_MCP_SERVER_SECONDARY"></span>
+                    </div>
+                    <div class="settings-row-control">
+                        <span id="mcp-version-warning" class="settings-row-warning" hidden><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M236.8,188.09,149.35,36.22h0a24.76,24.76,0,0,0-42.7,0L19.2,188.09a23.51,23.51,0,0,0,0,23.72A24.35,24.35,0,0,0,40.55,224h174.9a24.35,24.35,0,0,0,21.33-12.19A23.51,23.51,0,0,0,236.8,188.09ZM120,104a8,8,0,0,1,16,0v40a8,8,0,0,1-16,0Zm8,88a12,12,0,1,1,12-12A12,12,0,0,1,128,192Z"></path></svg></span>
+                        <button class="section-button" type="button" id="mcp-connect-button"></button>
+                    </div>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-row-label">
+                        <span class="settings-row-title" data-i18n="OPTIONS_SAVED_EDITS_TITLE"></span>
+                        <span class="settings-row-secondary" data-i18n="OPTIONS_SAVED_EDITS_SECONDARY"></span>
+                    </div>
+                    <div class="settings-row-control">
+                        <button class="section-button" type="button" id="clear-saved-edits-button"></button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </body>
+</html>

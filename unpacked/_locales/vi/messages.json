@@ -1,0 +1,1350 @@
+{
+  "ALERT_COULDNT_COMMUNICATE_WITH_TAB": {
+    "message": "Không thể giao tiếp với tab. Hãy đảm bảo Bo doi đang hoạt động trên tab hiện tại."
+  },
+  "ALERT_ISSUE_ELEMENT_NOT_FOUND": {
+    "message": "Không thể tìm thấy phần tử có vấn đề. Phần tử có thể đã bị xóa hoặc trang đã thay đổi."
+  },
+  "ALERT_NO_SELECTED_ELEMENT": {
+    "message": "Không tìm thấy phần tử mục tiêu."
+  },
+  "ASSETS_FAILED_PLURAL": {
+    "message": "tài nguyên không tải được"
+  },
+  "ASSETS_FAILED_SINGULAR": {
+    "message": "tài nguyên không tải được"
+  },
+  "BODY_REMOVE_VIEWPORT": {
+    "message": "$LABEL$ sẽ bị gỡ bỏ.",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "BODY_RESET_VIEWPORTS": {
+    "message": "Các khung nhìn của bạn sẽ được đặt lại về mặc định."
+  },
+  "BUTTON_ADD": {
+    "message": "Thêm"
+  },
+  "BUTTON_CHANGE": {
+    "message": "Thay đổi"
+  },
+  "BUTTON_CLEAR_CHANGES": {
+    "message": "Xóa Tất cả Thay đổi"
+  },
+  "BUTTON_COPIED": {
+    "message": "Đã sao chép"
+  },
+  "BUTTON_DOWNLOAD": {
+    "message": "Tải về"
+  },
+  "BUTTON_DOWNLOAD_ALL": {
+    "message": "Tải Tất cả"
+  },
+  "BUTTON_REMOVE": {
+    "message": "Gỡ bỏ"
+  },
+  "BUTTON_RESET": {
+    "message": "Đặt Lại"
+  },
+  "CHECKLIST_FEATURE_1": {
+    "message": "Kiểm tra thuộc tính phần tử khi di chuột"
+  },
+  "CHECKLIST_FEATURE_2": {
+    "message": "Box model với margin, border và padding"
+  },
+  "CHECKLIST_FEATURE_3": {
+    "message": "Tải hình ảnh và tài nguyên SVG"
+  },
+  "CHECKLIST_FEATURE_4": {
+    "message": "Trích xuất màu sắc dạng HEX, RGBA, HSL"
+  },
+  "CHECKLIST_FEATURE_5": {
+    "message": "Phủ lưới bố cục lên trang"
+  },
+  "CHECKLIST_FEATURE_6": {
+    "message": "Chụp ảnh phần tử kèm số đo"
+  },
+  "CHECKLIST_FEATURE_7": {
+    "message": "Tìm phần tử bằng bộ chọn CSS"
+  },
+  "CHECKLIST_FEATURE_8": {
+    "message": "Kiểm tra hoạt ảnh với đường cong easing"
+  },
+  "CHIP_AUDIT": {
+    "message": "Đánh giá"
+  },
+  "CHIP_EDIT": {
+    "message": "Chỉnh sửa"
+  },
+  "CHIP_EXTRACT": {
+    "message": "Trích xuất"
+  },
+  "CHIP_INSPECT": {
+    "message": "Kiểm tra"
+  },
+  "CHIP_MEASURE": {
+    "message": "Đo"
+  },
+  "CHIP_TEST": {
+    "message": "Kiểm thử"
+  },
+  "CHIP_VISUALIZE": {
+    "message": "Trực quan hóa"
+  },
+  "COMPARISON_COLUMN_FEATURE": {
+    "message": "Tính năng"
+  },
+  "COMPARISON_TITLE": {
+    "message": "Tất cả trong "
+  },
+  "CONFIRM_CLEAR_ALL_CHANGES": {
+    "message": "Bạn có chắc muốn xóa tất cả thay đổi trên trang này không?"
+  },
+  "CONFIRM_CLEAR_ELEMENT": {
+    "message": "Bạn có chắc muốn xóa các thay đổi cho phần tử này không?"
+  },
+  "CONFIRM_CLEAR_ELEMENTS": {
+    "message": "Bạn có chắc muốn xóa các thay đổi cho $1 phần tử không?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "CONFIRM_PARTIAL_EDITS_FOR_RESPONSIVE": {
+    "message": "Các thay đổi quy tắc CSS sẽ được giữ lại. Kiểu nội tuyến, chỉnh sửa mã và lớp sẽ bị loại bỏ."
+  },
+  "CSS_SELECTOR": {
+    "message": "Bộ chọn CSS"
+  },
+  "DEFAULT_ASSET_NAME": {
+    "message": "tainguyen"
+  },
+  "DEFAULT_DOWNLOAD_NAME": {
+    "message": "tap_tin_da_tai"
+  },
+  "DEFAULT_SVG_FILENAME": {
+    "message": "tainguyen.svg"
+  },
+  "DIALOG_CANCEL_BUTTON": {
+    "message": "Hủy"
+  },
+  "DIALOG_CLOSE_BUTTON": {
+    "message": "Đóng"
+  },
+  "DIALOG_CONFIRM": {
+    "message": "Xác nhận"
+  },
+  "DIALOG_OK": {
+    "message": "OK"
+  },
+  "DIALOG_SUBMIT_BUTTON": {
+    "message": "Kích hoạt"
+  },
+  "DIALOG_TITLE_CLEAR_ALL_CHANGES": {
+    "message": "Xóa tất cả thay đổi"
+  },
+  "DIALOG_TITLE_CLEAR_ELEMENT": {
+    "message": "Xóa phần tử"
+  },
+  "DIALOG_TITLE_CUSTOM_VIEWPORT": {
+    "message": "Khung Nhìn Tùy Chỉnh"
+  },
+  "DIALOG_TITLE_ELEMENT_NOT_FOUND": {
+    "message": "Không tìm thấy phần tử"
+  },
+  "DIALOG_TITLE_PARTIAL_EDITS_FOR_RESPONSIVE": {
+    "message": "Một Số Thay Đổi Sẽ Không Được Giữ Lại"
+  },
+  "DIALOG_TITLE_RESET_VIEWPORTS": {
+    "message": "Đặt Lại Khung Nhìn"
+  },
+  "DIALOG_TITLE_TAB_UNAVAILABLE": {
+    "message": "Tab không khả dụng"
+  },
+  "DISMISS_LABEL": {
+    "message": "Đóng"
+  },
+  "DOCK_BREAKPOINTS": {
+    "message": "Breakpoints"
+  },
+  "DOCK_COPY": {
+    "message": "Sao chép"
+  },
+  "DOCK_CUT": {
+    "message": "Cut"
+  },
+  "DOCK_DELETE": {
+    "message": "Xóa"
+  },
+  "DOCK_DETECT_TECH": {
+    "message": "Công nghệ Trang"
+  },
+  "DOCK_DETECT_TECH_DETECTING": {
+    "message": "Đang phát hiện..."
+  },
+  "DOCK_DETECT_TECH_NONE_DETECTED": {
+    "message": "Không phát hiện công nghệ nào."
+  },
+  "DOCK_DETECT_TECH_RESPONSIVE_ERROR": {
+    "message": "Phát hiện công nghệ không khả dụng trong chế độ responsive."
+  },
+  "DOCK_DUPLICATE": {
+    "message": "Nhân bản"
+  },
+  "DOCK_EDIT_MODE": {
+    "message": "Chỉnh sửa"
+  },
+  "DOCK_EDIT_TEXT": {
+    "message": "Sửa văn bản"
+  },
+  "DOCK_EYEDROPPER": {
+    "message": "Chọn Màu"
+  },
+  "DOCK_FIND_ELEMENT": {
+    "message": "Tìm Phần tử"
+  },
+  "DOCK_INSPECT_MODE": {
+    "message": "Kiểm tra"
+  },
+  "DOCK_MCP_CONNECTED": {
+    "message": "Đã kết nối MCP"
+  },
+  "DOCK_MCP_CONNECT_AGENT": {
+    "message": "Kết nối agent"
+  },
+  "DOCK_MCP_OUTDATED": {
+    "message": "MCP đã lỗi thời"
+  },
+  "DOCK_MCP_TITLE": {
+    "message": "MCP"
+  },
+  "DOCK_MCP_WAITING": {
+    "message": "Đang chờ agent"
+  },
+  "DOCK_OPEN_PANEL": {
+    "message": "Bật/Tắt Bảng Bên"
+  },
+  "DOCK_OPEN_PANEL_UNSUPPORTED": {
+    "message": "Bảng bên không được hỗ trợ trên trình duyệt này"
+  },
+  "DOCK_PASTE": {
+    "message": "Dán"
+  },
+  "DOCK_PAUSE": {
+    "message": "Tạm dừng"
+  },
+  "DOCK_QUIT": {
+    "message": "Thoát"
+  },
+  "DOCK_REDO": {
+    "message": "Làm lại"
+  },
+  "DOCK_RESPONSIVE_MODE": {
+    "message": "Chế độ Responsive"
+  },
+  "DOCK_RULER": {
+    "message": "Thước Trang"
+  },
+  "DOCK_SELECT_CHILD": {
+    "message": "Chọn Phần tử Con"
+  },
+  "DOCK_SELECT_PARENT": {
+    "message": "Chọn Phần tử Cha"
+  },
+  "DOCK_TAKE_SCREENSHOT": {
+    "message": "Chụp Màn hình"
+  },
+  "DOCK_TOGGLE_GRID": {
+    "message": "Lưới Bố cục"
+  },
+  "DOCK_TOGGLE_INSPECT": {
+    "message": "Trình kiểm tra"
+  },
+  "DOCK_UNDO": {
+    "message": "Hoàn tác"
+  },
+  "DOCK_XRAY_MODE": {
+    "message": "Chế độ X-Ray"
+  },
+  "EDITOR_CROSS_ORIGIN_MISSING": {
+    "message": "Một số kiểu có thể bị thiếu."
+  },
+  "EDIT_COUNT_NONE": {
+    "message": "Không có chỉnh sửa"
+  },
+  "EDIT_COUNT_ONE": {
+    "message": "1 chỉnh sửa"
+  },
+  "EDIT_COUNT_OTHER": {
+    "message": "$1 chỉnh sửa",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "ELEMENTS": {
+    "message": "Phần tử"
+  },
+  "ELEMENTS_COUNT_ONE": {
+    "message": "1 phần tử"
+  },
+  "ELEMENTS_COUNT_OTHER": {
+    "message": "$1 phần tử",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "EMPTY_CANVAS": {
+    "message": "Thêm một khung nhìn để bắt đầu."
+  },
+  "EMPTY_MESSAGE": {
+    "message": "Chọn một phần tử"
+  },
+  "EMPTY_MESSAGE_EDIT": {
+    "message": "Nhấp vào một phần tử để chọn"
+  },
+  "EMPTY_MESSAGE_INSPECT": {
+    "message": "Nhấp vào một phần tử để chọn"
+  },
+  "ENABLE_CROSS_ORIGIN": {
+    "message": "Cấp quyền truy cập"
+  },
+  "EXT_DESCRIPTION": {
+    "message": "Công cụ kiểm tra web cho nhà thiết kế và lập trình viên. Đo phần tử, trích xuất CSS và màu sắc, chụp ảnh màn hình và nhiều hơn nữa."
+  },
+  "EXT_NAME": {
+    "message": "Bo doi - Đo và Kiểm tra Web"
+  },
+  "EXT_NAME_SHORT": {
+    "message": "Bo doi"
+  },
+  "FEATURES_SUBTITLE": {
+    "message": "Trích xuất tài nguyên chỉ một cú nhấp, kiểm tra CSS trực quan và các công cụ phân tích nâng cao. Được xây dựng cho cách lập trình viên và nhà thiết kế thực sự làm việc."
+  },
+  "FEATURES_TITLE": {
+    "message": "Mọi Tính năng Đều Có trong "
+  },
+  "FEATURE_A11Y_TITLE": {
+    "message": "Vấn đề về khả năng truy cập"
+  },
+  "FEATURE_ACCESSIBILITY_DESCRIPTION": {
+    "message": "Tự động phát hiện và đánh dấu lỗi tương phản WCAG kèm khuyến nghị có thể áp dụng."
+  },
+  "FEATURE_ACCESSIBILITY_TITLE": {
+    "message": "Vấn đề Trợ năng"
+  },
+  "FEATURE_ANIMATION_DESCRIPTION": {
+    "message": "Trực quan hóa đường cong thời gian hoạt ảnh CSS và sao chép thuộc tính CSS hoạt ảnh."
+  },
+  "FEATURE_ANIMATION_TITLE": {
+    "message": "Phân tích Hoạt ảnh"
+  },
+  "FEATURE_ASSET_DESCRIPTION": {
+    "message": "Trích xuất và tải hình ảnh, SVG và tài nguyên vector trực tiếp từ bất kỳ trang web nào."
+  },
+  "FEATURE_ASSET_TITLE": {
+    "message": "Trích xuất Tài nguyên"
+  },
+  "FEATURE_BOX_SHADOW_DESCRIPTION": {
+    "message": "Phân tách tương tác box shadow nhiều lớp với chế độ xem bung từng thành phần bóng đổ."
+  },
+  "FEATURE_BOX_SHADOW_TITLE": {
+    "message": "Trực quan hóa Box Shadow"
+  },
+  "FEATURE_BREAKPOINTS_DESCRIPTION": {
+    "message": "Phát hiện và trực quan hóa breakpoint media query CSS với đường viền màu trực tiếp trên trang."
+  },
+  "FEATURE_BREAKPOINTS_TITLE": {
+    "message": "Breakpoints"
+  },
+  "FEATURE_CANVAS_DESCRIPTION": {
+    "message": "Kiểm tra phần tử Canvas HTML5. Xem kích thước, kiểu ngữ cảnh và trích xuất bảng màu."
+  },
+  "FEATURE_CANVAS_TITLE": {
+    "message": "Kiểm tra Canvas"
+  },
+  "FEATURE_COLOR_DESCRIPTION": {
+    "message": "Trích xuất và sao chép bảng màu từ phần tử được chọn với các giá trị hex, RGB và HSL."
+  },
+  "FEATURE_COLOR_TITLE": {
+    "message": "Trích xuất Màu"
+  },
+  "FEATURE_COMPUTED_CSS_TITLE": {
+    "message": "CSS đã tính toán"
+  },
+  "FEATURE_CSS_RULES_DESCRIPTION": {
+    "message": "Xem các quy tắc CSS từ stylesheet áp dụng cho bất kỳ phần tử nào, nhóm theo tệp nguồn."
+  },
+  "FEATURE_CSS_RULES_TITLE": {
+    "message": "Trình Kiểm tra Quy tắc CSS"
+  },
+  "FEATURE_DISTANCE_TITLE": {
+    "message": "Đo khoảng cách"
+  },
+  "FEATURE_EDIT_TITLE": {
+    "message": "Chỉnh sửa CSS trực tiếp với theo dõi thay đổi"
+  },
+  "FEATURE_ELEMENT_HOVER_TITLE": {
+    "message": "Kiểm tra phần tử"
+  },
+  "FEATURE_ELEMENT_SCREENSHOT_TITLE": {
+    "message": "Chụp ảnh phần tử"
+  },
+  "FEATURE_EYEDROPPER_TITLE": {
+    "message": "Chọn màu"
+  },
+  "FEATURE_GRADIENT_DESCRIPTION": {
+    "message": "Trực quan hóa gradient CSS với phân tích chi tiết các điểm dừng và vị trí màu."
+  },
+  "FEATURE_GRADIENT_TITLE": {
+    "message": "Trình Kiểm tra Gradient"
+  },
+  "FEATURE_GRID_DESCRIPTION": {
+    "message": "Phủ lưới cột tùy chỉnh để kiểm tra căn chỉnh và khoảng cách thiết kế."
+  },
+  "FEATURE_GRID_TITLE": {
+    "message": "Phủ Lưới Bố cục"
+  },
+  "FEATURE_HEADING": {
+    "message": "Mở khóa bộ công cụ phát triển web đầy đủ"
+  },
+  "FEATURE_HTML_TEXT_DESCRIPTION": {
+    "message": "Sao chép, dán, nhân bản hoặc xóa các phần tử trực tiếp trên trang. Chế độ chỉnh sửa văn bản cho phép bạn viết lại nội dung trang tại chỗ."
+  },
+  "FEATURE_HTML_TEXT_TITLE": {
+    "message": "Chỉnh sửa HTML và Văn bản"
+  },
+  "FEATURE_INSPECTOR_DESCRIPTION": {
+    "message": "Thuộc tính phần tử chi tiết khi di chuột. Nhấn Space để ghim trình kiểm tra và so sánh nhiều phần tử cạnh nhau."
+  },
+  "FEATURE_INSPECTOR_TITLE": {
+    "message": "Trình Kiểm tra Nổi"
+  },
+  "FEATURE_LAYOUT_DESCRIPTION": {
+    "message": "Trực quan hóa bố cục Flexbox và Grid với phân tích rõ ràng về căn chỉnh, hướng và cấu trúc."
+  },
+  "FEATURE_LAYOUT_TITLE": {
+    "message": "Trình Trực quan Bố cục"
+  },
+  "FEATURE_META_TAGS_TITLE": {
+    "message": "Thẻ meta"
+  },
+  "FEATURE_PAGE_RULERS_TITLE": {
+    "message": "Thước trang"
+  },
+  "FEATURE_PAGE_WEIGHT_DESCRIPTION": {
+    "message": "Xem chính xác những gì được tải trên trang, phân chia theo script, stylesheet, hình ảnh, font và nhiều hơn, với biểu đồ thanh xếp chồng cập nhật trực tiếp khi tài nguyên được tải."
+  },
+  "FEATURE_PAGE_WEIGHT_TITLE": {
+    "message": "Dung lượng Trang"
+  },
+  "FEATURE_PARENT_CHILD_TITLE": {
+    "message": "Chọn cha / con"
+  },
+  "FEATURE_RESPONSIVE_DESCRIPTION": {
+    "message": "Kiểm tra thiết kế trên nhiều viewport thiết bị với trình giả lập tương tác và kích thước tùy chỉnh."
+  },
+  "FEATURE_RESPONSIVE_TITLE": {
+    "message": "Chế độ Responsive"
+  },
+  "FEATURE_SCREENSHOT_DESCRIPTION": {
+    "message": "Chụp ảnh đã cắt của phần tử được chọn, kèm margin và số đo."
+  },
+  "FEATURE_SCREENSHOT_TITLE": {
+    "message": "Ảnh chụp Phần tử"
+  },
+  "FEATURE_SELECTOR_DESCRIPTION": {
+    "message": "Tìm và đánh dấu phần tử bằng bộ chọn CSS để nhanh chóng định vị phần tử cụ thể."
+  },
+  "FEATURE_SELECTOR_TITLE": {
+    "message": "Tìm kiếm Bộ chọn CSS"
+  },
+  "FEATURE_SEO_TITLE": {
+    "message": "Vấn đề SEO"
+  },
+  "FEATURE_SOCIAL_PREVIEW_TITLE": {
+    "message": "Xem trước trên mạng xã hội"
+  },
+  "FEATURE_TAILWIND_DESCRIPTION": {
+    "message": "Chuyển đổi tức thì các style đã tính của bất kỳ phần tử nào thành class tiện ích Tailwind."
+  },
+  "FEATURE_TAILWIND_TITLE": {
+    "message": "Trình Tạo Tailwind CSS"
+  },
+  "FEATURE_TECH_DETECTION_DESCRIPTION": {
+    "message": "Nhận diện các framework, thư viện và công cụ vận hành bất kỳ website nào với hơn 150 công nghệ được hỗ trợ."
+  },
+  "FEATURE_TECH_DETECTION_TITLE": {
+    "message": "Phát hiện Công nghệ"
+  },
+  "FEATURE_TRANSITION_DESCRIPTION": {
+    "message": "Trực quan hóa CSS transition và đường cong hàm thời gian cùng với hoạt ảnh."
+  },
+  "FEATURE_TRANSITION_TITLE": {
+    "message": "Trình Kiểm tra Transition"
+  },
+  "FEATURE_TYPOGRAPHY_DESCRIPTION": {
+    "message": "Phân tích và trích xuất tất cả kiểu chữ được sử dụng trong vùng chọn."
+  },
+  "FEATURE_TYPOGRAPHY_TITLE": {
+    "message": "Phân tích Kiểu Chữ"
+  },
+  "FEATURE_XRAY_DESCRIPTION": {
+    "message": "Tiết lộ cấu trúc nền của trang bằng cách viền tất cả các phần tử cùng lúc."
+  },
+  "FEATURE_XRAY_TITLE": {
+    "message": "Chế độ X-Ray"
+  },
+  "FIND_ELEMENT": {
+    "message": "Tìm Phần tử"
+  },
+  "FIND_HIDDEN_COUNT": {
+    "message": "$1 bị ẩn",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "FOOTER_PRIVACY_POLICY": {
+    "message": "Chính sách Bảo mật"
+  },
+  "FOOTER_TERMS": {
+    "message": "Điều khoản"
+  },
+  "HERO_TITLE": {
+    "message": "Đo lường, kiểm tra và chỉnh sửa mọi thứ trên web"
+  },
+  "INSPECT_PIN_HINT": {
+    "message": "Nhấn Space để ghim"
+  },
+  "ISSUE_CONTRAST_FAILURE_AAA_MESSAGE": {
+    "message": "Tương phản văn bản $RATIO$:1 đạt AA nhưng không đạt AAA (yêu cầu $REQUIRED$:1 cho văn bản $SIZE$)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "5.2"
+      },
+      "required": {
+        "content": "$2",
+        "example": "7"
+      },
+      "size": {
+        "content": "$3",
+        "example": "normal"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AAA_RECOMMENDATION": {
+    "message": "Cân nhắc tăng tương phản lên $RATIO$:1 để tuân thủ WCAG AAA",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AA_MESSAGE": {
+    "message": "Văn bản có tỷ lệ tương phản không đủ $RATIO$:1 (yêu cầu $REQUIRED$:1 cho văn bản $SIZE$)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "3.2"
+      },
+      "required": {
+        "content": "$2",
+        "example": "4.5"
+      },
+      "size": {
+        "content": "$3",
+        "example": "normal"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AA_RECOMMENDATION": {
+    "message": "Tăng tương phản lên ít nhất $RATIO$:1 để tuân thủ WCAG AA",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "4.5"
+      }
+    }
+  },
+  "ISSUE_ICON_CONTRAST_MESSAGE": {
+    "message": "Biểu tượng có tỷ lệ tương phản không đủ $RATIO$:1 (yêu cầu $REQUIRED$:1 cho phần tử không phải văn bản)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "2.5"
+      },
+      "required": {
+        "content": "$2",
+        "example": "3"
+      }
+    }
+  },
+  "ISSUE_ICON_CONTRAST_RECOMMENDATION": {
+    "message": "Tăng tương phản lên ít nhất $RATIO$:1 để tuân thủ WCAG 1.4.11",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "LABEL_ADD_RULE": {
+    "message": "Thêm quy tắc"
+  },
+  "LABEL_ADD_VIEWPORT": {
+    "message": "Thêm Khung Nhìn"
+  },
+  "LABEL_ANIMATION": {
+    "message": "Hoạt ảnh"
+  },
+  "LABEL_ANIMATIONS": {
+    "message": "Hoạt ảnh"
+  },
+  "LABEL_ANIMATIONS_AND_TRANSITIONS": {
+    "message": "Hoạt ảnh và Chuyển động"
+  },
+  "LABEL_APPEARANCE": {
+    "message": "Giao diện"
+  },
+  "LABEL_ASSET": {
+    "message": "Tài nguyên"
+  },
+  "LABEL_ASSETS": {
+    "message": "Tài nguyên"
+  },
+  "LABEL_BACKGROUNDS": {
+    "message": "Nền"
+  },
+  "LABEL_BORDER": {
+    "message": "Viền"
+  },
+  "LABEL_BORDERS": {
+    "message": "Viền"
+  },
+  "LABEL_BOX_SHADOW": {
+    "message": "Box Shadow"
+  },
+  "LABEL_BOX_SHADOWS": {
+    "message": "Box Shadows"
+  },
+  "LABEL_CANVAS": {
+    "message": "Canvas"
+  },
+  "LABEL_CANVAS_DIMENSIONS": {
+    "message": "Kích thước Canvas"
+  },
+  "LABEL_CHANGES": {
+    "message": "Thay đổi"
+  },
+  "LABEL_CODE": {
+    "message": "Mã"
+  },
+  "LABEL_COLOR": {
+    "message": "Màu sắc"
+  },
+  "LABEL_COLORS": {
+    "message": "Màu sắc"
+  },
+  "LABEL_COLUMNS": {
+    "message": "Cột"
+  },
+  "LABEL_COMPUTED": {
+    "message": "Đã tính"
+  },
+  "LABEL_CONTEXT_TYPE": {
+    "message": "Kiểu Ngữ cảnh"
+  },
+  "LABEL_CSS": {
+    "message": "CSS"
+  },
+  "LABEL_DOCUMENT": {
+    "message": "Tài liệu"
+  },
+  "LABEL_EFFECTIVE_STYLES": {
+    "message": "Kiểu hiệu lực"
+  },
+  "LABEL_FLEX_GRID_LAYOUT": {
+    "message": "Bố cục"
+  },
+  "LABEL_GRADIENT": {
+    "message": "Gradient"
+  },
+  "LABEL_GRADIENTS": {
+    "message": "Gradient"
+  },
+  "LABEL_GUTTER": {
+    "message": "Khoảng cách"
+  },
+  "LABEL_HEIGHT": {
+    "message": "Chiều cao"
+  },
+  "LABEL_INHERITED_FROM": {
+    "message": "Kế thừa từ $SELECTOR$",
+    "placeholders": {
+      "selector": {
+        "content": "$1",
+        "example": "body"
+      }
+    }
+  },
+  "LABEL_INSTANCES": {
+    "message": "Thể hiện"
+  },
+  "LABEL_ISSUE": {
+    "message": "Vấn đề"
+  },
+  "LABEL_ISSUES": {
+    "message": "Vấn đề"
+  },
+  "LABEL_LAYOUT": {
+    "message": "Box Model"
+  },
+  "LABEL_LOADING": {
+    "message": "..."
+  },
+  "LABEL_MARGIN": {
+    "message": "Margin"
+  },
+  "LABEL_MAX_WIDTH": {
+    "message": "Chiều rộng Tối đa"
+  },
+  "LABEL_OPACITY": {
+    "message": "Độ mờ"
+  },
+  "LABEL_PADDING": {
+    "message": "Padding"
+  },
+  "LABEL_PIXEL_RATIO": {
+    "message": "Tỷ lệ Pixel"
+  },
+  "LABEL_PW_CSS": {
+    "message": "Stylesheets"
+  },
+  "LABEL_PW_DOCUMENT": {
+    "message": "Tài liệu"
+  },
+  "LABEL_PW_FETCH": {
+    "message": "Fetch/XHR"
+  },
+  "LABEL_PW_FONTS": {
+    "message": "Font"
+  },
+  "LABEL_PW_IMAGES": {
+    "message": "Hình ảnh"
+  },
+  "LABEL_PW_MEDIA": {
+    "message": "Phương tiện"
+  },
+  "LABEL_PW_OTHER": {
+    "message": "Khác"
+  },
+  "LABEL_PW_SCRIPTS": {
+    "message": "Scripts"
+  },
+  "LABEL_PW_TOTAL": {
+    "message": "Tổng"
+  },
+  "LABEL_REFRESH_VIEWPORT": {
+    "message": "Tải lại"
+  },
+  "LABEL_ROTATE_VIEWPORT": {
+    "message": "Xoay"
+  },
+  "LABEL_RULES": {
+    "message": "Quy tắc"
+  },
+  "LABEL_SCALABLE": {
+    "message": "vector"
+  },
+  "LABEL_SELECTION_COLORS": {
+    "message": "Màu sắc"
+  },
+  "LABEL_SOURCE": {
+    "message": "Nguồn"
+  },
+  "LABEL_SVG": {
+    "message": "svg"
+  },
+  "LABEL_TAILWIND": {
+    "message": "Tailwind"
+  },
+  "LABEL_TECHNOLOGIES": {
+    "message": "Công nghệ"
+  },
+  "LABEL_TECHNOLOGY": {
+    "message": "Công nghệ"
+  },
+  "LABEL_TEXT": {
+    "message": "Văn bản"
+  },
+  "LABEL_TEXT_CONTENT": {
+    "message": "Nội dung Văn bản"
+  },
+  "LABEL_TRANSITION": {
+    "message": "Hiệu ứng chuyển"
+  },
+  "LABEL_TRANSITIONS": {
+    "message": "Hiệu ứng chuyển"
+  },
+  "LABEL_TYPOGRAPHY_STYLE": {
+    "message": "Kiểu Chữ"
+  },
+  "LABEL_TYPOGRAPHY_STYLES": {
+    "message": "Kiểu Chữ"
+  },
+  "LABEL_WHITESPACE_ONLY_CHANGE": {
+    "message": "Chỉ thay đổi khoảng trắng"
+  },
+  "LABEL_WIDTH": {
+    "message": "Chiều rộng"
+  },
+  "LABEL_ZOOM": {
+    "message": "Thu phóng"
+  },
+  "LABEL_ZOOM_IN": {
+    "message": "Phóng to"
+  },
+  "LABEL_ZOOM_OUT": {
+    "message": "Thu nhỏ"
+  },
+  "LEGACY_LOGIN_LINK": {
+    "message": "Đăng nhập Cũ"
+  },
+  "LEGACY_LOGIN_TEXT": {
+    "message": "Bạn đã mua Bo doi Pro trước v3.0.0?"
+  },
+  "MATCHED_CROSS_ORIGIN_HIDDEN": {
+    "message": "$COUNT$ biểu định kiểu khác nguồn gốc bị ẩn.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "MCP_CONNECT_HINT": {
+    "message": "Sao chép lời nhắc này và dán vào AI agent của bạn:"
+  },
+  "MCP_UNKNOWN_AGENT": {
+    "message": "AI agent"
+  },
+  "MCP_WAITING_FOR_AGENT": {
+    "message": "Đang chờ agent kết nối..."
+  },
+  "NO_CHANGES_MESSAGE": {
+    "message": "Không tìm thấy thay đổi"
+  },
+  "NO_PAGE_INFO_MESSAGE": {
+    "message": "Không tìm thấy thông tin trang"
+  },
+  "OPTIONS_COLOR_FORMAT_SECONDARY": {
+    "message": "Được dùng bởi trình kiểm tra và bộ chọn màu"
+  },
+  "OPTIONS_MCP_CONNECT_BUTTON": {
+    "message": "Kết nối"
+  },
+  "OPTIONS_MCP_DISCONNECT_BUTTON": {
+    "message": "Ngắt kết nối"
+  },
+  "OPTIONS_MCP_SERVER_SECONDARY": {
+    "message": "Cho phép tác nhân AI kiểm tra hoặc chỉnh sửa. <a href=\"https://www.bodoi.com/docs/mcp.html\" target=\"_blank\">Hướng dẫn cài đặt</a>"
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_BODY": {
+    "message": "Máy chủ MCP của bạn là phiên bản $1, nhưng tiện ích này yêu cầu $2 hoặc mới hơn. Cập nhật gói npm hoặc khởi động lại ứng dụng AI.",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "required": {
+        "content": "$2"
+      }
+    }
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_TITLE": {
+    "message": "Máy chủ MCP đã lỗi thời"
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_TOOLTIP": {
+    "message": "Máy chủ MCP đã lỗi thời. Cập nhật qua ứng dụng AI của bạn."
+  },
+  "OPTIONS_MCP_VERSION_UNKNOWN": {
+    "message": "không xác định"
+  },
+  "OPTIONS_PAGE_TITLE": {
+    "message": "Cài đặt"
+  },
+  "OPTIONS_ROW_COLOR_FORMAT": {
+    "message": "Định dạng màu"
+  },
+  "OPTIONS_ROW_MCP_SERVER": {
+    "message": "Máy chủ MCP"
+  },
+  "OPTIONS_ROW_SCREENSHOT_HIGHLIGHTS": {
+    "message": "Chụp Điểm Nổi Bật"
+  },
+  "OPTIONS_ROW_SCREENSHOT_PADDING": {
+    "message": "Đệm Ảnh Chụp"
+  },
+  "OPTIONS_ROW_THEME": {
+    "message": "Chủ đề"
+  },
+  "OPTIONS_SAVED_EDITS_CLEAR": {
+    "message": "Xóa"
+  },
+  "OPTIONS_SAVED_EDITS_CONFIRM_BODY": {
+    "message": "Thao tác này xóa các chỉnh sửa CSS đã ghi nhớ của mọi trang."
+  },
+  "OPTIONS_SAVED_EDITS_CONFIRM_TITLE": {
+    "message": "Xóa các chỉnh sửa đã lưu?"
+  },
+  "OPTIONS_SAVED_EDITS_SECONDARY": {
+    "message": "Các chỉnh sửa CSS được ghi nhớ theo từng trang và khôi phục khi bạn kích hoạt Bo doi ở đó."
+  },
+  "OPTIONS_SAVED_EDITS_TITLE": {
+    "message": "Chỉnh sửa đã lưu"
+  },
+  "OPTIONS_SCREENSHOT_HIGHLIGHTS_SECONDARY": {
+    "message": "Chụp lớp phủ kích thước trong ảnh chụp"
+  },
+  "OPTIONS_SCREENSHOT_PADDING_SECONDARY": {
+    "message": "Thêm nền đệm vào ảnh chụp"
+  },
+  "OPTIONS_SECTION_APPEARANCE": {
+    "message": "Giao diện"
+  },
+  "OPTIONS_SECTION_EXTENSION": {
+    "message": "Tiện ích"
+  },
+  "OPTIONS_SECTION_SCREENSHOTS": {
+    "message": "Ảnh chụp màn hình"
+  },
+  "OPTIONS_SECTION_TERMINAL_AI": {
+    "message": "AI Terminal"
+  },
+  "PAGE_TAB_META_OG": {
+    "message": "Open Graph"
+  },
+  "PAGE_TAB_META_SEO": {
+    "message": "SEO"
+  },
+  "PAGE_TAB_META_TAGS": {
+    "message": "Meta Tags"
+  },
+  "PAGE_TAB_META_TWITTER": {
+    "message": "Twitter Card"
+  },
+  "PAGE_TAB_NO_METADATA": {
+    "message": "Không tìm thấy metadata"
+  },
+  "PAGE_TAB_OG_IMAGE": {
+    "message": "Hình ảnh Open Graph"
+  },
+  "PAGE_TAB_PAGE_WEIGHT": {
+    "message": "Dung lượng Trang"
+  },
+  "PAGE_TAB_SOCIAL_PREVIEW": {
+    "message": "Xem trước Mạng Xã hội"
+  },
+  "PAGE_TAB_TECHNOLOGIES": {
+    "message": "Công nghệ"
+  },
+  "PAGE_TAB_UNTITLED": {
+    "message": "Trang Không có Tiêu đề"
+  },
+  "PW_BUFFER_FULL": {
+    "message": "Bộ đệm tài nguyên đã đầy, một số mục có thể bị thiếu"
+  },
+  "PW_HIDDEN_NOTE": {
+    "message": "$COUNT$ tài nguyên cross-origin bị ẩn",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "RESPONSIVE_FRAME_BLOCKED_BODY": {
+    "message": "Trang này chặn việc tải trong bản xem trước.{br}{grant} để hiển thị."
+  },
+  "RESPONSIVE_FRAME_BLOCKED_GRANT": {
+    "message": "Cấp quyền truy cập"
+  },
+  "RESPONSIVE_FRAME_BLOCKED_STILL": {
+    "message": "Trang này chặn việc tải trong bản xem trước.{br}Trang làm điều này bằng một tập lệnh hoặc chính sách trong trang mà không thể loại bỏ."
+  },
+  "RESPONSIVE_FRAME_TIMEOUT": {
+    "message": "Trang này chưa tải xong."
+  },
+  "RESTORE_ACCESS_ERROR": {
+    "message": "Không thể khôi phục quyền truy cập. Vui lòng thử đăng nhập."
+  },
+  "RESTORE_ACCESS_LINK": {
+    "message": "Khôi phục Giao dịch"
+  },
+  "REVIEWS_SUBTITLE": {
+    "message": "Đây là những gì họ chia sẻ về việc sử dụng Bo doi."
+  },
+  "REVIEWS_TITLE": {
+    "message": "Được Lập trình viên và Nhà Thiết kế Yêu Thích"
+  },
+  "RULES_COUNT_ONE": {
+    "message": "1 quy tắc"
+  },
+  "RULES_COUNT_OTHER": {
+    "message": "$1 quy tắc",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "BO_DOI_PRO": {
+    "message": "Bo doi "
+  },
+  "SEO_DESCRIPTION_TOO_LONG_MESSAGE": {
+    "message": "Mô tả dài hơn 160 ký tự"
+  },
+  "SEO_DESCRIPTION_TOO_LONG_RECOMMENDATION": {
+    "message": "Công cụ tìm kiếm có thể cắt bớt mô tả dài. Cắt còn 120 đến 160 ký tự."
+  },
+  "SEO_DESCRIPTION_TOO_SHORT_MESSAGE": {
+    "message": "Mô tả ngắn hơn 70 ký tự"
+  },
+  "SEO_DESCRIPTION_TOO_SHORT_RECOMMENDATION": {
+    "message": "Hướng tới 120 đến 160 ký tự cho đoạn mô tả có tính mô tả."
+  },
+  "SEO_LABEL_ISSUE": {
+    "message": "Vấn đề SEO"
+  },
+  "SEO_LABEL_ISSUES": {
+    "message": "Vấn đề SEO"
+  },
+  "SEO_MISSING_ALT_MESSAGE": {
+    "message": "Hình ảnh thiếu văn bản alt"
+  },
+  "SEO_MISSING_ALT_RECOMMENDATION": {
+    "message": "Thêm thuộc tính alt cho mọi img. Sử dụng alt=\"\" cho hình ảnh thuần trang trí."
+  },
+  "SEO_MISSING_CANONICAL_MESSAGE": {
+    "message": "Thiếu link canonical"
+  },
+  "SEO_MISSING_CANONICAL_RECOMMENDATION": {
+    "message": "Thêm <link rel=\"canonical\"> để khai báo URL ưu tiên cho trang này."
+  },
+  "SEO_MISSING_DESCRIPTION_MESSAGE": {
+    "message": "Thiếu meta description"
+  },
+  "SEO_MISSING_DESCRIPTION_RECOMMENDATION": {
+    "message": "Thêm meta description để tóm tắt trang cho kết quả tìm kiếm."
+  },
+  "SEO_MISSING_H1_MESSAGE": {
+    "message": "Thiếu tiêu đề H1"
+  },
+  "SEO_MISSING_H1_RECOMMENDATION": {
+    "message": "Mỗi trang nên có một H1 rõ ràng mô tả chủ đề chính."
+  },
+  "SEO_MISSING_LANG_MESSAGE": {
+    "message": "Thiếu thuộc tính lang trên <html>"
+  },
+  "SEO_MISSING_LANG_RECOMMENDATION": {
+    "message": "Đặt thuộc tính lang (ví dụ: lang=\"vi\") để giúp công cụ tìm kiếm và trình đọc màn hình."
+  },
+  "SEO_MISSING_OG_DESCRIPTION_MESSAGE": {
+    "message": "Thiếu og:description"
+  },
+  "SEO_MISSING_OG_DESCRIPTION_RECOMMENDATION": {
+    "message": "Thêm <meta property=\"og:description\"> để xem trước khi chia sẻ."
+  },
+  "SEO_MISSING_OG_IMAGE_MESSAGE": {
+    "message": "Thiếu og:image"
+  },
+  "SEO_MISSING_OG_IMAGE_RECOMMENDATION": {
+    "message": "Thêm <meta property=\"og:image\"> để các link được chia sẻ bao gồm hình ảnh xem trước."
+  },
+  "SEO_MISSING_OG_TITLE_MESSAGE": {
+    "message": "Thiếu og:title"
+  },
+  "SEO_MISSING_OG_TITLE_RECOMMENDATION": {
+    "message": "Thêm <meta property=\"og:title\"> để các link được chia sẻ hiển thị tiêu đề rõ ràng."
+  },
+  "SEO_MISSING_TITLE_MESSAGE": {
+    "message": "Thiếu thẻ title"
+  },
+  "SEO_MISSING_TITLE_RECOMMENDATION": {
+    "message": "Thêm phần tử <title> mô tả vào phần head của trang."
+  },
+  "SEO_MISSING_VIEWPORT_MESSAGE": {
+    "message": "Thiếu meta tag viewport"
+  },
+  "SEO_MISSING_VIEWPORT_RECOMMENDATION": {
+    "message": "Thêm <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> để hiển thị trên thiết bị di động."
+  },
+  "SEO_MULTIPLE_H1_MESSAGE": {
+    "message": "Trang có nhiều hơn một H1"
+  },
+  "SEO_MULTIPLE_H1_RECOMMENDATION": {
+    "message": "Sử dụng một H1 duy nhất cho mỗi trang và hạ các tiêu đề phụ xuống H2 hoặc H3."
+  },
+  "SEO_ROBOTS_NOINDEX_MESSAGE": {
+    "message": "Trang được đặt thành noindex"
+  },
+  "SEO_ROBOTS_NOINDEX_RECOMMENDATION": {
+    "message": "Công cụ tìm kiếm sẽ không lập chỉ mục trang này. Xóa noindex nếu điều này không có chủ ý."
+  },
+  "SEO_TITLE_TOO_LONG_MESSAGE": {
+    "message": "Tiêu đề dài hơn 60 ký tự"
+  },
+  "SEO_TITLE_TOO_LONG_RECOMMENDATION": {
+    "message": "Công cụ tìm kiếm có thể cắt bớt tiêu đề dài. Rút ngắn xuống 50 đến 60 ký tự."
+  },
+  "SEO_TITLE_TOO_SHORT_MESSAGE": {
+    "message": "Tiêu đề ngắn hơn 30 ký tự"
+  },
+  "SEO_TITLE_TOO_SHORT_RECOMMENDATION": {
+    "message": "Hướng tới 50 đến 60 ký tự để tiêu đề có tính mô tả trong kết quả tìm kiếm."
+  },
+  "SHORTCUT_CHILD": {
+    "message": "Chọn phần tử con"
+  },
+  "SHORTCUT_COPY": {
+    "message": "Sao chép"
+  },
+  "SHORTCUT_DESELECT": {
+    "message": "Bỏ chọn"
+  },
+  "SHORTCUT_PARENT": {
+    "message": "Chọn phần tử cha"
+  },
+  "SHORTCUT_PASTE": {
+    "message": "Dán"
+  },
+  "SHORTCUT_REDO": {
+    "message": "Làm lại"
+  },
+  "SHORTCUT_TOGGLE_PANEL": {
+    "message": "Bật/tắt bảng điều khiển"
+  },
+  "SHORTCUT_TOGGLE_RULER": {
+    "message": "Bật/tắt tiện ích"
+  },
+  "SHORTCUT_UNDO": {
+    "message": "Hoàn tác"
+  },
+  "SOCIAL_PREVIEW_FACEBOOK": {
+    "message": "Facebook"
+  },
+  "SOCIAL_PREVIEW_LINKEDIN": {
+    "message": "LinkedIn"
+  },
+  "SOCIAL_PREVIEW_X": {
+    "message": "X"
+  },
+  "SOCIAL_PROOF_TEXT": {
+    "message": "Được hơn 50.000 nhà thiết kế và lập trình viên sử dụng"
+  },
+  "TAB_ELEMENT": {
+    "message": "Phần tử"
+  },
+  "TAB_PAGE": {
+    "message": "Trang"
+  },
+  "TEXT_SIZE_LARGE": {
+    "message": "lớn"
+  },
+  "TEXT_SIZE_NORMAL": {
+    "message": "thường"
+  },
+  "THEME": {
+    "message": "Giao diện"
+  },
+  "THEME_DARK": {
+    "message": "Tối"
+  },
+  "THEME_LIGHT": {
+    "message": "Sáng"
+  },
+  "THEME_SYSTEM": {
+    "message": "Hệ thống"
+  },
+  "TITLE_COLOR_SCHEME": {
+    "message": "Chế Độ Màu"
+  },
+  "TITLE_FRAME_LAYOUT": {
+    "message": "Bố Cục Khung"
+  },
+  "TITLE_INVALID_PROPERTY": {
+    "message": "Thuộc tính không xác định"
+  },
+  "TITLE_INVALID_VALUE": {
+    "message": "Giá trị không hợp lệ"
+  },
+  "TITLE_MORE_ACTIONS": {
+    "message": "Thêm Tác Vụ"
+  },
+  "TITLE_MOVE_LEFT": {
+    "message": "Di Chuyển Sang Trái"
+  },
+  "TITLE_MOVE_RIGHT": {
+    "message": "Di Chuyển Sang Phải"
+  },
+  "TITLE_NOT_INHERITED": {
+    "message": "Không được kế thừa bởi phần tử này"
+  },
+  "TITLE_OVERRIDDEN_BY": {
+    "message": "Bị ghi đè bởi $SELECTOR$",
+    "placeholders": {
+      "selector": {
+        "content": "$1",
+        "example": ".card"
+      }
+    }
+  },
+  "TITLE_OVERRIDDEN_HIDDEN": {
+    "message": "Bị ghi đè bởi một stylesheet mà Bo doi không thể thấy"
+  },
+  "TITLE_OVERRIDDEN_HIDDEN_GRANT": {
+    "message": "Bị ghi đè bởi một stylesheet mà Bo doi không thể thấy. Cấp quyền truy cập cross-origin để xem."
+  },
+  "TITLE_REMOVE": {
+    "message": "Gỡ Bỏ Khung Nhìn"
+  },
+  "TITLE_RESET_VIEWPORTS": {
+    "message": "Đặt Lại Khung Nhìn"
+  },
+  "TITLE_SYNC_SCROLLING": {
+    "message": "Đồng Bộ Cuộn"
+  },
+  "TOAST_EDITS_RESTORED_MANY": {
+    "message": "Đã khôi phục $COUNT$ chỉnh sửa đã lưu",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOAST_EDITS_RESTORED_ONE": {
+    "message": "Đã khôi phục 1 chỉnh sửa đã lưu"
+  },
+  "TOAST_SCROLL_SYNC_OFF": {
+    "message": "Đồng bộ cuộn đã tự tắt vì trang này liên tục cuộn ngược lại."
+  },
+  "TOOLTIP_CHILD": {
+    "message": "Chọn Phần tử Con"
+  },
+  "TOOLTIP_COPY": {
+    "message": "Sao chép ($mod$+C)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_CUT": {
+    "message": "Cắt ($mod$+X)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_DELETE": {
+    "message": "Xóa ($key$)",
+    "placeholders": {
+      "key": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_DUPLICATE": {
+    "message": "Nhân bản ($mod$+D)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_PARENT": {
+    "message": "Chọn Phần tử Cha"
+  },
+  "TOOLTIP_PASTE": {
+    "message": "Dán ($mod$+V)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_REDO": {
+    "message": "Làm lại ($mod$+$shift$+Z)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      },
+      "shift": {
+        "content": "$2"
+      }
+    }
+  },
+  "TOOLTIP_SELECT": {
+    "message": "Chế độ Chọn"
+  },
+  "TOOLTIP_UNDO": {
+    "message": "Hoàn tác ($mod$+Z)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TRUSTED_BY_TEXT": {
+    "message": "Được các chuyên gia tin dùng tại"
+  },
+  "UNLOCK_PRO_SEE_MORE": {
+    "message": "Mua Pro để xem thêm $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "VIDEO_PLAY_BUTTON": {
+    "message": "Xem Bo doi Hoạt động"
+  },
+  "WARN_OVERFLOW": {
+    "message": "Nội dung tràn theo chiều ngang"
+  },
+  "DOCK_DESIGN_OVERLAY": {
+    "message": "Đè ảnh thiết kế"
+  },
+  "DOCK_GUIDES": {
+    "message": "Đường gióng (kéo từ thước)"
+  },
+  "DOCK_MEASURE_AREA": {
+    "message": "Kéo vùng để đo"
+  },
+  "DOCK_STYLE_AUDIT": {
+    "message": "Màu & font của trang"
+  },
+  "SCREENSHOT_PREVIEW_SAVE": {
+    "message": "Lưu ảnh"
+  },
+  "SCREENSHOT_PREVIEW_SAVED": {
+    "message": "Đã lưu"
+  },
+  "COPY_CSS": {
+    "message": "Copy CSS"
+  },
+  "COPIED": {
+    "message": "Đã copy!"
+  }
+}

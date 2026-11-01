@@ -1,0 +1,1326 @@
+{
+  "ALERT_COULDNT_COMMUNICATE_WITH_TAB": {
+    "message": "Impossible de communiquer avec l'onglet. Assurez-vous que Bo doi est actif dans l'onglet actuel."
+  },
+  "ALERT_ISSUE_ELEMENT_NOT_FOUND": {
+    "message": "Impossible de localiser l'élément du problème. Il a peut-être été supprimé ou la page a changé."
+  },
+  "ALERT_NO_SELECTED_ELEMENT": {
+    "message": "Impossible de trouver l'élément cible."
+  },
+  "ASSETS_FAILED_PLURAL": {
+    "message": "ressources n'ont pas pu être chargées"
+  },
+  "ASSETS_FAILED_SINGULAR": {
+    "message": "ressource n'a pas pu être chargée"
+  },
+  "BODY_REMOVE_VIEWPORT": {
+    "message": "$LABEL$ sera retirée.",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "BODY_RESET_VIEWPORTS": {
+    "message": "Vos fenêtres seront réinitialisées à leurs valeurs par défaut."
+  },
+  "BUTTON_ADD": {
+    "message": "Ajouter"
+  },
+  "BUTTON_CHANGE": {
+    "message": "Modifier"
+  },
+  "BUTTON_CLEAR_CHANGES": {
+    "message": "Effacer Toutes les Modifications"
+  },
+  "BUTTON_COPIED": {
+    "message": "Copié"
+  },
+  "BUTTON_DOWNLOAD": {
+    "message": "Télécharger"
+  },
+  "BUTTON_DOWNLOAD_ALL": {
+    "message": "Tout Télécharger"
+  },
+  "BUTTON_REMOVE": {
+    "message": "Retirer"
+  },
+  "BUTTON_RESET": {
+    "message": "Réinitialiser"
+  },
+  "CHECKLIST_FEATURE_1": {
+    "message": "Inspecter les propriétés au survol"
+  },
+  "CHECKLIST_FEATURE_2": {
+    "message": "Modèle de boîte avec marges, bordures, padding"
+  },
+  "CHECKLIST_FEATURE_3": {
+    "message": "Télécharger images et assets SVG"
+  },
+  "CHECKLIST_FEATURE_4": {
+    "message": "Extraire couleurs en valeurs HEX, RGBA, HSL"
+  },
+  "CHECKLIST_FEATURE_5": {
+    "message": "Superposer grille de mise en page"
+  },
+  "CHECKLIST_FEATURE_6": {
+    "message": "Capturer éléments avec mesures"
+  },
+  "CHECKLIST_FEATURE_7": {
+    "message": "Trouver éléments par sélecteur CSS"
+  },
+  "CHECKLIST_FEATURE_8": {
+    "message": "Inspecteur d'animations avec courbes easing"
+  },
+  "CHIP_AUDIT": {
+    "message": "Auditer"
+  },
+  "CHIP_EDIT": {
+    "message": "Modifier"
+  },
+  "CHIP_EXTRACT": {
+    "message": "Extraire"
+  },
+  "CHIP_INSPECT": {
+    "message": "Inspecter"
+  },
+  "CHIP_MEASURE": {
+    "message": "Mesurer"
+  },
+  "CHIP_TEST": {
+    "message": "Tester"
+  },
+  "CHIP_VISUALIZE": {
+    "message": "Visualiser"
+  },
+  "COMPARISON_COLUMN_FEATURE": {
+    "message": "Fonction"
+  },
+  "COMPARISON_TITLE": {
+    "message": "Tout dans "
+  },
+  "CONFIRM_CLEAR_ALL_CHANGES": {
+    "message": "Voulez-vous vraiment effacer toutes les modifications de cette page ?"
+  },
+  "CONFIRM_CLEAR_ELEMENT": {
+    "message": "Voulez-vous vraiment effacer les modifications de cet élément ?"
+  },
+  "CONFIRM_CLEAR_ELEMENTS": {
+    "message": "Voulez-vous vraiment effacer les modifications de $1 éléments ?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "CONFIRM_PARTIAL_EDITS_FOR_RESPONSIVE": {
+    "message": "Vos modifications de règles CSS seront conservées. Les styles en ligne et les modifications de balisage et de classes seront perdus."
+  },
+  "CSS_SELECTOR": {
+    "message": "Sélecteur CSS"
+  },
+  "DEFAULT_ASSET_NAME": {
+    "message": "ressource"
+  },
+  "DEFAULT_DOWNLOAD_NAME": {
+    "message": "fichier_téléchargé"
+  },
+  "DEFAULT_SVG_FILENAME": {
+    "message": "ressource.svg"
+  },
+  "DIALOG_CANCEL_BUTTON": {
+    "message": "Annuler"
+  },
+  "DIALOG_CLOSE_BUTTON": {
+    "message": "Fermer"
+  },
+  "DIALOG_CONFIRM": {
+    "message": "Confirmer"
+  },
+  "DIALOG_OK": {
+    "message": "OK"
+  },
+  "DIALOG_SUBMIT_BUTTON": {
+    "message": "Activer"
+  },
+  "DIALOG_TITLE_CLEAR_ALL_CHANGES": {
+    "message": "Effacer toutes les modifications"
+  },
+  "DIALOG_TITLE_CLEAR_ELEMENT": {
+    "message": "Effacer l'élément"
+  },
+  "DIALOG_TITLE_CUSTOM_VIEWPORT": {
+    "message": "Fenêtre personnalisée"
+  },
+  "DIALOG_TITLE_ELEMENT_NOT_FOUND": {
+    "message": "Élément introuvable"
+  },
+  "DIALOG_TITLE_PARTIAL_EDITS_FOR_RESPONSIVE": {
+    "message": "Certaines modifications seront perdues"
+  },
+  "DIALOG_TITLE_RESET_VIEWPORTS": {
+    "message": "Réinitialiser les fenêtres"
+  },
+  "DIALOG_TITLE_TAB_UNAVAILABLE": {
+    "message": "Onglet indisponible"
+  },
+  "DISMISS_LABEL": {
+    "message": "Ignorer"
+  },
+  "DOCK_BREAKPOINTS": {
+    "message": "Points de rupture"
+  },
+  "DOCK_COPY": {
+    "message": "Copier"
+  },
+  "DOCK_CUT": {
+    "message": "Cut"
+  },
+  "DOCK_DELETE": {
+    "message": "Supprimer"
+  },
+  "DOCK_DETECT_TECH": {
+    "message": "Technologie"
+  },
+  "DOCK_DETECT_TECH_DETECTING": {
+    "message": "Détection en cours..."
+  },
+  "DOCK_DETECT_TECH_NONE_DETECTED": {
+    "message": "Aucune technologie détectée."
+  },
+  "DOCK_DETECT_TECH_RESPONSIVE_ERROR": {
+    "message": "La détection de technologie n'est pas disponible en mode réactif."
+  },
+  "DOCK_DUPLICATE": {
+    "message": "Dupliquer"
+  },
+  "DOCK_EDIT_MODE": {
+    "message": "Modifier"
+  },
+  "DOCK_EDIT_TEXT": {
+    "message": "Modifier le texte"
+  },
+  "DOCK_EYEDROPPER": {
+    "message": "Pipette à Couleur"
+  },
+  "DOCK_FIND_ELEMENT": {
+    "message": "Trouver l'Élément"
+  },
+  "DOCK_INSPECT_MODE": {
+    "message": "Inspecter"
+  },
+  "DOCK_MCP_CONNECTED": {
+    "message": "MCP connecté"
+  },
+  "DOCK_MCP_CONNECT_AGENT": {
+    "message": "Connecter l'agent"
+  },
+  "DOCK_MCP_OUTDATED": {
+    "message": "MCP obsolète"
+  },
+  "DOCK_MCP_TITLE": {
+    "message": "MCP"
+  },
+  "DOCK_MCP_WAITING": {
+    "message": "En attente de l'agent"
+  },
+  "DOCK_OPEN_PANEL": {
+    "message": "Ouvrir le panneau latéral"
+  },
+  "DOCK_OPEN_PANEL_UNSUPPORTED": {
+    "message": "Panneau latéral non pris en charge dans ce navigateur"
+  },
+  "DOCK_PASTE": {
+    "message": "Coller"
+  },
+  "DOCK_PAUSE": {
+    "message": "Pause"
+  },
+  "DOCK_QUIT": {
+    "message": "Quitter"
+  },
+  "DOCK_REDO": {
+    "message": "Rétablir"
+  },
+  "DOCK_RESPONSIVE_MODE": {
+    "message": "Mode Responsive"
+  },
+  "DOCK_RULER": {
+    "message": "Règles de Page"
+  },
+  "DOCK_SELECT_CHILD": {
+    "message": "Sélectionner l'Enfant"
+  },
+  "DOCK_SELECT_PARENT": {
+    "message": "Sélectionner le Parent"
+  },
+  "DOCK_TAKE_SCREENSHOT": {
+    "message": "Capturer une Capture d'Écran"
+  },
+  "DOCK_TOGGLE_GRID": {
+    "message": "Grille de Mise en Page"
+  },
+  "DOCK_TOGGLE_INSPECT": {
+    "message": "Inspecteur"
+  },
+  "DOCK_UNDO": {
+    "message": "Annuler"
+  },
+  "DOCK_XRAY_MODE": {
+    "message": "Mode Rayons X"
+  },
+  "EDITOR_CROSS_ORIGIN_MISSING": {
+    "message": "Certains styles sont peut-être manquants."
+  },
+  "EDIT_COUNT_NONE": {
+    "message": "Aucune modification"
+  },
+  "EDIT_COUNT_ONE": {
+    "message": "1 modification"
+  },
+  "EDIT_COUNT_OTHER": {
+    "message": "$1 modifications",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "ELEMENTS": {
+    "message": "Éléments"
+  },
+  "ELEMENTS_COUNT_ONE": {
+    "message": "1 élément"
+  },
+  "ELEMENTS_COUNT_OTHER": {
+    "message": "$1 éléments",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "EMPTY_CANVAS": {
+    "message": "Ajoutez une fenêtre pour commencer."
+  },
+  "EMPTY_MESSAGE": {
+    "message": "Sélectionnez un élément"
+  },
+  "EMPTY_MESSAGE_EDIT": {
+    "message": "Cliquez sur un élément pour le sélectionner"
+  },
+  "EMPTY_MESSAGE_INSPECT": {
+    "message": "Cliquez sur un élément pour le sélectionner"
+  },
+  "ENABLE_CROSS_ORIGIN": {
+    "message": "Accorder l’accès"
+  },
+  "EXT_DESCRIPTION": {
+    "message": "Inspecteur web pour designers et développeurs. Mesurez éléments, extrayez CSS et couleurs, capturez écrans et plus."
+  },
+  "EXT_NAME": {
+    "message": "Bo doi - Mesurer et inspecter le web"
+  },
+  "EXT_NAME_SHORT": {
+    "message": "Bo doi"
+  },
+  "FEATURES_SUBTITLE": {
+    "message": "Extraction de ressources en un clic, inspection visuelle CSS et outils d'analyse avancés. Conçu pour la façon dont les développeurs et les designers travaillent réellement."
+  },
+  "FEATURES_TITLE": {
+    "message": "Tout inclus avec "
+  },
+  "FEATURE_A11Y_TITLE": {
+    "message": "Problèmes d'accessibilité"
+  },
+  "FEATURE_ACCESSIBILITY_DESCRIPTION": {
+    "message": "Détectez et mettez en évidence automatiquement les échecs de contraste WCAG avec des recommandations exploitables."
+  },
+  "FEATURE_ACCESSIBILITY_TITLE": {
+    "message": "Problèmes d'accessibilité"
+  },
+  "FEATURE_ANIMATION_DESCRIPTION": {
+    "message": "Visualisez les courbes de timing d'animation CSS et copiez les propriétés CSS d'animation."
+  },
+  "FEATURE_ANIMATION_TITLE": {
+    "message": "Analyse d'animation"
+  },
+  "FEATURE_ASSET_DESCRIPTION": {
+    "message": "Extrayez et téléchargez des images, des SVG et des ressources vectorielles directement depuis n'importe quelle page web."
+  },
+  "FEATURE_ASSET_TITLE": {
+    "message": "Extraction de ressources"
+  },
+  "FEATURE_BOX_SHADOW_DESCRIPTION": {
+    "message": "Décomposition interactive des ombres de boîte multicouches avec vue éclatée de chaque composant d'ombre."
+  },
+  "FEATURE_BOX_SHADOW_TITLE": {
+    "message": "Visualisation d'ombre de boîte"
+  },
+  "FEATURE_BREAKPOINTS_DESCRIPTION": {
+    "message": "Détectez et visualisez les breakpoints des media queries CSS avec des lignes de délimitation colorées directement sur la page."
+  },
+  "FEATURE_BREAKPOINTS_TITLE": {
+    "message": "Points de rupture"
+  },
+  "FEATURE_CANVAS_DESCRIPTION": {
+    "message": "Inspectez les éléments HTML5 Canvas. Affichez les dimensions, les types de contexte et extrayez les palettes de couleurs."
+  },
+  "FEATURE_CANVAS_TITLE": {
+    "message": "Inspection de Canevas"
+  },
+  "FEATURE_COLOR_DESCRIPTION": {
+    "message": "Extrayez et copiez des palettes de couleurs à partir d'éléments sélectionnés avec des valeurs hexadécimales, RVB et TSL."
+  },
+  "FEATURE_COLOR_TITLE": {
+    "message": "Extraction de couleurs"
+  },
+  "FEATURE_COMPUTED_CSS_TITLE": {
+    "message": "CSS calculé"
+  },
+  "FEATURE_CSS_RULES_DESCRIPTION": {
+    "message": "Affichez les règles CSS réelles des feuilles de style qui s'appliquent à n'importe quel élément, regroupées par fichier source."
+  },
+  "FEATURE_CSS_RULES_TITLE": {
+    "message": "Inspecteur de Règles CSS"
+  },
+  "FEATURE_DISTANCE_TITLE": {
+    "message": "Mesure de distance"
+  },
+  "FEATURE_EDIT_TITLE": {
+    "message": "Édition CSS en direct avec suivi des changements"
+  },
+  "FEATURE_ELEMENT_HOVER_TITLE": {
+    "message": "Inspection d'éléments"
+  },
+  "FEATURE_ELEMENT_SCREENSHOT_TITLE": {
+    "message": "Captures d'élément"
+  },
+  "FEATURE_EYEDROPPER_TITLE": {
+    "message": "Pipette à couleur"
+  },
+  "FEATURE_GRADIENT_DESCRIPTION": {
+    "message": "Visualisez les dégradés CSS avec une présentation détaillée des points de couleur et de leurs positions."
+  },
+  "FEATURE_GRADIENT_TITLE": {
+    "message": "Inspecteur de Dégradés"
+  },
+  "FEATURE_GRID_DESCRIPTION": {
+    "message": "Superposez une grille de colonnes personnalisable pour vérifier l'alignement et l'espacement de la conception."
+  },
+  "FEATURE_GRID_TITLE": {
+    "message": "Superposition de grille de mise en page"
+  },
+  "FEATURE_HEADING": {
+    "message": "Débloquez une suite complète d'outils de développement web"
+  },
+  "FEATURE_HTML_TEXT_DESCRIPTION": {
+    "message": "Copiez, collez, dupliquez ou supprimez des éléments directement sur la page. Le mode d'édition de texte vous permet de réécrire le contenu de la page sur place."
+  },
+  "FEATURE_HTML_TEXT_TITLE": {
+    "message": "Édition HTML et texte"
+  },
+  "FEATURE_INSPECTOR_DESCRIPTION": {
+    "message": "Propriétés détaillées des éléments au survol, y compris la position, la taille, la police rendue et les couleurs."
+  },
+  "FEATURE_INSPECTOR_TITLE": {
+    "message": "Inspecteur flottant"
+  },
+  "FEATURE_LAYOUT_DESCRIPTION": {
+    "message": "Visualisez les mises en page Flexbox et Grid avec une présentation claire de l'alignement, de la direction et de la structure."
+  },
+  "FEATURE_LAYOUT_TITLE": {
+    "message": "Visualiseur de mise en page"
+  },
+  "FEATURE_META_TAGS_TITLE": {
+    "message": "Balises méta"
+  },
+  "FEATURE_PAGE_RULERS_TITLE": {
+    "message": "Règles de page"
+  },
+  "FEATURE_PAGE_WEIGHT_DESCRIPTION": {
+    "message": "Voyez exactement ce qui se charge sur la page, ventilé par scripts, feuilles de style, images, polices et plus, avec une barre empilée en direct qui se met à jour à mesure que les ressources arrivent."
+  },
+  "FEATURE_PAGE_WEIGHT_TITLE": {
+    "message": "Poids de la page"
+  },
+  "FEATURE_PARENT_CHILD_TITLE": {
+    "message": "Sélection parent / enfant"
+  },
+  "FEATURE_RESPONSIVE_DESCRIPTION": {
+    "message": "Testez les designs sur différents viewports d'appareils avec un émulateur d'appareil interactif et des dimensions personnalisées."
+  },
+  "FEATURE_RESPONSIVE_TITLE": {
+    "message": "Mode responsive"
+  },
+  "FEATURE_SCREENSHOT_DESCRIPTION": {
+    "message": "Capturez des captures d'écran recadrées d'éléments sélectionnés avec marges et mesures incluses."
+  },
+  "FEATURE_SCREENSHOT_TITLE": {
+    "message": "Captures d'écran d'éléments"
+  },
+  "FEATURE_SELECTOR_DESCRIPTION": {
+    "message": "Trouvez et mettez en évidence des éléments à l'aide de sélecteurs CSS pour localiser rapidement des éléments spécifiques."
+  },
+  "FEATURE_SELECTOR_TITLE": {
+    "message": "Recherche de sélecteur CSS"
+  },
+  "FEATURE_SEO_TITLE": {
+    "message": "Problèmes de SEO"
+  },
+  "FEATURE_SOCIAL_PREVIEW_TITLE": {
+    "message": "Aperçu social"
+  },
+  "FEATURE_TAILWIND_DESCRIPTION": {
+    "message": "Convertissez instantanément les styles de n'importe quel élément en classes utilitaires Tailwind."
+  },
+  "FEATURE_TAILWIND_TITLE": {
+    "message": "Générateur Tailwind CSS"
+  },
+  "FEATURE_TECH_DETECTION_DESCRIPTION": {
+    "message": "Identifiez les frameworks, bibliothèques et outils qui alimentent n'importe quel site web avec plus de 150 technologies prises en charge."
+  },
+  "FEATURE_TECH_DETECTION_TITLE": {
+    "message": "Détection de Technologie"
+  },
+  "FEATURE_TRANSITION_DESCRIPTION": {
+    "message": "Visualisez les transitions CSS et les courbes de temps aux côtés des animations."
+  },
+  "FEATURE_TRANSITION_TITLE": {
+    "message": "Inspecteur de Transitions"
+  },
+  "FEATURE_TYPOGRAPHY_DESCRIPTION": {
+    "message": "Analysez et extrayez tous les styles typographiques utilisés dans votre sélection."
+  },
+  "FEATURE_TYPOGRAPHY_TITLE": {
+    "message": "Analyse typographique"
+  },
+  "FEATURE_XRAY_DESCRIPTION": {
+    "message": "Révélez la structure sous-jacente de la page en délimitant tous les éléments en une seule fois."
+  },
+  "FEATURE_XRAY_TITLE": {
+    "message": "Mode rayons X"
+  },
+  "FIND_ELEMENT": {
+    "message": "Rechercher Élément"
+  },
+  "FIND_HIDDEN_COUNT": {
+    "message": "$1 masqués",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "FOOTER_PRIVACY_POLICY": {
+    "message": "Politique de confidentialité"
+  },
+  "FOOTER_TERMS": {
+    "message": "Conditions"
+  },
+  "HERO_TITLE": {
+    "message": "Mesurez, inspectez et modifiez tout sur le web"
+  },
+  "INSPECT_PIN_HINT": {
+    "message": "Appuyez sur Espace pour épingler"
+  },
+  "ISSUE_CONTRAST_FAILURE_AAA_MESSAGE": {
+    "message": "Le contraste du texte $RATIO$:1 respecte AA mais pas AAA (nécessite $REQUIRED$:1 pour le texte $SIZE$)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "5.2"
+      },
+      "required": {
+        "content": "$2",
+        "example": "7"
+      },
+      "size": {
+        "content": "$3",
+        "example": "normal"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AAA_RECOMMENDATION": {
+    "message": "Envisagez d'augmenter le contraste à $RATIO$:1 pour la conformité WCAG AAA",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AA_MESSAGE": {
+    "message": "Le texte a un rapport de contraste insuffisant de $RATIO$:1 (nécessite $REQUIRED$:1 pour le texte $SIZE$)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "3.2"
+      },
+      "required": {
+        "content": "$2",
+        "example": "4.5"
+      },
+      "size": {
+        "content": "$3",
+        "example": "normal"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AA_RECOMMENDATION": {
+    "message": "Augmentez le contraste à au moins $RATIO$:1 pour la conformité WCAG AA",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "4.5"
+      }
+    }
+  },
+  "ISSUE_ICON_CONTRAST_MESSAGE": {
+    "message": "L'icône a un rapport de contraste insuffisant de $RATIO$:1 (nécessite $REQUIRED$:1 pour les éléments non textuels)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "2.5"
+      },
+      "required": {
+        "content": "$2",
+        "example": "3"
+      }
+    }
+  },
+  "ISSUE_ICON_CONTRAST_RECOMMENDATION": {
+    "message": "Augmenter le contraste à au moins $RATIO$:1 pour la conformité WCAG 1.4.11",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "LABEL_ADD_RULE": {
+    "message": "Ajouter une règle"
+  },
+  "LABEL_ADD_VIEWPORT": {
+    "message": "Ajouter une fenêtre"
+  },
+  "LABEL_ANIMATION": {
+    "message": "Animation"
+  },
+  "LABEL_ANIMATIONS": {
+    "message": "Animations"
+  },
+  "LABEL_ANIMATIONS_AND_TRANSITIONS": {
+    "message": "Animations et Transitions"
+  },
+  "LABEL_APPEARANCE": {
+    "message": "Apparence"
+  },
+  "LABEL_ASSET": {
+    "message": "Ressource"
+  },
+  "LABEL_ASSETS": {
+    "message": "Ressources"
+  },
+  "LABEL_BACKGROUNDS": {
+    "message": "Arrière-plans"
+  },
+  "LABEL_BORDER": {
+    "message": "Bordure"
+  },
+  "LABEL_BORDERS": {
+    "message": "Bordures"
+  },
+  "LABEL_BOX_SHADOW": {
+    "message": "Ombre de Boîte"
+  },
+  "LABEL_BOX_SHADOWS": {
+    "message": "Ombres de Boîte"
+  },
+  "LABEL_CANVAS": {
+    "message": "Canevas"
+  },
+  "LABEL_CANVAS_DIMENSIONS": {
+    "message": "Dimensions du canevas"
+  },
+  "LABEL_CHANGES": {
+    "message": "Modifications"
+  },
+  "LABEL_CODE": {
+    "message": "Code"
+  },
+  "LABEL_COLOR": {
+    "message": "Couleur"
+  },
+  "LABEL_COLORS": {
+    "message": "Couleurs"
+  },
+  "LABEL_COLUMNS": {
+    "message": "Colonnes"
+  },
+  "LABEL_COMPUTED": {
+    "message": "Calculé"
+  },
+  "LABEL_CONTEXT_TYPE": {
+    "message": "Type de contexte"
+  },
+  "LABEL_CSS": {
+    "message": "CSS"
+  },
+  "LABEL_DOCUMENT": {
+    "message": "Document"
+  },
+  "LABEL_EFFECTIVE_STYLES": {
+    "message": "Styles effectifs"
+  },
+  "LABEL_FLEX_GRID_LAYOUT": {
+    "message": "Mise en page"
+  },
+  "LABEL_GRADIENT": {
+    "message": "Dégradé"
+  },
+  "LABEL_GRADIENTS": {
+    "message": "Dégradés"
+  },
+  "LABEL_GUTTER": {
+    "message": "Gouttière"
+  },
+  "LABEL_HEIGHT": {
+    "message": "Hauteur"
+  },
+  "LABEL_INHERITED_FROM": {
+    "message": "Hérité de $SELECTOR$",
+    "placeholders": {
+      "selector": {
+        "content": "$1",
+        "example": "body"
+      }
+    }
+  },
+  "LABEL_INSTANCES": {
+    "message": "Instances"
+  },
+  "LABEL_ISSUE": {
+    "message": "Problème"
+  },
+  "LABEL_ISSUES": {
+    "message": "Problèmes"
+  },
+  "LABEL_LAYOUT": {
+    "message": "Modèle de Boîte"
+  },
+  "LABEL_LOADING": {
+    "message": "..."
+  },
+  "LABEL_MARGIN": {
+    "message": "Marge"
+  },
+  "LABEL_MAX_WIDTH": {
+    "message": "Largeur Max"
+  },
+  "LABEL_OPACITY": {
+    "message": "Opacité"
+  },
+  "LABEL_PADDING": {
+    "message": "Espacement Interne"
+  },
+  "LABEL_PIXEL_RATIO": {
+    "message": "Ratio de pixels"
+  },
+  "LABEL_PW_CSS": {
+    "message": "Feuilles de style"
+  },
+  "LABEL_PW_DOCUMENT": {
+    "message": "Document"
+  },
+  "LABEL_PW_FETCH": {
+    "message": "Fetch/XHR"
+  },
+  "LABEL_PW_FONTS": {
+    "message": "Polices"
+  },
+  "LABEL_PW_IMAGES": {
+    "message": "Images"
+  },
+  "LABEL_PW_MEDIA": {
+    "message": "Médias"
+  },
+  "LABEL_PW_OTHER": {
+    "message": "Autres"
+  },
+  "LABEL_PW_SCRIPTS": {
+    "message": "Scripts"
+  },
+  "LABEL_PW_TOTAL": {
+    "message": "Total"
+  },
+  "LABEL_REFRESH_VIEWPORT": {
+    "message": "Actualiser"
+  },
+  "LABEL_ROTATE_VIEWPORT": {
+    "message": "Pivoter"
+  },
+  "LABEL_RULES": {
+    "message": "Règles"
+  },
+  "LABEL_SCALABLE": {
+    "message": "évolutif"
+  },
+  "LABEL_SELECTION_COLORS": {
+    "message": "Couleurs"
+  },
+  "LABEL_SOURCE": {
+    "message": "Source"
+  },
+  "LABEL_SVG": {
+    "message": "svg"
+  },
+  "LABEL_TAILWIND": {
+    "message": "Tailwind"
+  },
+  "LABEL_TECHNOLOGIES": {
+    "message": "Technologies"
+  },
+  "LABEL_TECHNOLOGY": {
+    "message": "Technologie"
+  },
+  "LABEL_TEXT": {
+    "message": "Texte"
+  },
+  "LABEL_TEXT_CONTENT": {
+    "message": "Contenu Textuel"
+  },
+  "LABEL_TRANSITION": {
+    "message": "Transition"
+  },
+  "LABEL_TRANSITIONS": {
+    "message": "Transitions"
+  },
+  "LABEL_TYPOGRAPHY_STYLE": {
+    "message": "Style Typographique"
+  },
+  "LABEL_TYPOGRAPHY_STYLES": {
+    "message": "Styles Typographiques"
+  },
+  "LABEL_WHITESPACE_ONLY_CHANGE": {
+    "message": "Modifications d'espaces uniquement"
+  },
+  "LABEL_WIDTH": {
+    "message": "Largeur"
+  },
+  "LABEL_ZOOM": {
+    "message": "Zoom"
+  },
+  "LABEL_ZOOM_IN": {
+    "message": "Zoom avant"
+  },
+  "LABEL_ZOOM_OUT": {
+    "message": "Zoom arrière"
+  },
+  "LEGACY_LOGIN_LINK": {
+    "message": "Connexion héritée"
+  },
+  "LEGACY_LOGIN_TEXT": {
+    "message": "Avez-vous déjà acheté Bo doi Pro avant v3.0.0 ?"
+  },
+  "MATCHED_CROSS_ORIGIN_HIDDEN": {
+    "message": "$COUNT$ feuilles de style cross-origin masquées.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "MCP_CONNECT_HINT": {
+    "message": "Copiez ce texte et collez-le dans votre agent IA :"
+  },
+  "MCP_UNKNOWN_AGENT": {
+    "message": "Agent IA"
+  },
+  "MCP_WAITING_FOR_AGENT": {
+    "message": "En attente de la connexion de l'agent..."
+  },
+  "NO_CHANGES_MESSAGE": {
+    "message": "Aucune modification trouvée"
+  },
+  "NO_PAGE_INFO_MESSAGE": {
+    "message": "Aucune information de page trouvée"
+  },
+  "OPTIONS_COLOR_FORMAT_SECONDARY": {
+    "message": "Utilisé par l'inspecteur et le sélecteur de couleur"
+  },
+  "OPTIONS_MCP_CONNECT_BUTTON": {
+    "message": "Connecter"
+  },
+  "OPTIONS_MCP_DISCONNECT_BUTTON": {
+    "message": "Déconnecter"
+  },
+  "OPTIONS_MCP_SERVER_SECONDARY": {
+    "message": "Autorise les agents IA à inspecter ou à effectuer des modifications. <a href=\"https://www.bodoi.com/docs/mcp.html\" target=\"_blank\">Guide de configuration</a>"
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_BODY": {
+    "message": "Votre serveur MCP est en version $1, mais cette extension attend $2 ou plus récent. Mettez à jour le paquet npm ou redémarrez votre client IA.",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "required": {
+        "content": "$2"
+      }
+    }
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_TITLE": {
+    "message": "Serveur MCP obsolète"
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_TOOLTIP": {
+    "message": "Serveur MCP obsolète. Mettez à jour via votre client IA."
+  },
+  "OPTIONS_MCP_VERSION_UNKNOWN": {
+    "message": "inconnue"
+  },
+  "OPTIONS_PAGE_TITLE": {
+    "message": "Paramètres"
+  },
+  "OPTIONS_ROW_COLOR_FORMAT": {
+    "message": "Format de couleur"
+  },
+  "OPTIONS_ROW_MCP_SERVER": {
+    "message": "Serveur MCP"
+  },
+  "OPTIONS_ROW_SCREENSHOT_HIGHLIGHTS": {
+    "message": "Capturer les Surlignages"
+  },
+  "OPTIONS_ROW_SCREENSHOT_PADDING": {
+    "message": "Rembourrage des Captures"
+  },
+  "OPTIONS_ROW_THEME": {
+    "message": "Thème"
+  },
+  "OPTIONS_SAVED_EDITS_CLEAR": {
+    "message": "Effacer"
+  },
+  "OPTIONS_SAVED_EDITS_CONFIRM_BODY": {
+    "message": "Cela supprime les modifications CSS mémorisées pour tous les sites."
+  },
+  "OPTIONS_SAVED_EDITS_CONFIRM_TITLE": {
+    "message": "Effacer les modifications enregistrées ?"
+  },
+  "OPTIONS_SAVED_EDITS_SECONDARY": {
+    "message": "Les modifications CSS sont mémorisées par site et restaurées lorsque vous y activez Bo doi."
+  },
+  "OPTIONS_SAVED_EDITS_TITLE": {
+    "message": "Modifications enregistrées"
+  },
+  "OPTIONS_SCREENSHOT_HIGHLIGHTS_SECONDARY": {
+    "message": "Capture les mesures dans les captures"
+  },
+  "OPTIONS_SCREENSHOT_PADDING_SECONDARY": {
+    "message": "Ajoute aux captures un arrière-plan rembourré"
+  },
+  "OPTIONS_SECTION_APPEARANCE": {
+    "message": "Apparence"
+  },
+  "OPTIONS_SECTION_EXTENSION": {
+    "message": "Extension"
+  },
+  "OPTIONS_SECTION_SCREENSHOTS": {
+    "message": "Captures d'écran"
+  },
+  "OPTIONS_SECTION_TERMINAL_AI": {
+    "message": "IA de terminal"
+  },
+  "PAGE_TAB_META_OG": {
+    "message": "Open Graph"
+  },
+  "PAGE_TAB_META_SEO": {
+    "message": "SEO"
+  },
+  "PAGE_TAB_META_TAGS": {
+    "message": "Balises méta"
+  },
+  "PAGE_TAB_META_TWITTER": {
+    "message": "Twitter Card"
+  },
+  "PAGE_TAB_NO_METADATA": {
+    "message": "Aucune métadonnée trouvée"
+  },
+  "PAGE_TAB_OG_IMAGE": {
+    "message": "Image Open Graph"
+  },
+  "PAGE_TAB_PAGE_WEIGHT": {
+    "message": "Poids de la page"
+  },
+  "PAGE_TAB_SOCIAL_PREVIEW": {
+    "message": "Aperçu social"
+  },
+  "PAGE_TAB_TECHNOLOGIES": {
+    "message": "Technologies"
+  },
+  "PAGE_TAB_UNTITLED": {
+    "message": "Page sans titre"
+  },
+  "PW_BUFFER_FULL": {
+    "message": "Tampon de ressources plein, certaines entrées peuvent manquer"
+  },
+  "PW_HIDDEN_NOTE": {
+    "message": "$COUNT$ ressources cross-origin masquées",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "RESPONSIVE_FRAME_BLOCKED_BODY": {
+    "message": "Ce site bloque le chargement dans l'aperçu.{br}{grant} pour l'afficher."
+  },
+  "RESPONSIVE_FRAME_BLOCKED_GRANT": {
+    "message": "Accorder l'accès"
+  },
+  "RESPONSIVE_FRAME_BLOCKED_STILL": {
+    "message": "Ce site bloque le chargement dans l'aperçu.{br}Il le fait avec un script ou une politique intégrée à la page qui ne peut pas être supprimée."
+  },
+  "RESPONSIVE_FRAME_TIMEOUT": {
+    "message": "Cette page n'a pas fini de charger."
+  },
+  "RESTORE_ACCESS_ERROR": {
+    "message": "Impossible de restaurer l'accès. Veuillez essayer de vous connecter."
+  },
+  "RESTORE_ACCESS_LINK": {
+    "message": "Restaurer l'achat"
+  },
+  "REVIEWS_SUBTITLE": {
+    "message": "Voici ce qu'ils disent de l'utilisation de Bo doi."
+  },
+  "REVIEWS_TITLE": {
+    "message": "Adoré par les développeurs et les designers"
+  },
+  "RULES_COUNT_ONE": {
+    "message": "1 règle"
+  },
+  "RULES_COUNT_OTHER": {
+    "message": "$1 règles",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "BO_DOI_PRO": {
+    "message": "Bo doi "
+  },
+  "SEO_DESCRIPTION_TOO_LONG_MESSAGE": {
+    "message": "La description fait plus de 160 caractères"
+  },
+  "SEO_DESCRIPTION_TOO_LONG_RECOMMENDATION": {
+    "message": "Les moteurs de recherche peuvent tronquer les descriptions longues. Réduisez à 120–160 caractères."
+  },
+  "SEO_DESCRIPTION_TOO_SHORT_MESSAGE": {
+    "message": "La description fait moins de 70 caractères"
+  },
+  "SEO_DESCRIPTION_TOO_SHORT_RECOMMENDATION": {
+    "message": "Visez 120 à 160 caractères pour un extrait descriptif."
+  },
+  "SEO_LABEL_ISSUE": {
+    "message": "Problème SEO"
+  },
+  "SEO_LABEL_ISSUES": {
+    "message": "Problèmes SEO"
+  },
+  "SEO_MISSING_ALT_MESSAGE": {
+    "message": "L'image n'a pas de texte alternatif"
+  },
+  "SEO_MISSING_ALT_RECOMMENDATION": {
+    "message": "Ajoutez un attribut alt à chaque img. Utilisez alt=\"\" pour les images purement décoratives."
+  },
+  "SEO_MISSING_CANONICAL_MESSAGE": {
+    "message": "Lien canonical manquant"
+  },
+  "SEO_MISSING_CANONICAL_RECOMMENDATION": {
+    "message": "Ajoutez <link rel=\"canonical\"> pour déclarer l'URL préférée de cette page."
+  },
+  "SEO_MISSING_DESCRIPTION_MESSAGE": {
+    "message": "Méta description manquante"
+  },
+  "SEO_MISSING_DESCRIPTION_RECOMMENDATION": {
+    "message": "Ajoutez une méta description pour résumer la page dans les résultats de recherche."
+  },
+  "SEO_MISSING_H1_MESSAGE": {
+    "message": "Titre H1 manquant"
+  },
+  "SEO_MISSING_H1_RECOMMENDATION": {
+    "message": "Chaque page doit avoir un seul H1 décrivant son sujet principal."
+  },
+  "SEO_MISSING_LANG_MESSAGE": {
+    "message": "Attribut lang manquant sur <html>"
+  },
+  "SEO_MISSING_LANG_RECOMMENDATION": {
+    "message": "Définissez un attribut lang (par ex. lang=\"en\") pour aider les moteurs de recherche et les lecteurs d'écran."
+  },
+  "SEO_MISSING_OG_DESCRIPTION_MESSAGE": {
+    "message": "og:description manquant"
+  },
+  "SEO_MISSING_OG_DESCRIPTION_RECOMMENDATION": {
+    "message": "Ajoutez <meta property=\"og:description\"> pour les aperçus de partage."
+  },
+  "SEO_MISSING_OG_IMAGE_MESSAGE": {
+    "message": "og:image manquant"
+  },
+  "SEO_MISSING_OG_IMAGE_RECOMMENDATION": {
+    "message": "Ajoutez <meta property=\"og:image\"> pour que les liens partagés incluent une image d'aperçu."
+  },
+  "SEO_MISSING_OG_TITLE_MESSAGE": {
+    "message": "og:title manquant"
+  },
+  "SEO_MISSING_OG_TITLE_RECOMMENDATION": {
+    "message": "Ajoutez <meta property=\"og:title\"> pour que les liens partagés affichent un titre clair."
+  },
+  "SEO_MISSING_TITLE_MESSAGE": {
+    "message": "Balise title manquante"
+  },
+  "SEO_MISSING_TITLE_RECOMMENDATION": {
+    "message": "Ajoutez un élément <title> descriptif dans l'en-tête de la page."
+  },
+  "SEO_MISSING_VIEWPORT_MESSAGE": {
+    "message": "Balise meta viewport manquante"
+  },
+  "SEO_MISSING_VIEWPORT_RECOMMENDATION": {
+    "message": "Ajoutez <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> pour le rendu mobile."
+  },
+  "SEO_MULTIPLE_H1_MESSAGE": {
+    "message": "La page a plus d'un H1"
+  },
+  "SEO_MULTIPLE_H1_RECOMMENDATION": {
+    "message": "Utilisez un seul H1 par page et rétrogradez les titres secondaires en H2 ou H3."
+  },
+  "SEO_ROBOTS_NOINDEX_MESSAGE": {
+    "message": "La page est en noindex"
+  },
+  "SEO_ROBOTS_NOINDEX_RECOMMENDATION": {
+    "message": "Les moteurs de recherche n'indexeront pas cette page. Supprimez noindex si ce n'est pas voulu."
+  },
+  "SEO_TITLE_TOO_LONG_MESSAGE": {
+    "message": "Le titre fait plus de 60 caractères"
+  },
+  "SEO_TITLE_TOO_LONG_RECOMMENDATION": {
+    "message": "Les moteurs de recherche peuvent tronquer les titres longs. Réduisez à 50–60 caractères."
+  },
+  "SEO_TITLE_TOO_SHORT_MESSAGE": {
+    "message": "Le titre fait moins de 30 caractères"
+  },
+  "SEO_TITLE_TOO_SHORT_RECOMMENDATION": {
+    "message": "Visez 50 à 60 caractères pour que le titre soit descriptif dans les résultats de recherche."
+  },
+  "SHORTCUT_CHILD": {
+    "message": "Sélectionner l'enfant"
+  },
+  "SHORTCUT_COPY": {
+    "message": "Copier"
+  },
+  "SHORTCUT_DESELECT": {
+    "message": "Désélectionner"
+  },
+  "SHORTCUT_PARENT": {
+    "message": "Sélectionner le parent"
+  },
+  "SHORTCUT_PASTE": {
+    "message": "Coller"
+  },
+  "SHORTCUT_REDO": {
+    "message": "Rétablir"
+  },
+  "SHORTCUT_TOGGLE_PANEL": {
+    "message": "Basculer le panneau"
+  },
+  "SHORTCUT_TOGGLE_RULER": {
+    "message": "Basculer l'extension"
+  },
+  "SHORTCUT_UNDO": {
+    "message": "Annuler"
+  },
+  "SOCIAL_PREVIEW_FACEBOOK": {
+    "message": "Facebook"
+  },
+  "SOCIAL_PREVIEW_LINKEDIN": {
+    "message": "LinkedIn"
+  },
+  "SOCIAL_PREVIEW_X": {
+    "message": "X"
+  },
+  "SOCIAL_PROOF_TEXT": {
+    "message": "Utilisé par plus de 50 000 designers et développeurs"
+  },
+  "TAB_ELEMENT": {
+    "message": "Élément"
+  },
+  "TAB_PAGE": {
+    "message": "Page"
+  },
+  "TEXT_SIZE_LARGE": {
+    "message": "grand"
+  },
+  "TEXT_SIZE_NORMAL": {
+    "message": "normal"
+  },
+  "THEME": {
+    "message": "Thème"
+  },
+  "THEME_DARK": {
+    "message": "Sombre"
+  },
+  "THEME_LIGHT": {
+    "message": "Clair"
+  },
+  "THEME_SYSTEM": {
+    "message": "Système"
+  },
+  "TITLE_COLOR_SCHEME": {
+    "message": "Schéma de couleurs"
+  },
+  "TITLE_FRAME_LAYOUT": {
+    "message": "Disposition des cadres"
+  },
+  "TITLE_INVALID_PROPERTY": {
+    "message": "Propriété inconnue"
+  },
+  "TITLE_INVALID_VALUE": {
+    "message": "Valeur non valide"
+  },
+  "TITLE_MORE_ACTIONS": {
+    "message": "Plus d'actions"
+  },
+  "TITLE_MOVE_LEFT": {
+    "message": "Déplacer vers la gauche"
+  },
+  "TITLE_MOVE_RIGHT": {
+    "message": "Déplacer vers la droite"
+  },
+  "TITLE_NOT_INHERITED": {
+    "message": "Non hérité par cet élément"
+  },
+  "TITLE_OVERRIDDEN_BY": {
+    "message": "Remplacé par $SELECTOR$",
+    "placeholders": {
+      "selector": {
+        "content": "$1",
+        "example": ".card"
+      }
+    }
+  },
+  "TITLE_OVERRIDDEN_HIDDEN": {
+    "message": "Remplacé par une feuille de style que Bo doi ne peut pas voir"
+  },
+  "TITLE_OVERRIDDEN_HIDDEN_GRANT": {
+    "message": "Remplacé par une feuille de style que Bo doi ne peut pas voir. Accordez l'accès cross-origin pour la voir."
+  },
+  "TITLE_REMOVE": {
+    "message": "Retirer la fenêtre"
+  },
+  "TITLE_RESET_VIEWPORTS": {
+    "message": "Réinitialiser les fenêtres"
+  },
+  "TITLE_SYNC_SCROLLING": {
+    "message": "Synchroniser le défilement"
+  },
+  "TOAST_EDITS_RESTORED_MANY": {
+    "message": "$COUNT$ modifications enregistrées restaurées",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOAST_EDITS_RESTORED_ONE": {
+    "message": "1 modification enregistrée restaurée"
+  },
+  "TOAST_SCROLL_SYNC_OFF": {
+    "message": "La synchronisation du défilement s'est désactivée car cette page défile contre elle."
+  },
+  "TOOLTIP_CHILD": {
+    "message": "Sélectionner l'Enfant"
+  },
+  "TOOLTIP_COPY": {
+    "message": "Copier ($mod$+C)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_CUT": {
+    "message": "Couper ($mod$+X)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_DELETE": {
+    "message": "Supprimer ($key$)",
+    "placeholders": {
+      "key": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_DUPLICATE": {
+    "message": "Dupliquer ($mod$+D)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_PARENT": {
+    "message": "Sélectionner le Parent"
+  },
+  "TOOLTIP_PASTE": {
+    "message": "Coller ($mod$+V)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_REDO": {
+    "message": "Rétablir ($mod$+$shift$+Z)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      },
+      "shift": {
+        "content": "$2"
+      }
+    }
+  },
+  "TOOLTIP_SELECT": {
+    "message": "Mode Sélection"
+  },
+  "TOOLTIP_UNDO": {
+    "message": "Annuler ($mod$+Z)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TRUSTED_BY_TEXT": {
+    "message": "Approuvé par des professionnels chez"
+  },
+  "UNLOCK_PRO_SEE_MORE": {
+    "message": "Obtenez Pro pour en voir $COUNT$ de plus",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "VIDEO_PLAY_BUTTON": {
+    "message": "Regarder Bo doi en action"
+  },
+  "WARN_OVERFLOW": {
+    "message": "Le contenu déborde horizontalement"
+  }
+}

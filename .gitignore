@@ -1,0 +1,3 @@
+# packaged builds; the source is unpacked/
+*.crx
+*.pem

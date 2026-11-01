@@ -1,0 +1,1326 @@
+{
+  "ALERT_COULDNT_COMMUNICATE_WITH_TAB": {
+    "message": "टैब से संवाद नहीं हो सका। सुनिश्चित करें कि Bo doi वर्तमान टैब में सक्रिय है।"
+  },
+  "ALERT_ISSUE_ELEMENT_NOT_FOUND": {
+    "message": "समस्या तत्व का पता नहीं लगाया जा सका। यह हटा दिया गया हो सकता है या पृष्ठ बदल गया हो सकता है।"
+  },
+  "ALERT_NO_SELECTED_ELEMENT": {
+    "message": "लक्ष्य एलिमेंट नहीं मिल सका।"
+  },
+  "ASSETS_FAILED_PLURAL": {
+    "message": "एसेट्स लोड नहीं हो सके"
+  },
+  "ASSETS_FAILED_SINGULAR": {
+    "message": "एसेट लोड नहीं हो सका"
+  },
+  "BODY_REMOVE_VIEWPORT": {
+    "message": "$LABEL$ हटा दिया जाएगा।",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "BODY_RESET_VIEWPORTS": {
+    "message": "आपके व्यूपोर्ट डिफ़ॉल्ट पर रीसेट कर दिए जाएँगे।"
+  },
+  "BUTTON_ADD": {
+    "message": "जोड़ें"
+  },
+  "BUTTON_CHANGE": {
+    "message": "बदलें"
+  },
+  "BUTTON_CLEAR_CHANGES": {
+    "message": "सभी बदलाव हटाएं"
+  },
+  "BUTTON_COPIED": {
+    "message": "कॉपी हो गया"
+  },
+  "BUTTON_DOWNLOAD": {
+    "message": "डाउनलोड"
+  },
+  "BUTTON_DOWNLOAD_ALL": {
+    "message": "सभी डाउनलोड करें"
+  },
+  "BUTTON_REMOVE": {
+    "message": "हटाएं"
+  },
+  "BUTTON_RESET": {
+    "message": "रीसेट करें"
+  },
+  "CHECKLIST_FEATURE_1": {
+    "message": "होवर पर एलिमेंट प्रॉपर्टीज़ इंस्पेक्ट करें"
+  },
+  "CHECKLIST_FEATURE_2": {
+    "message": "मार्जिन, बॉर्डर, पैडिंग के साथ बॉक्स मॉडल"
+  },
+  "CHECKLIST_FEATURE_3": {
+    "message": "इमेज और SVG एसेट्स डाउनलोड करें"
+  },
+  "CHECKLIST_FEATURE_4": {
+    "message": "HEX, RGBA, HSL वैल्यूज़ के रूप में रंग निकालें"
+  },
+  "CHECKLIST_FEATURE_5": {
+    "message": "पेज पर लेआउट ग्रिड ओवरले करें"
+  },
+  "CHECKLIST_FEATURE_6": {
+    "message": "माप के साथ एलिमेंट्स का स्क्रीनशॉट"
+  },
+  "CHECKLIST_FEATURE_7": {
+    "message": "CSS सेलेक्टर से एलिमेंट्स खोजें"
+  },
+  "CHECKLIST_FEATURE_8": {
+    "message": "ईज़िंग कर्व्स के साथ एनिमेशन इंस्पेक्टर"
+  },
+  "CHIP_AUDIT": {
+    "message": "ऑडिट करें"
+  },
+  "CHIP_EDIT": {
+    "message": "संपादित करें"
+  },
+  "CHIP_EXTRACT": {
+    "message": "निकालें"
+  },
+  "CHIP_INSPECT": {
+    "message": "जाँच करें"
+  },
+  "CHIP_MEASURE": {
+    "message": "मापें"
+  },
+  "CHIP_TEST": {
+    "message": "परीक्षण करें"
+  },
+  "CHIP_VISUALIZE": {
+    "message": "विज़ुअलाइज़ करें"
+  },
+  "COMPARISON_COLUMN_FEATURE": {
+    "message": "विशेषता"
+  },
+  "COMPARISON_TITLE": {
+    "message": "Pro में सब कुछ"
+  },
+  "CONFIRM_CLEAR_ALL_CHANGES": {
+    "message": "क्या आप वाकई इस पेज के सभी बदलाव हटाना चाहते हैं?"
+  },
+  "CONFIRM_CLEAR_ELEMENT": {
+    "message": "क्या आप वाकई इस एलिमेंट के बदलाव हटाना चाहते हैं?"
+  },
+  "CONFIRM_CLEAR_ELEMENTS": {
+    "message": "क्या आप वाकई $1 एलिमेंट्स के बदलाव हटाना चाहते हैं?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "CONFIRM_PARTIAL_EDITS_FOR_RESPONSIVE": {
+    "message": "आपके CSS नियम बदलाव सुरक्षित रहेंगे। इनलाइन स्टाइल, मार्कअप और क्लास बदलाव हटा दिए जाएँगे।"
+  },
+  "CSS_SELECTOR": {
+    "message": "CSS सेलेक्टर"
+  },
+  "DEFAULT_ASSET_NAME": {
+    "message": "asset"
+  },
+  "DEFAULT_DOWNLOAD_NAME": {
+    "message": "डाउनलोड_फ़ाइल"
+  },
+  "DEFAULT_SVG_FILENAME": {
+    "message": "asset.svg"
+  },
+  "DIALOG_CANCEL_BUTTON": {
+    "message": "रद्द करें"
+  },
+  "DIALOG_CLOSE_BUTTON": {
+    "message": "बंद करें"
+  },
+  "DIALOG_CONFIRM": {
+    "message": "पुष्टि करें"
+  },
+  "DIALOG_OK": {
+    "message": "ठीक है"
+  },
+  "DIALOG_SUBMIT_BUTTON": {
+    "message": "सक्रिय करें"
+  },
+  "DIALOG_TITLE_CLEAR_ALL_CHANGES": {
+    "message": "सभी परिवर्तन साफ़ करें"
+  },
+  "DIALOG_TITLE_CLEAR_ELEMENT": {
+    "message": "तत्व साफ़ करें"
+  },
+  "DIALOG_TITLE_CUSTOM_VIEWPORT": {
+    "message": "कस्टम व्यूपोर्ट"
+  },
+  "DIALOG_TITLE_ELEMENT_NOT_FOUND": {
+    "message": "तत्व नहीं मिला"
+  },
+  "DIALOG_TITLE_PARTIAL_EDITS_FOR_RESPONSIVE": {
+    "message": "कुछ बदलाव सुरक्षित नहीं रहेंगे"
+  },
+  "DIALOG_TITLE_RESET_VIEWPORTS": {
+    "message": "व्यूपोर्ट रीसेट करें"
+  },
+  "DIALOG_TITLE_TAB_UNAVAILABLE": {
+    "message": "टैब उपलब्ध नहीं"
+  },
+  "DISMISS_LABEL": {
+    "message": "बंद करें"
+  },
+  "DOCK_BREAKPOINTS": {
+    "message": "ब्रेकपॉइंट्स"
+  },
+  "DOCK_COPY": {
+    "message": "कॉपी करें"
+  },
+  "DOCK_CUT": {
+    "message": "Cut"
+  },
+  "DOCK_DELETE": {
+    "message": "हटाएं"
+  },
+  "DOCK_DETECT_TECH": {
+    "message": "पेज प्रौद्योगिकी"
+  },
+  "DOCK_DETECT_TECH_DETECTING": {
+    "message": "पता लगाया जा रहा है..."
+  },
+  "DOCK_DETECT_TECH_NONE_DETECTED": {
+    "message": "कोई प्रौद्योगिकी नहीं मिली।"
+  },
+  "DOCK_DETECT_TECH_RESPONSIVE_ERROR": {
+    "message": "प्रतिक्रियाशील मोड में प्रौद्योगिकी पहचान उपलब्ध नहीं है।"
+  },
+  "DOCK_DUPLICATE": {
+    "message": "डुप्लिकेट करें"
+  },
+  "DOCK_EDIT_MODE": {
+    "message": "संपादन"
+  },
+  "DOCK_EDIT_TEXT": {
+    "message": "टेक्स्ट संपादित करें"
+  },
+  "DOCK_EYEDROPPER": {
+    "message": "रंग चयनकर्ता"
+  },
+  "DOCK_FIND_ELEMENT": {
+    "message": "एलिमेंट खोजें"
+  },
+  "DOCK_INSPECT_MODE": {
+    "message": "निरीक्षण"
+  },
+  "DOCK_MCP_CONNECTED": {
+    "message": "MCP कनेक्ट है"
+  },
+  "DOCK_MCP_CONNECT_AGENT": {
+    "message": "एजेंट कनेक्ट करें"
+  },
+  "DOCK_MCP_OUTDATED": {
+    "message": "MCP पुराना है"
+  },
+  "DOCK_MCP_TITLE": {
+    "message": "MCP"
+  },
+  "DOCK_MCP_WAITING": {
+    "message": "एजेंट की प्रतीक्षा में"
+  },
+  "DOCK_OPEN_PANEL": {
+    "message": "साइड पैनल खोलें"
+  },
+  "DOCK_OPEN_PANEL_UNSUPPORTED": {
+    "message": "इस ब्राउज़र में साइड पैनल समर्थित नहीं है"
+  },
+  "DOCK_PASTE": {
+    "message": "पेस्ट करें"
+  },
+  "DOCK_PAUSE": {
+    "message": "रोकें"
+  },
+  "DOCK_QUIT": {
+    "message": "बाहर निकलें"
+  },
+  "DOCK_REDO": {
+    "message": "फिर से करें"
+  },
+  "DOCK_RESPONSIVE_MODE": {
+    "message": "रिस्पॉन्सिव मोड"
+  },
+  "DOCK_RULER": {
+    "message": "पेज रूलर"
+  },
+  "DOCK_SELECT_CHILD": {
+    "message": "चाइल्ड चुनें"
+  },
+  "DOCK_SELECT_PARENT": {
+    "message": "मूल चुनें"
+  },
+  "DOCK_TAKE_SCREENSHOT": {
+    "message": "स्क्रीनशॉट कैप्चर करें"
+  },
+  "DOCK_TOGGLE_GRID": {
+    "message": "लेआउट ग्रिड"
+  },
+  "DOCK_TOGGLE_INSPECT": {
+    "message": "इंस्पेक्टर"
+  },
+  "DOCK_UNDO": {
+    "message": "पूर्ववत करें"
+  },
+  "DOCK_XRAY_MODE": {
+    "message": "एक्स-रे मोड"
+  },
+  "EDITOR_CROSS_ORIGIN_MISSING": {
+    "message": "कुछ स्टाइल मौजूद नहीं हो सकती हैं।"
+  },
+  "EDIT_COUNT_NONE": {
+    "message": "कोई बदलाव नहीं"
+  },
+  "EDIT_COUNT_ONE": {
+    "message": "1 बदलाव"
+  },
+  "EDIT_COUNT_OTHER": {
+    "message": "$1 बदलाव",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "ELEMENTS": {
+    "message": "एलिमेंट्स"
+  },
+  "ELEMENTS_COUNT_ONE": {
+    "message": "1 एलिमेंट"
+  },
+  "ELEMENTS_COUNT_OTHER": {
+    "message": "$1 एलिमेंट",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "EMPTY_CANVAS": {
+    "message": "शुरू करने के लिए एक व्यूपोर्ट जोड़ें।"
+  },
+  "EMPTY_MESSAGE": {
+    "message": "एक एलिमेंट चुनें"
+  },
+  "EMPTY_MESSAGE_EDIT": {
+    "message": "चयन के लिए किसी एलिमेंट पर क्लिक करें"
+  },
+  "EMPTY_MESSAGE_INSPECT": {
+    "message": "चयन के लिए किसी एलिमेंट पर क्लिक करें"
+  },
+  "ENABLE_CROSS_ORIGIN": {
+    "message": "एक्सेस प्रदान करें"
+  },
+  "EXT_DESCRIPTION": {
+    "message": "डिज़ाइनर्स और डेवलपर्स के लिए वेब इंस्पेक्टर। एलिमेंट्स मापें, CSS और रंग निकालें, स्क्रीनशॉट कैप्चर करें और भी बहुत कुछ।"
+  },
+  "EXT_NAME": {
+    "message": "Bo doi - वेब को मापें और जाँचें"
+  },
+  "EXT_NAME_SHORT": {
+    "message": "Bo doi"
+  },
+  "FEATURES_SUBTITLE": {
+    "message": "वन-क्लिक एसेट एक्सट्रैक्शन, विज़ुअल CSS निरीक्षण, और उन्नत विश्लेषण उपकरण। डेवलपर्स और डिज़ाइनर्स के वास्तविक कार्य के तरीके के लिए बनाया गया।"
+  },
+  "FEATURES_TITLE": {
+    "message": "प्रो के साथ सब कुछ शामिल"
+  },
+  "FEATURE_A11Y_TITLE": {
+    "message": "एक्सेसिबिलिटी समस्याएँ"
+  },
+  "FEATURE_ACCESSIBILITY_DESCRIPTION": {
+    "message": "WCAG कंट्रास्ट फेल्योर्स को स्वचालित रूप से डिटेक्ट और हाइलाइट करें, व्यावहारिक सुझावों के साथ।"
+  },
+  "FEATURE_ACCESSIBILITY_TITLE": {
+    "message": "एक्सेसिबिलिटी इश्यूज़"
+  },
+  "FEATURE_ANIMATION_DESCRIPTION": {
+    "message": "CSS एनिमेशन टाइमिंग कर्व्स को विज़ुअलाइज़ करें और एनिमेशन CSS प्रॉपर्टीज़ कॉपी करें।"
+  },
+  "FEATURE_ANIMATION_TITLE": {
+    "message": "एनिमेशन एनालिसिस"
+  },
+  "FEATURE_ASSET_DESCRIPTION": {
+    "message": "किसी भी वेबपेज से सीधे इमेजेज़, SVG और वेक्टर एसेट्स एक्सट्रैक्ट और डाउनलोड करें।"
+  },
+  "FEATURE_ASSET_TITLE": {
+    "message": "एसेट एक्सट्रैक्शन"
+  },
+  "FEATURE_BOX_SHADOW_DESCRIPTION": {
+    "message": "मल्टी-लेयर बॉक्स शैडो का इंटरैक्टिव ब्रेकडाउन, प्रत्येक शैडो कंपोनेंट के एक्सप्लोडेड व्यू के साथ।"
+  },
+  "FEATURE_BOX_SHADOW_TITLE": {
+    "message": "बॉक्स शैडो विज़ुअलाइज़ेशन"
+  },
+  "FEATURE_BREAKPOINTS_DESCRIPTION": {
+    "message": "CSS मीडिया क्वेरी ब्रेकपॉइंट्स को रंगीन सीमा रेखाओं के साथ सीधे पेज पर पहचानें और देखें।"
+  },
+  "FEATURE_BREAKPOINTS_TITLE": {
+    "message": "ब्रेकपॉइंट्स"
+  },
+  "FEATURE_CANVAS_DESCRIPTION": {
+    "message": "HTML5 कैनवस तत्वों का निरीक्षण करें। आयाम, संदर्भ प्रकार देखें और रंग पैलेट निकालें।"
+  },
+  "FEATURE_CANVAS_TITLE": {
+    "message": "कैनवस निरीक्षण"
+  },
+  "FEATURE_COLOR_DESCRIPTION": {
+    "message": "चयनित एलिमेंट्स से कलर पैलेट्स एक्सट्रैक्ट और कॉपी करें, हेक्स, RGB, और HSL वैल्यूज़ के साथ।"
+  },
+  "FEATURE_COLOR_TITLE": {
+    "message": "कलर एक्सट्रैक्शन"
+  },
+  "FEATURE_COMPUTED_CSS_TITLE": {
+    "message": "गणना किया गया CSS"
+  },
+  "FEATURE_CSS_RULES_DESCRIPTION": {
+    "message": "स्टाइलशीट से वास्तविक CSS नियम देखें जो किसी भी तत्व पर लागू होते हैं, स्रोत फ़ाइल द्वारा समूहीकृत।"
+  },
+  "FEATURE_CSS_RULES_TITLE": {
+    "message": "CSS नियम निरीक्षक"
+  },
+  "FEATURE_DISTANCE_TITLE": {
+    "message": "दूरी मापन"
+  },
+  "FEATURE_EDIT_TITLE": {
+    "message": "लाइव CSS एडिटिंग बदलाव ट्रैकिंग के साथ"
+  },
+  "FEATURE_ELEMENT_HOVER_TITLE": {
+    "message": "एलिमेंट निरीक्षण"
+  },
+  "FEATURE_ELEMENT_SCREENSHOT_TITLE": {
+    "message": "एलिमेंट स्क्रीनशॉट"
+  },
+  "FEATURE_EYEDROPPER_TITLE": {
+    "message": "रंग चयनकर्ता"
+  },
+  "FEATURE_GRADIENT_DESCRIPTION": {
+    "message": "रंग स्टॉप और स्थितियों के विस्तृत विश्लेषण के साथ CSS ग्रेडिएंट देखें।"
+  },
+  "FEATURE_GRADIENT_TITLE": {
+    "message": "ग्रेडिएंट इंस्पेक्टर"
+  },
+  "FEATURE_GRID_DESCRIPTION": {
+    "message": "डिज़ाइन एलाइनमेंट और स्पेसिंग की जांच के लिए एक कस्टमाइज़ेबल कॉलम ग्रिड ओवरले करें।"
+  },
+  "FEATURE_GRID_TITLE": {
+    "message": "लेआउट ग्रिड ओवरले"
+  },
+  "FEATURE_HEADING": {
+    "message": "वेब डेवलपमेंट टूल्स का पूरा सूट अनलॉक करें"
+  },
+  "FEATURE_HTML_TEXT_DESCRIPTION": {
+    "message": "पेज पर सीधे एलिमेंट्स को कॉपी, पेस्ट, डुप्लिकेट या डिलीट करें। टेक्स्ट एडिटिंग मोड आपको पेज की कॉपी को मौके पर ही फिर से लिखने देता है।"
+  },
+  "FEATURE_HTML_TEXT_TITLE": {
+    "message": "HTML और टेक्स्ट एडिटिंग"
+  },
+  "FEATURE_INSPECTOR_DESCRIPTION": {
+    "message": "होवर पर विस्तृत एलिमेंट प्रॉपर्टीज़ जिसमें पोजीशन, साइज़, रेंडर किया गया फ़ॉन्ट और कलर शामिल हैं।"
+  },
+  "FEATURE_INSPECTOR_TITLE": {
+    "message": "फ्लोटिंग इंस्पेक्टर"
+  },
+  "FEATURE_LAYOUT_DESCRIPTION": {
+    "message": "संरेखण, दिशा और संरचना के स्पष्ट विश्लेषण के साथ Flexbox और Grid लेआउट को देखें।"
+  },
+  "FEATURE_LAYOUT_TITLE": {
+    "message": "लेआउट विज़ुअलाइज़र"
+  },
+  "FEATURE_META_TAGS_TITLE": {
+    "message": "मेटा टैग"
+  },
+  "FEATURE_PAGE_RULERS_TITLE": {
+    "message": "पेज रूलर"
+  },
+  "FEATURE_PAGE_WEIGHT_DESCRIPTION": {
+    "message": "पेज पर वास्तव में क्या लोड हो रहा है देखें, स्क्रिप्ट, स्टाइलशीट, इमेज, फ़ॉन्ट और अन्य संसाधनों के अनुसार विभाजित, एक लाइव स्टैक्ड बार के साथ जो रिसोर्स आते ही अपडेट होता है।"
+  },
+  "FEATURE_PAGE_WEIGHT_TITLE": {
+    "message": "पेज वज़न"
+  },
+  "FEATURE_PARENT_CHILD_TITLE": {
+    "message": "पैरेंट / चाइल्ड चयन"
+  },
+  "FEATURE_RESPONSIVE_DESCRIPTION": {
+    "message": "एक इंटरैक्टिव डिवाइस एम्युलेटर और कस्टम डायमेंशन के साथ विभिन्न डिवाइस व्यूपोर्ट्स पर डिज़ाइन टेस्ट करें।"
+  },
+  "FEATURE_RESPONSIVE_TITLE": {
+    "message": "रिस्पॉन्सिव मोड"
+  },
+  "FEATURE_SCREENSHOT_DESCRIPTION": {
+    "message": "चयनित एलिमेंट्स के क्रॉप किए गए स्क्रीनशॉट कैप्चर करें, मार्जिन और माप शामिल हैं।"
+  },
+  "FEATURE_SCREENSHOT_TITLE": {
+    "message": "एलिमेंट स्क्रीनशॉट्स"
+  },
+  "FEATURE_SELECTOR_DESCRIPTION": {
+    "message": "विशिष्ट एलिमेंट्स को तुरंत लोकेट करने के लिए CSS सिलेक्टर्स का उपयोग करके एलिमेंट्स खोजें और हाइलाइट करें।"
+  },
+  "FEATURE_SELECTOR_TITLE": {
+    "message": "CSS सिलेक्टर सर्च"
+  },
+  "FEATURE_SEO_TITLE": {
+    "message": "SEO समस्याएँ"
+  },
+  "FEATURE_SOCIAL_PREVIEW_TITLE": {
+    "message": "सोशल पूर्वावलोकन"
+  },
+  "FEATURE_TAILWIND_DESCRIPTION": {
+    "message": "किसी भी एलिमेंट के स्टाइल्स को तुरंत Tailwind यूटिलिटी क्लासेस में बदलें।"
+  },
+  "FEATURE_TAILWIND_TITLE": {
+    "message": "Tailwind CSS जेनरेटर"
+  },
+  "FEATURE_TECH_DETECTION_DESCRIPTION": {
+    "message": "150 से अधिक समर्थित प्रौद्योगिकियों के साथ किसी भी वेबसाइट को संचालित करने वाले फ्रेमवर्क, लाइब्रेरी और टूल्स की पहचान करें।"
+  },
+  "FEATURE_TECH_DETECTION_TITLE": {
+    "message": "प्रौद्योगिकी पहचान"
+  },
+  "FEATURE_TRANSITION_DESCRIPTION": {
+    "message": "एनिमेशन के साथ CSS ट्रांज़िशन और टाइमिंग कर्व्स को विज़ुअलाइज़ करें।"
+  },
+  "FEATURE_TRANSITION_TITLE": {
+    "message": "ट्रांज़िशन इंस्पेक्टर"
+  },
+  "FEATURE_TYPOGRAPHY_DESCRIPTION": {
+    "message": "अपने सिलेक्शन में उपयोग की गई सभी टाइपोग्राफी स्टाइल्स का विश्लेषण और एक्सट्रैक्ट करें।"
+  },
+  "FEATURE_TYPOGRAPHY_TITLE": {
+    "message": "टाइपोग्राफी एनालिसिस"
+  },
+  "FEATURE_XRAY_DESCRIPTION": {
+    "message": "सभी एलिमेंट्स को एक साथ आउटलाइन करके पेज की अंतर्निहित संरचना को प्रकट करें।"
+  },
+  "FEATURE_XRAY_TITLE": {
+    "message": "एक्स-रे मोड"
+  },
+  "FIND_ELEMENT": {
+    "message": "एलिमेंट खोजें"
+  },
+  "FIND_HIDDEN_COUNT": {
+    "message": "$1 छिपे हुए",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "FOOTER_PRIVACY_POLICY": {
+    "message": "गोपनीयता नीति"
+  },
+  "FOOTER_TERMS": {
+    "message": "नियम"
+  },
+  "HERO_TITLE": {
+    "message": "वेब पर कुछ भी मापें, निरीक्षण करें और संपादित करें"
+  },
+  "INSPECT_PIN_HINT": {
+    "message": "पिन करने के लिए Space दबाएँ"
+  },
+  "ISSUE_CONTRAST_FAILURE_AAA_MESSAGE": {
+    "message": "टेक्स्ट कंट्रास्ट $RATIO$:1 AA को पूरा करता है लेकिन AAA नहीं ($SIZE$ टेक्स्ट के लिए $REQUIRED$:1 आवश्यक है)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "5.2"
+      },
+      "required": {
+        "content": "$2",
+        "example": "7"
+      },
+      "size": {
+        "content": "$3",
+        "example": "normal"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AAA_RECOMMENDATION": {
+    "message": "WCAG AAA अनुपालन के लिए कंट्रास्ट को $RATIO$:1 तक बढ़ाने पर विचार करें",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AA_MESSAGE": {
+    "message": "टेक्स्ट में अपर्याप्त कंट्रास्ट अनुपात $RATIO$:1 है ($SIZE$ टेक्स्ट के लिए $REQUIRED$:1 आवश्यक है)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "3.2"
+      },
+      "required": {
+        "content": "$2",
+        "example": "4.5"
+      },
+      "size": {
+        "content": "$3",
+        "example": "normal"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AA_RECOMMENDATION": {
+    "message": "WCAG AA अनुपालन के लिए कंट्रास्ट को कम से कम $RATIO$:1 तक बढ़ाएं",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "4.5"
+      }
+    }
+  },
+  "ISSUE_ICON_CONTRAST_MESSAGE": {
+    "message": "आइकन का कंट्रास्ट अनुपात $RATIO$:1 अपर्याप्त है (गैर-टेक्स्ट तत्वों के लिए $REQUIRED$:1 आवश्यक है)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "2.5"
+      },
+      "required": {
+        "content": "$2",
+        "example": "3"
+      }
+    }
+  },
+  "ISSUE_ICON_CONTRAST_RECOMMENDATION": {
+    "message": "WCAG 1.4.11 अनुपालन के लिए कंट्रास्ट को कम से कम $RATIO$:1 तक बढ़ाएं",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "LABEL_ADD_RULE": {
+    "message": "नियम जोड़ें"
+  },
+  "LABEL_ADD_VIEWPORT": {
+    "message": "व्यूपोर्ट जोड़ें"
+  },
+  "LABEL_ANIMATION": {
+    "message": "एनीमेशन"
+  },
+  "LABEL_ANIMATIONS": {
+    "message": "एनीमेशन"
+  },
+  "LABEL_ANIMATIONS_AND_TRANSITIONS": {
+    "message": "एनिमेशन और ट्रांजिशन"
+  },
+  "LABEL_APPEARANCE": {
+    "message": "दिखावट"
+  },
+  "LABEL_ASSET": {
+    "message": "एसेट"
+  },
+  "LABEL_ASSETS": {
+    "message": "एसेट्स"
+  },
+  "LABEL_BACKGROUNDS": {
+    "message": "पृष्ठभूमि"
+  },
+  "LABEL_BORDER": {
+    "message": "बॉर्डर"
+  },
+  "LABEL_BORDERS": {
+    "message": "बॉर्डर"
+  },
+  "LABEL_BOX_SHADOW": {
+    "message": "बॉक्स शैडो"
+  },
+  "LABEL_BOX_SHADOWS": {
+    "message": "बॉक्स शैडो"
+  },
+  "LABEL_CANVAS": {
+    "message": "कैनवस"
+  },
+  "LABEL_CANVAS_DIMENSIONS": {
+    "message": "कैनवस आयाम"
+  },
+  "LABEL_CHANGES": {
+    "message": "परिवर्तन"
+  },
+  "LABEL_CODE": {
+    "message": "कोड"
+  },
+  "LABEL_COLOR": {
+    "message": "रंग"
+  },
+  "LABEL_COLORS": {
+    "message": "रंग"
+  },
+  "LABEL_COLUMNS": {
+    "message": "कॉलम"
+  },
+  "LABEL_COMPUTED": {
+    "message": "गणना किया गया"
+  },
+  "LABEL_CONTEXT_TYPE": {
+    "message": "संदर्भ प्रकार"
+  },
+  "LABEL_CSS": {
+    "message": "CSS"
+  },
+  "LABEL_DOCUMENT": {
+    "message": "दस्तावेज़"
+  },
+  "LABEL_EFFECTIVE_STYLES": {
+    "message": "प्रभावी स्टाइल"
+  },
+  "LABEL_FLEX_GRID_LAYOUT": {
+    "message": "लेआउट"
+  },
+  "LABEL_GRADIENT": {
+    "message": "ग्रेडिएंट"
+  },
+  "LABEL_GRADIENTS": {
+    "message": "ग्रेडिएंट्स"
+  },
+  "LABEL_GUTTER": {
+    "message": "गटर"
+  },
+  "LABEL_HEIGHT": {
+    "message": "ऊँचाई"
+  },
+  "LABEL_INHERITED_FROM": {
+    "message": "$SELECTOR$ से विरासत में मिला",
+    "placeholders": {
+      "selector": {
+        "content": "$1",
+        "example": "body"
+      }
+    }
+  },
+  "LABEL_INSTANCES": {
+    "message": "उदाहरण"
+  },
+  "LABEL_ISSUE": {
+    "message": "समस्या"
+  },
+  "LABEL_ISSUES": {
+    "message": "समस्याएं"
+  },
+  "LABEL_LAYOUT": {
+    "message": "बॉक्स मॉडल"
+  },
+  "LABEL_LOADING": {
+    "message": "..."
+  },
+  "LABEL_MARGIN": {
+    "message": "मार्जिन"
+  },
+  "LABEL_MAX_WIDTH": {
+    "message": "अधिकतम चौड़ाई"
+  },
+  "LABEL_OPACITY": {
+    "message": "अपारदर्शिता"
+  },
+  "LABEL_PADDING": {
+    "message": "पैडिंग"
+  },
+  "LABEL_PIXEL_RATIO": {
+    "message": "पिक्सेल अनुपात"
+  },
+  "LABEL_PW_CSS": {
+    "message": "स्टाइलशीट"
+  },
+  "LABEL_PW_DOCUMENT": {
+    "message": "दस्तावेज़"
+  },
+  "LABEL_PW_FETCH": {
+    "message": "Fetch/XHR"
+  },
+  "LABEL_PW_FONTS": {
+    "message": "फ़ॉन्ट"
+  },
+  "LABEL_PW_IMAGES": {
+    "message": "इमेज"
+  },
+  "LABEL_PW_MEDIA": {
+    "message": "मीडिया"
+  },
+  "LABEL_PW_OTHER": {
+    "message": "अन्य"
+  },
+  "LABEL_PW_SCRIPTS": {
+    "message": "स्क्रिप्ट"
+  },
+  "LABEL_PW_TOTAL": {
+    "message": "कुल"
+  },
+  "LABEL_REFRESH_VIEWPORT": {
+    "message": "रीफ़्रेश"
+  },
+  "LABEL_ROTATE_VIEWPORT": {
+    "message": "घुमाएँ"
+  },
+  "LABEL_RULES": {
+    "message": "नियम"
+  },
+  "LABEL_SCALABLE": {
+    "message": "स्केलेबल"
+  },
+  "LABEL_SELECTION_COLORS": {
+    "message": "रंग"
+  },
+  "LABEL_SOURCE": {
+    "message": "स्रोत"
+  },
+  "LABEL_SVG": {
+    "message": "svg"
+  },
+  "LABEL_TAILWIND": {
+    "message": "Tailwind"
+  },
+  "LABEL_TECHNOLOGIES": {
+    "message": "प्रौद्योगिकियाँ"
+  },
+  "LABEL_TECHNOLOGY": {
+    "message": "प्रौद्योगिकी"
+  },
+  "LABEL_TEXT": {
+    "message": "टेक्स्ट"
+  },
+  "LABEL_TEXT_CONTENT": {
+    "message": "टेक्स्ट सामग्री"
+  },
+  "LABEL_TRANSITION": {
+    "message": "ट्रांज़िशन"
+  },
+  "LABEL_TRANSITIONS": {
+    "message": "ट्रांज़िशन"
+  },
+  "LABEL_TYPOGRAPHY_STYLE": {
+    "message": "टाइपोग्राफी शैली"
+  },
+  "LABEL_TYPOGRAPHY_STYLES": {
+    "message": "टाइपोग्राफी शैलियां"
+  },
+  "LABEL_WHITESPACE_ONLY_CHANGE": {
+    "message": "केवल व्हाइटस्पेस परिवर्तन"
+  },
+  "LABEL_WIDTH": {
+    "message": "चौड़ाई"
+  },
+  "LABEL_ZOOM": {
+    "message": "ज़ूम"
+  },
+  "LABEL_ZOOM_IN": {
+    "message": "ज़ूम इन"
+  },
+  "LABEL_ZOOM_OUT": {
+    "message": "ज़ूम आउट"
+  },
+  "LEGACY_LOGIN_LINK": {
+    "message": "पुराना लॉगिन"
+  },
+  "LEGACY_LOGIN_TEXT": {
+    "message": "v3.0.0 से पहले Bo doi Pro खरीदा था?"
+  },
+  "MATCHED_CROSS_ORIGIN_HIDDEN": {
+    "message": "$COUNT$ क्रॉस-ऑरिजिन स्टाइलशीट छिपी हैं।",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "MCP_CONNECT_HINT": {
+    "message": "इस प्रॉम्प्ट को कॉपी करें और अपने AI एजेंट में पेस्ट करें:"
+  },
+  "MCP_UNKNOWN_AGENT": {
+    "message": "AI एजेंट"
+  },
+  "MCP_WAITING_FOR_AGENT": {
+    "message": "एजेंट के कनेक्ट होने की प्रतीक्षा हो रही है..."
+  },
+  "NO_CHANGES_MESSAGE": {
+    "message": "कोई बदलाव नहीं मिला"
+  },
+  "NO_PAGE_INFO_MESSAGE": {
+    "message": "कोई पेज जानकारी नहीं मिली"
+  },
+  "OPTIONS_COLOR_FORMAT_SECONDARY": {
+    "message": "इंस्पेक्टर और कलर पिकर द्वारा उपयोग किया जाता है"
+  },
+  "OPTIONS_MCP_CONNECT_BUTTON": {
+    "message": "कनेक्ट करें"
+  },
+  "OPTIONS_MCP_DISCONNECT_BUTTON": {
+    "message": "डिस्कनेक्ट करें"
+  },
+  "OPTIONS_MCP_SERVER_SECONDARY": {
+    "message": "AI एजेंट्स को निरीक्षण या संपादन करने की अनुमति दें। <a href=\"https://www.bodoi.com/docs/mcp.html\" target=\"_blank\">सेटअप गाइड</a>"
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_BODY": {
+    "message": "आपका MCP सर्वर संस्करण $1 है, लेकिन यह एक्सटेंशन $2 या नया अपेक्षित करता है। npm पैकेज अपडेट करें या अपने AI क्लाइंट को पुनरारंभ करें।",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "required": {
+        "content": "$2"
+      }
+    }
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_TITLE": {
+    "message": "MCP सर्वर पुराना"
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_TOOLTIP": {
+    "message": "MCP सर्वर पुराना है। अपने AI क्लाइंट से अपडेट करें।"
+  },
+  "OPTIONS_MCP_VERSION_UNKNOWN": {
+    "message": "अज्ञात"
+  },
+  "OPTIONS_PAGE_TITLE": {
+    "message": "सेटिंग्स"
+  },
+  "OPTIONS_ROW_COLOR_FORMAT": {
+    "message": "रंग प्रारूप"
+  },
+  "OPTIONS_ROW_MCP_SERVER": {
+    "message": "MCP सर्वर"
+  },
+  "OPTIONS_ROW_SCREENSHOT_HIGHLIGHTS": {
+    "message": "हाइलाइट्स कैप्चर करें"
+  },
+  "OPTIONS_ROW_SCREENSHOT_PADDING": {
+    "message": "स्क्रीनशॉट पैडिंग"
+  },
+  "OPTIONS_ROW_THEME": {
+    "message": "थीम"
+  },
+  "OPTIONS_SAVED_EDITS_CLEAR": {
+    "message": "हटाएं"
+  },
+  "OPTIONS_SAVED_EDITS_CONFIRM_BODY": {
+    "message": "इससे सभी साइटों के याद रखे गए CSS बदलाव हट जाते हैं।"
+  },
+  "OPTIONS_SAVED_EDITS_CONFIRM_TITLE": {
+    "message": "सहेजे गए बदलाव हटाएं?"
+  },
+  "OPTIONS_SAVED_EDITS_SECONDARY": {
+    "message": "CSS बदलाव हर साइट के लिए याद रखे जाते हैं और वहां Bo doi चालू करने पर बहाल हो जाते हैं।"
+  },
+  "OPTIONS_SAVED_EDITS_TITLE": {
+    "message": "सहेजे गए बदलाव"
+  },
+  "OPTIONS_SCREENSHOT_HIGHLIGHTS_SECONDARY": {
+    "message": "स्क्रीनशॉट में माप ओवरले कैप्चर करें"
+  },
+  "OPTIONS_SCREENSHOT_PADDING_SECONDARY": {
+    "message": "स्क्रीनशॉट में पैडेड बैकड्रॉप जोड़ें"
+  },
+  "OPTIONS_SECTION_APPEARANCE": {
+    "message": "दिखावट"
+  },
+  "OPTIONS_SECTION_EXTENSION": {
+    "message": "एक्सटेंशन"
+  },
+  "OPTIONS_SECTION_SCREENSHOTS": {
+    "message": "स्क्रीनशॉट"
+  },
+  "OPTIONS_SECTION_TERMINAL_AI": {
+    "message": "टर्मिनल AI"
+  },
+  "PAGE_TAB_META_OG": {
+    "message": "Open Graph"
+  },
+  "PAGE_TAB_META_SEO": {
+    "message": "SEO"
+  },
+  "PAGE_TAB_META_TAGS": {
+    "message": "मेटा टैग"
+  },
+  "PAGE_TAB_META_TWITTER": {
+    "message": "Twitter Card"
+  },
+  "PAGE_TAB_NO_METADATA": {
+    "message": "कोई मेटाडेटा नहीं मिला"
+  },
+  "PAGE_TAB_OG_IMAGE": {
+    "message": "ओपन ग्राफ़ इमेज"
+  },
+  "PAGE_TAB_PAGE_WEIGHT": {
+    "message": "पेज वज़न"
+  },
+  "PAGE_TAB_SOCIAL_PREVIEW": {
+    "message": "सोशल प्रीव्यू"
+  },
+  "PAGE_TAB_TECHNOLOGIES": {
+    "message": "प्रौद्योगिकियाँ"
+  },
+  "PAGE_TAB_UNTITLED": {
+    "message": "बिना शीर्षक पेज"
+  },
+  "PW_BUFFER_FULL": {
+    "message": "रिसोर्स बफ़र भरा हुआ है, कुछ एंट्री गायब हो सकती हैं"
+  },
+  "PW_HIDDEN_NOTE": {
+    "message": "$COUNT$ क्रॉस-ऑरिजिन रिसोर्स छिपे हुए हैं",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "RESPONSIVE_FRAME_BLOCKED_BODY": {
+    "message": "यह साइट प्रीव्यू में लोडिंग को रोकती है।{br}इसे दिखाने के लिए {grant}।"
+  },
+  "RESPONSIVE_FRAME_BLOCKED_GRANT": {
+    "message": "पहुँच दें"
+  },
+  "RESPONSIVE_FRAME_BLOCKED_STILL": {
+    "message": "यह साइट प्रीव्यू में लोडिंग को रोकती है।{br}यह ऐसा किसी स्क्रिप्ट या पेज में मौजूद नीति से करती है जिसे हटाया नहीं जा सकता।"
+  },
+  "RESPONSIVE_FRAME_TIMEOUT": {
+    "message": "यह पेज पूरी तरह लोड नहीं हुआ।"
+  },
+  "RESTORE_ACCESS_ERROR": {
+    "message": "पहुंच पुनर्स्थापित करने में असमर्थ। कृपया लॉग इन करने का प्रयास करें।"
+  },
+  "RESTORE_ACCESS_LINK": {
+    "message": "खरीदारी पुनर्स्थापित करें"
+  },
+  "REVIEWS_SUBTITLE": {
+    "message": "Bo doi के उपयोग के बारे में उनका क्या कहना है।"
+  },
+  "REVIEWS_TITLE": {
+    "message": "डेवलपर्स और डिजाइनरों द्वारा पसंद किया गया"
+  },
+  "RULES_COUNT_ONE": {
+    "message": "1 नियम"
+  },
+  "RULES_COUNT_OTHER": {
+    "message": "$1 नियम",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "BO_DOI_PRO": {
+    "message": "Bo doi "
+  },
+  "SEO_DESCRIPTION_TOO_LONG_MESSAGE": {
+    "message": "विवरण 160 अक्षरों से लंबा है"
+  },
+  "SEO_DESCRIPTION_TOO_LONG_RECOMMENDATION": {
+    "message": "सर्च इंजन लंबे विवरण को छोटा कर सकते हैं। 120 से 160 अक्षरों तक छोटा करें।"
+  },
+  "SEO_DESCRIPTION_TOO_SHORT_MESSAGE": {
+    "message": "विवरण 70 अक्षरों से छोटा है"
+  },
+  "SEO_DESCRIPTION_TOO_SHORT_RECOMMENDATION": {
+    "message": "वर्णनात्मक स्निपेट के लिए 120 से 160 अक्षरों का लक्ष्य रखें।"
+  },
+  "SEO_LABEL_ISSUE": {
+    "message": "SEO समस्या"
+  },
+  "SEO_LABEL_ISSUES": {
+    "message": "SEO समस्याएँ"
+  },
+  "SEO_MISSING_ALT_MESSAGE": {
+    "message": "इमेज में alt टेक्स्ट नहीं है"
+  },
+  "SEO_MISSING_ALT_RECOMMENDATION": {
+    "message": "हर img में एक alt एट्रिब्यूट जोड़ें। केवल सजावटी इमेज के लिए alt=\"\" का उपयोग करें।"
+  },
+  "SEO_MISSING_CANONICAL_MESSAGE": {
+    "message": "canonical लिंक गायब है"
+  },
+  "SEO_MISSING_CANONICAL_RECOMMENDATION": {
+    "message": "इस पेज के लिए पसंदीदा URL घोषित करने हेतु <link rel=\"canonical\"> जोड़ें।"
+  },
+  "SEO_MISSING_DESCRIPTION_MESSAGE": {
+    "message": "meta description गायब है"
+  },
+  "SEO_MISSING_DESCRIPTION_RECOMMENDATION": {
+    "message": "खोज परिणामों के लिए पेज को सारांशित करने हेतु meta description जोड़ें।"
+  },
+  "SEO_MISSING_H1_MESSAGE": {
+    "message": "H1 शीर्षक गायब है"
+  },
+  "SEO_MISSING_H1_RECOMMENDATION": {
+    "message": "हर पेज में एक स्पष्ट H1 होना चाहिए जो उसके मुख्य विषय का वर्णन करे।"
+  },
+  "SEO_MISSING_LANG_MESSAGE": {
+    "message": "<html> पर lang एट्रिब्यूट गायब है"
+  },
+  "SEO_MISSING_LANG_RECOMMENDATION": {
+    "message": "सर्च इंजन और स्क्रीन रीडर की मदद के लिए एक lang एट्रिब्यूट सेट करें (जैसे lang=\"en\")।"
+  },
+  "SEO_MISSING_OG_DESCRIPTION_MESSAGE": {
+    "message": "og:description गायब है"
+  },
+  "SEO_MISSING_OG_DESCRIPTION_RECOMMENDATION": {
+    "message": "शेयर प्रीव्यू के लिए <meta property=\"og:description\"> जोड़ें।"
+  },
+  "SEO_MISSING_OG_IMAGE_MESSAGE": {
+    "message": "og:image गायब है"
+  },
+  "SEO_MISSING_OG_IMAGE_RECOMMENDATION": {
+    "message": "साझा किए गए लिंक में प्रीव्यू इमेज शामिल करने के लिए <meta property=\"og:image\"> जोड़ें।"
+  },
+  "SEO_MISSING_OG_TITLE_MESSAGE": {
+    "message": "og:title गायब है"
+  },
+  "SEO_MISSING_OG_TITLE_RECOMMENDATION": {
+    "message": "साझा किए गए लिंक पर स्पष्ट शीर्षक दिखाने के लिए <meta property=\"og:title\"> जोड़ें।"
+  },
+  "SEO_MISSING_TITLE_MESSAGE": {
+    "message": "title टैग गायब है"
+  },
+  "SEO_MISSING_TITLE_RECOMMENDATION": {
+    "message": "पेज हेड में एक वर्णनात्मक <title> एलिमेंट जोड़ें।"
+  },
+  "SEO_MISSING_VIEWPORT_MESSAGE": {
+    "message": "viewport meta टैग गायब है"
+  },
+  "SEO_MISSING_VIEWPORT_RECOMMENDATION": {
+    "message": "मोबाइल रेंडरिंग के लिए <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> जोड़ें।"
+  },
+  "SEO_MULTIPLE_H1_MESSAGE": {
+    "message": "पेज में एक से अधिक H1 हैं"
+  },
+  "SEO_MULTIPLE_H1_RECOMMENDATION": {
+    "message": "प्रति पेज एक ही H1 का उपयोग करें और द्वितीयक शीर्षकों को H2 या H3 में बदलें।"
+  },
+  "SEO_ROBOTS_NOINDEX_MESSAGE": {
+    "message": "पेज noindex पर सेट है"
+  },
+  "SEO_ROBOTS_NOINDEX_RECOMMENDATION": {
+    "message": "सर्च इंजन इस पेज को इंडेक्स नहीं करेंगे। यदि यह जानबूझकर नहीं है तो noindex हटाएँ।"
+  },
+  "SEO_TITLE_TOO_LONG_MESSAGE": {
+    "message": "शीर्षक 60 अक्षरों से लंबा है"
+  },
+  "SEO_TITLE_TOO_LONG_RECOMMENDATION": {
+    "message": "सर्च इंजन लंबे शीर्षक को छोटा कर सकते हैं। 50 से 60 अक्षरों तक छोटा करें।"
+  },
+  "SEO_TITLE_TOO_SHORT_MESSAGE": {
+    "message": "शीर्षक 30 अक्षरों से छोटा है"
+  },
+  "SEO_TITLE_TOO_SHORT_RECOMMENDATION": {
+    "message": "खोज परिणामों में शीर्षक स्पष्ट दिखे, इसके लिए 50 से 60 अक्षरों का लक्ष्य रखें।"
+  },
+  "SHORTCUT_CHILD": {
+    "message": "चाइल्ड चुनें"
+  },
+  "SHORTCUT_COPY": {
+    "message": "कॉपी करें"
+  },
+  "SHORTCUT_DESELECT": {
+    "message": "चयन रद्द करें"
+  },
+  "SHORTCUT_PARENT": {
+    "message": "मूल चुनें"
+  },
+  "SHORTCUT_PASTE": {
+    "message": "पेस्ट करें"
+  },
+  "SHORTCUT_REDO": {
+    "message": "फिर से करें"
+  },
+  "SHORTCUT_TOGGLE_PANEL": {
+    "message": "पैनल टॉगल करें"
+  },
+  "SHORTCUT_TOGGLE_RULER": {
+    "message": "एक्सटेंशन टॉगल करें"
+  },
+  "SHORTCUT_UNDO": {
+    "message": "पूर्ववत करें"
+  },
+  "SOCIAL_PREVIEW_FACEBOOK": {
+    "message": "Facebook"
+  },
+  "SOCIAL_PREVIEW_LINKEDIN": {
+    "message": "LinkedIn"
+  },
+  "SOCIAL_PREVIEW_X": {
+    "message": "X"
+  },
+  "SOCIAL_PROOF_TEXT": {
+    "message": "50,000+ डिज़ाइनरों और डेवलपर्स द्वारा उपयोग किया जाता है"
+  },
+  "TAB_ELEMENT": {
+    "message": "एलिमेंट"
+  },
+  "TAB_PAGE": {
+    "message": "पेज"
+  },
+  "TEXT_SIZE_LARGE": {
+    "message": "बड़ा"
+  },
+  "TEXT_SIZE_NORMAL": {
+    "message": "सामान्य"
+  },
+  "THEME": {
+    "message": "थीम"
+  },
+  "THEME_DARK": {
+    "message": "गहरा"
+  },
+  "THEME_LIGHT": {
+    "message": "हल्का"
+  },
+  "THEME_SYSTEM": {
+    "message": "सिस्टम"
+  },
+  "TITLE_COLOR_SCHEME": {
+    "message": "रंग योजना"
+  },
+  "TITLE_FRAME_LAYOUT": {
+    "message": "फ़्रेम लेआउट"
+  },
+  "TITLE_INVALID_PROPERTY": {
+    "message": "अज्ञात प्रॉपर्टी"
+  },
+  "TITLE_INVALID_VALUE": {
+    "message": "अमान्य मान"
+  },
+  "TITLE_MORE_ACTIONS": {
+    "message": "अधिक क्रियाएँ"
+  },
+  "TITLE_MOVE_LEFT": {
+    "message": "बाएं ले जाएं"
+  },
+  "TITLE_MOVE_RIGHT": {
+    "message": "दाएं ले जाएं"
+  },
+  "TITLE_NOT_INHERITED": {
+    "message": "इस तत्व द्वारा विरासत में नहीं मिला"
+  },
+  "TITLE_OVERRIDDEN_BY": {
+    "message": "$SELECTOR$ द्वारा ओवरराइड",
+    "placeholders": {
+      "selector": {
+        "content": "$1",
+        "example": ".card"
+      }
+    }
+  },
+  "TITLE_OVERRIDDEN_HIDDEN": {
+    "message": "एक ऐसी स्टाइलशीट द्वारा ओवरराइड किया गया जिसे Bo doi नहीं देख सकता"
+  },
+  "TITLE_OVERRIDDEN_HIDDEN_GRANT": {
+    "message": "एक ऐसी स्टाइलशीट द्वारा ओवरराइड किया गया जिसे Bo doi नहीं देख सकता। इसे देखने के लिए क्रॉस-ऑरिजिन एक्सेस दें।"
+  },
+  "TITLE_REMOVE": {
+    "message": "व्यूपोर्ट हटाएं"
+  },
+  "TITLE_RESET_VIEWPORTS": {
+    "message": "व्यूपोर्ट रीसेट करें"
+  },
+  "TITLE_SYNC_SCROLLING": {
+    "message": "स्क्रॉलिंग सिंक करें"
+  },
+  "TOAST_EDITS_RESTORED_MANY": {
+    "message": "$COUNT$ सहेजे गए बदलाव बहाल किए गए",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOAST_EDITS_RESTORED_ONE": {
+    "message": "1 सहेजा गया बदलाव बहाल किया गया"
+  },
+  "TOAST_SCROLL_SYNC_OFF": {
+    "message": "यह पेज लगातार विरोध में स्क्रॉल कर रहा है, इसलिए स्क्रॉल सिंक बंद हो गया।"
+  },
+  "TOOLTIP_CHILD": {
+    "message": "चाइल्ड चुनें"
+  },
+  "TOOLTIP_COPY": {
+    "message": "कॉपी करें ($mod$+C)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_CUT": {
+    "message": "कट करें ($mod$+X)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_DELETE": {
+    "message": "हटाएं ($key$)",
+    "placeholders": {
+      "key": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_DUPLICATE": {
+    "message": "डुप्लिकेट करें ($mod$+D)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_PARENT": {
+    "message": "मूल चुनें"
+  },
+  "TOOLTIP_PASTE": {
+    "message": "पेस्ट करें ($mod$+V)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_REDO": {
+    "message": "फिर से करें ($mod$+$shift$+Z)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      },
+      "shift": {
+        "content": "$2"
+      }
+    }
+  },
+  "TOOLTIP_SELECT": {
+    "message": "चयन मोड"
+  },
+  "TOOLTIP_UNDO": {
+    "message": "पूर्ववत करें ($mod$+Z)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TRUSTED_BY_TEXT": {
+    "message": "पेशेवरों द्वारा भरोसा किया गया"
+  },
+  "UNLOCK_PRO_SEE_MORE": {
+    "message": "$COUNT$ और देखने के लिए Pro प्राप्त करें",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "VIDEO_PLAY_BUTTON": {
+    "message": "Bo doi को काम करते हुए देखें"
+  },
+  "WARN_OVERFLOW": {
+    "message": "सामग्री क्षैतिज रूप से बाहर निकल रही है"
+  }
+}

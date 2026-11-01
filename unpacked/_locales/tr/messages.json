@@ -1,0 +1,1326 @@
+{
+  "ALERT_COULDNT_COMMUNICATE_WITH_TAB": {
+    "message": "Sekmeyle iletişim kurulamadı. Bo doi'ın geçerli sekmede etkin olduğundan emin olun."
+  },
+  "ALERT_ISSUE_ELEMENT_NOT_FOUND": {
+    "message": "Sorunlu öğe bulunamadı. Kaldırılmış veya sayfa değişmiş olabilir."
+  },
+  "ALERT_NO_SELECTED_ELEMENT": {
+    "message": "Hedef öğe bulunamadı."
+  },
+  "ASSETS_FAILED_PLURAL": {
+    "message": "varlık yüklenemedi"
+  },
+  "ASSETS_FAILED_SINGULAR": {
+    "message": "varlık yüklenemedi"
+  },
+  "BODY_REMOVE_VIEWPORT": {
+    "message": "$LABEL$ kaldırılacak.",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "BODY_RESET_VIEWPORTS": {
+    "message": "Viewport'larınız varsayılan değerlere sıfırlanacak."
+  },
+  "BUTTON_ADD": {
+    "message": "Ekle"
+  },
+  "BUTTON_CHANGE": {
+    "message": "Değiştir"
+  },
+  "BUTTON_CLEAR_CHANGES": {
+    "message": "Tüm değişiklikleri temizle"
+  },
+  "BUTTON_COPIED": {
+    "message": "Kopyalandı"
+  },
+  "BUTTON_DOWNLOAD": {
+    "message": "İndir"
+  },
+  "BUTTON_DOWNLOAD_ALL": {
+    "message": "Tümünü indir"
+  },
+  "BUTTON_REMOVE": {
+    "message": "Kaldır"
+  },
+  "BUTTON_RESET": {
+    "message": "Sıfırla"
+  },
+  "CHECKLIST_FEATURE_1": {
+    "message": "Üzerine gelince öğe özelliklerini inceleyin"
+  },
+  "CHECKLIST_FEATURE_2": {
+    "message": "Dış boşluk, kenarlık ve iç boşlukla kutu modeli"
+  },
+  "CHECKLIST_FEATURE_3": {
+    "message": "Görselleri ve SVG varlıklarını indirin"
+  },
+  "CHECKLIST_FEATURE_4": {
+    "message": "Renkleri HEX, RGBA, HSL değerleri olarak çıkarın"
+  },
+  "CHECKLIST_FEATURE_5": {
+    "message": "Sayfaya düzen ızgarası yerleştirin"
+  },
+  "CHECKLIST_FEATURE_6": {
+    "message": "Öğelerin ölçülerle ekran görüntüsünü alın"
+  },
+  "CHECKLIST_FEATURE_7": {
+    "message": "Öğeleri CSS seçiciyle bulun"
+  },
+  "CHECKLIST_FEATURE_8": {
+    "message": "Easing eğrileriyle animasyon inceleyici"
+  },
+  "CHIP_AUDIT": {
+    "message": "Denetle"
+  },
+  "CHIP_EDIT": {
+    "message": "Düzenle"
+  },
+  "CHIP_EXTRACT": {
+    "message": "Çıkar"
+  },
+  "CHIP_INSPECT": {
+    "message": "İncele"
+  },
+  "CHIP_MEASURE": {
+    "message": "Ölç"
+  },
+  "CHIP_TEST": {
+    "message": "Test et"
+  },
+  "CHIP_VISUALIZE": {
+    "message": "Görselleştir"
+  },
+  "COMPARISON_COLUMN_FEATURE": {
+    "message": "Özellik"
+  },
+  "COMPARISON_TITLE": {
+    "message": "Pro'daki her şey"
+  },
+  "CONFIRM_CLEAR_ALL_CHANGES": {
+    "message": "Bu sayfadaki tüm değişiklikleri temizlemek istediğinizden emin misiniz?"
+  },
+  "CONFIRM_CLEAR_ELEMENT": {
+    "message": "Bu öğenin değişikliklerini temizlemek istediğinizden emin misiniz?"
+  },
+  "CONFIRM_CLEAR_ELEMENTS": {
+    "message": "$1 öğenin değişikliklerini temizlemek istediğinizden emin misiniz?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "CONFIRM_PARTIAL_EDITS_FOR_RESPONSIVE": {
+    "message": "CSS kuralı değişiklikleriniz korunacak. Satır içi stiller ile biçimlendirme ve sınıf düzenlemeleri silinecek."
+  },
+  "CSS_SELECTOR": {
+    "message": "CSS seçici"
+  },
+  "DEFAULT_ASSET_NAME": {
+    "message": "asset"
+  },
+  "DEFAULT_DOWNLOAD_NAME": {
+    "message": "indirilen_dosya"
+  },
+  "DEFAULT_SVG_FILENAME": {
+    "message": "asset.svg"
+  },
+  "DIALOG_CANCEL_BUTTON": {
+    "message": "İptal"
+  },
+  "DIALOG_CLOSE_BUTTON": {
+    "message": "Kapat"
+  },
+  "DIALOG_CONFIRM": {
+    "message": "Onayla"
+  },
+  "DIALOG_OK": {
+    "message": "Tamam"
+  },
+  "DIALOG_SUBMIT_BUTTON": {
+    "message": "Etkinleştir"
+  },
+  "DIALOG_TITLE_CLEAR_ALL_CHANGES": {
+    "message": "Tüm değişiklikleri temizle"
+  },
+  "DIALOG_TITLE_CLEAR_ELEMENT": {
+    "message": "Öğeyi temizle"
+  },
+  "DIALOG_TITLE_CUSTOM_VIEWPORT": {
+    "message": "Özel viewport"
+  },
+  "DIALOG_TITLE_ELEMENT_NOT_FOUND": {
+    "message": "Öğe bulunamadı"
+  },
+  "DIALOG_TITLE_PARTIAL_EDITS_FOR_RESPONSIVE": {
+    "message": "Bazı düzenlemeler korunmayacak"
+  },
+  "DIALOG_TITLE_RESET_VIEWPORTS": {
+    "message": "Viewport'ları sıfırla"
+  },
+  "DIALOG_TITLE_TAB_UNAVAILABLE": {
+    "message": "Sekme kullanılamıyor"
+  },
+  "DISMISS_LABEL": {
+    "message": "Kapat"
+  },
+  "DOCK_BREAKPOINTS": {
+    "message": "Kırılma noktaları"
+  },
+  "DOCK_COPY": {
+    "message": "Kopyala"
+  },
+  "DOCK_CUT": {
+    "message": "Kes"
+  },
+  "DOCK_DELETE": {
+    "message": "Sil"
+  },
+  "DOCK_DETECT_TECH": {
+    "message": "Sayfa teknolojisi"
+  },
+  "DOCK_DETECT_TECH_DETECTING": {
+    "message": "Algılanıyor..."
+  },
+  "DOCK_DETECT_TECH_NONE_DETECTED": {
+    "message": "Teknoloji algılanmadı."
+  },
+  "DOCK_DETECT_TECH_RESPONSIVE_ERROR": {
+    "message": "Teknoloji algılama duyarlı modda kullanılamaz."
+  },
+  "DOCK_DUPLICATE": {
+    "message": "Çoğalt"
+  },
+  "DOCK_EDIT_MODE": {
+    "message": "Düzenle"
+  },
+  "DOCK_EDIT_TEXT": {
+    "message": "Metni düzenle"
+  },
+  "DOCK_EYEDROPPER": {
+    "message": "Renk seçici"
+  },
+  "DOCK_FIND_ELEMENT": {
+    "message": "Öğe bul"
+  },
+  "DOCK_INSPECT_MODE": {
+    "message": "İncele"
+  },
+  "DOCK_MCP_CONNECTED": {
+    "message": "MCP bağlı"
+  },
+  "DOCK_MCP_CONNECT_AGENT": {
+    "message": "Ajanı bağla"
+  },
+  "DOCK_MCP_OUTDATED": {
+    "message": "MCP güncel değil"
+  },
+  "DOCK_MCP_TITLE": {
+    "message": "MCP"
+  },
+  "DOCK_MCP_WAITING": {
+    "message": "Ajan bekleniyor"
+  },
+  "DOCK_OPEN_PANEL": {
+    "message": "Yan paneli aç/kapat"
+  },
+  "DOCK_OPEN_PANEL_UNSUPPORTED": {
+    "message": "Yan panel bu tarayıcıda desteklenmiyor"
+  },
+  "DOCK_PASTE": {
+    "message": "Yapıştır"
+  },
+  "DOCK_PAUSE": {
+    "message": "Duraklat"
+  },
+  "DOCK_QUIT": {
+    "message": "Çık"
+  },
+  "DOCK_REDO": {
+    "message": "Yinele"
+  },
+  "DOCK_RESPONSIVE_MODE": {
+    "message": "Duyarlı mod"
+  },
+  "DOCK_RULER": {
+    "message": "Sayfa cetvelleri"
+  },
+  "DOCK_SELECT_CHILD": {
+    "message": "Alt öğeyi seç"
+  },
+  "DOCK_SELECT_PARENT": {
+    "message": "Üst öğeyi seç"
+  },
+  "DOCK_TAKE_SCREENSHOT": {
+    "message": "Ekran görüntüsü al"
+  },
+  "DOCK_TOGGLE_GRID": {
+    "message": "Düzen ızgarası"
+  },
+  "DOCK_TOGGLE_INSPECT": {
+    "message": "İnceleyici"
+  },
+  "DOCK_UNDO": {
+    "message": "Geri al"
+  },
+  "DOCK_XRAY_MODE": {
+    "message": "Röntgen modu"
+  },
+  "EDITOR_CROSS_ORIGIN_MISSING": {
+    "message": "Bazı stiller eksik olabilir."
+  },
+  "EDIT_COUNT_NONE": {
+    "message": "Düzenleme yok"
+  },
+  "EDIT_COUNT_ONE": {
+    "message": "1 düzenleme"
+  },
+  "EDIT_COUNT_OTHER": {
+    "message": "$1 düzenleme",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "ELEMENTS": {
+    "message": "Öğeler"
+  },
+  "ELEMENTS_COUNT_ONE": {
+    "message": "1 Öğe"
+  },
+  "ELEMENTS_COUNT_OTHER": {
+    "message": "$1 Öğe",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "EMPTY_CANVAS": {
+    "message": "Başlamak için bir viewport ekleyin."
+  },
+  "EMPTY_MESSAGE": {
+    "message": "Bir öğe seçin"
+  },
+  "EMPTY_MESSAGE_EDIT": {
+    "message": "Seçmek için bir öğeye tıklayın"
+  },
+  "EMPTY_MESSAGE_INSPECT": {
+    "message": "Seçmek için bir öğeye tıklayın"
+  },
+  "ENABLE_CROSS_ORIGIN": {
+    "message": "Erişim ver"
+  },
+  "EXT_DESCRIPTION": {
+    "message": "Tasarımcılar ve geliştiriciler için web inceleyici. Öğeleri ölçün, CSS ve renkleri çıkarın, ekran görüntüleri alın ve daha fazlası."
+  },
+  "EXT_NAME": {
+    "message": "Bo doi - Web'i Ölçün ve İnceleyin"
+  },
+  "EXT_NAME_SHORT": {
+    "message": "Bo doi"
+  },
+  "FEATURES_SUBTITLE": {
+    "message": "Tek tıkla varlık çıkarma, görsel CSS inceleme ve gelişmiş analiz araçları. Geliştiricilerin ve tasarımcıların gerçek çalışma şekline göre tasarlandı."
+  },
+  "FEATURES_TITLE": {
+    "message": "Pro'ya dahil olan her şey"
+  },
+  "FEATURE_A11Y_TITLE": {
+    "message": "Erişilebilirlik sorunları"
+  },
+  "FEATURE_ACCESSIBILITY_DESCRIPTION": {
+    "message": "WCAG kontrast hatalarını uygulanabilir önerilerle otomatik olarak algılayın ve vurgulayın."
+  },
+  "FEATURE_ACCESSIBILITY_TITLE": {
+    "message": "Erişilebilirlik sorunları"
+  },
+  "FEATURE_ANIMATION_DESCRIPTION": {
+    "message": "CSS animasyon zamanlama eğrilerini görselleştirin ve animasyon CSS özelliklerini kopyalayın."
+  },
+  "FEATURE_ANIMATION_TITLE": {
+    "message": "Animasyon analizi"
+  },
+  "FEATURE_ASSET_DESCRIPTION": {
+    "message": "Görselleri, SVG'leri ve vektör varlıkları herhangi bir web sayfasından doğrudan çıkarın ve indirin."
+  },
+  "FEATURE_ASSET_TITLE": {
+    "message": "Varlık çıkarma"
+  },
+  "FEATURE_BOX_SHADOW_DESCRIPTION": {
+    "message": "Çok katmanlı kutu gölgelerini her gölge bileşenini ayrıştıran görünümle etkileşimli olarak inceleyin."
+  },
+  "FEATURE_BOX_SHADOW_TITLE": {
+    "message": "Kutu gölgesi görselleştirme"
+  },
+  "FEATURE_BREAKPOINTS_DESCRIPTION": {
+    "message": "CSS medya sorgusu kırılma noktalarını algılayın ve renkli sınır çizgileriyle doğrudan sayfada görselleştirin."
+  },
+  "FEATURE_BREAKPOINTS_TITLE": {
+    "message": "Kırılma noktaları"
+  },
+  "FEATURE_CANVAS_DESCRIPTION": {
+    "message": "HTML5 Canvas öğelerini inceleyin. Boyutları ve bağlam türlerini görüntüleyin, renk paletlerini çıkarın."
+  },
+  "FEATURE_CANVAS_TITLE": {
+    "message": "Canvas inceleme"
+  },
+  "FEATURE_COLOR_DESCRIPTION": {
+    "message": "Seçili öğelerden renk paletlerini hex, RGB ve HSL değerleriyle çıkarın ve kopyalayın."
+  },
+  "FEATURE_COLOR_TITLE": {
+    "message": "Renk çıkarma"
+  },
+  "FEATURE_COMPUTED_CSS_TITLE": {
+    "message": "Hesaplanan CSS"
+  },
+  "FEATURE_CSS_RULES_DESCRIPTION": {
+    "message": "Herhangi bir öğeye uygulanan stil sayfası CSS kurallarını kaynak dosyaya göre gruplanmış olarak görüntüleyin."
+  },
+  "FEATURE_CSS_RULES_TITLE": {
+    "message": "CSS kuralları inceleyici"
+  },
+  "FEATURE_DISTANCE_TITLE": {
+    "message": "Mesafe ölçümü"
+  },
+  "FEATURE_EDIT_TITLE": {
+    "message": "Değişiklik takibiyle canlı CSS düzenleme"
+  },
+  "FEATURE_ELEMENT_HOVER_TITLE": {
+    "message": "Öğe inceleme"
+  },
+  "FEATURE_ELEMENT_SCREENSHOT_TITLE": {
+    "message": "Öğe ekran görüntüleri"
+  },
+  "FEATURE_EYEDROPPER_TITLE": {
+    "message": "Renk seçici"
+  },
+  "FEATURE_GRADIENT_DESCRIPTION": {
+    "message": "CSS degradelerini renk duraklarının ve konumların ayrıntılı dökümüyle görselleştirin."
+  },
+  "FEATURE_GRADIENT_TITLE": {
+    "message": "Degrade inceleyici"
+  },
+  "FEATURE_GRID_DESCRIPTION": {
+    "message": "Tasarım hizalamasını ve boşlukları kontrol etmek için özelleştirilebilir bir sütun ızgarası yerleştirin."
+  },
+  "FEATURE_GRID_TITLE": {
+    "message": "Düzen ızgarası katmanı"
+  },
+  "FEATURE_HEADING": {
+    "message": "Eksiksiz bir web geliştirme araç setinin kilidini açın"
+  },
+  "FEATURE_HTML_TEXT_DESCRIPTION": {
+    "message": "Öğeleri doğrudan sayfada kopyalayın, yapıştırın, çoğaltın veya silin. Metin düzenleme modu sayfa metnini yerinde yeniden yazmanızı sağlar."
+  },
+  "FEATURE_HTML_TEXT_TITLE": {
+    "message": "HTML ve metin düzenleme"
+  },
+  "FEATURE_INSPECTOR_DESCRIPTION": {
+    "message": "Üzerine gelince ayrıntılı öğe özellikleri. İnceleyicileri sabitlemek ve birden çok öğeyi yan yana karşılaştırmak için Boşluk tuşuna basın."
+  },
+  "FEATURE_INSPECTOR_TITLE": {
+    "message": "Yüzen inceleyici"
+  },
+  "FEATURE_LAYOUT_DESCRIPTION": {
+    "message": "Flexbox ve Grid düzenlerini hizalama, yön ve yapının net bir dökümüyle görselleştirin."
+  },
+  "FEATURE_LAYOUT_TITLE": {
+    "message": "Düzen görselleştirici"
+  },
+  "FEATURE_META_TAGS_TITLE": {
+    "message": "Meta etiketleri"
+  },
+  "FEATURE_PAGE_RULERS_TITLE": {
+    "message": "Sayfa cetvelleri"
+  },
+  "FEATURE_PAGE_WEIGHT_DESCRIPTION": {
+    "message": "Sayfada nelerin yüklendiğini betikler, stil sayfaları, görseller, yazı tipleri ve daha fazlasına ayrılmış olarak görün. Canlı yığılmış çubuk, kaynaklar geldikçe güncellenir."
+  },
+  "FEATURE_PAGE_WEIGHT_TITLE": {
+    "message": "Sayfa ağırlığı"
+  },
+  "FEATURE_PARENT_CHILD_TITLE": {
+    "message": "Üst / alt öğe seçimi"
+  },
+  "FEATURE_RESPONSIVE_DESCRIPTION": {
+    "message": "Etkileşimli cihaz emülatörü ve özel boyutlarla tasarımları farklı cihaz görünüm alanlarında test edin."
+  },
+  "FEATURE_RESPONSIVE_TITLE": {
+    "message": "Duyarlı mod"
+  },
+  "FEATURE_SCREENSHOT_DESCRIPTION": {
+    "message": "Seçili öğelerin dış boşluklar ve ölçüler dahil kırpılmış ekran görüntülerini alın."
+  },
+  "FEATURE_SCREENSHOT_TITLE": {
+    "message": "Öğe ekran görüntüleri"
+  },
+  "FEATURE_SELECTOR_DESCRIPTION": {
+    "message": "Belirli öğeleri hızla bulmak için CSS seçicilerle öğeleri bulun ve vurgulayın."
+  },
+  "FEATURE_SELECTOR_TITLE": {
+    "message": "CSS seçici arama"
+  },
+  "FEATURE_SEO_TITLE": {
+    "message": "SEO sorunları"
+  },
+  "FEATURE_SOCIAL_PREVIEW_TITLE": {
+    "message": "Sosyal önizleme"
+  },
+  "FEATURE_TAILWIND_DESCRIPTION": {
+    "message": "Herhangi bir öğenin hesaplanan stillerini anında Tailwind yardımcı sınıflarına dönüştürün."
+  },
+  "FEATURE_TAILWIND_TITLE": {
+    "message": "Tailwind CSS oluşturucu"
+  },
+  "FEATURE_TECH_DETECTION_DESCRIPTION": {
+    "message": "150'den fazla teknoloji desteğiyle herhangi bir web sitesini çalıştıran çerçeveleri, kitaplıkları ve araçları belirleyin."
+  },
+  "FEATURE_TECH_DETECTION_TITLE": {
+    "message": "Teknoloji algılama"
+  },
+  "FEATURE_TRANSITION_DESCRIPTION": {
+    "message": "CSS geçişlerini ve zamanlama fonksiyonu eğrilerini animasyonlarla birlikte görselleştirin."
+  },
+  "FEATURE_TRANSITION_TITLE": {
+    "message": "Geçiş inceleyici"
+  },
+  "FEATURE_TYPOGRAPHY_DESCRIPTION": {
+    "message": "Seçiminizde kullanılan tüm tipografi stillerini analiz edin ve çıkarın."
+  },
+  "FEATURE_TYPOGRAPHY_TITLE": {
+    "message": "Tipografi analizi"
+  },
+  "FEATURE_XRAY_DESCRIPTION": {
+    "message": "Tüm öğelerin dış hatlarını aynı anda çizerek sayfanın alttaki yapısını ortaya çıkarın."
+  },
+  "FEATURE_XRAY_TITLE": {
+    "message": "Röntgen modu"
+  },
+  "FIND_ELEMENT": {
+    "message": "Öğe bul"
+  },
+  "FIND_HIDDEN_COUNT": {
+    "message": "$1 gizli",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "FOOTER_PRIVACY_POLICY": {
+    "message": "Gizlilik politikası"
+  },
+  "FOOTER_TERMS": {
+    "message": "Koşullar"
+  },
+  "HERO_TITLE": {
+    "message": "Web'de her şeyi ölçün, inceleyin ve düzenleyin"
+  },
+  "INSPECT_PIN_HINT": {
+    "message": "Sabitlemek için Boşluk tuşuna basın"
+  },
+  "ISSUE_CONTRAST_FAILURE_AAA_MESSAGE": {
+    "message": "Metin kontrastı $RATIO$:1, AA'yı karşılıyor ancak AAA'yı karşılamıyor ($SIZE$ metin için $REQUIRED$:1 gerekir)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "5.2"
+      },
+      "required": {
+        "content": "$2",
+        "example": "7"
+      },
+      "size": {
+        "content": "$3",
+        "example": "normal"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AAA_RECOMMENDATION": {
+    "message": "WCAG AAA uyumluluğu için kontrastı $RATIO$:1 değerine yükseltmeyi düşünün",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AA_MESSAGE": {
+    "message": "Metnin kontrast oranı $RATIO$:1 ile yetersiz ($SIZE$ metin için $REQUIRED$:1 gerekir)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "3.2"
+      },
+      "required": {
+        "content": "$2",
+        "example": "4.5"
+      },
+      "size": {
+        "content": "$3",
+        "example": "normal"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AA_RECOMMENDATION": {
+    "message": "WCAG AA uyumluluğu için kontrastı en az $RATIO$:1 değerine yükseltin",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "4.5"
+      }
+    }
+  },
+  "ISSUE_ICON_CONTRAST_MESSAGE": {
+    "message": "Simgenin kontrast oranı $RATIO$:1 ile yetersiz (metin dışı öğeler için $REQUIRED$:1 gerekir)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "2.5"
+      },
+      "required": {
+        "content": "$2",
+        "example": "3"
+      }
+    }
+  },
+  "ISSUE_ICON_CONTRAST_RECOMMENDATION": {
+    "message": "WCAG 1.4.11 uyumluluğu için kontrastı en az $RATIO$:1 değerine yükseltin",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "LABEL_ADD_RULE": {
+    "message": "Kural ekle"
+  },
+  "LABEL_ADD_VIEWPORT": {
+    "message": "Viewport ekle"
+  },
+  "LABEL_ANIMATION": {
+    "message": "Animasyon"
+  },
+  "LABEL_ANIMATIONS": {
+    "message": "Animasyonlar"
+  },
+  "LABEL_ANIMATIONS_AND_TRANSITIONS": {
+    "message": "Animasyonlar ve geçişler"
+  },
+  "LABEL_APPEARANCE": {
+    "message": "Görünüm"
+  },
+  "LABEL_ASSET": {
+    "message": "Varlık"
+  },
+  "LABEL_ASSETS": {
+    "message": "Varlıklar"
+  },
+  "LABEL_BACKGROUNDS": {
+    "message": "Arka planlar"
+  },
+  "LABEL_BORDER": {
+    "message": "Kenarlık"
+  },
+  "LABEL_BORDERS": {
+    "message": "Kenarlıklar"
+  },
+  "LABEL_BOX_SHADOW": {
+    "message": "Kutu gölgesi"
+  },
+  "LABEL_BOX_SHADOWS": {
+    "message": "Kutu gölgeleri"
+  },
+  "LABEL_CANVAS": {
+    "message": "Canvas"
+  },
+  "LABEL_CANVAS_DIMENSIONS": {
+    "message": "Canvas boyutları"
+  },
+  "LABEL_CHANGES": {
+    "message": "Değişiklikler"
+  },
+  "LABEL_CODE": {
+    "message": "Kod"
+  },
+  "LABEL_COLOR": {
+    "message": "Renk"
+  },
+  "LABEL_COLORS": {
+    "message": "Renkler"
+  },
+  "LABEL_COLUMNS": {
+    "message": "Sütunlar"
+  },
+  "LABEL_COMPUTED": {
+    "message": "Hesaplanan"
+  },
+  "LABEL_CONTEXT_TYPE": {
+    "message": "Bağlam türü"
+  },
+  "LABEL_CSS": {
+    "message": "CSS"
+  },
+  "LABEL_DOCUMENT": {
+    "message": "Belge"
+  },
+  "LABEL_EFFECTIVE_STYLES": {
+    "message": "Geçerli stiller"
+  },
+  "LABEL_FLEX_GRID_LAYOUT": {
+    "message": "Düzen"
+  },
+  "LABEL_GRADIENT": {
+    "message": "Degrade"
+  },
+  "LABEL_GRADIENTS": {
+    "message": "Degradeler"
+  },
+  "LABEL_GUTTER": {
+    "message": "Sütun aralığı"
+  },
+  "LABEL_HEIGHT": {
+    "message": "Yükseklik"
+  },
+  "LABEL_INHERITED_FROM": {
+    "message": "$SELECTOR$ öğesinden devralındı",
+    "placeholders": {
+      "selector": {
+        "content": "$1",
+        "example": "body"
+      }
+    }
+  },
+  "LABEL_INSTANCES": {
+    "message": "Örnekler"
+  },
+  "LABEL_ISSUE": {
+    "message": "Sorun"
+  },
+  "LABEL_ISSUES": {
+    "message": "Sorunlar"
+  },
+  "LABEL_LAYOUT": {
+    "message": "Kutu modeli"
+  },
+  "LABEL_LOADING": {
+    "message": "..."
+  },
+  "LABEL_MARGIN": {
+    "message": "Dış boşluk"
+  },
+  "LABEL_MAX_WIDTH": {
+    "message": "Maks. genişlik"
+  },
+  "LABEL_OPACITY": {
+    "message": "Opaklık"
+  },
+  "LABEL_PADDING": {
+    "message": "İç boşluk"
+  },
+  "LABEL_PIXEL_RATIO": {
+    "message": "Piksel oranı"
+  },
+  "LABEL_PW_CSS": {
+    "message": "Stil sayfaları"
+  },
+  "LABEL_PW_DOCUMENT": {
+    "message": "Belge"
+  },
+  "LABEL_PW_FETCH": {
+    "message": "Fetch/XHR"
+  },
+  "LABEL_PW_FONTS": {
+    "message": "Yazı tipleri"
+  },
+  "LABEL_PW_IMAGES": {
+    "message": "Görseller"
+  },
+  "LABEL_PW_MEDIA": {
+    "message": "Medya"
+  },
+  "LABEL_PW_OTHER": {
+    "message": "Diğer"
+  },
+  "LABEL_PW_SCRIPTS": {
+    "message": "Betikler"
+  },
+  "LABEL_PW_TOTAL": {
+    "message": "Toplam"
+  },
+  "LABEL_REFRESH_VIEWPORT": {
+    "message": "Yenile"
+  },
+  "LABEL_ROTATE_VIEWPORT": {
+    "message": "Döndür"
+  },
+  "LABEL_RULES": {
+    "message": "Kurallar"
+  },
+  "LABEL_SCALABLE": {
+    "message": "ölçeklenebilir"
+  },
+  "LABEL_SELECTION_COLORS": {
+    "message": "Renkler"
+  },
+  "LABEL_SOURCE": {
+    "message": "Kaynak"
+  },
+  "LABEL_SVG": {
+    "message": "svg"
+  },
+  "LABEL_TAILWIND": {
+    "message": "Tailwind"
+  },
+  "LABEL_TECHNOLOGIES": {
+    "message": "Teknolojiler"
+  },
+  "LABEL_TECHNOLOGY": {
+    "message": "Teknoloji"
+  },
+  "LABEL_TEXT": {
+    "message": "Metin"
+  },
+  "LABEL_TEXT_CONTENT": {
+    "message": "Metin içeriği"
+  },
+  "LABEL_TRANSITION": {
+    "message": "Geçiş"
+  },
+  "LABEL_TRANSITIONS": {
+    "message": "Geçişler"
+  },
+  "LABEL_TYPOGRAPHY_STYLE": {
+    "message": "Tipografi stili"
+  },
+  "LABEL_TYPOGRAPHY_STYLES": {
+    "message": "Tipografi stilleri"
+  },
+  "LABEL_WHITESPACE_ONLY_CHANGE": {
+    "message": "Yalnızca boşluk değişiklikleri"
+  },
+  "LABEL_WIDTH": {
+    "message": "Genişlik"
+  },
+  "LABEL_ZOOM": {
+    "message": "Yakınlaştırma"
+  },
+  "LABEL_ZOOM_IN": {
+    "message": "Yakınlaştır"
+  },
+  "LABEL_ZOOM_OUT": {
+    "message": "Uzaklaştır"
+  },
+  "LEGACY_LOGIN_LINK": {
+    "message": "Eski sürüm girişi"
+  },
+  "LEGACY_LOGIN_TEXT": {
+    "message": "Bo doi Pro'yu v3.0.0'dan önce mi satın aldınız?"
+  },
+  "MATCHED_CROSS_ORIGIN_HIDDEN": {
+    "message": "Farklı kaynaktan gelen $COUNT$ stil sayfası gizlendi.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "MCP_CONNECT_HINT": {
+    "message": "Bu metni kopyalayıp AI ajanına yapıştır:"
+  },
+  "MCP_UNKNOWN_AGENT": {
+    "message": "AI ajanı"
+  },
+  "MCP_WAITING_FOR_AGENT": {
+    "message": "Ajanın bağlanması bekleniyor..."
+  },
+  "NO_CHANGES_MESSAGE": {
+    "message": "Değişiklik bulunamadı"
+  },
+  "NO_PAGE_INFO_MESSAGE": {
+    "message": "Sayfa bilgisi bulunamadı"
+  },
+  "OPTIONS_COLOR_FORMAT_SECONDARY": {
+    "message": "İnceleyici ve renk seçici tarafından kullanılır"
+  },
+  "OPTIONS_MCP_CONNECT_BUTTON": {
+    "message": "Bağlan"
+  },
+  "OPTIONS_MCP_DISCONNECT_BUTTON": {
+    "message": "Bağlantıyı kes"
+  },
+  "OPTIONS_MCP_SERVER_SECONDARY": {
+    "message": "Yapay zeka ajanlarının incelemesine veya düzenleme yapmasına izin verin. <a href=\"https://www.bodoi.com/docs/mcp.html\" target=\"_blank\">Kurulum rehberi</a>"
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_BODY": {
+    "message": "MCP sunucunuzun sürümü $1, ancak bu uzantı $2 veya daha yenisini bekliyor. npm paketini güncelleyin veya yeniden almak için yapay zeka istemcinizi yeniden başlatın.",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "required": {
+        "content": "$2"
+      }
+    }
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_TITLE": {
+    "message": "MCP sunucusu güncel değil"
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_TOOLTIP": {
+    "message": "MCP sunucusu güncel değil. Yapay zeka istemciniz üzerinden güncelleyin."
+  },
+  "OPTIONS_MCP_VERSION_UNKNOWN": {
+    "message": "bilinmiyor"
+  },
+  "OPTIONS_PAGE_TITLE": {
+    "message": "Ayarlar"
+  },
+  "OPTIONS_ROW_COLOR_FORMAT": {
+    "message": "Renk biçimi"
+  },
+  "OPTIONS_ROW_MCP_SERVER": {
+    "message": "MCP sunucusu"
+  },
+  "OPTIONS_ROW_SCREENSHOT_HIGHLIGHTS": {
+    "message": "Vurguları yakala"
+  },
+  "OPTIONS_ROW_SCREENSHOT_PADDING": {
+    "message": "Ekran görüntüsü dolgusu"
+  },
+  "OPTIONS_ROW_THEME": {
+    "message": "Tema"
+  },
+  "OPTIONS_SAVED_EDITS_CLEAR": {
+    "message": "Temizle"
+  },
+  "OPTIONS_SAVED_EDITS_CONFIRM_BODY": {
+    "message": "Bu, tüm siteler için hatırlanan CSS düzenlemelerini kaldırır."
+  },
+  "OPTIONS_SAVED_EDITS_CONFIRM_TITLE": {
+    "message": "Kaydedilen düzenlemeler temizlensin mi?"
+  },
+  "OPTIONS_SAVED_EDITS_SECONDARY": {
+    "message": "CSS düzenlemeleri site başına hatırlanır ve orada Bo doi'ı etkinleştirdiğinizde geri yüklenir."
+  },
+  "OPTIONS_SAVED_EDITS_TITLE": {
+    "message": "Kaydedilen düzenlemeler"
+  },
+  "OPTIONS_SCREENSHOT_HIGHLIGHTS_SECONDARY": {
+    "message": "Ekran görüntülerinde ölçüm katmanlarını yakalar"
+  },
+  "OPTIONS_SCREENSHOT_PADDING_SECONDARY": {
+    "message": "Ekran görüntülerine boşluklu bir arka plan ekler"
+  },
+  "OPTIONS_SECTION_APPEARANCE": {
+    "message": "Görünüm"
+  },
+  "OPTIONS_SECTION_EXTENSION": {
+    "message": "Uzantı"
+  },
+  "OPTIONS_SECTION_SCREENSHOTS": {
+    "message": "Ekran görüntüleri"
+  },
+  "OPTIONS_SECTION_TERMINAL_AI": {
+    "message": "Terminal yapay zekası"
+  },
+  "PAGE_TAB_META_OG": {
+    "message": "Open Graph"
+  },
+  "PAGE_TAB_META_SEO": {
+    "message": "SEO"
+  },
+  "PAGE_TAB_META_TAGS": {
+    "message": "Meta etiketleri"
+  },
+  "PAGE_TAB_META_TWITTER": {
+    "message": "Twitter Card"
+  },
+  "PAGE_TAB_NO_METADATA": {
+    "message": "Meta veri bulunamadı"
+  },
+  "PAGE_TAB_OG_IMAGE": {
+    "message": "Open Graph görseli"
+  },
+  "PAGE_TAB_PAGE_WEIGHT": {
+    "message": "Sayfa ağırlığı"
+  },
+  "PAGE_TAB_SOCIAL_PREVIEW": {
+    "message": "Sosyal önizleme"
+  },
+  "PAGE_TAB_TECHNOLOGIES": {
+    "message": "Teknolojiler"
+  },
+  "PAGE_TAB_UNTITLED": {
+    "message": "Adsız sayfa"
+  },
+  "PW_BUFFER_FULL": {
+    "message": "Kaynak arabelleği dolu, bazı girişler eksik olabilir"
+  },
+  "PW_HIDDEN_NOTE": {
+    "message": "Farklı kaynaktan gelen $COUNT$ öğe gizlendi",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "RESPONSIVE_FRAME_BLOCKED_BODY": {
+    "message": "Bu site önizlemede yüklenmeyi engelliyor.{br}Göstermek için {grant}."
+  },
+  "RESPONSIVE_FRAME_BLOCKED_GRANT": {
+    "message": "erişim verin"
+  },
+  "RESPONSIVE_FRAME_BLOCKED_STILL": {
+    "message": "Bu site önizlemede yüklenmeyi engelliyor.{br}Bunu, kaldırılamayan bir betik veya sayfa içi politikayla yapıyor."
+  },
+  "RESPONSIVE_FRAME_TIMEOUT": {
+    "message": "Bu sayfanın yüklenmesi tamamlanmadı."
+  },
+  "RESTORE_ACCESS_ERROR": {
+    "message": "Erişim geri yüklenemedi. Lütfen giriş yapmayı deneyin."
+  },
+  "RESTORE_ACCESS_LINK": {
+    "message": "Satın alımı geri yükle"
+  },
+  "REVIEWS_SUBTITLE": {
+    "message": "Bo doi kullanımı hakkında söyledikleri."
+  },
+  "REVIEWS_TITLE": {
+    "message": "Geliştiriciler ve tasarımcılar tarafından seviliyor"
+  },
+  "RULES_COUNT_ONE": {
+    "message": "1 kural"
+  },
+  "RULES_COUNT_OTHER": {
+    "message": "$1 kural",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "BO_DOI_PRO": {
+    "message": "Bo doi "
+  },
+  "SEO_DESCRIPTION_TOO_LONG_MESSAGE": {
+    "message": "Açıklama 160 karakterden uzun"
+  },
+  "SEO_DESCRIPTION_TOO_LONG_RECOMMENDATION": {
+    "message": "Arama motorları uzun açıklamaları kırpabilir. 120 ila 160 karaktere indirin."
+  },
+  "SEO_DESCRIPTION_TOO_SHORT_MESSAGE": {
+    "message": "Açıklama 70 karakterden kısa"
+  },
+  "SEO_DESCRIPTION_TOO_SHORT_RECOMMENDATION": {
+    "message": "Açıklayıcı bir snippet için 120 ila 160 karakter hedefleyin."
+  },
+  "SEO_LABEL_ISSUE": {
+    "message": "SEO sorunu"
+  },
+  "SEO_LABEL_ISSUES": {
+    "message": "SEO sorunları"
+  },
+  "SEO_MISSING_ALT_MESSAGE": {
+    "message": "Görselin alt metni eksik"
+  },
+  "SEO_MISSING_ALT_RECOMMENDATION": {
+    "message": "Her img öğesine bir alt özniteliği ekleyin. Yalnızca dekoratif görseller için alt=\"\" kullanın."
+  },
+  "SEO_MISSING_CANONICAL_MESSAGE": {
+    "message": "Canonical bağlantı eksik"
+  },
+  "SEO_MISSING_CANONICAL_RECOMMENDATION": {
+    "message": "Bu sayfanın tercih edilen URL'sini bildirmek için <link rel=\"canonical\"> ekleyin."
+  },
+  "SEO_MISSING_DESCRIPTION_MESSAGE": {
+    "message": "Meta açıklama eksik"
+  },
+  "SEO_MISSING_DESCRIPTION_RECOMMENDATION": {
+    "message": "Sayfayı arama sonuçları için özetleyen bir meta açıklama ekleyin."
+  },
+  "SEO_MISSING_H1_MESSAGE": {
+    "message": "H1 başlığı eksik"
+  },
+  "SEO_MISSING_H1_RECOMMENDATION": {
+    "message": "Her sayfada ana konuyu anlatan tek bir net H1 olmalıdır."
+  },
+  "SEO_MISSING_LANG_MESSAGE": {
+    "message": "<html> öğesinde lang özniteliği eksik"
+  },
+  "SEO_MISSING_LANG_RECOMMENDATION": {
+    "message": "Arama motorlarına ve ekran okuyuculara yardımcı olmak için bir lang özniteliği (ör. lang=\"en\") ayarlayın."
+  },
+  "SEO_MISSING_OG_DESCRIPTION_MESSAGE": {
+    "message": "og:description eksik"
+  },
+  "SEO_MISSING_OG_DESCRIPTION_RECOMMENDATION": {
+    "message": "Paylaşım önizlemeleri için <meta property=\"og:description\"> ekleyin."
+  },
+  "SEO_MISSING_OG_IMAGE_MESSAGE": {
+    "message": "og:image eksik"
+  },
+  "SEO_MISSING_OG_IMAGE_RECOMMENDATION": {
+    "message": "Paylaşılan bağlantıların önizleme görseli içermesi için <meta property=\"og:image\"> ekleyin."
+  },
+  "SEO_MISSING_OG_TITLE_MESSAGE": {
+    "message": "og:title eksik"
+  },
+  "SEO_MISSING_OG_TITLE_RECOMMENDATION": {
+    "message": "Paylaşılan bağlantıların net bir başlık göstermesi için <meta property=\"og:title\"> ekleyin."
+  },
+  "SEO_MISSING_TITLE_MESSAGE": {
+    "message": "Title etiketi eksik"
+  },
+  "SEO_MISSING_TITLE_RECOMMENDATION": {
+    "message": "Sayfanın head bölümüne açıklayıcı bir <title> öğesi ekleyin."
+  },
+  "SEO_MISSING_VIEWPORT_MESSAGE": {
+    "message": "Viewport meta etiketi eksik"
+  },
+  "SEO_MISSING_VIEWPORT_RECOMMENDATION": {
+    "message": "Mobil görüntüleme için <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> ekleyin."
+  },
+  "SEO_MULTIPLE_H1_MESSAGE": {
+    "message": "Sayfada birden fazla H1 var"
+  },
+  "SEO_MULTIPLE_H1_RECOMMENDATION": {
+    "message": "Sayfa başına tek H1 kullanın ve ikincil başlıkları H2 veya H3'e indirin."
+  },
+  "SEO_ROBOTS_NOINDEX_MESSAGE": {
+    "message": "Sayfa noindex olarak ayarlanmış"
+  },
+  "SEO_ROBOTS_NOINDEX_RECOMMENDATION": {
+    "message": "Arama motorları bu sayfayı dizine eklemeyecek. Bu istenmeden olduysa noindex'i kaldırın."
+  },
+  "SEO_TITLE_TOO_LONG_MESSAGE": {
+    "message": "Başlık 60 karakterden uzun"
+  },
+  "SEO_TITLE_TOO_LONG_RECOMMENDATION": {
+    "message": "Arama motorları uzun başlıkları kırpabilir. 50 ila 60 karaktere kısaltın."
+  },
+  "SEO_TITLE_TOO_SHORT_MESSAGE": {
+    "message": "Başlık 30 karakterden kısa"
+  },
+  "SEO_TITLE_TOO_SHORT_RECOMMENDATION": {
+    "message": "Başlığın arama sonuçlarında açıklayıcı olması için 50 ila 60 karakter hedefleyin."
+  },
+  "SHORTCUT_CHILD": {
+    "message": "Alt öğeyi seç"
+  },
+  "SHORTCUT_COPY": {
+    "message": "Kopyala"
+  },
+  "SHORTCUT_DESELECT": {
+    "message": "Seçimi kaldır"
+  },
+  "SHORTCUT_PARENT": {
+    "message": "Üst öğeyi seç"
+  },
+  "SHORTCUT_PASTE": {
+    "message": "Yapıştır"
+  },
+  "SHORTCUT_REDO": {
+    "message": "Yinele"
+  },
+  "SHORTCUT_TOGGLE_PANEL": {
+    "message": "Paneli aç/kapat"
+  },
+  "SHORTCUT_TOGGLE_RULER": {
+    "message": "Uzantıyı aç/kapat"
+  },
+  "SHORTCUT_UNDO": {
+    "message": "Geri al"
+  },
+  "SOCIAL_PREVIEW_FACEBOOK": {
+    "message": "Facebook"
+  },
+  "SOCIAL_PREVIEW_LINKEDIN": {
+    "message": "LinkedIn"
+  },
+  "SOCIAL_PREVIEW_X": {
+    "message": "X"
+  },
+  "SOCIAL_PROOF_TEXT": {
+    "message": "50.000'den fazla tasarımcı ve geliştirici tarafından kullanılıyor"
+  },
+  "TAB_ELEMENT": {
+    "message": "Öğe"
+  },
+  "TAB_PAGE": {
+    "message": "Sayfa"
+  },
+  "TEXT_SIZE_LARGE": {
+    "message": "büyük"
+  },
+  "TEXT_SIZE_NORMAL": {
+    "message": "normal"
+  },
+  "THEME": {
+    "message": "Tema"
+  },
+  "THEME_DARK": {
+    "message": "Koyu"
+  },
+  "THEME_LIGHT": {
+    "message": "Açık"
+  },
+  "THEME_SYSTEM": {
+    "message": "Sistem"
+  },
+  "TITLE_COLOR_SCHEME": {
+    "message": "Renk şeması"
+  },
+  "TITLE_FRAME_LAYOUT": {
+    "message": "Çerçeve düzeni"
+  },
+  "TITLE_INVALID_PROPERTY": {
+    "message": "Bilinmeyen özellik"
+  },
+  "TITLE_INVALID_VALUE": {
+    "message": "Geçersiz değer"
+  },
+  "TITLE_MORE_ACTIONS": {
+    "message": "Diğer eylemler"
+  },
+  "TITLE_MOVE_LEFT": {
+    "message": "Sola taşı"
+  },
+  "TITLE_MOVE_RIGHT": {
+    "message": "Sağa taşı"
+  },
+  "TITLE_NOT_INHERITED": {
+    "message": "Bu öğe tarafından devralınmadı"
+  },
+  "TITLE_OVERRIDDEN_BY": {
+    "message": "$SELECTOR$ tarafından geçersiz kılındı",
+    "placeholders": {
+      "selector": {
+        "content": "$1",
+        "example": ".card"
+      }
+    }
+  },
+  "TITLE_OVERRIDDEN_HIDDEN": {
+    "message": "Bo doi'ın göremediği bir stil sayfası tarafından geçersiz kılındı"
+  },
+  "TITLE_OVERRIDDEN_HIDDEN_GRANT": {
+    "message": "Bo doi'ın göremediği bir stil sayfası tarafından geçersiz kılındı. Ortaya çıkarmak için farklı kaynaklara erişim izni verin."
+  },
+  "TITLE_REMOVE": {
+    "message": "Viewport'u kaldır"
+  },
+  "TITLE_RESET_VIEWPORTS": {
+    "message": "Viewport'ları sıfırla"
+  },
+  "TITLE_SYNC_SCROLLING": {
+    "message": "Kaydırmayı eşitle"
+  },
+  "TOAST_EDITS_RESTORED_MANY": {
+    "message": "$COUNT$ kaydedilen düzenleme geri yüklendi",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOAST_EDITS_RESTORED_ONE": {
+    "message": "1 kaydedilen düzenleme geri yüklendi"
+  },
+  "TOAST_SCROLL_SYNC_OFF": {
+    "message": "Bu sayfa sürekli ters yönde kaydırdığı için kaydırma eşitlemesi kapandı."
+  },
+  "TOOLTIP_CHILD": {
+    "message": "Alt öğeyi seç"
+  },
+  "TOOLTIP_COPY": {
+    "message": "Kopyala ($mod$+C)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_CUT": {
+    "message": "Kes ($mod$+X)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_DELETE": {
+    "message": "Sil ($key$)",
+    "placeholders": {
+      "key": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_DUPLICATE": {
+    "message": "Çoğalt ($mod$+D)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_PARENT": {
+    "message": "Üst öğeyi seç"
+  },
+  "TOOLTIP_PASTE": {
+    "message": "Yapıştır ($mod$+V)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_REDO": {
+    "message": "Yinele ($mod$+$shift$+Z)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      },
+      "shift": {
+        "content": "$2"
+      }
+    }
+  },
+  "TOOLTIP_SELECT": {
+    "message": "Seçim modu"
+  },
+  "TOOLTIP_UNDO": {
+    "message": "Geri al ($mod$+Z)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TRUSTED_BY_TEXT": {
+    "message": "Şu şirketlerdeki profesyoneller güveniyor"
+  },
+  "UNLOCK_PRO_SEE_MORE": {
+    "message": "$COUNT$ tane daha görmek için Pro'yu edinin",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "VIDEO_PLAY_BUTTON": {
+    "message": "Bo doi'ı iş başında izleyin"
+  },
+  "WARN_OVERFLOW": {
+    "message": "İçerik yatay olarak taşıyor"
+  }
+}

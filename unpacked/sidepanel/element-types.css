@@ -1,0 +1,226 @@
+
+.outline-icon-media-image {
+  mask: url("images/image.svg");
+}
+
+.outline-icon-media-video {
+  mask: url("images/video.svg");
+}
+
+.outline-icon-media-audio {
+  mask: url("images/audio.svg");
+}
+
+.outline-icon-media-picture {
+  mask: url("images/picture.svg");
+}
+
+.outline-icon-media-canvas {
+  mask: url("images/canvas.svg");
+}
+
+.outline-icon-media-iframe {
+  mask: url("images/iframe.svg");
+}
+
+.outline-icon-media-embed {
+  mask: url("images/embed.svg");
+}
+
+.outline-icon-paragraph {
+  mask: url("images/paragraph.svg");
+}
+
+.outline-icon-text-pre {
+  mask: url("images/pre.svg");
+}
+
+.outline-icon-text-code {
+  mask: url("images/code.svg");
+}
+
+.outline-icon-text-quote {
+  mask: url("images/quote.svg");
+}
+
+.outline-icon-text-italic {
+  mask: url("images/italic.svg");
+}
+
+.outline-icon-text-bold {
+  mask: url("images/bold.svg");
+}
+
+.outline-icon-text-highlight {
+  mask: url("images/highlight.svg");
+}
+
+.outline-icon-heading-h1 {
+  mask: url("images/h1.svg");
+}
+
+.outline-icon-heading-h2 {
+  mask: url("images/h2.svg");
+}
+
+.outline-icon-heading-h3 {
+  mask: url("images/h3.svg");
+}
+
+.outline-icon-heading-h4 {
+  mask: url("images/h4.svg");
+}
+
+.outline-icon-heading-h5 {
+  mask: url("images/h5.svg");
+}
+
+.outline-icon-heading-h6 {
+  mask: url("images/h6.svg");
+}
+
+.outline-icon-link {
+  mask: url("images/link.svg");
+}
+
+.outline-icon-input-button {
+  mask: url("images/button.svg");
+}
+
+.outline-icon-input-field {
+  mask: url("images/input.svg");
+}
+
+.outline-icon-input-textarea {
+  mask: url("images/textarea.svg");
+}
+
+.outline-icon-input-select {
+  mask: url("images/select.svg");
+}
+
+.outline-icon-form {
+  mask: url("images/form.svg");
+}
+
+.outline-icon-input-label {
+  mask: url("images/label.svg");
+}
+
+.outline-icon-form-fieldset {
+  mask: url("images/fieldset.svg");
+}
+
+.outline-icon-form-legend {
+  mask: url("images/legend.svg");
+}
+
+.outline-icon-list-unordered {
+  mask: url("images/unordered.svg");
+}
+
+.outline-icon-list-ordered {
+  mask: url("images/ordered.svg");
+}
+
+.outline-icon-list-item {
+  mask: url("images/list.svg");
+}
+
+.outline-icon-table,
+.outline-icon-table-head,
+.outline-icon-table-body,
+.outline-icon-table-foot,
+.outline-icon-table-row,
+.outline-icon-table-header-cell,
+.outline-icon-table-cell {
+  mask: url("images/table.svg");
+}
+
+.outline-icon-table-caption {
+  mask: url("images/caption.svg");
+}
+
+.outline-icon-semantic-header {
+  mask: url("images/header.svg");
+}
+
+.outline-icon-semantic-nav {
+  mask: url("images/navigation.svg");
+}
+
+.outline-icon-semantic-main {
+  mask: url("images/main.svg");
+}
+
+.outline-icon-semantic-section {
+  mask: url("images/section.svg");
+}
+
+.outline-icon-semantic-article {
+  mask: url("images/article.svg");
+}
+
+.outline-icon-semantic-aside {
+  mask: url("images/aside.svg");
+}
+
+.outline-icon-semantic-footer {
+  mask: url("images/footer.svg");
+}
+
+.outline-icon-semantic-figure {
+  mask: url("images/image.svg");
+}
+
+.outline-icon-semantic-figcaption {
+  mask: url("images/caption.svg");
+}
+
+.outline-icon-semantic-details {
+  mask: url("images/disclose.svg");
+}
+
+.outline-icon-semantic-summary {
+  mask: url("images/summary.svg");
+}
+
+.outline-icon-semantic-dialog {
+  mask: url("images/dialog.svg");
+}
+
+.outline-icon-svg {
+  mask: url("images/vector.svg");
+}
+
+.outline-icon-svg-path {
+  mask: url("images/path.svg");
+}
+
+.outline-icon-svg-circle {
+  mask: url("images/circle.svg");
+}
+
+.outline-icon-svg-rect {
+  mask: url("images/rectangle.svg");
+}
+
+.outline-icon-svg-group {
+  mask: url("images/group.svg");
+}
+
+.outline-icon-document-body {
+  mask: url("images/body.svg");
+}
+
+.outline-icon-document-root {
+  mask: url("images/html.svg");
+}
+
+.outline-icon-div {
+  mask: url("images/div.svg");
+}
+
+.outline-icon-general {
+  mask: url("images/general.svg");
+}

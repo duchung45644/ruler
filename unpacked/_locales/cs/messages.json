@@ -1,0 +1,1326 @@
+{
+  "ALERT_COULDNT_COMMUNICATE_WITH_TAB": {
+    "message": "Nepodařilo se komunikovat s kartou. Zkontrolujte, že je Bo doi na aktuální kartě aktivní."
+  },
+  "ALERT_ISSUE_ELEMENT_NOT_FOUND": {
+    "message": "Prvek s problémem se nepodařilo najít. Mohl být odstraněn nebo se stránka změnila."
+  },
+  "ALERT_NO_SELECTED_ELEMENT": {
+    "message": "Cílový prvek se nepodařilo najít."
+  },
+  "ASSETS_FAILED_PLURAL": {
+    "message": "assetů se nepodařilo načíst"
+  },
+  "ASSETS_FAILED_SINGULAR": {
+    "message": "asset se nepodařilo načíst"
+  },
+  "BODY_REMOVE_VIEWPORT": {
+    "message": "$LABEL$ bude odebrán.",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "BODY_RESET_VIEWPORTS": {
+    "message": "Vaše viewporty budou obnoveny na výchozí hodnoty."
+  },
+  "BUTTON_ADD": {
+    "message": "Přidat"
+  },
+  "BUTTON_CHANGE": {
+    "message": "Změnit"
+  },
+  "BUTTON_CLEAR_CHANGES": {
+    "message": "Vymazat všechny změny"
+  },
+  "BUTTON_COPIED": {
+    "message": "Zkopírováno"
+  },
+  "BUTTON_DOWNLOAD": {
+    "message": "Stáhnout"
+  },
+  "BUTTON_DOWNLOAD_ALL": {
+    "message": "Stáhnout vše"
+  },
+  "BUTTON_REMOVE": {
+    "message": "Odebrat"
+  },
+  "BUTTON_RESET": {
+    "message": "Resetovat"
+  },
+  "CHECKLIST_FEATURE_1": {
+    "message": "Inspekce vlastností prvků při najetí myší"
+  },
+  "CHECKLIST_FEATURE_2": {
+    "message": "Box model: margin, border, padding"
+  },
+  "CHECKLIST_FEATURE_3": {
+    "message": "Stahování obrázků a SVG assetů"
+  },
+  "CHECKLIST_FEATURE_4": {
+    "message": "Extrakce barev jako HEX, RGBA a HSL"
+  },
+  "CHECKLIST_FEATURE_5": {
+    "message": "Mřížka rozvržení přes stránku"
+  },
+  "CHECKLIST_FEATURE_6": {
+    "message": "Snímky prvků s rozměry"
+  },
+  "CHECKLIST_FEATURE_7": {
+    "message": "Hledání prvků podle CSS selektoru"
+  },
+  "CHECKLIST_FEATURE_8": {
+    "message": "Inspektor animací s easing křivkami"
+  },
+  "CHIP_AUDIT": {
+    "message": "Auditovat"
+  },
+  "CHIP_EDIT": {
+    "message": "Upravovat"
+  },
+  "CHIP_EXTRACT": {
+    "message": "Extrahovat"
+  },
+  "CHIP_INSPECT": {
+    "message": "Zkoumat"
+  },
+  "CHIP_MEASURE": {
+    "message": "Měřit"
+  },
+  "CHIP_TEST": {
+    "message": "Testovat"
+  },
+  "CHIP_VISUALIZE": {
+    "message": "Vizualizovat"
+  },
+  "COMPARISON_COLUMN_FEATURE": {
+    "message": "Funkce"
+  },
+  "COMPARISON_TITLE": {
+    "message": "Vše v "
+  },
+  "CONFIRM_CLEAR_ALL_CHANGES": {
+    "message": "Opravdu chcete vymazat všechny změny na této stránce?"
+  },
+  "CONFIRM_CLEAR_ELEMENT": {
+    "message": "Opravdu chcete vymazat změny tohoto prvku?"
+  },
+  "CONFIRM_CLEAR_ELEMENTS": {
+    "message": "Opravdu chcete vymazat změny u $1 prvků?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "CONFIRM_PARTIAL_EDITS_FOR_RESPONSIVE": {
+    "message": "Změny pravidel CSS zůstanou zachovány. Inline styly a úpravy značek a tříd budou zahozeny."
+  },
+  "CSS_SELECTOR": {
+    "message": "CSS selektor"
+  },
+  "DEFAULT_ASSET_NAME": {
+    "message": "asset"
+  },
+  "DEFAULT_DOWNLOAD_NAME": {
+    "message": "stazeny_soubor"
+  },
+  "DEFAULT_SVG_FILENAME": {
+    "message": "asset.svg"
+  },
+  "DIALOG_CANCEL_BUTTON": {
+    "message": "Zrušit"
+  },
+  "DIALOG_CLOSE_BUTTON": {
+    "message": "Zavřít"
+  },
+  "DIALOG_CONFIRM": {
+    "message": "Potvrdit"
+  },
+  "DIALOG_OK": {
+    "message": "OK"
+  },
+  "DIALOG_SUBMIT_BUTTON": {
+    "message": "Aktivovat"
+  },
+  "DIALOG_TITLE_CLEAR_ALL_CHANGES": {
+    "message": "Vymazat všechny změny"
+  },
+  "DIALOG_TITLE_CLEAR_ELEMENT": {
+    "message": "Vymazat prvek"
+  },
+  "DIALOG_TITLE_CUSTOM_VIEWPORT": {
+    "message": "Vlastní viewport"
+  },
+  "DIALOG_TITLE_ELEMENT_NOT_FOUND": {
+    "message": "Prvek nenalezen"
+  },
+  "DIALOG_TITLE_PARTIAL_EDITS_FOR_RESPONSIVE": {
+    "message": "Některé úpravy se nezachovají"
+  },
+  "DIALOG_TITLE_RESET_VIEWPORTS": {
+    "message": "Resetovat viewporty"
+  },
+  "DIALOG_TITLE_TAB_UNAVAILABLE": {
+    "message": "Karta není dostupná"
+  },
+  "DISMISS_LABEL": {
+    "message": "Zavřít"
+  },
+  "DOCK_BREAKPOINTS": {
+    "message": "Breakpointy"
+  },
+  "DOCK_COPY": {
+    "message": "Kopírovat"
+  },
+  "DOCK_CUT": {
+    "message": "Vyjmout"
+  },
+  "DOCK_DELETE": {
+    "message": "Smazat"
+  },
+  "DOCK_DETECT_TECH": {
+    "message": "Technologie stránky"
+  },
+  "DOCK_DETECT_TECH_DETECTING": {
+    "message": "Zjišťování..."
+  },
+  "DOCK_DETECT_TECH_NONE_DETECTED": {
+    "message": "Nebyly zjištěny žádné technologie."
+  },
+  "DOCK_DETECT_TECH_RESPONSIVE_ERROR": {
+    "message": "Detekce technologií není v responzivním režimu dostupná."
+  },
+  "DOCK_DUPLICATE": {
+    "message": "Duplikovat"
+  },
+  "DOCK_EDIT_MODE": {
+    "message": "Úpravy"
+  },
+  "DOCK_EDIT_TEXT": {
+    "message": "Upravit text"
+  },
+  "DOCK_EYEDROPPER": {
+    "message": "Kapátko"
+  },
+  "DOCK_FIND_ELEMENT": {
+    "message": "Najít prvek"
+  },
+  "DOCK_INSPECT_MODE": {
+    "message": "Inspekce"
+  },
+  "DOCK_MCP_CONNECTED": {
+    "message": "MCP připojeno"
+  },
+  "DOCK_MCP_CONNECT_AGENT": {
+    "message": "Připojit agenta"
+  },
+  "DOCK_MCP_OUTDATED": {
+    "message": "MCP je zastaralé"
+  },
+  "DOCK_MCP_TITLE": {
+    "message": "MCP"
+  },
+  "DOCK_MCP_WAITING": {
+    "message": "Čekání na agenta"
+  },
+  "DOCK_OPEN_PANEL": {
+    "message": "Přepnout boční panel"
+  },
+  "DOCK_OPEN_PANEL_UNSUPPORTED": {
+    "message": "Boční panel není v tomto prohlížeči podporován"
+  },
+  "DOCK_PASTE": {
+    "message": "Vložit"
+  },
+  "DOCK_PAUSE": {
+    "message": "Pozastavit"
+  },
+  "DOCK_QUIT": {
+    "message": "Ukončit"
+  },
+  "DOCK_REDO": {
+    "message": "Znovu"
+  },
+  "DOCK_RESPONSIVE_MODE": {
+    "message": "Responzivní režim"
+  },
+  "DOCK_RULER": {
+    "message": "Pravítka stránky"
+  },
+  "DOCK_SELECT_CHILD": {
+    "message": "Vybrat podřízený prvek"
+  },
+  "DOCK_SELECT_PARENT": {
+    "message": "Vybrat rodičovský prvek"
+  },
+  "DOCK_TAKE_SCREENSHOT": {
+    "message": "Pořídit snímek obrazovky"
+  },
+  "DOCK_TOGGLE_GRID": {
+    "message": "Mřížka rozvržení"
+  },
+  "DOCK_TOGGLE_INSPECT": {
+    "message": "Inspektor"
+  },
+  "DOCK_UNDO": {
+    "message": "Zpět"
+  },
+  "DOCK_XRAY_MODE": {
+    "message": "Rentgenový režim"
+  },
+  "EDITOR_CROSS_ORIGIN_MISSING": {
+    "message": "Některé styly mohou chybět."
+  },
+  "EDIT_COUNT_NONE": {
+    "message": "Žádné úpravy"
+  },
+  "EDIT_COUNT_ONE": {
+    "message": "1 úprava"
+  },
+  "EDIT_COUNT_OTHER": {
+    "message": "$1 úprav",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "ELEMENTS": {
+    "message": "Prvky"
+  },
+  "ELEMENTS_COUNT_ONE": {
+    "message": "1 prvek"
+  },
+  "ELEMENTS_COUNT_OTHER": {
+    "message": "$1 prvků",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "EMPTY_CANVAS": {
+    "message": "Začněte přidáním viewportu."
+  },
+  "EMPTY_MESSAGE": {
+    "message": "Vyberte prvek"
+  },
+  "EMPTY_MESSAGE_EDIT": {
+    "message": "Kliknutím vyberte prvek"
+  },
+  "EMPTY_MESSAGE_INSPECT": {
+    "message": "Kliknutím vyberte prvek"
+  },
+  "ENABLE_CROSS_ORIGIN": {
+    "message": "Udělit přístup"
+  },
+  "EXT_DESCRIPTION": {
+    "message": "Webový inspektor pro designéry a vývojáře. Měřte prvky, extrahujte CSS a barvy, pořizujte snímky obrazovky a další."
+  },
+  "EXT_NAME": {
+    "message": "Bo doi - Měření a inspekce webu"
+  },
+  "EXT_NAME_SHORT": {
+    "message": "Bo doi"
+  },
+  "FEATURES_SUBTITLE": {
+    "message": "Extrakce assetů jedním kliknutím, vizuální inspekce CSS a pokročilé analytické nástroje. Postaveno tak, jak vývojáři a designéři skutečně pracují."
+  },
+  "FEATURES_TITLE": {
+    "message": "Vše, co je součástí "
+  },
+  "FEATURE_A11Y_TITLE": {
+    "message": "Problémy přístupnosti"
+  },
+  "FEATURE_ACCESSIBILITY_DESCRIPTION": {
+    "message": "Automaticky zjišťuje a zvýrazňuje nevyhovující kontrast dle WCAG s praktickými doporučeními."
+  },
+  "FEATURE_ACCESSIBILITY_TITLE": {
+    "message": "Problémy přístupnosti"
+  },
+  "FEATURE_ANIMATION_DESCRIPTION": {
+    "message": "Vizualizujte časovací křivky CSS animací a kopírujte jejich CSS vlastnosti."
+  },
+  "FEATURE_ANIMATION_TITLE": {
+    "message": "Analýza animací"
+  },
+  "FEATURE_ASSET_DESCRIPTION": {
+    "message": "Extrahujte a stahujte obrázky, SVG a vektorové assety přímo z libovolné webové stránky."
+  },
+  "FEATURE_ASSET_TITLE": {
+    "message": "Extrakce assetů"
+  },
+  "FEATURE_BOX_SHADOW_DESCRIPTION": {
+    "message": "Interaktivní rozbor vícevrstvých stínů s rozloženým zobrazením jednotlivých vrstev."
+  },
+  "FEATURE_BOX_SHADOW_TITLE": {
+    "message": "Vizualizace stínů"
+  },
+  "FEATURE_BREAKPOINTS_DESCRIPTION": {
+    "message": "Zjišťujte a vizualizujte breakpointy CSS media queries barevnými hraničními liniemi přímo na stránce."
+  },
+  "FEATURE_BREAKPOINTS_TITLE": {
+    "message": "Breakpointy"
+  },
+  "FEATURE_CANVAS_DESCRIPTION": {
+    "message": "Zkoumejte prvky HTML5 Canvas. Zobrazte rozměry a typy kontextu a extrahujte barevné palety."
+  },
+  "FEATURE_CANVAS_TITLE": {
+    "message": "Inspekce canvasu"
+  },
+  "FEATURE_COLOR_DESCRIPTION": {
+    "message": "Extrahujte a kopírujte barevné palety z vybraných prvků s hodnotami HEX, RGB a HSL."
+  },
+  "FEATURE_COLOR_TITLE": {
+    "message": "Extrakce barev"
+  },
+  "FEATURE_COMPUTED_CSS_TITLE": {
+    "message": "Vypočtené CSS"
+  },
+  "FEATURE_CSS_RULES_DESCRIPTION": {
+    "message": "Zobrazte CSS pravidla ze stylů, která se vztahují na libovolný prvek, seskupená podle zdrojového souboru."
+  },
+  "FEATURE_CSS_RULES_TITLE": {
+    "message": "Inspektor CSS pravidel"
+  },
+  "FEATURE_DISTANCE_TITLE": {
+    "message": "Měření vzdáleností"
+  },
+  "FEATURE_EDIT_TITLE": {
+    "message": "Živé úpravy CSS se sledováním změn"
+  },
+  "FEATURE_ELEMENT_HOVER_TITLE": {
+    "message": "Inspekce prvků"
+  },
+  "FEATURE_ELEMENT_SCREENSHOT_TITLE": {
+    "message": "Snímky prvků"
+  },
+  "FEATURE_EYEDROPPER_TITLE": {
+    "message": "Kapátko"
+  },
+  "FEATURE_GRADIENT_DESCRIPTION": {
+    "message": "Vizualizujte CSS gradienty s podrobným rozborem zarážek barev a jejich pozic."
+  },
+  "FEATURE_GRADIENT_TITLE": {
+    "message": "Inspektor gradientů"
+  },
+  "FEATURE_GRID_DESCRIPTION": {
+    "message": "Zobrazte přes stránku přizpůsobitelnou sloupcovou mřížku pro kontrolu zarovnání a rozestupů."
+  },
+  "FEATURE_GRID_TITLE": {
+    "message": "Mřížka rozvržení"
+  },
+  "FEATURE_HEADING": {
+    "message": "Odemkněte kompletní sadu nástrojů pro vývoj webu"
+  },
+  "FEATURE_HTML_TEXT_DESCRIPTION": {
+    "message": "Kopírujte, vkládejte, duplikujte nebo mažte prvky přímo na stránce. Režim úprav textu umožňuje přepisovat texty stránky na místě."
+  },
+  "FEATURE_HTML_TEXT_TITLE": {
+    "message": "Úpravy HTML a textu"
+  },
+  "FEATURE_INSPECTOR_DESCRIPTION": {
+    "message": "Podrobné vlastnosti prvků při najetí myší. Stisknutím mezerníku inspektory připnete a porovnáte více prvků vedle sebe."
+  },
+  "FEATURE_INSPECTOR_TITLE": {
+    "message": "Plovoucí inspektor"
+  },
+  "FEATURE_LAYOUT_DESCRIPTION": {
+    "message": "Vizualizujte rozvržení Flexbox a Grid s přehledným rozborem zarovnání, směru a struktury."
+  },
+  "FEATURE_LAYOUT_TITLE": {
+    "message": "Vizualizace rozvržení"
+  },
+  "FEATURE_META_TAGS_TITLE": {
+    "message": "Meta tagy"
+  },
+  "FEATURE_PAGE_RULERS_TITLE": {
+    "message": "Pravítka stránky"
+  },
+  "FEATURE_PAGE_WEIGHT_DESCRIPTION": {
+    "message": "Přesně uvidíte, co se na stránce načítá, rozdělené na skripty, styly, obrázky, písma a další, se živým skládaným grafem, který se aktualizuje podle příchozích zdrojů."
+  },
+  "FEATURE_PAGE_WEIGHT_TITLE": {
+    "message": "Váha stránky"
+  },
+  "FEATURE_PARENT_CHILD_TITLE": {
+    "message": "Výběr rodiče / potomka"
+  },
+  "FEATURE_RESPONSIVE_DESCRIPTION": {
+    "message": "Testujte návrhy na různých zařízeních pomocí interaktivního emulátoru zařízení a vlastních rozměrů."
+  },
+  "FEATURE_RESPONSIVE_TITLE": {
+    "message": "Responzivní režim"
+  },
+  "FEATURE_SCREENSHOT_DESCRIPTION": {
+    "message": "Pořizujte oříznuté snímky vybraných prvků včetně okrajů a rozměrů."
+  },
+  "FEATURE_SCREENSHOT_TITLE": {
+    "message": "Snímky prvků"
+  },
+  "FEATURE_SELECTOR_DESCRIPTION": {
+    "message": "Najděte a zvýrazněte prvky pomocí CSS selektorů a rychle vyhledejte konkrétní prvky."
+  },
+  "FEATURE_SELECTOR_TITLE": {
+    "message": "Hledání podle CSS selektoru"
+  },
+  "FEATURE_SEO_TITLE": {
+    "message": "SEO problémy"
+  },
+  "FEATURE_SOCIAL_PREVIEW_TITLE": {
+    "message": "Náhled pro sociální sítě"
+  },
+  "FEATURE_TAILWIND_DESCRIPTION": {
+    "message": "Okamžitě převeďte vypočtené styly libovolného prvku na utility třídy Tailwind."
+  },
+  "FEATURE_TAILWIND_TITLE": {
+    "message": "Generátor Tailwind CSS"
+  },
+  "FEATURE_TECH_DETECTION_DESCRIPTION": {
+    "message": "Zjistěte, jaké frameworky, knihovny a nástroje web pohání – podporováno přes 150 technologií."
+  },
+  "FEATURE_TECH_DETECTION_TITLE": {
+    "message": "Detekce technologií"
+  },
+  "FEATURE_TRANSITION_DESCRIPTION": {
+    "message": "Vizualizujte CSS přechody a křivky časovacích funkcí spolu s animacemi."
+  },
+  "FEATURE_TRANSITION_TITLE": {
+    "message": "Inspektor přechodů"
+  },
+  "FEATURE_TYPOGRAPHY_DESCRIPTION": {
+    "message": "Analyzujte a extrahujte všechny typografické styly použité ve výběru."
+  },
+  "FEATURE_TYPOGRAPHY_TITLE": {
+    "message": "Analýza typografie"
+  },
+  "FEATURE_XRAY_DESCRIPTION": {
+    "message": "Odhalte strukturu stránky obrysem všech prvků najednou."
+  },
+  "FEATURE_XRAY_TITLE": {
+    "message": "Rentgenový režim"
+  },
+  "FIND_ELEMENT": {
+    "message": "Najít prvek"
+  },
+  "FIND_HIDDEN_COUNT": {
+    "message": "$1 skrytých",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "FOOTER_PRIVACY_POLICY": {
+    "message": "Zásady ochrany osobních údajů"
+  },
+  "FOOTER_TERMS": {
+    "message": "Podmínky"
+  },
+  "HERO_TITLE": {
+    "message": "Měřte, zkoumejte a upravujte cokoli na webu"
+  },
+  "INSPECT_PIN_HINT": {
+    "message": "Stisknutím mezerníku připnete"
+  },
+  "ISSUE_CONTRAST_FAILURE_AAA_MESSAGE": {
+    "message": "Kontrast textu $RATIO$:1 splňuje AA, ale ne AAA (pro $SIZE$ text se vyžaduje $REQUIRED$:1)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "5.2"
+      },
+      "required": {
+        "content": "$2",
+        "example": "7"
+      },
+      "size": {
+        "content": "$3",
+        "example": "normal"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AAA_RECOMMENDATION": {
+    "message": "Zvažte zvýšení kontrastu na $RATIO$:1 pro splnění WCAG AAA",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AA_MESSAGE": {
+    "message": "Text má nedostatečný kontrastní poměr $RATIO$:1 (pro $SIZE$ text se vyžaduje $REQUIRED$:1)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "3.2"
+      },
+      "required": {
+        "content": "$2",
+        "example": "4.5"
+      },
+      "size": {
+        "content": "$3",
+        "example": "normal"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AA_RECOMMENDATION": {
+    "message": "Zvyšte kontrast alespoň na $RATIO$:1 pro splnění WCAG AA",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "4.5"
+      }
+    }
+  },
+  "ISSUE_ICON_CONTRAST_MESSAGE": {
+    "message": "Ikona má nedostatečný kontrastní poměr $RATIO$:1 (pro netextové prvky se vyžaduje $REQUIRED$:1)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "2.5"
+      },
+      "required": {
+        "content": "$2",
+        "example": "3"
+      }
+    }
+  },
+  "ISSUE_ICON_CONTRAST_RECOMMENDATION": {
+    "message": "Zvyšte kontrast alespoň na $RATIO$:1 pro splnění WCAG 1.4.11",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "LABEL_ADD_RULE": {
+    "message": "Přidat pravidlo"
+  },
+  "LABEL_ADD_VIEWPORT": {
+    "message": "Přidat viewport"
+  },
+  "LABEL_ANIMATION": {
+    "message": "Animace"
+  },
+  "LABEL_ANIMATIONS": {
+    "message": "Animace"
+  },
+  "LABEL_ANIMATIONS_AND_TRANSITIONS": {
+    "message": "Animace a přechody"
+  },
+  "LABEL_APPEARANCE": {
+    "message": "Vzhled"
+  },
+  "LABEL_ASSET": {
+    "message": "Asset"
+  },
+  "LABEL_ASSETS": {
+    "message": "Assety"
+  },
+  "LABEL_BACKGROUNDS": {
+    "message": "Pozadí"
+  },
+  "LABEL_BORDER": {
+    "message": "Ohraničení"
+  },
+  "LABEL_BORDERS": {
+    "message": "Ohraničení"
+  },
+  "LABEL_BOX_SHADOW": {
+    "message": "Stín"
+  },
+  "LABEL_BOX_SHADOWS": {
+    "message": "Stíny"
+  },
+  "LABEL_CANVAS": {
+    "message": "Canvas"
+  },
+  "LABEL_CANVAS_DIMENSIONS": {
+    "message": "Rozměry canvasu"
+  },
+  "LABEL_CHANGES": {
+    "message": "Změny"
+  },
+  "LABEL_CODE": {
+    "message": "Kód"
+  },
+  "LABEL_COLOR": {
+    "message": "Barva"
+  },
+  "LABEL_COLORS": {
+    "message": "Barvy"
+  },
+  "LABEL_COLUMNS": {
+    "message": "Sloupce"
+  },
+  "LABEL_COMPUTED": {
+    "message": "Vypočtené"
+  },
+  "LABEL_CONTEXT_TYPE": {
+    "message": "Typ kontextu"
+  },
+  "LABEL_CSS": {
+    "message": "CSS"
+  },
+  "LABEL_DOCUMENT": {
+    "message": "Dokument"
+  },
+  "LABEL_EFFECTIVE_STYLES": {
+    "message": "Výsledné styly"
+  },
+  "LABEL_FLEX_GRID_LAYOUT": {
+    "message": "Rozvržení"
+  },
+  "LABEL_GRADIENT": {
+    "message": "Gradient"
+  },
+  "LABEL_GRADIENTS": {
+    "message": "Gradienty"
+  },
+  "LABEL_GUTTER": {
+    "message": "Mezera"
+  },
+  "LABEL_HEIGHT": {
+    "message": "Výška"
+  },
+  "LABEL_INHERITED_FROM": {
+    "message": "Zděděno z $SELECTOR$",
+    "placeholders": {
+      "selector": {
+        "content": "$1",
+        "example": "body"
+      }
+    }
+  },
+  "LABEL_INSTANCES": {
+    "message": "Instance"
+  },
+  "LABEL_ISSUE": {
+    "message": "Problém"
+  },
+  "LABEL_ISSUES": {
+    "message": "Problémy"
+  },
+  "LABEL_LAYOUT": {
+    "message": "Box model"
+  },
+  "LABEL_LOADING": {
+    "message": "..."
+  },
+  "LABEL_MARGIN": {
+    "message": "Vnější okraj"
+  },
+  "LABEL_MAX_WIDTH": {
+    "message": "Max. šířka"
+  },
+  "LABEL_OPACITY": {
+    "message": "Krytí"
+  },
+  "LABEL_PADDING": {
+    "message": "Vnitřní okraj"
+  },
+  "LABEL_PIXEL_RATIO": {
+    "message": "Poměr pixelů"
+  },
+  "LABEL_PW_CSS": {
+    "message": "Styly"
+  },
+  "LABEL_PW_DOCUMENT": {
+    "message": "Dokument"
+  },
+  "LABEL_PW_FETCH": {
+    "message": "Fetch/XHR"
+  },
+  "LABEL_PW_FONTS": {
+    "message": "Písma"
+  },
+  "LABEL_PW_IMAGES": {
+    "message": "Obrázky"
+  },
+  "LABEL_PW_MEDIA": {
+    "message": "Média"
+  },
+  "LABEL_PW_OTHER": {
+    "message": "Ostatní"
+  },
+  "LABEL_PW_SCRIPTS": {
+    "message": "Skripty"
+  },
+  "LABEL_PW_TOTAL": {
+    "message": "Celkem"
+  },
+  "LABEL_REFRESH_VIEWPORT": {
+    "message": "Obnovit"
+  },
+  "LABEL_ROTATE_VIEWPORT": {
+    "message": "Otočit"
+  },
+  "LABEL_RULES": {
+    "message": "Pravidla"
+  },
+  "LABEL_SCALABLE": {
+    "message": "škálovatelné"
+  },
+  "LABEL_SELECTION_COLORS": {
+    "message": "Barvy"
+  },
+  "LABEL_SOURCE": {
+    "message": "Zdroj"
+  },
+  "LABEL_SVG": {
+    "message": "svg"
+  },
+  "LABEL_TAILWIND": {
+    "message": "Tailwind"
+  },
+  "LABEL_TECHNOLOGIES": {
+    "message": "Technologie"
+  },
+  "LABEL_TECHNOLOGY": {
+    "message": "Technologie"
+  },
+  "LABEL_TEXT": {
+    "message": "Text"
+  },
+  "LABEL_TEXT_CONTENT": {
+    "message": "Textový obsah"
+  },
+  "LABEL_TRANSITION": {
+    "message": "Přechod"
+  },
+  "LABEL_TRANSITIONS": {
+    "message": "Přechody"
+  },
+  "LABEL_TYPOGRAPHY_STYLE": {
+    "message": "Typografický styl"
+  },
+  "LABEL_TYPOGRAPHY_STYLES": {
+    "message": "Typografické styly"
+  },
+  "LABEL_WHITESPACE_ONLY_CHANGE": {
+    "message": "Změny pouze v bílých znacích"
+  },
+  "LABEL_WIDTH": {
+    "message": "Šířka"
+  },
+  "LABEL_ZOOM": {
+    "message": "Přiblížení"
+  },
+  "LABEL_ZOOM_IN": {
+    "message": "Přiblížit"
+  },
+  "LABEL_ZOOM_OUT": {
+    "message": "Oddálit"
+  },
+  "LEGACY_LOGIN_LINK": {
+    "message": "Přihlášení pro starší verze"
+  },
+  "LEGACY_LOGIN_TEXT": {
+    "message": "Zakoupili jste Bo doi Pro před verzí 3.0.0?"
+  },
+  "MATCHED_CROSS_ORIGIN_HIDDEN": {
+    "message": "Skryto $COUNT$ cross-origin stylů.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "MCP_CONNECT_HINT": {
+    "message": "Zkopírujte tento text a vložte ho svému AI agentovi:"
+  },
+  "MCP_UNKNOWN_AGENT": {
+    "message": "AI agent"
+  },
+  "MCP_WAITING_FOR_AGENT": {
+    "message": "Čekání na připojení agenta..."
+  },
+  "NO_CHANGES_MESSAGE": {
+    "message": "Nebyly nalezeny žádné změny"
+  },
+  "NO_PAGE_INFO_MESSAGE": {
+    "message": "Nebyly nalezeny žádné informace o stránce"
+  },
+  "OPTIONS_COLOR_FORMAT_SECONDARY": {
+    "message": "Používá inspektor a kapátko"
+  },
+  "OPTIONS_MCP_CONNECT_BUTTON": {
+    "message": "Připojit"
+  },
+  "OPTIONS_MCP_DISCONNECT_BUTTON": {
+    "message": "Odpojit"
+  },
+  "OPTIONS_MCP_SERVER_SECONDARY": {
+    "message": "Povolte AI agentům inspekci a úpravy. <a href=\"https://www.bodoi.com/docs/mcp.html\" target=\"_blank\">Návod k nastavení</a>"
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_BODY": {
+    "message": "Váš MCP server má verzi $1, ale toto rozšíření vyžaduje $2 nebo novější. Aktualizujte balíček npm nebo restartujte AI klienta.",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "required": {
+        "content": "$2"
+      }
+    }
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_TITLE": {
+    "message": "MCP server je zastaralý"
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_TOOLTIP": {
+    "message": "MCP server je zastaralý. Aktualizujte přes svého AI klienta."
+  },
+  "OPTIONS_MCP_VERSION_UNKNOWN": {
+    "message": "neznámá"
+  },
+  "OPTIONS_PAGE_TITLE": {
+    "message": "Nastavení"
+  },
+  "OPTIONS_ROW_COLOR_FORMAT": {
+    "message": "Formát barev"
+  },
+  "OPTIONS_ROW_MCP_SERVER": {
+    "message": "MCP server"
+  },
+  "OPTIONS_ROW_SCREENSHOT_HIGHLIGHTS": {
+    "message": "Zachytit zvýraznění"
+  },
+  "OPTIONS_ROW_SCREENSHOT_PADDING": {
+    "message": "Odsazení snímků"
+  },
+  "OPTIONS_ROW_THEME": {
+    "message": "Motiv"
+  },
+  "OPTIONS_SAVED_EDITS_CLEAR": {
+    "message": "Vymazat"
+  },
+  "OPTIONS_SAVED_EDITS_CONFIRM_BODY": {
+    "message": "Tím se odstraní zapamatované úpravy CSS pro všechny weby."
+  },
+  "OPTIONS_SAVED_EDITS_CONFIRM_TITLE": {
+    "message": "Vymazat uložené úpravy?"
+  },
+  "OPTIONS_SAVED_EDITS_SECONDARY": {
+    "message": "Úpravy CSS se pamatují pro každý web a obnoví se, když tam Bo doi aktivujete."
+  },
+  "OPTIONS_SAVED_EDITS_TITLE": {
+    "message": "Uložené úpravy"
+  },
+  "OPTIONS_SCREENSHOT_HIGHLIGHTS_SECONDARY": {
+    "message": "Zachytí na snímcích překryvy s měřením"
+  },
+  "OPTIONS_SCREENSHOT_PADDING_SECONDARY": {
+    "message": "Přidá ke snímkům pozadí s odsazením"
+  },
+  "OPTIONS_SECTION_APPEARANCE": {
+    "message": "Vzhled"
+  },
+  "OPTIONS_SECTION_EXTENSION": {
+    "message": "Rozšíření"
+  },
+  "OPTIONS_SECTION_SCREENSHOTS": {
+    "message": "Snímky obrazovky"
+  },
+  "OPTIONS_SECTION_TERMINAL_AI": {
+    "message": "AI v terminálu"
+  },
+  "PAGE_TAB_META_OG": {
+    "message": "Open Graph"
+  },
+  "PAGE_TAB_META_SEO": {
+    "message": "SEO"
+  },
+  "PAGE_TAB_META_TAGS": {
+    "message": "Meta tagy"
+  },
+  "PAGE_TAB_META_TWITTER": {
+    "message": "Twitter Card"
+  },
+  "PAGE_TAB_NO_METADATA": {
+    "message": "Nebyla nalezena žádná metadata"
+  },
+  "PAGE_TAB_OG_IMAGE": {
+    "message": "Open Graph obrázek"
+  },
+  "PAGE_TAB_PAGE_WEIGHT": {
+    "message": "Váha stránky"
+  },
+  "PAGE_TAB_SOCIAL_PREVIEW": {
+    "message": "Náhled pro sociální sítě"
+  },
+  "PAGE_TAB_TECHNOLOGIES": {
+    "message": "Technologie"
+  },
+  "PAGE_TAB_UNTITLED": {
+    "message": "Stránka bez názvu"
+  },
+  "PW_BUFFER_FULL": {
+    "message": "Vyrovnávací paměť zdrojů je plná, některé záznamy mohou chybět"
+  },
+  "PW_HIDDEN_NOTE": {
+    "message": "Skryto $COUNT$ cross-origin zdrojů",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "RESPONSIVE_FRAME_BLOCKED_BODY": {
+    "message": "Tento web blokuje načtení v náhledu.{br}{grant} pro jeho zobrazení."
+  },
+  "RESPONSIVE_FRAME_BLOCKED_GRANT": {
+    "message": "Udělit přístup"
+  },
+  "RESPONSIVE_FRAME_BLOCKED_STILL": {
+    "message": "Tento web blokuje načtení v náhledu.{br}Používá k tomu skript nebo zásadu přímo na stránce, kterou nelze odstranit."
+  },
+  "RESPONSIVE_FRAME_TIMEOUT": {
+    "message": "Tato stránka se nedokončila načítat."
+  },
+  "RESTORE_ACCESS_ERROR": {
+    "message": "Přístup se nepodařilo obnovit. Zkuste se přihlásit."
+  },
+  "RESTORE_ACCESS_LINK": {
+    "message": "Obnovit nákup"
+  },
+  "REVIEWS_SUBTITLE": {
+    "message": "Tady je, co o používání Bo doi říkají."
+  },
+  "REVIEWS_TITLE": {
+    "message": "Oblíbený u vývojářů a designérů"
+  },
+  "RULES_COUNT_ONE": {
+    "message": "1 pravidlo"
+  },
+  "RULES_COUNT_OTHER": {
+    "message": "$1 pravidel",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "BO_DOI_PRO": {
+    "message": "Bo doi "
+  },
+  "SEO_DESCRIPTION_TOO_LONG_MESSAGE": {
+    "message": "Popis je delší než 160 znaků"
+  },
+  "SEO_DESCRIPTION_TOO_LONG_RECOMMENDATION": {
+    "message": "Vyhledávače mohou dlouhé popisy zkracovat. Zkraťte na 120 až 160 znaků."
+  },
+  "SEO_DESCRIPTION_TOO_SHORT_MESSAGE": {
+    "message": "Popis je kratší než 70 znaků"
+  },
+  "SEO_DESCRIPTION_TOO_SHORT_RECOMMENDATION": {
+    "message": "Zaměřte se na 120 až 160 znaků pro popisný úryvek."
+  },
+  "SEO_LABEL_ISSUE": {
+    "message": "SEO problém"
+  },
+  "SEO_LABEL_ISSUES": {
+    "message": "SEO problémy"
+  },
+  "SEO_MISSING_ALT_MESSAGE": {
+    "message": "Obrázku chybí alternativní text"
+  },
+  "SEO_MISSING_ALT_RECOMMENDATION": {
+    "message": "Přidejte atribut alt ke každému img. Pro čistě dekorativní obrázky použijte alt=\"\"."
+  },
+  "SEO_MISSING_CANONICAL_MESSAGE": {
+    "message": "Chybí kanonický odkaz"
+  },
+  "SEO_MISSING_CANONICAL_RECOMMENDATION": {
+    "message": "Přidejte <link rel=\"canonical\"> a určete preferovanou URL této stránky."
+  },
+  "SEO_MISSING_DESCRIPTION_MESSAGE": {
+    "message": "Chybí meta description"
+  },
+  "SEO_MISSING_DESCRIPTION_RECOMMENDATION": {
+    "message": "Přidejte meta description shrnující stránku pro výsledky vyhledávání."
+  },
+  "SEO_MISSING_H1_MESSAGE": {
+    "message": "Chybí nadpis H1"
+  },
+  "SEO_MISSING_H1_RECOMMENDATION": {
+    "message": "Každá stránka by měla mít jeden jasný nadpis H1 popisující její hlavní téma."
+  },
+  "SEO_MISSING_LANG_MESSAGE": {
+    "message": "Chybí atribut lang na <html>"
+  },
+  "SEO_MISSING_LANG_RECOMMENDATION": {
+    "message": "Nastavte atribut lang (např. lang=\"cs\"), pomůžete tím vyhledávačům a čtečkám obrazovky."
+  },
+  "SEO_MISSING_OG_DESCRIPTION_MESSAGE": {
+    "message": "Chybí og:description"
+  },
+  "SEO_MISSING_OG_DESCRIPTION_RECOMMENDATION": {
+    "message": "Přidejte <meta property=\"og:description\"> pro náhledy při sdílení."
+  },
+  "SEO_MISSING_OG_IMAGE_MESSAGE": {
+    "message": "Chybí og:image"
+  },
+  "SEO_MISSING_OG_IMAGE_RECOMMENDATION": {
+    "message": "Přidejte <meta property=\"og:image\">, aby sdílené odkazy obsahovaly náhledový obrázek."
+  },
+  "SEO_MISSING_OG_TITLE_MESSAGE": {
+    "message": "Chybí og:title"
+  },
+  "SEO_MISSING_OG_TITLE_RECOMMENDATION": {
+    "message": "Přidejte <meta property=\"og:title\">, aby sdílené odkazy zobrazovaly jasný titulek."
+  },
+  "SEO_MISSING_TITLE_MESSAGE": {
+    "message": "Chybí tag title"
+  },
+  "SEO_MISSING_TITLE_RECOMMENDATION": {
+    "message": "Přidejte do hlavičky stránky popisný prvek <title>."
+  },
+  "SEO_MISSING_VIEWPORT_MESSAGE": {
+    "message": "Chybí meta tag viewport"
+  },
+  "SEO_MISSING_VIEWPORT_RECOMMENDATION": {
+    "message": "Přidejte <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> pro vykreslování na mobilech."
+  },
+  "SEO_MULTIPLE_H1_MESSAGE": {
+    "message": "Stránka má více než jeden H1"
+  },
+  "SEO_MULTIPLE_H1_RECOMMENDATION": {
+    "message": "Používejte jeden H1 na stránku a vedlejší nadpisy převeďte na H2 nebo H3."
+  },
+  "SEO_ROBOTS_NOINDEX_MESSAGE": {
+    "message": "Stránka má nastaveno noindex"
+  },
+  "SEO_ROBOTS_NOINDEX_RECOMMENDATION": {
+    "message": "Vyhledávače tuto stránku nebudou indexovat. Pokud to není záměr, odstraňte noindex."
+  },
+  "SEO_TITLE_TOO_LONG_MESSAGE": {
+    "message": "Titulek je delší než 60 znaků"
+  },
+  "SEO_TITLE_TOO_LONG_RECOMMENDATION": {
+    "message": "Vyhledávače mohou dlouhé titulky zkracovat. Zkraťte na 50 až 60 znaků."
+  },
+  "SEO_TITLE_TOO_SHORT_MESSAGE": {
+    "message": "Titulek je kratší než 30 znaků"
+  },
+  "SEO_TITLE_TOO_SHORT_RECOMMENDATION": {
+    "message": "Zaměřte se na 50 až 60 znaků, aby byl titulek ve výsledcích vyhledávání popisný."
+  },
+  "SHORTCUT_CHILD": {
+    "message": "Vybrat potomka"
+  },
+  "SHORTCUT_COPY": {
+    "message": "Kopírovat"
+  },
+  "SHORTCUT_DESELECT": {
+    "message": "Zrušit výběr"
+  },
+  "SHORTCUT_PARENT": {
+    "message": "Vybrat rodiče"
+  },
+  "SHORTCUT_PASTE": {
+    "message": "Vložit"
+  },
+  "SHORTCUT_REDO": {
+    "message": "Znovu"
+  },
+  "SHORTCUT_TOGGLE_PANEL": {
+    "message": "Přepnout panel"
+  },
+  "SHORTCUT_TOGGLE_RULER": {
+    "message": "Přepnout rozšíření"
+  },
+  "SHORTCUT_UNDO": {
+    "message": "Zpět"
+  },
+  "SOCIAL_PREVIEW_FACEBOOK": {
+    "message": "Facebook"
+  },
+  "SOCIAL_PREVIEW_LINKEDIN": {
+    "message": "LinkedIn"
+  },
+  "SOCIAL_PREVIEW_X": {
+    "message": "X"
+  },
+  "SOCIAL_PROOF_TEXT": {
+    "message": "Používá přes 50 000 designérů a vývojářů"
+  },
+  "TAB_ELEMENT": {
+    "message": "Prvek"
+  },
+  "TAB_PAGE": {
+    "message": "Stránka"
+  },
+  "TEXT_SIZE_LARGE": {
+    "message": "velký"
+  },
+  "TEXT_SIZE_NORMAL": {
+    "message": "běžný"
+  },
+  "THEME": {
+    "message": "Motiv"
+  },
+  "THEME_DARK": {
+    "message": "Tmavý"
+  },
+  "THEME_LIGHT": {
+    "message": "Světlý"
+  },
+  "THEME_SYSTEM": {
+    "message": "Systém"
+  },
+  "TITLE_COLOR_SCHEME": {
+    "message": "Barevné schéma"
+  },
+  "TITLE_FRAME_LAYOUT": {
+    "message": "Rozvržení rámců"
+  },
+  "TITLE_INVALID_PROPERTY": {
+    "message": "Neznámá vlastnost"
+  },
+  "TITLE_INVALID_VALUE": {
+    "message": "Neplatná hodnota"
+  },
+  "TITLE_MORE_ACTIONS": {
+    "message": "Další akce"
+  },
+  "TITLE_MOVE_LEFT": {
+    "message": "Přesunout doleva"
+  },
+  "TITLE_MOVE_RIGHT": {
+    "message": "Přesunout doprava"
+  },
+  "TITLE_NOT_INHERITED": {
+    "message": "Tento prvek vlastnost nedědí"
+  },
+  "TITLE_OVERRIDDEN_BY": {
+    "message": "Přepsáno selektorem $SELECTOR$",
+    "placeholders": {
+      "selector": {
+        "content": "$1",
+        "example": ".card"
+      }
+    }
+  },
+  "TITLE_OVERRIDDEN_HIDDEN": {
+    "message": "Přepsáno stylem, který Bo doi nevidí"
+  },
+  "TITLE_OVERRIDDEN_HIDDEN_GRANT": {
+    "message": "Přepsáno stylem, který Bo doi nevidí. Udělte cross-origin přístup pro jeho zobrazení."
+  },
+  "TITLE_REMOVE": {
+    "message": "Odebrat viewport"
+  },
+  "TITLE_RESET_VIEWPORTS": {
+    "message": "Resetovat viewporty"
+  },
+  "TITLE_SYNC_SCROLLING": {
+    "message": "Synchronizovat posouvání"
+  },
+  "TOAST_EDITS_RESTORED_MANY": {
+    "message": "Obnoveno uložených úprav: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOAST_EDITS_RESTORED_ONE": {
+    "message": "Obnovena 1 uložená úprava"
+  },
+  "TOAST_SCROLL_SYNC_OFF": {
+    "message": "Synchronizace posouvání se vypnula, protože tato stránka posouvá proti ní."
+  },
+  "TOOLTIP_CHILD": {
+    "message": "Vybrat potomka"
+  },
+  "TOOLTIP_COPY": {
+    "message": "Kopírovat ($mod$+C)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_CUT": {
+    "message": "Vyjmout ($mod$+X)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_DELETE": {
+    "message": "Smazat ($key$)",
+    "placeholders": {
+      "key": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_DUPLICATE": {
+    "message": "Duplikovat ($mod$+D)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_PARENT": {
+    "message": "Vybrat rodiče"
+  },
+  "TOOLTIP_PASTE": {
+    "message": "Vložit ($mod$+V)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_REDO": {
+    "message": "Znovu ($mod$+$shift$+Z)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      },
+      "shift": {
+        "content": "$2"
+      }
+    }
+  },
+  "TOOLTIP_SELECT": {
+    "message": "Režim výběru"
+  },
+  "TOOLTIP_UNDO": {
+    "message": "Zpět ($mod$+Z)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TRUSTED_BY_TEXT": {
+    "message": "Důvěřují mu profesionálové z"
+  },
+  "UNLOCK_PRO_SEE_MORE": {
+    "message": "Získejte Pro a zobrazte dalších $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "VIDEO_PLAY_BUTTON": {
+    "message": "Podívejte se na Bo doi v akci"
+  },
+  "WARN_OVERFLOW": {
+    "message": "Obsah přetéká vodorovně"
+  }
+}

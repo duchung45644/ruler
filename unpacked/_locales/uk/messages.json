@@ -1,0 +1,1326 @@
+{
+  "ALERT_COULDNT_COMMUNICATE_WITH_TAB": {
+    "message": "Не вдалося зв’язатися з вкладкою. Переконайтеся, що Bo doi активний на поточній вкладці."
+  },
+  "ALERT_ISSUE_ELEMENT_NOT_FOUND": {
+    "message": "Не вдалося знайти елемент із проблемою. Можливо, його видалено або сторінка змінилася."
+  },
+  "ALERT_NO_SELECTED_ELEMENT": {
+    "message": "Не вдалося знайти цільовий елемент."
+  },
+  "ASSETS_FAILED_PLURAL": {
+    "message": "ресурсів не вдалося завантажити"
+  },
+  "ASSETS_FAILED_SINGULAR": {
+    "message": "ресурс не вдалося завантажити"
+  },
+  "BODY_REMOVE_VIEWPORT": {
+    "message": "$LABEL$ буде вилучено.",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "BODY_RESET_VIEWPORTS": {
+    "message": "Ваші області перегляду буде скинуто до типових значень."
+  },
+  "BUTTON_ADD": {
+    "message": "Додати"
+  },
+  "BUTTON_CHANGE": {
+    "message": "Змінити"
+  },
+  "BUTTON_CLEAR_CHANGES": {
+    "message": "Очистити всі зміни"
+  },
+  "BUTTON_COPIED": {
+    "message": "Скопійовано"
+  },
+  "BUTTON_DOWNLOAD": {
+    "message": "Завантажити"
+  },
+  "BUTTON_DOWNLOAD_ALL": {
+    "message": "Завантажити все"
+  },
+  "BUTTON_REMOVE": {
+    "message": "Вилучити"
+  },
+  "BUTTON_RESET": {
+    "message": "Скинути"
+  },
+  "CHECKLIST_FEATURE_1": {
+    "message": "Властивості елементів при наведенні"
+  },
+  "CHECKLIST_FEATURE_2": {
+    "message": "Блокова модель з margin, border і padding"
+  },
+  "CHECKLIST_FEATURE_3": {
+    "message": "Завантаження зображень і SVG-ресурсів"
+  },
+  "CHECKLIST_FEATURE_4": {
+    "message": "Витягання кольорів як значень HEX, RGBA, HSL"
+  },
+  "CHECKLIST_FEATURE_5": {
+    "message": "Накладання сітки макета на сторінку"
+  },
+  "CHECKLIST_FEATURE_6": {
+    "message": "Знімки елементів із вимірами"
+  },
+  "CHECKLIST_FEATURE_7": {
+    "message": "Пошук елементів за CSS-селектором"
+  },
+  "CHECKLIST_FEATURE_8": {
+    "message": "Інспектор анімацій із кривими плавності"
+  },
+  "CHIP_AUDIT": {
+    "message": "Аудит"
+  },
+  "CHIP_EDIT": {
+    "message": "Редагування"
+  },
+  "CHIP_EXTRACT": {
+    "message": "Витягання"
+  },
+  "CHIP_INSPECT": {
+    "message": "Огляд"
+  },
+  "CHIP_MEASURE": {
+    "message": "Вимірювання"
+  },
+  "CHIP_TEST": {
+    "message": "Тестування"
+  },
+  "CHIP_VISUALIZE": {
+    "message": "Візуалізація"
+  },
+  "COMPARISON_COLUMN_FEATURE": {
+    "message": "Функція"
+  },
+  "COMPARISON_TITLE": {
+    "message": "Усе, що є в "
+  },
+  "CONFIRM_CLEAR_ALL_CHANGES": {
+    "message": "Справді очистити всі зміни на цій сторінці?"
+  },
+  "CONFIRM_CLEAR_ELEMENT": {
+    "message": "Справді очистити зміни для цього елемента?"
+  },
+  "CONFIRM_CLEAR_ELEMENTS": {
+    "message": "Справді очистити зміни для $1 елементів?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "CONFIRM_PARTIAL_EDITS_FOR_RESPONSIVE": {
+    "message": "Зміни правил CSS буде збережено. Вбудовані стилі, зміни розмітки та класів буде скасовано."
+  },
+  "CSS_SELECTOR": {
+    "message": "CSS-селектор"
+  },
+  "DEFAULT_ASSET_NAME": {
+    "message": "ресурс"
+  },
+  "DEFAULT_DOWNLOAD_NAME": {
+    "message": "завантажений_файл"
+  },
+  "DEFAULT_SVG_FILENAME": {
+    "message": "ресурс.svg"
+  },
+  "DIALOG_CANCEL_BUTTON": {
+    "message": "Скасувати"
+  },
+  "DIALOG_CLOSE_BUTTON": {
+    "message": "Закрити"
+  },
+  "DIALOG_CONFIRM": {
+    "message": "Підтвердити"
+  },
+  "DIALOG_OK": {
+    "message": "OK"
+  },
+  "DIALOG_SUBMIT_BUTTON": {
+    "message": "Активувати"
+  },
+  "DIALOG_TITLE_CLEAR_ALL_CHANGES": {
+    "message": "Очистити всі зміни"
+  },
+  "DIALOG_TITLE_CLEAR_ELEMENT": {
+    "message": "Очистити зміни елемента"
+  },
+  "DIALOG_TITLE_CUSTOM_VIEWPORT": {
+    "message": "Власна область перегляду"
+  },
+  "DIALOG_TITLE_ELEMENT_NOT_FOUND": {
+    "message": "Елемент не знайдено"
+  },
+  "DIALOG_TITLE_PARTIAL_EDITS_FOR_RESPONSIVE": {
+    "message": "Частина змін не збережеться"
+  },
+  "DIALOG_TITLE_RESET_VIEWPORTS": {
+    "message": "Скинути області перегляду"
+  },
+  "DIALOG_TITLE_TAB_UNAVAILABLE": {
+    "message": "Вкладка недоступна"
+  },
+  "DISMISS_LABEL": {
+    "message": "Закрити"
+  },
+  "DOCK_BREAKPOINTS": {
+    "message": "Контрольні точки"
+  },
+  "DOCK_COPY": {
+    "message": "Копіювати"
+  },
+  "DOCK_CUT": {
+    "message": "Вирізати"
+  },
+  "DOCK_DELETE": {
+    "message": "Видалити"
+  },
+  "DOCK_DETECT_TECH": {
+    "message": "Технології сторінки"
+  },
+  "DOCK_DETECT_TECH_DETECTING": {
+    "message": "Визначення..."
+  },
+  "DOCK_DETECT_TECH_NONE_DETECTED": {
+    "message": "Технологій не виявлено."
+  },
+  "DOCK_DETECT_TECH_RESPONSIVE_ERROR": {
+    "message": "Визначення технологій недоступне в адаптивному режимі."
+  },
+  "DOCK_DUPLICATE": {
+    "message": "Дублювати"
+  },
+  "DOCK_EDIT_MODE": {
+    "message": "Редагування"
+  },
+  "DOCK_EDIT_TEXT": {
+    "message": "Редагувати текст"
+  },
+  "DOCK_EYEDROPPER": {
+    "message": "Піпетка"
+  },
+  "DOCK_FIND_ELEMENT": {
+    "message": "Знайти елемент"
+  },
+  "DOCK_INSPECT_MODE": {
+    "message": "Огляд"
+  },
+  "DOCK_MCP_CONNECTED": {
+    "message": "MCP підключено"
+  },
+  "DOCK_MCP_CONNECT_AGENT": {
+    "message": "Підключити агента"
+  },
+  "DOCK_MCP_OUTDATED": {
+    "message": "MCP застарів"
+  },
+  "DOCK_MCP_TITLE": {
+    "message": "MCP"
+  },
+  "DOCK_MCP_WAITING": {
+    "message": "Очікування агента"
+  },
+  "DOCK_OPEN_PANEL": {
+    "message": "Перемкнути бічну панель"
+  },
+  "DOCK_OPEN_PANEL_UNSUPPORTED": {
+    "message": "Бічна панель не підтримується в цьому браузері"
+  },
+  "DOCK_PASTE": {
+    "message": "Вставити"
+  },
+  "DOCK_PAUSE": {
+    "message": "Призупинити"
+  },
+  "DOCK_QUIT": {
+    "message": "Вийти"
+  },
+  "DOCK_REDO": {
+    "message": "Повторити"
+  },
+  "DOCK_RESPONSIVE_MODE": {
+    "message": "Адаптивний режим"
+  },
+  "DOCK_RULER": {
+    "message": "Лінійки сторінки"
+  },
+  "DOCK_SELECT_CHILD": {
+    "message": "Вибрати дочірній елемент"
+  },
+  "DOCK_SELECT_PARENT": {
+    "message": "Вибрати батьківський елемент"
+  },
+  "DOCK_TAKE_SCREENSHOT": {
+    "message": "Зробити знімок"
+  },
+  "DOCK_TOGGLE_GRID": {
+    "message": "Сітка макета"
+  },
+  "DOCK_TOGGLE_INSPECT": {
+    "message": "Інспектор"
+  },
+  "DOCK_UNDO": {
+    "message": "Скасувати"
+  },
+  "DOCK_XRAY_MODE": {
+    "message": "Режим рентгена"
+  },
+  "EDITOR_CROSS_ORIGIN_MISSING": {
+    "message": "Деякі стилі можуть бути відсутні."
+  },
+  "EDIT_COUNT_NONE": {
+    "message": "Немає правок"
+  },
+  "EDIT_COUNT_ONE": {
+    "message": "1 правка"
+  },
+  "EDIT_COUNT_OTHER": {
+    "message": "$1 правок",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "ELEMENTS": {
+    "message": "Елементи"
+  },
+  "ELEMENTS_COUNT_ONE": {
+    "message": "1 елемент"
+  },
+  "ELEMENTS_COUNT_OTHER": {
+    "message": "$1 елементів",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "EMPTY_CANVAS": {
+    "message": "Додайте область перегляду, щоб почати."
+  },
+  "EMPTY_MESSAGE": {
+    "message": "Виберіть елемент"
+  },
+  "EMPTY_MESSAGE_EDIT": {
+    "message": "Клацніть елемент, щоб вибрати його"
+  },
+  "EMPTY_MESSAGE_INSPECT": {
+    "message": "Клацніть елемент, щоб вибрати його"
+  },
+  "ENABLE_CROSS_ORIGIN": {
+    "message": "Надати доступ"
+  },
+  "EXT_DESCRIPTION": {
+    "message": "Вебінспектор для дизайнерів і розробників. Вимірюйте елементи, витягайте CSS і кольори, робіть знімки екрана та більше."
+  },
+  "EXT_NAME": {
+    "message": "Bo doi - Вимірюйте та досліджуйте веб"
+  },
+  "EXT_NAME_SHORT": {
+    "message": "Bo doi"
+  },
+  "FEATURES_SUBTITLE": {
+    "message": "Витягання ресурсів одним кліком, візуальне дослідження CSS і просунуті інструменти аналізу. Створено для того, як насправді працюють розробники та дизайнери."
+  },
+  "FEATURES_TITLE": {
+    "message": "Усе включено в "
+  },
+  "FEATURE_A11Y_TITLE": {
+    "message": "Проблеми доступності"
+  },
+  "FEATURE_ACCESSIBILITY_DESCRIPTION": {
+    "message": "Автоматично виявляйте та підсвічуйте порушення контрасту за WCAG із практичними рекомендаціями."
+  },
+  "FEATURE_ACCESSIBILITY_TITLE": {
+    "message": "Проблеми доступності"
+  },
+  "FEATURE_ANIMATION_DESCRIPTION": {
+    "message": "Візуалізуйте криві часу CSS-анімацій і копіюйте CSS-властивості анімації."
+  },
+  "FEATURE_ANIMATION_TITLE": {
+    "message": "Аналіз анімацій"
+  },
+  "FEATURE_ASSET_DESCRIPTION": {
+    "message": "Витягайте та завантажуйте зображення, SVG і векторні ресурси прямо з будь-якої вебсторінки."
+  },
+  "FEATURE_ASSET_TITLE": {
+    "message": "Витягання ресурсів"
+  },
+  "FEATURE_BOX_SHADOW_DESCRIPTION": {
+    "message": "Інтерактивний розбір багатошарових тіней блоків із розгорнутим переглядом кожного компонента тіні."
+  },
+  "FEATURE_BOX_SHADOW_TITLE": {
+    "message": "Візуалізація тіней блоків"
+  },
+  "FEATURE_BREAKPOINTS_DESCRIPTION": {
+    "message": "Виявляйте та візуалізуйте контрольні точки медіазапитів CSS кольоровими лініями меж прямо на сторінці."
+  },
+  "FEATURE_BREAKPOINTS_TITLE": {
+    "message": "Контрольні точки"
+  },
+  "FEATURE_CANVAS_DESCRIPTION": {
+    "message": "Досліджуйте елементи HTML5 Canvas. Переглядайте розміри й типи контексту та витягайте палітри кольорів."
+  },
+  "FEATURE_CANVAS_TITLE": {
+    "message": "Дослідження Canvas"
+  },
+  "FEATURE_COLOR_DESCRIPTION": {
+    "message": "Витягайте та копіюйте палітри кольорів із вибраних елементів зі значеннями HEX, RGB і HSL."
+  },
+  "FEATURE_COLOR_TITLE": {
+    "message": "Витягання кольорів"
+  },
+  "FEATURE_COMPUTED_CSS_TITLE": {
+    "message": "Обчислений CSS"
+  },
+  "FEATURE_CSS_RULES_DESCRIPTION": {
+    "message": "Переглядайте правила CSS із таблиць стилів, що застосовуються до будь-якого елемента, згруповані за файлом джерела."
+  },
+  "FEATURE_CSS_RULES_TITLE": {
+    "message": "Інспектор правил CSS"
+  },
+  "FEATURE_DISTANCE_TITLE": {
+    "message": "Вимірювання відстаней"
+  },
+  "FEATURE_EDIT_TITLE": {
+    "message": "Живе редагування CSS із відстеженням змін"
+  },
+  "FEATURE_ELEMENT_HOVER_TITLE": {
+    "message": "Дослідження елементів"
+  },
+  "FEATURE_ELEMENT_SCREENSHOT_TITLE": {
+    "message": "Знімки елементів"
+  },
+  "FEATURE_EYEDROPPER_TITLE": {
+    "message": "Піпетка"
+  },
+  "FEATURE_GRADIENT_DESCRIPTION": {
+    "message": "Візуалізуйте CSS-градієнти з детальним розбором опорних точок кольору та їх позицій."
+  },
+  "FEATURE_GRADIENT_TITLE": {
+    "message": "Інспектор градієнтів"
+  },
+  "FEATURE_GRID_DESCRIPTION": {
+    "message": "Накладайте налаштовувану сітку колонок для перевірки вирівнювання та відступів у дизайні."
+  },
+  "FEATURE_GRID_TITLE": {
+    "message": "Накладання сітки макета"
+  },
+  "FEATURE_HEADING": {
+    "message": "Відкрийте повний набір інструментів для веброзробки"
+  },
+  "FEATURE_HTML_TEXT_DESCRIPTION": {
+    "message": "Копіюйте, вставляйте, дублюйте чи видаляйте елементи прямо на сторінці. Режим редагування тексту дає змогу переписувати текст сторінки на місці."
+  },
+  "FEATURE_HTML_TEXT_TITLE": {
+    "message": "Редагування HTML і тексту"
+  },
+  "FEATURE_INSPECTOR_DESCRIPTION": {
+    "message": "Детальні властивості елементів при наведенні. Натисніть пробіл, щоб закріплювати інспектори та порівнювати кілька елементів поруч."
+  },
+  "FEATURE_INSPECTOR_TITLE": {
+    "message": "Плаваючий інспектор"
+  },
+  "FEATURE_LAYOUT_DESCRIPTION": {
+    "message": "Візуалізуйте макети Flexbox і Grid із чітким розбором вирівнювання, напрямку та структури."
+  },
+  "FEATURE_LAYOUT_TITLE": {
+    "message": "Візуалізатор макета"
+  },
+  "FEATURE_META_TAGS_TITLE": {
+    "message": "Метатеги"
+  },
+  "FEATURE_PAGE_RULERS_TITLE": {
+    "message": "Лінійки сторінки"
+  },
+  "FEATURE_PAGE_WEIGHT_DESCRIPTION": {
+    "message": "Дивіться, що саме завантажено на сторінці, з розбивкою за скриптами, таблицями стилів, зображеннями, шрифтами та іншим, із живою діаграмою, що оновлюється в міру надходження ресурсів."
+  },
+  "FEATURE_PAGE_WEIGHT_TITLE": {
+    "message": "Вага сторінки"
+  },
+  "FEATURE_PARENT_CHILD_TITLE": {
+    "message": "Вибір батьківських і дочірніх елементів"
+  },
+  "FEATURE_RESPONSIVE_DESCRIPTION": {
+    "message": "Тестуйте дизайн у різних областях перегляду з інтерактивним емулятором пристроїв і власними розмірами."
+  },
+  "FEATURE_RESPONSIVE_TITLE": {
+    "message": "Адаптивний режим"
+  },
+  "FEATURE_SCREENSHOT_DESCRIPTION": {
+    "message": "Робіть обрізані знімки вибраних елементів разом із відступами та вимірами."
+  },
+  "FEATURE_SCREENSHOT_TITLE": {
+    "message": "Знімки елементів"
+  },
+  "FEATURE_SELECTOR_DESCRIPTION": {
+    "message": "Шукайте та підсвічуйте елементи за CSS-селекторами, щоб швидко знаходити потрібні."
+  },
+  "FEATURE_SELECTOR_TITLE": {
+    "message": "Пошук за CSS-селектором"
+  },
+  "FEATURE_SEO_TITLE": {
+    "message": "Проблеми SEO"
+  },
+  "FEATURE_SOCIAL_PREVIEW_TITLE": {
+    "message": "Попередній перегляд у соцмережах"
+  },
+  "FEATURE_TAILWIND_DESCRIPTION": {
+    "message": "Миттєво перетворюйте обчислені стилі будь-якого елемента на утилітарні класи Tailwind."
+  },
+  "FEATURE_TAILWIND_TITLE": {
+    "message": "Генератор Tailwind CSS"
+  },
+  "FEATURE_TECH_DETECTION_DESCRIPTION": {
+    "message": "Визначайте фреймворки, бібліотеки та інструменти, на яких працює будь-який сайт. Підтримується понад 150 технологій."
+  },
+  "FEATURE_TECH_DETECTION_TITLE": {
+    "message": "Визначення технологій"
+  },
+  "FEATURE_TRANSITION_DESCRIPTION": {
+    "message": "Візуалізуйте CSS-переходи та криві функцій часу поруч з анімаціями."
+  },
+  "FEATURE_TRANSITION_TITLE": {
+    "message": "Інспектор переходів"
+  },
+  "FEATURE_TYPOGRAPHY_DESCRIPTION": {
+    "message": "Аналізуйте та витягайте всі стилі типографіки, використані у вибраному."
+  },
+  "FEATURE_TYPOGRAPHY_TITLE": {
+    "message": "Аналіз типографіки"
+  },
+  "FEATURE_XRAY_DESCRIPTION": {
+    "message": "Розкрийте приховану структуру сторінки, окресливши всі елементи одразу."
+  },
+  "FEATURE_XRAY_TITLE": {
+    "message": "Режим рентгена"
+  },
+  "FIND_ELEMENT": {
+    "message": "Знайти елемент"
+  },
+  "FIND_HIDDEN_COUNT": {
+    "message": "$1 приховано",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "FOOTER_PRIVACY_POLICY": {
+    "message": "Політика конфіденційності"
+  },
+  "FOOTER_TERMS": {
+    "message": "Умови"
+  },
+  "HERO_TITLE": {
+    "message": "Вимірюйте, досліджуйте та редагуйте будь-що в інтернеті"
+  },
+  "INSPECT_PIN_HINT": {
+    "message": "Натисніть пробіл, щоб закріпити"
+  },
+  "ISSUE_CONTRAST_FAILURE_AAA_MESSAGE": {
+    "message": "Контраст тексту $RATIO$:1 відповідає AA, але не AAA (потрібно $REQUIRED$:1 для $SIZE$ тексту)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "5.2"
+      },
+      "required": {
+        "content": "$2",
+        "example": "7"
+      },
+      "size": {
+        "content": "$3",
+        "example": "normal"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AAA_RECOMMENDATION": {
+    "message": "Розгляньте збільшення контрасту до $RATIO$:1 для відповідності WCAG AAA",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AA_MESSAGE": {
+    "message": "Текст має недостатній коефіцієнт контрастності $RATIO$:1 (потрібно $REQUIRED$:1 для $SIZE$ тексту)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "3.2"
+      },
+      "required": {
+        "content": "$2",
+        "example": "4.5"
+      },
+      "size": {
+        "content": "$3",
+        "example": "normal"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AA_RECOMMENDATION": {
+    "message": "Збільште контраст щонайменше до $RATIO$:1 для відповідності WCAG AA",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "4.5"
+      }
+    }
+  },
+  "ISSUE_ICON_CONTRAST_MESSAGE": {
+    "message": "Значок має недостатній коефіцієнт контрастності $RATIO$:1 (потрібно $REQUIRED$:1 для нетекстових елементів)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "2.5"
+      },
+      "required": {
+        "content": "$2",
+        "example": "3"
+      }
+    }
+  },
+  "ISSUE_ICON_CONTRAST_RECOMMENDATION": {
+    "message": "Збільште контраст щонайменше до $RATIO$:1 для відповідності WCAG 1.4.11",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "LABEL_ADD_RULE": {
+    "message": "Додати правило"
+  },
+  "LABEL_ADD_VIEWPORT": {
+    "message": "Додати область перегляду"
+  },
+  "LABEL_ANIMATION": {
+    "message": "Анімація"
+  },
+  "LABEL_ANIMATIONS": {
+    "message": "Анімації"
+  },
+  "LABEL_ANIMATIONS_AND_TRANSITIONS": {
+    "message": "Анімації та переходи"
+  },
+  "LABEL_APPEARANCE": {
+    "message": "Вигляд"
+  },
+  "LABEL_ASSET": {
+    "message": "Ресурс"
+  },
+  "LABEL_ASSETS": {
+    "message": "Ресурси"
+  },
+  "LABEL_BACKGROUNDS": {
+    "message": "Фони"
+  },
+  "LABEL_BORDER": {
+    "message": "Межа"
+  },
+  "LABEL_BORDERS": {
+    "message": "Межі"
+  },
+  "LABEL_BOX_SHADOW": {
+    "message": "Тінь блока"
+  },
+  "LABEL_BOX_SHADOWS": {
+    "message": "Тіні блока"
+  },
+  "LABEL_CANVAS": {
+    "message": "Canvas"
+  },
+  "LABEL_CANVAS_DIMENSIONS": {
+    "message": "Розміри Canvas"
+  },
+  "LABEL_CHANGES": {
+    "message": "Зміни"
+  },
+  "LABEL_CODE": {
+    "message": "Код"
+  },
+  "LABEL_COLOR": {
+    "message": "Колір"
+  },
+  "LABEL_COLORS": {
+    "message": "Кольори"
+  },
+  "LABEL_COLUMNS": {
+    "message": "Колонки"
+  },
+  "LABEL_COMPUTED": {
+    "message": "Обчислені"
+  },
+  "LABEL_CONTEXT_TYPE": {
+    "message": "Тип контексту"
+  },
+  "LABEL_CSS": {
+    "message": "CSS"
+  },
+  "LABEL_DOCUMENT": {
+    "message": "Документ"
+  },
+  "LABEL_EFFECTIVE_STYLES": {
+    "message": "Чинні стилі"
+  },
+  "LABEL_FLEX_GRID_LAYOUT": {
+    "message": "Макет"
+  },
+  "LABEL_GRADIENT": {
+    "message": "Градієнт"
+  },
+  "LABEL_GRADIENTS": {
+    "message": "Градієнти"
+  },
+  "LABEL_GUTTER": {
+    "message": "Проміжок"
+  },
+  "LABEL_HEIGHT": {
+    "message": "Висота"
+  },
+  "LABEL_INHERITED_FROM": {
+    "message": "Успадковано від $SELECTOR$",
+    "placeholders": {
+      "selector": {
+        "content": "$1",
+        "example": "body"
+      }
+    }
+  },
+  "LABEL_INSTANCES": {
+    "message": "Екземпляри"
+  },
+  "LABEL_ISSUE": {
+    "message": "Проблема"
+  },
+  "LABEL_ISSUES": {
+    "message": "Проблеми"
+  },
+  "LABEL_LAYOUT": {
+    "message": "Блокова модель"
+  },
+  "LABEL_LOADING": {
+    "message": "..."
+  },
+  "LABEL_MARGIN": {
+    "message": "Зовнішній відступ"
+  },
+  "LABEL_MAX_WIDTH": {
+    "message": "Макс. ширина"
+  },
+  "LABEL_OPACITY": {
+    "message": "Непрозорість"
+  },
+  "LABEL_PADDING": {
+    "message": "Внутрішній відступ"
+  },
+  "LABEL_PIXEL_RATIO": {
+    "message": "Співвідношення пікселів"
+  },
+  "LABEL_PW_CSS": {
+    "message": "Таблиці стилів"
+  },
+  "LABEL_PW_DOCUMENT": {
+    "message": "Документ"
+  },
+  "LABEL_PW_FETCH": {
+    "message": "Fetch/XHR"
+  },
+  "LABEL_PW_FONTS": {
+    "message": "Шрифти"
+  },
+  "LABEL_PW_IMAGES": {
+    "message": "Зображення"
+  },
+  "LABEL_PW_MEDIA": {
+    "message": "Медіа"
+  },
+  "LABEL_PW_OTHER": {
+    "message": "Інше"
+  },
+  "LABEL_PW_SCRIPTS": {
+    "message": "Скрипти"
+  },
+  "LABEL_PW_TOTAL": {
+    "message": "Усього"
+  },
+  "LABEL_REFRESH_VIEWPORT": {
+    "message": "Оновити"
+  },
+  "LABEL_ROTATE_VIEWPORT": {
+    "message": "Повернути"
+  },
+  "LABEL_RULES": {
+    "message": "Правила"
+  },
+  "LABEL_SCALABLE": {
+    "message": "масштабований"
+  },
+  "LABEL_SELECTION_COLORS": {
+    "message": "Кольори"
+  },
+  "LABEL_SOURCE": {
+    "message": "Джерело"
+  },
+  "LABEL_SVG": {
+    "message": "svg"
+  },
+  "LABEL_TAILWIND": {
+    "message": "Tailwind"
+  },
+  "LABEL_TECHNOLOGIES": {
+    "message": "Технології"
+  },
+  "LABEL_TECHNOLOGY": {
+    "message": "Технологія"
+  },
+  "LABEL_TEXT": {
+    "message": "Текст"
+  },
+  "LABEL_TEXT_CONTENT": {
+    "message": "Текстовий вміст"
+  },
+  "LABEL_TRANSITION": {
+    "message": "Перехід"
+  },
+  "LABEL_TRANSITIONS": {
+    "message": "Переходи"
+  },
+  "LABEL_TYPOGRAPHY_STYLE": {
+    "message": "Стиль типографіки"
+  },
+  "LABEL_TYPOGRAPHY_STYLES": {
+    "message": "Стилі типографіки"
+  },
+  "LABEL_WHITESPACE_ONLY_CHANGE": {
+    "message": "Зміни лише в пробілах"
+  },
+  "LABEL_WIDTH": {
+    "message": "Ширина"
+  },
+  "LABEL_ZOOM": {
+    "message": "Масштаб"
+  },
+  "LABEL_ZOOM_IN": {
+    "message": "Збільшити"
+  },
+  "LABEL_ZOOM_OUT": {
+    "message": "Зменшити"
+  },
+  "LEGACY_LOGIN_LINK": {
+    "message": "Вхід для старих версій"
+  },
+  "LEGACY_LOGIN_TEXT": {
+    "message": "Купували Bo doi Pro до v3.0.0?"
+  },
+  "MATCHED_CROSS_ORIGIN_HIDDEN": {
+    "message": "Приховано $COUNT$ таблиць стилів з інших джерел.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "MCP_CONNECT_HINT": {
+    "message": "Скопіюйте цей текст і вставте його своєму ШІ-агенту:"
+  },
+  "MCP_UNKNOWN_AGENT": {
+    "message": "ШІ-агент"
+  },
+  "MCP_WAITING_FOR_AGENT": {
+    "message": "Очікування підключення агента..."
+  },
+  "NO_CHANGES_MESSAGE": {
+    "message": "Змін не знайдено"
+  },
+  "NO_PAGE_INFO_MESSAGE": {
+    "message": "Інформацію про сторінку не знайдено"
+  },
+  "OPTIONS_COLOR_FORMAT_SECONDARY": {
+    "message": "Використовується інспектором і піпеткою"
+  },
+  "OPTIONS_MCP_CONNECT_BUTTON": {
+    "message": "Підключити"
+  },
+  "OPTIONS_MCP_DISCONNECT_BUTTON": {
+    "message": "Відключити"
+  },
+  "OPTIONS_MCP_SERVER_SECONDARY": {
+    "message": "Дозвольте ШІ-агентам досліджувати сторінки або вносити зміни. <a href=\"https://www.bodoi.com/docs/mcp.html\" target=\"_blank\">Посібник із налаштування</a>"
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_BODY": {
+    "message": "Версія вашого MCP-сервера — $1, але це розширення очікує $2 або новішу. Оновіть npm-пакет або перезапустіть ШІ-клієнт, щоб отримати оновлення.",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "required": {
+        "content": "$2"
+      }
+    }
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_TITLE": {
+    "message": "MCP-сервер застарів"
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_TOOLTIP": {
+    "message": "MCP-сервер застарів. Оновіть через ваш ШІ-клієнт."
+  },
+  "OPTIONS_MCP_VERSION_UNKNOWN": {
+    "message": "невідомо"
+  },
+  "OPTIONS_PAGE_TITLE": {
+    "message": "Налаштування"
+  },
+  "OPTIONS_ROW_COLOR_FORMAT": {
+    "message": "Формат кольору"
+  },
+  "OPTIONS_ROW_MCP_SERVER": {
+    "message": "MCP-сервер"
+  },
+  "OPTIONS_ROW_SCREENSHOT_HIGHLIGHTS": {
+    "message": "Виділення на знімках"
+  },
+  "OPTIONS_ROW_SCREENSHOT_PADDING": {
+    "message": "Відступи на знімках"
+  },
+  "OPTIONS_ROW_THEME": {
+    "message": "Тема"
+  },
+  "OPTIONS_SAVED_EDITS_CLEAR": {
+    "message": "Очистити"
+  },
+  "OPTIONS_SAVED_EDITS_CONFIRM_BODY": {
+    "message": "Це видалить запам'ятовані правки CSS для всіх сайтів."
+  },
+  "OPTIONS_SAVED_EDITS_CONFIRM_TITLE": {
+    "message": "Очистити збережені правки?"
+  },
+  "OPTIONS_SAVED_EDITS_SECONDARY": {
+    "message": "Правки CSS запам'ятовуються для кожного сайту та відновлюються, коли ви активуєте Bo doi на ньому."
+  },
+  "OPTIONS_SAVED_EDITS_TITLE": {
+    "message": "Збережені правки"
+  },
+  "OPTIONS_SCREENSHOT_HIGHLIGHTS_SECONDARY": {
+    "message": "Включати накладки вимірювань у знімки"
+  },
+  "OPTIONS_SCREENSHOT_PADDING_SECONDARY": {
+    "message": "Додавати тло з відступами до знімків"
+  },
+  "OPTIONS_SECTION_APPEARANCE": {
+    "message": "Вигляд"
+  },
+  "OPTIONS_SECTION_EXTENSION": {
+    "message": "Розширення"
+  },
+  "OPTIONS_SECTION_SCREENSHOTS": {
+    "message": "Знімки екрана"
+  },
+  "OPTIONS_SECTION_TERMINAL_AI": {
+    "message": "ШІ в терміналі"
+  },
+  "PAGE_TAB_META_OG": {
+    "message": "Open Graph"
+  },
+  "PAGE_TAB_META_SEO": {
+    "message": "SEO"
+  },
+  "PAGE_TAB_META_TAGS": {
+    "message": "Метатеги"
+  },
+  "PAGE_TAB_META_TWITTER": {
+    "message": "Twitter Card"
+  },
+  "PAGE_TAB_NO_METADATA": {
+    "message": "Метаданих не знайдено"
+  },
+  "PAGE_TAB_OG_IMAGE": {
+    "message": "Зображення Open Graph"
+  },
+  "PAGE_TAB_PAGE_WEIGHT": {
+    "message": "Вага сторінки"
+  },
+  "PAGE_TAB_SOCIAL_PREVIEW": {
+    "message": "Попередній перегляд у соцмережах"
+  },
+  "PAGE_TAB_TECHNOLOGIES": {
+    "message": "Технології"
+  },
+  "PAGE_TAB_UNTITLED": {
+    "message": "Сторінка без назви"
+  },
+  "PW_BUFFER_FULL": {
+    "message": "Буфер ресурсів заповнено, деякі записи можуть бути відсутні"
+  },
+  "PW_HIDDEN_NOTE": {
+    "message": "Приховано $COUNT$ ресурсів з інших джерел",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "RESPONSIVE_FRAME_BLOCKED_BODY": {
+    "message": "Цей сайт блокує завантаження в попередньому перегляді.{br}{grant}, щоб показати його."
+  },
+  "RESPONSIVE_FRAME_BLOCKED_GRANT": {
+    "message": "Надати доступ"
+  },
+  "RESPONSIVE_FRAME_BLOCKED_STILL": {
+    "message": "Цей сайт блокує завантаження в попередньому перегляді.{br}Це робиться скриптом або політикою на сторінці, яку не можна вимкнути."
+  },
+  "RESPONSIVE_FRAME_TIMEOUT": {
+    "message": "Ця сторінка не завантажилася повністю."
+  },
+  "RESTORE_ACCESS_ERROR": {
+    "message": "Не вдалося відновити доступ. Спробуйте ввійти."
+  },
+  "RESTORE_ACCESS_LINK": {
+    "message": "Відновити покупку"
+  },
+  "REVIEWS_SUBTITLE": {
+    "message": "Ось що вони кажуть про роботу зі Bo doi."
+  },
+  "REVIEWS_TITLE": {
+    "message": "Улюблений інструмент розробників і дизайнерів"
+  },
+  "RULES_COUNT_ONE": {
+    "message": "1 правило"
+  },
+  "RULES_COUNT_OTHER": {
+    "message": "$1 правил",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "BO_DOI_PRO": {
+    "message": "Bo doi "
+  },
+  "SEO_DESCRIPTION_TOO_LONG_MESSAGE": {
+    "message": "Опис довший за 160 символів"
+  },
+  "SEO_DESCRIPTION_TOO_LONG_RECOMMENDATION": {
+    "message": "Пошукові системи можуть обрізати довгі описи. Скоротіть до 120 або 160 символів."
+  },
+  "SEO_DESCRIPTION_TOO_SHORT_MESSAGE": {
+    "message": "Опис коротший за 70 символів"
+  },
+  "SEO_DESCRIPTION_TOO_SHORT_RECOMMENDATION": {
+    "message": "Прагніть до 120 або 160 символів для описового фрагмента."
+  },
+  "SEO_LABEL_ISSUE": {
+    "message": "Проблема SEO"
+  },
+  "SEO_LABEL_ISSUES": {
+    "message": "Проблеми SEO"
+  },
+  "SEO_MISSING_ALT_MESSAGE": {
+    "message": "У зображення відсутній альтернативний текст"
+  },
+  "SEO_MISSING_ALT_RECOMMENDATION": {
+    "message": "Додайте атрибут alt кожному img. Використовуйте alt=\"\" для суто декоративних зображень."
+  },
+  "SEO_MISSING_CANONICAL_MESSAGE": {
+    "message": "Відсутнє канонічне посилання"
+  },
+  "SEO_MISSING_CANONICAL_RECOMMENDATION": {
+    "message": "Додайте <link rel=\"canonical\">, щоб указати основну URL-адресу цієї сторінки."
+  },
+  "SEO_MISSING_DESCRIPTION_MESSAGE": {
+    "message": "Відсутній метаопис"
+  },
+  "SEO_MISSING_DESCRIPTION_RECOMMENDATION": {
+    "message": "Додайте метаопис, який підсумовує сторінку для результатів пошуку."
+  },
+  "SEO_MISSING_H1_MESSAGE": {
+    "message": "Відсутній заголовок H1"
+  },
+  "SEO_MISSING_H1_RECOMMENDATION": {
+    "message": "На кожній сторінці має бути один чіткий H1, який описує її основну тему."
+  },
+  "SEO_MISSING_LANG_MESSAGE": {
+    "message": "Відсутній атрибут lang в <html>"
+  },
+  "SEO_MISSING_LANG_RECOMMENDATION": {
+    "message": "Установіть атрибут lang (наприклад lang=\"en\"), щоб допомогти пошуковим системам і програмам зчитування з екрана."
+  },
+  "SEO_MISSING_OG_DESCRIPTION_MESSAGE": {
+    "message": "Відсутній og:description"
+  },
+  "SEO_MISSING_OG_DESCRIPTION_RECOMMENDATION": {
+    "message": "Додайте <meta property=\"og:description\"> для попереднього перегляду під час поширення."
+  },
+  "SEO_MISSING_OG_IMAGE_MESSAGE": {
+    "message": "Відсутній og:image"
+  },
+  "SEO_MISSING_OG_IMAGE_RECOMMENDATION": {
+    "message": "Додайте <meta property=\"og:image\">, щоб поширені посилання містили зображення попереднього перегляду."
+  },
+  "SEO_MISSING_OG_TITLE_MESSAGE": {
+    "message": "Відсутній og:title"
+  },
+  "SEO_MISSING_OG_TITLE_RECOMMENDATION": {
+    "message": "Додайте <meta property=\"og:title\">, щоб поширені посилання мали чіткий заголовок."
+  },
+  "SEO_MISSING_TITLE_MESSAGE": {
+    "message": "Відсутній тег title"
+  },
+  "SEO_MISSING_TITLE_RECOMMENDATION": {
+    "message": "Додайте описовий елемент <title> у head сторінки."
+  },
+  "SEO_MISSING_VIEWPORT_MESSAGE": {
+    "message": "Відсутній метатег viewport"
+  },
+  "SEO_MISSING_VIEWPORT_RECOMMENDATION": {
+    "message": "Додайте <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> для мобільного відображення."
+  },
+  "SEO_MULTIPLE_H1_MESSAGE": {
+    "message": "На сторінці більше одного H1"
+  },
+  "SEO_MULTIPLE_H1_RECOMMENDATION": {
+    "message": "Використовуйте один H1 на сторінку, а другорядні заголовки понизьте до H2 чи H3."
+  },
+  "SEO_ROBOTS_NOINDEX_MESSAGE": {
+    "message": "Сторінка позначена як noindex"
+  },
+  "SEO_ROBOTS_NOINDEX_RECOMMENDATION": {
+    "message": "Пошукові системи не індексуватимуть цю сторінку. Видаліть noindex, якщо це ненавмисно."
+  },
+  "SEO_TITLE_TOO_LONG_MESSAGE": {
+    "message": "Заголовок довший за 60 символів"
+  },
+  "SEO_TITLE_TOO_LONG_RECOMMENDATION": {
+    "message": "Пошукові системи можуть обрізати довгі заголовки. Скоротіть до 50 або 60 символів."
+  },
+  "SEO_TITLE_TOO_SHORT_MESSAGE": {
+    "message": "Заголовок коротший за 30 символів"
+  },
+  "SEO_TITLE_TOO_SHORT_RECOMMENDATION": {
+    "message": "Прагніть до 50 або 60 символів, щоб заголовок був описовим у результатах пошуку."
+  },
+  "SHORTCUT_CHILD": {
+    "message": "Вибрати дочірній елемент"
+  },
+  "SHORTCUT_COPY": {
+    "message": "Копіювати"
+  },
+  "SHORTCUT_DESELECT": {
+    "message": "Зняти виділення"
+  },
+  "SHORTCUT_PARENT": {
+    "message": "Вибрати батьківський елемент"
+  },
+  "SHORTCUT_PASTE": {
+    "message": "Вставити"
+  },
+  "SHORTCUT_REDO": {
+    "message": "Повторити"
+  },
+  "SHORTCUT_TOGGLE_PANEL": {
+    "message": "Перемкнути панель"
+  },
+  "SHORTCUT_TOGGLE_RULER": {
+    "message": "Перемкнути розширення"
+  },
+  "SHORTCUT_UNDO": {
+    "message": "Скасувати"
+  },
+  "SOCIAL_PREVIEW_FACEBOOK": {
+    "message": "Facebook"
+  },
+  "SOCIAL_PREVIEW_LINKEDIN": {
+    "message": "LinkedIn"
+  },
+  "SOCIAL_PREVIEW_X": {
+    "message": "X"
+  },
+  "SOCIAL_PROOF_TEXT": {
+    "message": "Використовують понад 50 000 дизайнерів і розробників"
+  },
+  "TAB_ELEMENT": {
+    "message": "Елемент"
+  },
+  "TAB_PAGE": {
+    "message": "Сторінка"
+  },
+  "TEXT_SIZE_LARGE": {
+    "message": "великого"
+  },
+  "TEXT_SIZE_NORMAL": {
+    "message": "звичайного"
+  },
+  "THEME": {
+    "message": "Тема"
+  },
+  "THEME_DARK": {
+    "message": "Темна"
+  },
+  "THEME_LIGHT": {
+    "message": "Світла"
+  },
+  "THEME_SYSTEM": {
+    "message": "Системна"
+  },
+  "TITLE_COLOR_SCHEME": {
+    "message": "Колірна схема"
+  },
+  "TITLE_FRAME_LAYOUT": {
+    "message": "Розташування кадрів"
+  },
+  "TITLE_INVALID_PROPERTY": {
+    "message": "Невідома властивість"
+  },
+  "TITLE_INVALID_VALUE": {
+    "message": "Недійсне значення"
+  },
+  "TITLE_MORE_ACTIONS": {
+    "message": "Інші дії"
+  },
+  "TITLE_MOVE_LEFT": {
+    "message": "Перемістити ліворуч"
+  },
+  "TITLE_MOVE_RIGHT": {
+    "message": "Перемістити праворуч"
+  },
+  "TITLE_NOT_INHERITED": {
+    "message": "Не успадковується цим елементом"
+  },
+  "TITLE_OVERRIDDEN_BY": {
+    "message": "Перевизначено селектором $SELECTOR$",
+    "placeholders": {
+      "selector": {
+        "content": "$1",
+        "example": ".card"
+      }
+    }
+  },
+  "TITLE_OVERRIDDEN_HIDDEN": {
+    "message": "Перевизначено таблицею стилів, яку Bo doi не бачить"
+  },
+  "TITLE_OVERRIDDEN_HIDDEN_GRANT": {
+    "message": "Перевизначено таблицею стилів, яку Bo doi не бачить. Надайте доступ до інших джерел, щоб побачити її."
+  },
+  "TITLE_REMOVE": {
+    "message": "Вилучити область перегляду"
+  },
+  "TITLE_RESET_VIEWPORTS": {
+    "message": "Скинути області перегляду"
+  },
+  "TITLE_SYNC_SCROLLING": {
+    "message": "Синхронізувати прокручування"
+  },
+  "TOAST_EDITS_RESTORED_MANY": {
+    "message": "Відновлено збережених правок: $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOAST_EDITS_RESTORED_ONE": {
+    "message": "Відновлено 1 збережену правку"
+  },
+  "TOAST_SCROLL_SYNC_OFF": {
+    "message": "Синхронізацію прокручування вимкнено, бо ця сторінка постійно прокручується їй назустріч."
+  },
+  "TOOLTIP_CHILD": {
+    "message": "Вибрати дочірній елемент"
+  },
+  "TOOLTIP_COPY": {
+    "message": "Копіювати ($mod$+C)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_CUT": {
+    "message": "Вирізати ($mod$+X)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_DELETE": {
+    "message": "Видалити ($key$)",
+    "placeholders": {
+      "key": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_DUPLICATE": {
+    "message": "Дублювати ($mod$+D)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_PARENT": {
+    "message": "Вибрати батьківський елемент"
+  },
+  "TOOLTIP_PASTE": {
+    "message": "Вставити ($mod$+V)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_REDO": {
+    "message": "Повторити ($mod$+$shift$+Z)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      },
+      "shift": {
+        "content": "$2"
+      }
+    }
+  },
+  "TOOLTIP_SELECT": {
+    "message": "Режим вибору"
+  },
+  "TOOLTIP_UNDO": {
+    "message": "Скасувати ($mod$+Z)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TRUSTED_BY_TEXT": {
+    "message": "Довіряють професіонали з"
+  },
+  "UNLOCK_PRO_SEE_MORE": {
+    "message": "Отримайте Pro, щоб побачити ще $COUNT$",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "VIDEO_PLAY_BUTTON": {
+    "message": "Подивіться Bo doi у дії"
+  },
+  "WARN_OVERFLOW": {
+    "message": "Вміст виходить за межі по горизонталі"
+  }
+}

@@ -1,0 +1,1326 @@
+{
+  "ALERT_COULDNT_COMMUNICATE_WITH_TAB": {
+    "message": "탭과 통신할 수 없습니다. 현재 탭에서 Bo doi가 활성화되어 있는지 확인하세요."
+  },
+  "ALERT_ISSUE_ELEMENT_NOT_FOUND": {
+    "message": "문제 요소를 찾을 수 없습니다. 요소가 제거되었거나 페이지가 변경되었을 수 있습니다."
+  },
+  "ALERT_NO_SELECTED_ELEMENT": {
+    "message": "대상 요소를 찾을 수 없습니다."
+  },
+  "ASSETS_FAILED_PLURAL": {
+    "message": "에셋을 불러오지 못했습니다"
+  },
+  "ASSETS_FAILED_SINGULAR": {
+    "message": "에셋을 불러오지 못했습니다"
+  },
+  "BODY_REMOVE_VIEWPORT": {
+    "message": "$LABEL$이(가) 제거됩니다.",
+    "placeholders": {
+      "label": {
+        "content": "$1"
+      }
+    }
+  },
+  "BODY_RESET_VIEWPORTS": {
+    "message": "뷰포트가 기본값으로 초기화됩니다."
+  },
+  "BUTTON_ADD": {
+    "message": "추가"
+  },
+  "BUTTON_CHANGE": {
+    "message": "변경"
+  },
+  "BUTTON_CLEAR_CHANGES": {
+    "message": "모든 변경 사항 지우기"
+  },
+  "BUTTON_COPIED": {
+    "message": "복사됨"
+  },
+  "BUTTON_DOWNLOAD": {
+    "message": "다운로드"
+  },
+  "BUTTON_DOWNLOAD_ALL": {
+    "message": "모두 다운로드"
+  },
+  "BUTTON_REMOVE": {
+    "message": "제거"
+  },
+  "BUTTON_RESET": {
+    "message": "초기화"
+  },
+  "CHECKLIST_FEATURE_1": {
+    "message": "마우스를 올려 요소 속성 검사"
+  },
+  "CHECKLIST_FEATURE_2": {
+    "message": "마진, 테두리, 패딩이 포함된 박스 모델"
+  },
+  "CHECKLIST_FEATURE_3": {
+    "message": "이미지 및 SVG 에셋 다운로드"
+  },
+  "CHECKLIST_FEATURE_4": {
+    "message": "HEX, RGBA, HSL 값으로 색상 추출"
+  },
+  "CHECKLIST_FEATURE_5": {
+    "message": "페이지에 레이아웃 그리드 오버레이"
+  },
+  "CHECKLIST_FEATURE_6": {
+    "message": "측정값이 포함된 요소 스크린샷"
+  },
+  "CHECKLIST_FEATURE_7": {
+    "message": "CSS 선택자로 요소 찾기"
+  },
+  "CHECKLIST_FEATURE_8": {
+    "message": "이징 곡선을 갖춘 애니메이션 인스펙터"
+  },
+  "CHIP_AUDIT": {
+    "message": "감사"
+  },
+  "CHIP_EDIT": {
+    "message": "편집"
+  },
+  "CHIP_EXTRACT": {
+    "message": "추출"
+  },
+  "CHIP_INSPECT": {
+    "message": "검사"
+  },
+  "CHIP_MEASURE": {
+    "message": "측정"
+  },
+  "CHIP_TEST": {
+    "message": "테스트"
+  },
+  "CHIP_VISUALIZE": {
+    "message": "시각화"
+  },
+  "COMPARISON_COLUMN_FEATURE": {
+    "message": "기능"
+  },
+  "COMPARISON_TITLE": {
+    "message": "Pro에 포함된 모든 것"
+  },
+  "CONFIRM_CLEAR_ALL_CHANGES": {
+    "message": "이 페이지의 모든 변경 사항을 지우시겠습니까?"
+  },
+  "CONFIRM_CLEAR_ELEMENT": {
+    "message": "이 요소의 변경 사항을 지우시겠습니까?"
+  },
+  "CONFIRM_CLEAR_ELEMENTS": {
+    "message": "요소 $1개의 변경 사항을 지우시겠습니까?",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  },
+  "CONFIRM_PARTIAL_EDITS_FOR_RESPONSIVE": {
+    "message": "CSS 규칙 변경은 유지됩니다. 인라인 스타일과 마크업, 클래스 편집은 삭제됩니다."
+  },
+  "CSS_SELECTOR": {
+    "message": "CSS 선택자"
+  },
+  "DEFAULT_ASSET_NAME": {
+    "message": "asset"
+  },
+  "DEFAULT_DOWNLOAD_NAME": {
+    "message": "다운로드_파일"
+  },
+  "DEFAULT_SVG_FILENAME": {
+    "message": "asset.svg"
+  },
+  "DIALOG_CANCEL_BUTTON": {
+    "message": "취소"
+  },
+  "DIALOG_CLOSE_BUTTON": {
+    "message": "닫기"
+  },
+  "DIALOG_CONFIRM": {
+    "message": "확인"
+  },
+  "DIALOG_OK": {
+    "message": "확인"
+  },
+  "DIALOG_SUBMIT_BUTTON": {
+    "message": "활성화"
+  },
+  "DIALOG_TITLE_CLEAR_ALL_CHANGES": {
+    "message": "모든 변경 사항 지우기"
+  },
+  "DIALOG_TITLE_CLEAR_ELEMENT": {
+    "message": "요소 지우기"
+  },
+  "DIALOG_TITLE_CUSTOM_VIEWPORT": {
+    "message": "사용자 지정 뷰포트"
+  },
+  "DIALOG_TITLE_ELEMENT_NOT_FOUND": {
+    "message": "요소를 찾을 수 없음"
+  },
+  "DIALOG_TITLE_PARTIAL_EDITS_FOR_RESPONSIVE": {
+    "message": "일부 편집은 유지되지 않습니다"
+  },
+  "DIALOG_TITLE_RESET_VIEWPORTS": {
+    "message": "뷰포트 초기화"
+  },
+  "DIALOG_TITLE_TAB_UNAVAILABLE": {
+    "message": "탭 사용 불가"
+  },
+  "DISMISS_LABEL": {
+    "message": "닫기"
+  },
+  "DOCK_BREAKPOINTS": {
+    "message": "브레이크포인트"
+  },
+  "DOCK_COPY": {
+    "message": "복사"
+  },
+  "DOCK_CUT": {
+    "message": "잘라내기"
+  },
+  "DOCK_DELETE": {
+    "message": "삭제"
+  },
+  "DOCK_DETECT_TECH": {
+    "message": "페이지 기술"
+  },
+  "DOCK_DETECT_TECH_DETECTING": {
+    "message": "감지 중..."
+  },
+  "DOCK_DETECT_TECH_NONE_DETECTED": {
+    "message": "감지된 기술이 없습니다."
+  },
+  "DOCK_DETECT_TECH_RESPONSIVE_ERROR": {
+    "message": "반응형 모드에서는 기술 감지를 사용할 수 없습니다."
+  },
+  "DOCK_DUPLICATE": {
+    "message": "복제"
+  },
+  "DOCK_EDIT_MODE": {
+    "message": "편집"
+  },
+  "DOCK_EDIT_TEXT": {
+    "message": "텍스트 편집"
+  },
+  "DOCK_EYEDROPPER": {
+    "message": "컬러 피커"
+  },
+  "DOCK_FIND_ELEMENT": {
+    "message": "요소 찾기"
+  },
+  "DOCK_INSPECT_MODE": {
+    "message": "검사"
+  },
+  "DOCK_MCP_CONNECTED": {
+    "message": "MCP 연결됨"
+  },
+  "DOCK_MCP_CONNECT_AGENT": {
+    "message": "에이전트 연결"
+  },
+  "DOCK_MCP_OUTDATED": {
+    "message": "MCP 버전이 오래됨"
+  },
+  "DOCK_MCP_TITLE": {
+    "message": "MCP"
+  },
+  "DOCK_MCP_WAITING": {
+    "message": "에이전트 대기 중"
+  },
+  "DOCK_OPEN_PANEL": {
+    "message": "사이드 패널 전환"
+  },
+  "DOCK_OPEN_PANEL_UNSUPPORTED": {
+    "message": "이 브라우저에서는 사이드 패널이 지원되지 않습니다"
+  },
+  "DOCK_PASTE": {
+    "message": "붙여넣기"
+  },
+  "DOCK_PAUSE": {
+    "message": "일시중지"
+  },
+  "DOCK_QUIT": {
+    "message": "종료"
+  },
+  "DOCK_REDO": {
+    "message": "다시 실행"
+  },
+  "DOCK_RESPONSIVE_MODE": {
+    "message": "반응형 모드"
+  },
+  "DOCK_RULER": {
+    "message": "페이지 눈금자"
+  },
+  "DOCK_SELECT_CHILD": {
+    "message": "하위 요소 선택"
+  },
+  "DOCK_SELECT_PARENT": {
+    "message": "상위 요소 선택"
+  },
+  "DOCK_TAKE_SCREENSHOT": {
+    "message": "스크린샷 캡처"
+  },
+  "DOCK_TOGGLE_GRID": {
+    "message": "레이아웃 그리드"
+  },
+  "DOCK_TOGGLE_INSPECT": {
+    "message": "인스펙터"
+  },
+  "DOCK_UNDO": {
+    "message": "실행 취소"
+  },
+  "DOCK_XRAY_MODE": {
+    "message": "X-Ray 모드"
+  },
+  "EDITOR_CROSS_ORIGIN_MISSING": {
+    "message": "일부 스타일이 누락되었을 수 있습니다."
+  },
+  "EDIT_COUNT_NONE": {
+    "message": "편집 없음"
+  },
+  "EDIT_COUNT_ONE": {
+    "message": "편집 1건"
+  },
+  "EDIT_COUNT_OTHER": {
+    "message": "편집 $1건",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "ELEMENTS": {
+    "message": "요소"
+  },
+  "ELEMENTS_COUNT_ONE": {
+    "message": "요소 1개"
+  },
+  "ELEMENTS_COUNT_OTHER": {
+    "message": "요소 $1개",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "EMPTY_CANVAS": {
+    "message": "시작하려면 뷰포트를 추가하세요."
+  },
+  "EMPTY_MESSAGE": {
+    "message": "요소를 선택하세요"
+  },
+  "EMPTY_MESSAGE_EDIT": {
+    "message": "요소를 클릭하여 선택하세요"
+  },
+  "EMPTY_MESSAGE_INSPECT": {
+    "message": "요소를 클릭하여 선택하세요"
+  },
+  "ENABLE_CROSS_ORIGIN": {
+    "message": "액세스 허용"
+  },
+  "EXT_DESCRIPTION": {
+    "message": "디자이너와 개발자를 위한 웹 인스펙터. 요소 측정, CSS 및 색상 추출, 스크린샷 캡처 등."
+  },
+  "EXT_NAME": {
+    "message": "Bo doi - 웹 측정 및 검사"
+  },
+  "EXT_NAME_SHORT": {
+    "message": "Bo doi"
+  },
+  "FEATURES_SUBTITLE": {
+    "message": "원클릭 에셋 추출, 시각적 CSS 검사, 고급 분석 도구. 개발자와 디자이너가 실제로 일하는 방식에 맞게 만들어졌습니다."
+  },
+  "FEATURES_TITLE": {
+    "message": "Pro에 포함된 모든 것"
+  },
+  "FEATURE_A11Y_TITLE": {
+    "message": "접근성 문제"
+  },
+  "FEATURE_ACCESSIBILITY_DESCRIPTION": {
+    "message": "WCAG 대비 실패를 자동으로 감지하고 강조 표시하며 실행 가능한 권장 사항을 제공합니다."
+  },
+  "FEATURE_ACCESSIBILITY_TITLE": {
+    "message": "접근성 문제"
+  },
+  "FEATURE_ANIMATION_DESCRIPTION": {
+    "message": "CSS 애니메이션 타이밍 곡선을 시각화하고 애니메이션 CSS 속성을 복사하세요."
+  },
+  "FEATURE_ANIMATION_TITLE": {
+    "message": "애니메이션 분석"
+  },
+  "FEATURE_ASSET_DESCRIPTION": {
+    "message": "어떤 웹페이지에서든 이미지, SVG, 벡터 에셋을 직접 추출하고 다운로드하세요."
+  },
+  "FEATURE_ASSET_TITLE": {
+    "message": "에셋 추출"
+  },
+  "FEATURE_BOX_SHADOW_DESCRIPTION": {
+    "message": "다중 레이어 박스 섀도우의 인터랙티브 분석과 각 섀도우 구성 요소의 분해 보기를 제공합니다."
+  },
+  "FEATURE_BOX_SHADOW_TITLE": {
+    "message": "박스 섀도우 시각화"
+  },
+  "FEATURE_BREAKPOINTS_DESCRIPTION": {
+    "message": "CSS 미디어 쿼리 브레이크포인트를 감지하고 페이지 위에 색상 경계선으로 직접 표시합니다."
+  },
+  "FEATURE_BREAKPOINTS_TITLE": {
+    "message": "브레이크포인트"
+  },
+  "FEATURE_CANVAS_DESCRIPTION": {
+    "message": "HTML5 캔버스 요소를 검사합니다. 크기와 컨텍스트 유형을 확인하고 색상 팔레트를 추출하세요."
+  },
+  "FEATURE_CANVAS_TITLE": {
+    "message": "캔버스 검사"
+  },
+  "FEATURE_COLOR_DESCRIPTION": {
+    "message": "선택한 요소에서 색상 팔레트를 HEX, RGB, HSL 값으로 추출하고 복사하세요."
+  },
+  "FEATURE_COLOR_TITLE": {
+    "message": "색상 추출"
+  },
+  "FEATURE_COMPUTED_CSS_TITLE": {
+    "message": "계산된 CSS"
+  },
+  "FEATURE_CSS_RULES_DESCRIPTION": {
+    "message": "요소에 적용되는 스타일시트의 CSS 규칙을 소스 파일별로 그룹화하여 표시합니다."
+  },
+  "FEATURE_CSS_RULES_TITLE": {
+    "message": "CSS 규칙 인스펙터"
+  },
+  "FEATURE_DISTANCE_TITLE": {
+    "message": "거리 측정"
+  },
+  "FEATURE_EDIT_TITLE": {
+    "message": "변경 추적이 포함된 라이브 CSS 편집"
+  },
+  "FEATURE_ELEMENT_HOVER_TITLE": {
+    "message": "요소 검사"
+  },
+  "FEATURE_ELEMENT_SCREENSHOT_TITLE": {
+    "message": "요소 스크린샷"
+  },
+  "FEATURE_EYEDROPPER_TITLE": {
+    "message": "컬러 피커"
+  },
+  "FEATURE_GRADIENT_DESCRIPTION": {
+    "message": "CSS 그라디언트를 색상 정지점과 위치의 자세한 분석과 함께 시각화합니다."
+  },
+  "FEATURE_GRADIENT_TITLE": {
+    "message": "그라디언트 인스펙터"
+  },
+  "FEATURE_GRID_DESCRIPTION": {
+    "message": "디자인 정렬과 간격을 확인할 수 있는 사용자 지정 가능한 열 그리드를 오버레이합니다."
+  },
+  "FEATURE_GRID_TITLE": {
+    "message": "레이아웃 그리드 오버레이"
+  },
+  "FEATURE_HEADING": {
+    "message": "웹 개발 도구 전체 제품군을 잠금 해제하세요"
+  },
+  "FEATURE_HTML_TEXT_DESCRIPTION": {
+    "message": "페이지에서 요소를 직접 복사, 붙여넣기, 복제, 삭제할 수 있습니다. 텍스트 편집 모드에서는 페이지 문구를 그 자리에서 다시 작성할 수 있습니다."
+  },
+  "FEATURE_HTML_TEXT_TITLE": {
+    "message": "HTML 및 텍스트 편집"
+  },
+  "FEATURE_INSPECTOR_DESCRIPTION": {
+    "message": "마우스를 올리면 자세한 요소 속성이 표시됩니다. Space 키를 눌러 인스펙터를 고정하고 여러 요소를 나란히 비교하세요."
+  },
+  "FEATURE_INSPECTOR_TITLE": {
+    "message": "플로팅 인스펙터"
+  },
+  "FEATURE_LAYOUT_DESCRIPTION": {
+    "message": "Flexbox와 Grid 레이아웃을 정렬, 방향, 구조의 명확한 분석과 함께 시각화합니다."
+  },
+  "FEATURE_LAYOUT_TITLE": {
+    "message": "레이아웃 시각화 도구"
+  },
+  "FEATURE_META_TAGS_TITLE": {
+    "message": "메타 태그"
+  },
+  "FEATURE_PAGE_RULERS_TITLE": {
+    "message": "페이지 눈금자"
+  },
+  "FEATURE_PAGE_WEIGHT_DESCRIPTION": {
+    "message": "스크립트, 스타일시트, 이미지, 폰트 등으로 구분된 내역과 리소스가 로드될 때마다 갱신되는 실시간 누적 막대로 페이지에 무엇이 로드되는지 정확히 확인하세요."
+  },
+  "FEATURE_PAGE_WEIGHT_TITLE": {
+    "message": "페이지 용량"
+  },
+  "FEATURE_PARENT_CHILD_TITLE": {
+    "message": "상위/하위 요소 선택"
+  },
+  "FEATURE_RESPONSIVE_DESCRIPTION": {
+    "message": "인터랙티브 기기 에뮬레이터와 사용자 지정 크기로 다양한 기기 뷰포트에서 디자인을 테스트하세요."
+  },
+  "FEATURE_RESPONSIVE_TITLE": {
+    "message": "반응형 모드"
+  },
+  "FEATURE_SCREENSHOT_DESCRIPTION": {
+    "message": "선택한 요소의 잘라낸 스크린샷을 마진과 측정값을 포함해 캡처합니다."
+  },
+  "FEATURE_SCREENSHOT_TITLE": {
+    "message": "요소 스크린샷"
+  },
+  "FEATURE_SELECTOR_DESCRIPTION": {
+    "message": "CSS 선택자로 요소를 찾고 강조 표시하여 특정 요소를 빠르게 찾으세요."
+  },
+  "FEATURE_SELECTOR_TITLE": {
+    "message": "CSS 선택자 검색"
+  },
+  "FEATURE_SEO_TITLE": {
+    "message": "SEO 문제"
+  },
+  "FEATURE_SOCIAL_PREVIEW_TITLE": {
+    "message": "소셜 미리보기"
+  },
+  "FEATURE_TAILWIND_DESCRIPTION": {
+    "message": "요소의 계산된 스타일을 즉시 Tailwind 유틸리티 클래스로 변환합니다."
+  },
+  "FEATURE_TAILWIND_TITLE": {
+    "message": "Tailwind CSS 생성기"
+  },
+  "FEATURE_TECH_DETECTION_DESCRIPTION": {
+    "message": "150개 이상의 기술을 지원하여 웹사이트를 구동하는 프레임워크, 라이브러리, 도구를 식별합니다."
+  },
+  "FEATURE_TECH_DETECTION_TITLE": {
+    "message": "기술 감지"
+  },
+  "FEATURE_TRANSITION_DESCRIPTION": {
+    "message": "CSS 트랜지션과 타이밍 함수 곡선을 애니메이션과 함께 시각화합니다."
+  },
+  "FEATURE_TRANSITION_TITLE": {
+    "message": "트랜지션 인스펙터"
+  },
+  "FEATURE_TYPOGRAPHY_DESCRIPTION": {
+    "message": "선택 영역에 사용된 모든 타이포그래피 스타일을 분석하고 추출하세요."
+  },
+  "FEATURE_TYPOGRAPHY_TITLE": {
+    "message": "타이포그래피 분석"
+  },
+  "FEATURE_XRAY_DESCRIPTION": {
+    "message": "모든 요소를 한 번에 윤곽선으로 표시하여 페이지의 기본 구조를 드러냅니다."
+  },
+  "FEATURE_XRAY_TITLE": {
+    "message": "X-Ray 모드"
+  },
+  "FIND_ELEMENT": {
+    "message": "요소 찾기"
+  },
+  "FIND_HIDDEN_COUNT": {
+    "message": "숨겨진 항목 $1개",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "FOOTER_PRIVACY_POLICY": {
+    "message": "개인정보처리방침"
+  },
+  "FOOTER_TERMS": {
+    "message": "이용약관"
+  },
+  "HERO_TITLE": {
+    "message": "웹의 모든 것을 측정, 검사, 편집"
+  },
+  "INSPECT_PIN_HINT": {
+    "message": "Space 키를 눌러 고정"
+  },
+  "ISSUE_CONTRAST_FAILURE_AAA_MESSAGE": {
+    "message": "텍스트 대비 $RATIO$:1은 AA는 충족하지만 AAA는 충족하지 않습니다($SIZE$ 텍스트에는 $REQUIRED$:1 필요)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "5.2"
+      },
+      "required": {
+        "content": "$2",
+        "example": "7"
+      },
+      "size": {
+        "content": "$3",
+        "example": "normal"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AAA_RECOMMENDATION": {
+    "message": "WCAG AAA 준수를 위해 대비를 $RATIO$:1로 높이는 것을 고려하세요",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AA_MESSAGE": {
+    "message": "텍스트의 대비율이 $RATIO$:1로 부족합니다($SIZE$ 텍스트에는 $REQUIRED$:1 필요)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "3.2"
+      },
+      "required": {
+        "content": "$2",
+        "example": "4.5"
+      },
+      "size": {
+        "content": "$3",
+        "example": "normal"
+      }
+    }
+  },
+  "ISSUE_CONTRAST_FAILURE_AA_RECOMMENDATION": {
+    "message": "WCAG AA 준수를 위해 대비를 최소 $RATIO$:1로 높이세요",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "4.5"
+      }
+    }
+  },
+  "ISSUE_ICON_CONTRAST_MESSAGE": {
+    "message": "아이콘의 대비율이 $RATIO$:1로 부족합니다(비텍스트 요소에는 $REQUIRED$:1 필요)",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "2.5"
+      },
+      "required": {
+        "content": "$2",
+        "example": "3"
+      }
+    }
+  },
+  "ISSUE_ICON_CONTRAST_RECOMMENDATION": {
+    "message": "WCAG 1.4.11 준수를 위해 대비를 최소 $RATIO$:1로 높이세요",
+    "placeholders": {
+      "ratio": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "LABEL_ADD_RULE": {
+    "message": "규칙 추가"
+  },
+  "LABEL_ADD_VIEWPORT": {
+    "message": "뷰포트 추가"
+  },
+  "LABEL_ANIMATION": {
+    "message": "애니메이션"
+  },
+  "LABEL_ANIMATIONS": {
+    "message": "애니메이션"
+  },
+  "LABEL_ANIMATIONS_AND_TRANSITIONS": {
+    "message": "애니메이션 및 트랜지션"
+  },
+  "LABEL_APPEARANCE": {
+    "message": "모양"
+  },
+  "LABEL_ASSET": {
+    "message": "에셋"
+  },
+  "LABEL_ASSETS": {
+    "message": "에셋"
+  },
+  "LABEL_BACKGROUNDS": {
+    "message": "배경"
+  },
+  "LABEL_BORDER": {
+    "message": "테두리"
+  },
+  "LABEL_BORDERS": {
+    "message": "테두리"
+  },
+  "LABEL_BOX_SHADOW": {
+    "message": "박스 섀도우"
+  },
+  "LABEL_BOX_SHADOWS": {
+    "message": "박스 섀도우"
+  },
+  "LABEL_CANVAS": {
+    "message": "캔버스"
+  },
+  "LABEL_CANVAS_DIMENSIONS": {
+    "message": "캔버스 크기"
+  },
+  "LABEL_CHANGES": {
+    "message": "변경 사항"
+  },
+  "LABEL_CODE": {
+    "message": "코드"
+  },
+  "LABEL_COLOR": {
+    "message": "색상"
+  },
+  "LABEL_COLORS": {
+    "message": "색상"
+  },
+  "LABEL_COLUMNS": {
+    "message": "열"
+  },
+  "LABEL_COMPUTED": {
+    "message": "계산됨"
+  },
+  "LABEL_CONTEXT_TYPE": {
+    "message": "컨텍스트 유형"
+  },
+  "LABEL_CSS": {
+    "message": "CSS"
+  },
+  "LABEL_DOCUMENT": {
+    "message": "문서"
+  },
+  "LABEL_EFFECTIVE_STYLES": {
+    "message": "적용된 스타일"
+  },
+  "LABEL_FLEX_GRID_LAYOUT": {
+    "message": "레이아웃"
+  },
+  "LABEL_GRADIENT": {
+    "message": "그라디언트"
+  },
+  "LABEL_GRADIENTS": {
+    "message": "그라디언트"
+  },
+  "LABEL_GUTTER": {
+    "message": "거터"
+  },
+  "LABEL_HEIGHT": {
+    "message": "높이"
+  },
+  "LABEL_INHERITED_FROM": {
+    "message": "$SELECTOR$에서 상속됨",
+    "placeholders": {
+      "selector": {
+        "content": "$1",
+        "example": "body"
+      }
+    }
+  },
+  "LABEL_INSTANCES": {
+    "message": "인스턴스"
+  },
+  "LABEL_ISSUE": {
+    "message": "문제"
+  },
+  "LABEL_ISSUES": {
+    "message": "문제"
+  },
+  "LABEL_LAYOUT": {
+    "message": "박스 모델"
+  },
+  "LABEL_LOADING": {
+    "message": "..."
+  },
+  "LABEL_MARGIN": {
+    "message": "마진"
+  },
+  "LABEL_MAX_WIDTH": {
+    "message": "최대 너비"
+  },
+  "LABEL_OPACITY": {
+    "message": "불투명도"
+  },
+  "LABEL_PADDING": {
+    "message": "패딩"
+  },
+  "LABEL_PIXEL_RATIO": {
+    "message": "픽셀 비율"
+  },
+  "LABEL_PW_CSS": {
+    "message": "스타일시트"
+  },
+  "LABEL_PW_DOCUMENT": {
+    "message": "문서"
+  },
+  "LABEL_PW_FETCH": {
+    "message": "Fetch/XHR"
+  },
+  "LABEL_PW_FONTS": {
+    "message": "폰트"
+  },
+  "LABEL_PW_IMAGES": {
+    "message": "이미지"
+  },
+  "LABEL_PW_MEDIA": {
+    "message": "미디어"
+  },
+  "LABEL_PW_OTHER": {
+    "message": "기타"
+  },
+  "LABEL_PW_SCRIPTS": {
+    "message": "스크립트"
+  },
+  "LABEL_PW_TOTAL": {
+    "message": "합계"
+  },
+  "LABEL_REFRESH_VIEWPORT": {
+    "message": "새로고침"
+  },
+  "LABEL_ROTATE_VIEWPORT": {
+    "message": "회전"
+  },
+  "LABEL_RULES": {
+    "message": "규칙"
+  },
+  "LABEL_SCALABLE": {
+    "message": "확장 가능"
+  },
+  "LABEL_SELECTION_COLORS": {
+    "message": "색상"
+  },
+  "LABEL_SOURCE": {
+    "message": "소스"
+  },
+  "LABEL_SVG": {
+    "message": "svg"
+  },
+  "LABEL_TAILWIND": {
+    "message": "Tailwind"
+  },
+  "LABEL_TECHNOLOGIES": {
+    "message": "기술"
+  },
+  "LABEL_TECHNOLOGY": {
+    "message": "기술"
+  },
+  "LABEL_TEXT": {
+    "message": "텍스트"
+  },
+  "LABEL_TEXT_CONTENT": {
+    "message": "텍스트 내용"
+  },
+  "LABEL_TRANSITION": {
+    "message": "트랜지션"
+  },
+  "LABEL_TRANSITIONS": {
+    "message": "트랜지션"
+  },
+  "LABEL_TYPOGRAPHY_STYLE": {
+    "message": "타이포그래피 스타일"
+  },
+  "LABEL_TYPOGRAPHY_STYLES": {
+    "message": "타이포그래피 스타일"
+  },
+  "LABEL_WHITESPACE_ONLY_CHANGE": {
+    "message": "공백만 변경됨"
+  },
+  "LABEL_WIDTH": {
+    "message": "너비"
+  },
+  "LABEL_ZOOM": {
+    "message": "확대/축소"
+  },
+  "LABEL_ZOOM_IN": {
+    "message": "확대"
+  },
+  "LABEL_ZOOM_OUT": {
+    "message": "축소"
+  },
+  "LEGACY_LOGIN_LINK": {
+    "message": "레거시 로그인"
+  },
+  "LEGACY_LOGIN_TEXT": {
+    "message": "v3.0.0 이전에 Bo doi Pro를 구매하셨나요?"
+  },
+  "MATCHED_CROSS_ORIGIN_HIDDEN": {
+    "message": "크로스 오리진 스타일시트 $COUNT$개가 숨겨져 있습니다.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "MCP_CONNECT_HINT": {
+    "message": "이 프롬프트를 복사하여 AI 에이전트에 붙여넣으세요:"
+  },
+  "MCP_UNKNOWN_AGENT": {
+    "message": "AI 에이전트"
+  },
+  "MCP_WAITING_FOR_AGENT": {
+    "message": "에이전트 연결을 기다리는 중..."
+  },
+  "NO_CHANGES_MESSAGE": {
+    "message": "변경 사항이 없습니다"
+  },
+  "NO_PAGE_INFO_MESSAGE": {
+    "message": "페이지 정보가 없습니다"
+  },
+  "OPTIONS_COLOR_FORMAT_SECONDARY": {
+    "message": "인스펙터와 컬러 피커에서 사용됩니다"
+  },
+  "OPTIONS_MCP_CONNECT_BUTTON": {
+    "message": "연결"
+  },
+  "OPTIONS_MCP_DISCONNECT_BUTTON": {
+    "message": "연결 해제"
+  },
+  "OPTIONS_MCP_SERVER_SECONDARY": {
+    "message": "AI 에이전트가 검사하거나 편집할 수 있도록 허용합니다. <a href=\"https://www.bodoi.com/docs/mcp.html\" target=\"_blank\">설정 가이드</a>"
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_BODY": {
+    "message": "MCP 서버 버전은 $1이지만 이 확장 프로그램에는 $2 이상이 필요합니다. npm 패키지를 업데이트하거나 AI 클라이언트를 다시 시작하여 다시 가져오세요.",
+    "placeholders": {
+      "current": {
+        "content": "$1"
+      },
+      "required": {
+        "content": "$2"
+      }
+    }
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_TITLE": {
+    "message": "MCP 서버 버전이 오래됨"
+  },
+  "OPTIONS_MCP_VERSION_OUTDATED_TOOLTIP": {
+    "message": "MCP 서버 버전이 오래되었습니다. AI 클라이언트에서 업데이트하세요."
+  },
+  "OPTIONS_MCP_VERSION_UNKNOWN": {
+    "message": "알 수 없음"
+  },
+  "OPTIONS_PAGE_TITLE": {
+    "message": "설정"
+  },
+  "OPTIONS_ROW_COLOR_FORMAT": {
+    "message": "색상 형식"
+  },
+  "OPTIONS_ROW_MCP_SERVER": {
+    "message": "MCP 서버"
+  },
+  "OPTIONS_ROW_SCREENSHOT_HIGHLIGHTS": {
+    "message": "하이라이트 캡처"
+  },
+  "OPTIONS_ROW_SCREENSHOT_PADDING": {
+    "message": "스크린샷 패딩"
+  },
+  "OPTIONS_ROW_THEME": {
+    "message": "테마"
+  },
+  "OPTIONS_SAVED_EDITS_CLEAR": {
+    "message": "지우기"
+  },
+  "OPTIONS_SAVED_EDITS_CONFIRM_BODY": {
+    "message": "모든 사이트에서 기억된 CSS 편집 내용이 제거됩니다."
+  },
+  "OPTIONS_SAVED_EDITS_CONFIRM_TITLE": {
+    "message": "저장된 편집을 지울까요?"
+  },
+  "OPTIONS_SAVED_EDITS_SECONDARY": {
+    "message": "CSS 편집 내용은 사이트별로 기억되며, 해당 사이트에서 Bo doi를 활성화하면 복원됩니다."
+  },
+  "OPTIONS_SAVED_EDITS_TITLE": {
+    "message": "저장된 편집"
+  },
+  "OPTIONS_SCREENSHOT_HIGHLIGHTS_SECONDARY": {
+    "message": "스크린샷에 측정 오버레이 포함"
+  },
+  "OPTIONS_SCREENSHOT_PADDING_SECONDARY": {
+    "message": "스크린샷에 여백 있는 배경 추가"
+  },
+  "OPTIONS_SECTION_APPEARANCE": {
+    "message": "모양"
+  },
+  "OPTIONS_SECTION_EXTENSION": {
+    "message": "확장 프로그램"
+  },
+  "OPTIONS_SECTION_SCREENSHOTS": {
+    "message": "스크린샷"
+  },
+  "OPTIONS_SECTION_TERMINAL_AI": {
+    "message": "터미널 AI"
+  },
+  "PAGE_TAB_META_OG": {
+    "message": "Open Graph"
+  },
+  "PAGE_TAB_META_SEO": {
+    "message": "SEO"
+  },
+  "PAGE_TAB_META_TAGS": {
+    "message": "메타 태그"
+  },
+  "PAGE_TAB_META_TWITTER": {
+    "message": "Twitter Card"
+  },
+  "PAGE_TAB_NO_METADATA": {
+    "message": "메타데이터가 없습니다"
+  },
+  "PAGE_TAB_OG_IMAGE": {
+    "message": "Open Graph 이미지"
+  },
+  "PAGE_TAB_PAGE_WEIGHT": {
+    "message": "페이지 용량"
+  },
+  "PAGE_TAB_SOCIAL_PREVIEW": {
+    "message": "소셜 미리보기"
+  },
+  "PAGE_TAB_TECHNOLOGIES": {
+    "message": "기술"
+  },
+  "PAGE_TAB_UNTITLED": {
+    "message": "제목 없는 페이지"
+  },
+  "PW_BUFFER_FULL": {
+    "message": "리소스 버퍼가 가득 차서 일부 항목이 누락될 수 있습니다"
+  },
+  "PW_HIDDEN_NOTE": {
+    "message": "크로스 오리진 리소스 $COUNT$개 숨겨짐",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "RESPONSIVE_FRAME_BLOCKED_BODY": {
+    "message": "이 사이트는 미리보기에서 로드를 차단합니다.{br}{grant}하여 표시하세요."
+  },
+  "RESPONSIVE_FRAME_BLOCKED_GRANT": {
+    "message": "액세스 허용"
+  },
+  "RESPONSIVE_FRAME_BLOCKED_STILL": {
+    "message": "이 사이트는 미리보기에서 로드를 차단합니다.{br}제거할 수 없는 스크립트나 페이지 내 정책으로 차단하고 있습니다."
+  },
+  "RESPONSIVE_FRAME_TIMEOUT": {
+    "message": "이 페이지는 로딩을 완료하지 못했습니다."
+  },
+  "RESTORE_ACCESS_ERROR": {
+    "message": "액세스를 복원할 수 없습니다. 로그인을 시도해 보세요."
+  },
+  "RESTORE_ACCESS_LINK": {
+    "message": "구매 복원"
+  },
+  "REVIEWS_SUBTITLE": {
+    "message": "Bo doi 사용에 대한 이야기를 들어보세요."
+  },
+  "REVIEWS_TITLE": {
+    "message": "개발자와 디자이너가 사랑하는 도구"
+  },
+  "RULES_COUNT_ONE": {
+    "message": "규칙 1개"
+  },
+  "RULES_COUNT_OTHER": {
+    "message": "규칙 $1개",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "BO_DOI_PRO": {
+    "message": "Bo doi "
+  },
+  "SEO_DESCRIPTION_TOO_LONG_MESSAGE": {
+    "message": "설명이 160자보다 깁니다"
+  },
+  "SEO_DESCRIPTION_TOO_LONG_RECOMMENDATION": {
+    "message": "검색 엔진은 긴 설명을 자를 수 있습니다. 120~160자로 줄이세요."
+  },
+  "SEO_DESCRIPTION_TOO_SHORT_MESSAGE": {
+    "message": "설명이 70자보다 짧습니다"
+  },
+  "SEO_DESCRIPTION_TOO_SHORT_RECOMMENDATION": {
+    "message": "내용을 잘 전달하는 스니펫을 위해 120~160자를 목표로 하세요."
+  },
+  "SEO_LABEL_ISSUE": {
+    "message": "SEO 문제"
+  },
+  "SEO_LABEL_ISSUES": {
+    "message": "SEO 문제"
+  },
+  "SEO_MISSING_ALT_MESSAGE": {
+    "message": "이미지에 대체 텍스트가 없습니다"
+  },
+  "SEO_MISSING_ALT_RECOMMENDATION": {
+    "message": "모든 img에 alt 속성을 추가하세요. 순수 장식용 이미지에는 alt=\"\"를 사용하세요."
+  },
+  "SEO_MISSING_CANONICAL_MESSAGE": {
+    "message": "canonical 링크 없음"
+  },
+  "SEO_MISSING_CANONICAL_RECOMMENDATION": {
+    "message": "<link rel=\"canonical\">을 추가하여 이 페이지의 대표 URL을 선언하세요."
+  },
+  "SEO_MISSING_DESCRIPTION_MESSAGE": {
+    "message": "메타 설명 없음"
+  },
+  "SEO_MISSING_DESCRIPTION_RECOMMENDATION": {
+    "message": "검색 결과에 표시될 페이지 요약인 메타 설명을 추가하세요."
+  },
+  "SEO_MISSING_H1_MESSAGE": {
+    "message": "H1 제목 없음"
+  },
+  "SEO_MISSING_H1_RECOMMENDATION": {
+    "message": "모든 페이지에는 주제를 설명하는 명확한 H1이 하나 있어야 합니다."
+  },
+  "SEO_MISSING_LANG_MESSAGE": {
+    "message": "<html>에 lang 속성 없음"
+  },
+  "SEO_MISSING_LANG_RECOMMENDATION": {
+    "message": "검색 엔진과 스크린 리더에 도움이 되도록 lang 속성(예: lang=\"en\")을 설정하세요."
+  },
+  "SEO_MISSING_OG_DESCRIPTION_MESSAGE": {
+    "message": "og:description 없음"
+  },
+  "SEO_MISSING_OG_DESCRIPTION_RECOMMENDATION": {
+    "message": "공유 미리보기를 위해 <meta property=\"og:description\">을 추가하세요."
+  },
+  "SEO_MISSING_OG_IMAGE_MESSAGE": {
+    "message": "og:image 없음"
+  },
+  "SEO_MISSING_OG_IMAGE_RECOMMENDATION": {
+    "message": "공유된 링크에 미리보기 이미지가 포함되도록 <meta property=\"og:image\">를 추가하세요."
+  },
+  "SEO_MISSING_OG_TITLE_MESSAGE": {
+    "message": "og:title 없음"
+  },
+  "SEO_MISSING_OG_TITLE_RECOMMENDATION": {
+    "message": "공유된 링크에 명확한 제목이 표시되도록 <meta property=\"og:title\">을 추가하세요."
+  },
+  "SEO_MISSING_TITLE_MESSAGE": {
+    "message": "title 태그 없음"
+  },
+  "SEO_MISSING_TITLE_RECOMMENDATION": {
+    "message": "페이지 head에 내용을 잘 설명하는 <title> 요소를 추가하세요."
+  },
+  "SEO_MISSING_VIEWPORT_MESSAGE": {
+    "message": "viewport 메타 태그 없음"
+  },
+  "SEO_MISSING_VIEWPORT_RECOMMENDATION": {
+    "message": "모바일 렌더링을 위해 <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">을 추가하세요."
+  },
+  "SEO_MULTIPLE_H1_MESSAGE": {
+    "message": "페이지에 H1이 두 개 이상 있습니다"
+  },
+  "SEO_MULTIPLE_H1_RECOMMENDATION": {
+    "message": "페이지당 H1은 하나만 사용하고 보조 제목은 H2나 H3로 낮추세요."
+  },
+  "SEO_ROBOTS_NOINDEX_MESSAGE": {
+    "message": "페이지가 noindex로 설정되어 있습니다"
+  },
+  "SEO_ROBOTS_NOINDEX_RECOMMENDATION": {
+    "message": "검색 엔진이 이 페이지를 색인하지 않습니다. 의도한 것이 아니라면 noindex를 제거하세요."
+  },
+  "SEO_TITLE_TOO_LONG_MESSAGE": {
+    "message": "제목이 60자보다 깁니다"
+  },
+  "SEO_TITLE_TOO_LONG_RECOMMENDATION": {
+    "message": "검색 엔진은 긴 제목을 자를 수 있습니다. 50~60자로 줄이세요."
+  },
+  "SEO_TITLE_TOO_SHORT_MESSAGE": {
+    "message": "제목이 30자보다 짧습니다"
+  },
+  "SEO_TITLE_TOO_SHORT_RECOMMENDATION": {
+    "message": "검색 결과에서 제목이 잘 전달되도록 50~60자를 목표로 하세요."
+  },
+  "SHORTCUT_CHILD": {
+    "message": "하위 요소 선택"
+  },
+  "SHORTCUT_COPY": {
+    "message": "복사"
+  },
+  "SHORTCUT_DESELECT": {
+    "message": "선택 해제"
+  },
+  "SHORTCUT_PARENT": {
+    "message": "상위 요소 선택"
+  },
+  "SHORTCUT_PASTE": {
+    "message": "붙여넣기"
+  },
+  "SHORTCUT_REDO": {
+    "message": "다시 실행"
+  },
+  "SHORTCUT_TOGGLE_PANEL": {
+    "message": "패널 전환"
+  },
+  "SHORTCUT_TOGGLE_RULER": {
+    "message": "확장 프로그램 전환"
+  },
+  "SHORTCUT_UNDO": {
+    "message": "실행 취소"
+  },
+  "SOCIAL_PREVIEW_FACEBOOK": {
+    "message": "Facebook"
+  },
+  "SOCIAL_PREVIEW_LINKEDIN": {
+    "message": "LinkedIn"
+  },
+  "SOCIAL_PREVIEW_X": {
+    "message": "X"
+  },
+  "SOCIAL_PROOF_TEXT": {
+    "message": "50,000명 이상의 디자이너와 개발자가 사용 중"
+  },
+  "TAB_ELEMENT": {
+    "message": "요소"
+  },
+  "TAB_PAGE": {
+    "message": "페이지"
+  },
+  "TEXT_SIZE_LARGE": {
+    "message": "큰"
+  },
+  "TEXT_SIZE_NORMAL": {
+    "message": "일반"
+  },
+  "THEME": {
+    "message": "테마"
+  },
+  "THEME_DARK": {
+    "message": "다크"
+  },
+  "THEME_LIGHT": {
+    "message": "라이트"
+  },
+  "THEME_SYSTEM": {
+    "message": "시스템"
+  },
+  "TITLE_COLOR_SCHEME": {
+    "message": "색상 구성"
+  },
+  "TITLE_FRAME_LAYOUT": {
+    "message": "프레임 레이아웃"
+  },
+  "TITLE_INVALID_PROPERTY": {
+    "message": "알 수 없는 속성"
+  },
+  "TITLE_INVALID_VALUE": {
+    "message": "잘못된 값"
+  },
+  "TITLE_MORE_ACTIONS": {
+    "message": "추가 작업"
+  },
+  "TITLE_MOVE_LEFT": {
+    "message": "왼쪽으로 이동"
+  },
+  "TITLE_MOVE_RIGHT": {
+    "message": "오른쪽으로 이동"
+  },
+  "TITLE_NOT_INHERITED": {
+    "message": "이 요소에는 상속되지 않음"
+  },
+  "TITLE_OVERRIDDEN_BY": {
+    "message": "$SELECTOR$에 의해 재정의됨",
+    "placeholders": {
+      "selector": {
+        "content": "$1",
+        "example": ".card"
+      }
+    }
+  },
+  "TITLE_OVERRIDDEN_HIDDEN": {
+    "message": "Bo doi가 볼 수 없는 스타일시트에 의해 재정의됨"
+  },
+  "TITLE_OVERRIDDEN_HIDDEN_GRANT": {
+    "message": "Bo doi가 볼 수 없는 스타일시트에 의해 재정의되었습니다. 크로스 오리진 액세스를 허용하면 확인할 수 있습니다."
+  },
+  "TITLE_REMOVE": {
+    "message": "뷰포트 제거"
+  },
+  "TITLE_RESET_VIEWPORTS": {
+    "message": "뷰포트 초기화"
+  },
+  "TITLE_SYNC_SCROLLING": {
+    "message": "스크롤 동기화"
+  },
+  "TOAST_EDITS_RESTORED_MANY": {
+    "message": "저장된 편집 $COUNT$개를 복원했습니다",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOAST_EDITS_RESTORED_ONE": {
+    "message": "저장된 편집 1개를 복원했습니다"
+  },
+  "TOAST_SCROLL_SYNC_OFF": {
+    "message": "이 페이지가 계속 반대로 스크롤하여 스크롤 동기화가 해제되었습니다."
+  },
+  "TOOLTIP_CHILD": {
+    "message": "하위 요소 선택"
+  },
+  "TOOLTIP_COPY": {
+    "message": "복사 ($mod$+C)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_CUT": {
+    "message": "잘라내기 ($mod$+X)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_DELETE": {
+    "message": "삭제 ($key$)",
+    "placeholders": {
+      "key": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_DUPLICATE": {
+    "message": "복제 ($mod$+D)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_PARENT": {
+    "message": "상위 요소 선택"
+  },
+  "TOOLTIP_PASTE": {
+    "message": "붙여넣기 ($mod$+V)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TOOLTIP_REDO": {
+    "message": "다시 실행 ($mod$+$shift$+Z)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      },
+      "shift": {
+        "content": "$2"
+      }
+    }
+  },
+  "TOOLTIP_SELECT": {
+    "message": "선택 모드"
+  },
+  "TOOLTIP_UNDO": {
+    "message": "실행 취소 ($mod$+Z)",
+    "placeholders": {
+      "mod": {
+        "content": "$1"
+      }
+    }
+  },
+  "TRUSTED_BY_TEXT": {
+    "message": "다음 기업의 전문가들이 신뢰합니다"
+  },
+  "UNLOCK_PRO_SEE_MORE": {
+    "message": "Pro를 구매하고 $COUNT$개 더 보기",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "VIDEO_PLAY_BUTTON": {
+    "message": "Bo doi 작동 영상 보기"
+  },
+  "WARN_OVERFLOW": {
+    "message": "콘텐츠가 가로로 넘칩니다"
+  }
+}

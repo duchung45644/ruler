@@ -13,9 +13,10 @@ afterEach(() => {
 it('registers inspectTools in legacy dock order', async () => {
   await initTools();
   const ids = items.filter((i) => i.group === 'inspectTools').map((i) => i.id);
-  expect(ids).toEqual(['xray', 'grid', 'breakpoints']);
+  expect(ids).toEqual(['xray', 'grid', 'ruler', 'breakpoints']);
 });
 
+document.elementsFromPoint ??= () => [];
 const flush = () => new Promise((r) => setTimeout(r, 50));
 
 it.each([
@@ -40,4 +41,45 @@ it.each([
   await flush();
   expect(spy).toHaveBeenCalledOnce();
   expect(host.hasAttribute('data-hidden')).toBe(false);
+});
+
+it('ruler: drag a guide out of the top strip, swallow the click, drop back to remove', async () => {
+  const { installDragGuard } = await import('../core/drag');
+  const { sessionSignal } = await import('../core/session');
+  const { currentGuides } = await import('./ruler');
+  const { state } = await import('../core/state.svelte');
+  installDragGuard(sessionSignal());
+  await initTools();
+  items.find((i) => i.id === 'ruler')!.run();
+  expect(state.rulerOn).toBe(true);
+  const ev = (type: string, x: number, y: number) =>
+    new PointerEvent(type, { clientX: x, clientY: y, button: 0, bubbles: true, cancelable: true });
+  const pageClick = vi.fn();
+  document.body.addEventListener('click', pageClick);
+
+  document.body.dispatchEvent(ev('pointerdown', 100, 5));
+  expect(currentGuides()).toEqual([{ axis: 'v', pos: 100 }]);
+  window.dispatchEvent(ev('pointermove', 240, 300));
+  expect(currentGuides()[0]!.pos).toBe(240);
+  document.body.dispatchEvent(ev('pointerup', 240, 300));
+  document.body.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+  expect(pageClick).not.toHaveBeenCalled();
+
+  // hover near it shows the move cursor
+  window.dispatchEvent(new MouseEvent('mousemove', { clientX: 242, clientY: 400 }));
+  expect(document.documentElement.style.cursor).toBe('move');
+
+  // grab it again and drop on the top strip: removed
+  await flush();
+  document.body.dispatchEvent(ev('pointerdown', 241, 400));
+  document.body.dispatchEvent(ev('pointerup', 241, 5));
+  expect(currentGuides()).toEqual([]);
+
+  document.body.dispatchEvent(ev('pointerdown', 5, 150)); // left strip: horizontal
+  document.body.dispatchEvent(ev('pointerup', 300, 150));
+  expect(currentGuides()).toEqual([{ axis: 'h', pos: 150 }]);
+  window.dispatchEvent(new MouseEvent('mousemove', { clientX: 300, clientY: 151 }));
+  stopSession();
+  expect(document.documentElement.style.cursor).toBe('');
+  expect(currentGuides()).toEqual([]);
 });

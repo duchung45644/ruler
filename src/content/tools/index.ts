@@ -1,6 +1,7 @@
 import { initBreakpoints } from './breakpoints';
 import { initEyedropper } from './eyedropper';
 import { initGrid } from './grid';
+import { initRuler } from './ruler';
 import { initXray } from './xray';
 
 /**
@@ -12,7 +13,7 @@ import { initXray } from './xray';
 export async function initTools(): Promise<void> {
   await initXray();
   await initGrid();
-  // initRuler: later task
+  await initRuler();
   await initBreakpoints();
   initEyedropper();
   // initOverlayImages, initMeasure, initFind, initAudit: later tasks

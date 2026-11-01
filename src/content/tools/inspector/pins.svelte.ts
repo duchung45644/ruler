@@ -9,8 +9,8 @@ export interface Pin {
 
 /** Pinned inspectors (2.13), bottom → top. Page coordinates, so they follow scroll. */
 export const pins = $state<Pin[]>([]);
-/** Pin drag in progress (no hover-inspect) / pin under the mouse (its source gets highlighted). */
-export const pinUi = { dragging: false, hovered: null as Element | null };
+/** Pin under the mouse (its source gets highlighted). */
+export const pinUi = { hovered: null as Element | null };
 let nextId = 1;
 
 /** `{x, y}` is the viewport position at pin time. */

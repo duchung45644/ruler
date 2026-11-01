@@ -3,6 +3,7 @@ import Dock from '../../ui/Dock.svelte';
 import { mountUi } from '../../ui/mount';
 import { themePref } from '../../lib/settings';
 import { detectPageIsDark, resolveTheme, type ThemePref } from '../../lib/theme';
+import { installDragGuard, resetDrag } from './drag';
 import { routeKey } from './keys';
 import { mountLayer } from './overlay';
 import { setPaused } from './registry.svelte';
@@ -32,6 +33,8 @@ export async function startSession(ctx: ContentScriptContext): Promise<void> {
 
 async function start(ctx: ContentScriptContext): Promise<void> {
   const signal = sessionSignal();
+  installDragGuard(signal); // first: runs before every tool's window-capture listener
+  onStop(resetDrag);
   const ui = await mountUi(ctx, Dock);
   if (signal.aborted) return ui.remove(); // stopped while mounting
   onStop(ui.remove);

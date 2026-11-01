@@ -48,6 +48,15 @@ describe('dom traversal', () => {
     const r2 = r1.querySelector('i')!.attachShadow({ mode: 'open' });
     r2.innerHTML = '<b></b>';
     document.getElementById('c')!.attachShadow({ mode: 'closed' }).innerHTML = '<b></b>';
-    expect(shadowRoots(document)).toEqual([r1, r2]);
+    expect(shadowRoots(document, isOwn)).toEqual([r1, r2]);
+  });
+
+  it('shadowRoots skips our own host and everything inside it', () => {
+    document.body.innerHTML = '<bo-doi-ui></bo-doi-ui><p id=p></p>';
+    const own = document.querySelector('bo-doi-ui')!.attachShadow({ mode: 'open' });
+    own.innerHTML = '<i></i>';
+    own.querySelector('i')!.attachShadow({ mode: 'open' });
+    const page = document.getElementById('p')!.attachShadow({ mode: 'open' });
+    expect(shadowRoots(document, isOwn)).toEqual([page]);
   });
 });

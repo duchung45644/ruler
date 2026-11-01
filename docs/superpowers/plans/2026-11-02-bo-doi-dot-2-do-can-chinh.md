@@ -215,7 +215,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 11 tách các phầ
     ```
     `updateSettings` vẫn trộn nông, nên người gọi luôn ghi cả object `layoutGrid`.
   - `measureColor = storage.defineItem<string>('local:bdMeasureColor', { fallback: '#FF3B6B' })` và `measureGuides = storage.defineItem<boolean>('local:bdMeasureGuides', { fallback: false })` (9.27).
-  - `shadowRoots(root: Document | ShadowRoot): ShadowRoot[]` trong `dom.ts`: mọi shadow root **mở**, lồng nhau, theo thứ tự cây (bản `oe(document)` cũ). Dùng cho X-Ray, breakpoints, tìm.
+  - `shadowRoots(root: Document | ShadowRoot, isOwn: (el: Element) => boolean, depth = 0): ShadowRoot[]` trong `dom.ts`: mọi shadow root **mở**, lồng nhau, theo thứ tự cây (bản `oe(document)` cũ). Dùng cho X-Ray, breakpoints, tìm.
   - `ownNodes: Set<Element>` trong `events.ts`. `isOwnEvent` và `pageElementAt` coi phần tử trong set (và con của nó) là của extension, giống `ownNodes()` cũ ở `core.js`. Ảnh đè tự thêm/xoá mình.
   - `addKeyHandler(fn: (e: KeyboardEvent) => boolean): () => void` trong `keys.ts`.
     - `routeKey` chạy các handler theo thứ tự đăng ký, **sau** quit và `shouldIgnoreKey`, **trước** Esc mặc định và phím item.
@@ -235,7 +235,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 11 tách các phầ
   - `settings.test.ts`:
     - storage rỗng → `layoutGrid.columns === 8`, `layoutGrid.color === '#FC48FF'`, `rulerIsOn === false`;
     - `measureColor.getValue()` → `'#FF3B6B'`; `measureGuides.getValue()` → `false`.
-  - `dom.test.ts`: `div > host1(shadow: span > host2(shadow: b))` → `shadowRoots(document)` có 2 phần tử; shadow `closed` không được tính.
+  - `dom.test.ts`: `div > host1(shadow: span > host2(shadow: b))` → `shadowRoots(document, isOwn)` có 2 phần tử; shadow `closed` không được tính.
   - `events.test.ts`: `<img>` trong `ownNodes`, event từ nó → `isOwnEvent === true`.
   - `keys.test.ts`:
     - hai handler, cái đầu trả `true` → cái sau không chạy, `defaultPrevented`;
@@ -558,7 +558,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 11 tách các phầ
 - Consumes: `togglePopover`, `DockItem.popover` (Task 2), `shadowRoots` (Task 3), `isRendered`, `addPainter`.
 - Produces:
   - `findAll(selector: string, isVisible: (el: Element) => boolean): { found: Element[]; hidden: number }`:
-    - `querySelectorAll` trên `document` rồi từng `shadowRoots(document)`;
+    - `querySelectorAll` trên `document` rồi từng `shadowRoots(document, isOwn)`;
     - selector rỗng hoặc sai cú pháp → `{ found: [], hidden: 0 }`, không ném (`findElement` `:38503`).
   - `isVisible(el: Element): boolean`: port `isElementVisible` (`:44420`): đi lên shadow host ngoài cùng, phải nằm trong `body`; `offsetParent === null` mà không `fixed`/`sticky` thì ẩn; kèm `isRendered`.
   - `findTitle(index: number, count: number, hidden: number, t: typeof i18n.t): string`: `i/n`, hoặc `0` khi chỉ có phần tử ẩn, hoặc `t('find.title')`; có `hidden` thì thêm ` (${t('find.hidden', [hidden])})` (`updateFindTitle` `:38901`).

@@ -10,7 +10,16 @@ export async function mountUi(
     name: 'bo-doi-ui',
     position: 'inline', // stacking comes from the :host rule in theme.css
     anchor: 'html',
-    isolateEvents: true,
+    // legacy makePanel stopped these at the panel (bd/core.js:238); window-capture listeners still see them first
+    isolateEvents: [
+      'keydown',
+      'keyup',
+      'keypress',
+      'pointerdown',
+      'mousedown',
+      'click',
+      'mousemove',
+    ],
     onMount: (container) => mount(component, { target: container, props }),
     onRemove: (app) => app && unmount(app),
   });

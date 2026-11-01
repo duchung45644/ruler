@@ -9,6 +9,7 @@ const AREAS: Record<string, Source[]> = {
     { file: 'legacy-src/options.js' },
     { file: 'unpacked/options/index.html' },
   ],
+  'content: trước controller': [{ file: 'legacy-src/content.js', to: 'key: "handleAction"' }],
   'content: controller': [{ file: 'legacy-src/content.js', from: 'key: "handleAction"' }],
 };
 

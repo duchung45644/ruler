@@ -3,6 +3,7 @@ import { copyText } from '../../../lib/clipboard';
 import { parseColor, toHex } from '../../../lib/color';
 import { layer, requestPaint } from '../../core/overlay';
 import { registerItem } from '../../core/registry.svelte';
+import { sessionSignal } from '../../core/session';
 import { state } from '../../core/state.svelte';
 
 declare const EyeDropper: { new (): { open(): Promise<{ sRGBHex: string }> } };
@@ -18,15 +19,16 @@ async function pick(): Promise<void> {
   state.hovered = null;
   requestPaint();
   const ac = new AbortController();
+  const signal = AbortSignal.any([ac.signal, sessionSignal()]);
   const reveal = () => {
-    clearTimeout(timer);
     ac.abort();
     delete host.dataset.hidden;
   };
+  signal.addEventListener('abort', () => clearTimeout(timer), { once: true });
   // the picker may leave without settling; the first press after 300ms brings the UI back
   const timer = setTimeout(() => {
-    document.addEventListener('pointerdown', reveal, { capture: true, signal: ac.signal });
-    document.addEventListener('keydown', reveal, { capture: true, signal: ac.signal });
+    document.addEventListener('pointerdown', reveal, { capture: true, signal });
+    document.addEventListener('keydown', reveal, { capture: true, signal });
   }, 300);
   busy = true;
   try {

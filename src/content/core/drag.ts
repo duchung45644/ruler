@@ -9,6 +9,7 @@ export function startDrag(
   e: PointerEvent,
   onMove: (m: PointerEvent) => void,
   onEnd?: (u: PointerEvent) => void,
+  onDone?: () => void, // any teardown, incl. blur and abort
 ): void {
   e.preventDefault();
   e.stopImmediatePropagation();
@@ -27,6 +28,7 @@ export function startDrag(
     if (u instanceof PointerEvent) onEnd?.(u);
   };
   finish = end;
+  if (onDone) ac.signal.addEventListener('abort', onDone, { once: true });
   window.addEventListener('pointermove', onMove, opts);
   for (const type of ['pointerup', 'pointercancel', 'blur'])
     window.addEventListener(type, end, opts);

@@ -21,7 +21,6 @@ import OverlayPanel from './OverlayPanel.svelte';
 /** Design overlay (3.13–3.15), port of unpacked/scripts/bd/overlay.js. Images live in the page DOM
  * so mix-blend-mode: difference blends with the page (the host is its own stacking context). */
 type Entry = { o: OverlayImage; img: HTMLImageElement };
-let on = false;
 let list: Entry[] = [];
 let sel = -1;
 let unmountPanel: (() => void) | null = null;
@@ -29,7 +28,7 @@ let dragCursor = false;
 /** Panel sync, set by OverlayPanel; run by the painter once per frame. */
 export const panelSync: { fn: (() => void) | null } = { fn: null };
 
-const live = () => on && !state.paused;
+const live = () => state.overlayOn && !state.paused;
 const scroll = () => ({ x: scrollX, y: scrollY });
 const nat = (img: HTMLImageElement) => ({
   width: img.naturalWidth || 1,
@@ -96,8 +95,9 @@ function onPointerDown(e: PointerEvent): void {
       );
       requestPaint();
     },
+    undefined,
     () => {
-      document.documentElement.style.cursor = '';
+      document.documentElement.style.cursor = ''; // any teardown: drop, blur, or aborted by a new drag
       dragCursor = false;
     },
   );
@@ -134,7 +134,7 @@ export function addImage(
 export function loadFiles(files: Iterable<File> | null | undefined): void {
   // both steps are async: drop the image if the tool was turned off or the session stopped meanwhile
   const signal = sessionSignal();
-  const alive = () => on && !signal.aborted;
+  const alive = () => state.overlayOn && !signal.aborted;
   for (const f of files ?? []) {
     if (!f.type.startsWith('image/')) continue;
     const fr = new FileReader();
@@ -171,7 +171,7 @@ function position(): void {
 }
 
 export function setOn(next: boolean): void {
-  on = next;
+  state.overlayOn = next;
   if (next) {
     const shadow = layer.getRootNode();
     if (shadow instanceof ShadowRoot && !unmountPanel)
@@ -190,8 +190,8 @@ export function initOverlay(): void {
     label: 'dock.overlay',
     key: 'o',
     group: 'designTools',
-    run: () => setOn(!on),
-    isActive: () => on,
+    run: () => setOn(!state.overlayOn),
+    isActive: () => state.overlayOn,
   });
   const signal = sessionSignal();
   window.addEventListener(
@@ -208,7 +208,7 @@ export function initOverlay(): void {
   window.addEventListener('scroll', requestPaint, { signal, passive: true });
   onStop(
     addKeyHandler((e) => {
-      const d = on && list[sel] && nudgeDelta(e);
+      const d = state.overlayOn && list[sel] && nudgeDelta(e);
       if (!d) return false;
       edit((o) => ({ x: o.x + d.dx, y: o.y + d.dy }));
       return true;

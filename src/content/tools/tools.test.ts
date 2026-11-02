@@ -3,6 +3,10 @@ import { items } from '../core/registry.svelte';
 import { layer } from '../core/overlay';
 import { stopSession } from '../core/session';
 import { initTools } from '.';
+import { fakeBrowser } from 'wxt/testing/fake-browser';
+
+// fakeBrowser has no i18n.getMessage; the audit panel renders labels
+fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
 
 afterEach(() => {
   stopSession();
@@ -97,7 +101,7 @@ it('registers measure in designTools on M', async () => {
 it('registers overlay in designTools on O, before measure (its arrow keys win)', async () => {
   await initTools();
   const ids = items.filter((i) => i.group === 'designTools').map((i) => i.id);
-  expect(ids).toEqual(['overlay', 'measure']);
+  expect(ids).toEqual(['overlay', 'measure', 'audit']);
   const o = items.find((i) => i.id === 'overlay')!;
   expect([o.key, o.label]).toEqual(['o', 'dock.overlay']);
 });
@@ -119,4 +123,17 @@ it('registers find on 7 after eyedropper; a match lights it, closing clears it',
   expect(f.isActive!()).toBe(false);
   clearFind();
   expect(find.results).toEqual([]);
+});
+
+it('registers audit in designTools on A; toggling mounts and clears highlights', async () => {
+  const { audit } = await import('./audit');
+  await initTools();
+  const a = items.find((i) => i.id === 'audit')!;
+  expect([a.group, a.key, a.label]).toEqual(['designTools', 'a', 'dock.audit']);
+  a.run();
+  expect(a.isActive!()).toBe(true);
+  audit.highlights = [document.body];
+  a.run();
+  expect(a.isActive!()).toBe(false);
+  expect(audit.highlights).toEqual([]);
 });

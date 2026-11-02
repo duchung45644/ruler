@@ -20,7 +20,8 @@
     "grid": "Lưới Bố cục",
     "measure": "Kéo vùng để đo",
     "overlay": "Đè ảnh thiết kế",
-    "find": "Tìm Phần tử"
+    "find": "Tìm Phần tử",
+    "audit": "Màu & font của trang"
   },
   "inspect": {
     "layout": "Box Model",
@@ -79,5 +80,18 @@
     "hidden": "$1 bị ẩn",
     "prev": "Trước",
     "next": "Sau"
+  },
+  "audit": {
+    "title": "Màu & font của trang",
+    "colors": "Màu",
+    "fonts": "Font chữ",
+    "spacing": "Khoảng cách",
+    "offGrid": "$1 giá trị không phải bội số của 4px (tô đỏ).",
+    "highlight": "Bấm để highlight các phần tử dùng giá trị này",
+    "copy": "Copy",
+    "rescan": "Quét lại",
+    "all": "Tất cả",
+    "allTitle": "Copy toàn bộ danh sách của tab này",
+    "empty": "Không tìm thấy."
   }
 }

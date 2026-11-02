@@ -20,7 +20,8 @@
     "grid": "Layout Grid",
     "measure": "Measure area (drag)",
     "overlay": "Design overlay",
-    "find": "Find Element"
+    "find": "Find Element",
+    "audit": "Page colors & fonts"
   },
   "inspect": {
     "layout": "Box Model",
@@ -79,5 +80,18 @@
     "hidden": "$1 hidden",
     "prev": "Previous",
     "next": "Next"
+  },
+  "audit": {
+    "title": "Page styles",
+    "colors": "Colors",
+    "fonts": "Typography",
+    "spacing": "Spacing",
+    "offGrid": "$1 value(s) are not multiples of 4px (shown in red).",
+    "highlight": "Click to highlight elements",
+    "copy": "Copy",
+    "rescan": "Rescan",
+    "all": "All",
+    "allTitle": "Copy all rows in this tab",
+    "empty": "Nothing found."
   }
 }

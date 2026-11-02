@@ -12,7 +12,16 @@
     "show": "Hiện dock",
     "inspect": "Trình kiểm tra",
     "selectParent": "Chọn Phần tử Cha",
-    "selectChild": "Chọn Phần tử Con"
+    "selectChild": "Chọn Phần tử Con",
+    "xray": "Chế độ X-Ray",
+    "ruler": "Thước Trang",
+    "breakpoints": "Breakpoints",
+    "eyedropper": "Chọn Màu",
+    "grid": "Lưới Bố cục",
+    "measure": "Kéo vùng để đo",
+    "overlay": "Đè ảnh thiết kế",
+    "find": "Tìm Phần tử",
+    "audit": "Màu & font của trang"
   },
   "inspect": {
     "layout": "Box Model",
@@ -30,5 +39,59 @@
   },
   "common": {
     "close": "Đóng"
+  },
+  "grid": {
+    "columns": "Cột",
+    "maxWidth": "Chiều rộng Tối đa",
+    "gutter": "Khoảng cách",
+    "margin": "Margin",
+    "color": "Màu sắc",
+    "opacity": "Độ mờ"
+  },
+  "measure": {
+    "title": "Đo vùng",
+    "leftTop": "Trái / Trên",
+    "toEdge": "Cách mép phải / dưới",
+    "boxColor": "Màu khung đo",
+    "edgeGuides": "Đường gióng",
+    "edgeGuidesTitle": "Kéo dài các cạnh khung ra toàn trang",
+    "clear": "Xoá khung",
+    "hint": "Kéo chuột để vẽ. Mũi tên dịch 1px (Shift: 10px), Ctrl+mũi tên nới rộng, Ctrl+Alt+mũi tên thu hẹp. Trong ô số, Shift+↑/↓ tăng giảm 10. Esc để xoá."
+  },
+  "overlay": {
+    "image": "Ảnh $1",
+    "drop": "Thả, dán (Ctrl+V) hoặc bấm để chọn ảnh thiết kế",
+    "addAnother": "Thêm ảnh khác…",
+    "opacity": "Độ mờ",
+    "blend": "Chế độ",
+    "normal": "Bình thường",
+    "difference": "Difference",
+    "scale": "Tỉ lệ %",
+    "visible": "Đang hiện",
+    "hidden": "Đang ẩn",
+    "pin": "Ghim theo màn hình",
+    "pinTitle": "Ảnh đứng yên khi cuộn trang",
+    "remove": "Xoá ảnh",
+    "hint": "Bấm vào ảnh (hoặc ảnh nhỏ ở trên) để chọn. Kéo giữa ảnh để di chuyển, kéo góc để co giãn. Phím mũi tên dịch ảnh đang chọn 1px (giữ Shift: 10px)."
+  },
+  "find": {
+    "title": "Tìm Phần tử",
+    "selector": "Bộ chọn CSS",
+    "hidden": "$1 bị ẩn",
+    "prev": "Trước",
+    "next": "Sau"
+  },
+  "audit": {
+    "title": "Màu & font của trang",
+    "colors": "Màu",
+    "fonts": "Font chữ",
+    "spacing": "Khoảng cách",
+    "offGrid": "$1 giá trị không phải bội số của 4px (tô đỏ).",
+    "highlight": "Bấm để highlight các phần tử dùng giá trị này",
+    "copy": "Copy",
+    "rescan": "Quét lại",
+    "all": "Tất cả",
+    "allTitle": "Copy toàn bộ danh sách của tab này",
+    "empty": "Không tìm thấy."
   }
 }

@@ -10,6 +10,7 @@ import { routeKey } from '../../core/keys';
 import { setPaused } from '../../core/registry.svelte';
 import { initInspector } from '.';
 import { pins } from './pins.svelte';
+import { installDragGuard, startDrag } from '../../core/drag';
 
 afterEach(() => {
   stopSession();
@@ -119,4 +120,25 @@ it('pause hides the floating panel and pins', async () => {
   await settle();
   expect(panel.style.visibility).toBe('');
   expect(pinBox.textContent).toContain('inspect_copyCss'); // pins come back where they were
+});
+
+it('a click right after a drag does not select (regression)', async () => {
+  const host = document.createElement('bo-doi-ui');
+  document.body.append(host);
+  host.attachShadow({ mode: 'open' }).append(layer);
+  const p = document.createElement('p');
+  document.body.append(p);
+  const ac = new AbortController();
+  installDragGuard(ac.signal);
+  await initInspector();
+  state.inspectOn = true;
+  state.selected = null;
+  const orig = document.elementsFromPoint;
+  document.elementsFromPoint = () => [p];
+  startDrag(new PointerEvent('pointerdown', { cancelable: true }), () => {});
+  window.dispatchEvent(new PointerEvent('pointerup'));
+  p.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+  document.elementsFromPoint = orig;
+  ac.abort();
+  expect(state.selected).toBe(null);
 });

@@ -2,6 +2,7 @@
   import { i18n } from '#i18n';
   import GripHorizontal from '@lucide/svelte/icons/grip-horizontal';
   import X from '@lucide/svelte/icons/x';
+  import { startDrag } from '../../core/drag';
   import { requestPaint } from '../../core/overlay';
   import { state as session } from '../../core/state.svelte';
   import InspectPanel from './InspectPanel.svelte';
@@ -17,36 +18,13 @@
   /** Port of startPinDrag (:43574): clamp to the viewport, store page coords. */
   function drag(e: PointerEvent) {
     if (!pin || !box || e.button !== 0) return;
-    e.preventDefault();
     const r = box.getBoundingClientRect();
     const dx = e.clientX - r.left;
     const dy = e.clientY - r.top;
-    pinUi.dragging = true;
-    const ac = new AbortController();
-    const opts = { capture: true, signal: ac.signal };
-    window.addEventListener(
-      'pointermove',
-      (m) => {
-        pin.pageX = Math.max(0, Math.min(innerWidth - r.width, m.clientX - dx)) + scrollX;
-        pin.pageY = Math.max(0, Math.min(innerHeight - r.height, m.clientY - dy)) + scrollY;
-      },
-      opts,
-    );
-    window.addEventListener(
-      'pointerup',
-      () => {
-        ac.abort();
-        pinUi.dragging = false;
-        // spec §9: the click after a drag must not reach the page; flag clears after ~50ms
-        const swallow = (c: Event) => {
-          c.preventDefault();
-          c.stopPropagation();
-        };
-        window.addEventListener('click', swallow, { capture: true, once: true });
-        setTimeout(() => window.removeEventListener('click', swallow, true), 50);
-      },
-      opts,
-    );
+    startDrag(e, (m) => {
+      pin.pageX = Math.max(0, Math.min(innerWidth - r.width, m.clientX - dx)) + scrollX;
+      pin.pageY = Math.max(0, Math.min(innerHeight - r.height, m.clientY - dy)) + scrollY;
+    });
   }
 
   const hoverSource = (el: Element | null) => {

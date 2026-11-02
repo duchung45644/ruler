@@ -2,6 +2,7 @@ import { defineContentScript } from '#imports';
 import { startSession, stopSession } from '../../content/core/session';
 import { state } from '../../content/core/state.svelte';
 import { initInspector, selectChild, selectParent } from '../../content/tools/inspector';
+import { initTools } from '../../content/tools';
 import { handleMessages } from '../../lib/messaging';
 import { loadFonts } from '../../ui/fonts';
 import './style.css';
@@ -25,7 +26,9 @@ export default defineContentScript({
     });
     const start = async () => {
       await startSession(ctx);
-      if (state.active) await initInspector();
+      if (!state.active) return;
+      await initTools();
+      await initInspector();
     };
     loadFonts();
     handleMessages('content', {

@@ -2,6 +2,16 @@ import { items } from './registry.svelte';
 import { state } from './state.svelte';
 
 const hooks = new Map<string, (e: KeyboardEvent) => boolean>();
+const handlers: ((e: KeyboardEvent) => boolean)[] = [];
+
+/** Tool key handler, run in registration order before Esc/item keys; the first returning true wins. */
+export function addKeyHandler(fn: (e: KeyboardEvent) => boolean): () => void {
+  handlers.push(fn);
+  return () => {
+    const i = handlers.indexOf(fn);
+    if (i >= 0) handlers.splice(i, 1);
+  };
+}
 
 /** Hook for Space / Alt+Shift+ArrowLeft / Alt+Shift+ArrowRight (Task 6/8). Returns the unregister fn. */
 export function onKey(key: string, fn: (e: KeyboardEvent) => boolean): () => void {
@@ -33,18 +43,21 @@ export function routeKey(e: KeyboardEvent): void {
     return items.find((i) => i.id === 'quit')?.run();
   }
   if (shouldIgnoreKey(e, state)) return;
+  if (handlers.some((fn) => fn(e))) return e.preventDefault();
   if (e.key === 'Escape') {
-    if (state.selected) {
-      state.selected = null;
-      e.preventDefault();
-    }
+    if (state.selected) state.selected = null;
+    else if (state.popover)
+      state.popover = null; // legacy executeShortcut :47540
+    else return;
+    e.preventDefault();
     return;
   }
   if (!e.ctrlKey && !e.metaKey && !e.altKey) {
-    const item = items.find((i) => i.key === e.key && !i.isDisabled?.());
+    const key = e.key.toLowerCase();
+    const item = items.find((i) => i.key === key && !i.isDisabled?.());
     if (item) {
       e.preventDefault();
-      return item.run();
+      return item.runKey ? item.runKey() : item.run();
     }
   }
   const name = hookName(e);

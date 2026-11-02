@@ -33,4 +33,28 @@
   height: 0 !important;
   overflow: visible !important;
   z-index: 2147483647 !important;
+  /* Native controls follow the extension theme; checkbox/range use the accent. */
+  color-scheme: dark !important;
+  accent-color: var(--color-accent) !important;
+}
+:host([data-theme='light']) {
+  color-scheme: light !important;
+}
+/* Eyedropper hides the whole UI while picking (3.07). */
+:host([data-hidden]) {
+  visibility: hidden !important;
+}
+
+/* Shared text/number/select field for panels and popovers (spec §6.3). */
+@utility field {
+  border-radius: var(--radius-btn);
+  border: 1px solid var(--color-line);
+  background: transparent;
+  color: var(--color-fg);
+  padding: 2px 6px;
+  outline: none;
+  &:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 1px var(--color-accent);
+  }
 }

@@ -7,6 +7,7 @@ import { placeNear, sizeLabels, type Rect } from '../../../lib/geometry';
 import { getSettings, pinHintDone, updateSettings } from '../../../lib/settings';
 import { detectPageIsDark, measureColor } from '../../../lib/theme';
 import { isOwnEvent, pageElementAt } from '../../core/events';
+import { isDragging } from '../../core/drag';
 import { onKey } from '../../core/keys';
 import { addPainter, draw, drawNumber, layer, requestPaint } from '../../core/overlay';
 import { registerItem } from '../../core/registry.svelte';
@@ -241,7 +242,8 @@ export async function initInspector(): Promise<void> {
   document.addEventListener(
     'mousemove',
     (e) => {
-      if (!live() || !host || pinUi.dragging) return; // spec §9: no hover-inspect while dragging
+      if (isDragging()) return; // spec §9: no hover-inspect while dragging (the guard swallows)
+      if (!live() || !host) return;
       if (isOwnEvent(e, host)) {
         // over a pin / the dock: hide the floating panel; over the panel itself keep it (Copy)
         if (!panelBox || !e.composedPath().includes(panelBox)) panelHidden = true;
@@ -255,6 +257,7 @@ export async function initInspector(): Promise<void> {
   );
   // 1.25 swallow press/menu events so page menus, click-outside handlers, selection and drag don't fire
   const block = (e: Event) => {
+    if (isDragging()) return;
     if (!live() || !host || isOwnEvent(e, host)) return;
     e.preventDefault();
     e.stopImmediatePropagation(); // also stops page listeners on window registered after ours
@@ -275,6 +278,7 @@ export async function initInspector(): Promise<void> {
   window.addEventListener(
     'click',
     (e) => {
+      if (isDragging()) return;
       if (!live() || !host || isOwnEvent(e, host)) return;
       e.preventDefault();
       e.stopImmediatePropagation(); // also stops page listeners on window registered after ours

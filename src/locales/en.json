@@ -12,7 +12,16 @@
     "show": "Show Dock",
     "inspect": "Inspector",
     "selectParent": "Select Parent",
-    "selectChild": "Select Child"
+    "selectChild": "Select Child",
+    "xray": "X-Ray Mode",
+    "ruler": "Page Rulers",
+    "breakpoints": "Breakpoints",
+    "eyedropper": "Color Picker",
+    "grid": "Layout Grid",
+    "measure": "Measure area (drag)",
+    "overlay": "Design overlay",
+    "find": "Find Element",
+    "audit": "Page colors & fonts"
   },
   "inspect": {
     "layout": "Box Model",
@@ -30,5 +39,59 @@
   },
   "common": {
     "close": "Close"
+  },
+  "grid": {
+    "columns": "Columns",
+    "maxWidth": "Max Width",
+    "gutter": "Gutter",
+    "margin": "Margin",
+    "color": "Color",
+    "opacity": "Opacity"
+  },
+  "measure": {
+    "title": "Measure",
+    "leftTop": "Left / Top",
+    "toEdge": "To right / bottom edge",
+    "boxColor": "Box color",
+    "edgeGuides": "Edge guides",
+    "edgeGuidesTitle": "Extend the box edges across the page",
+    "clear": "Clear",
+    "hint": "Drag to draw. Arrows move 1px (Shift: 10px), Ctrl+arrows expand, Ctrl+Alt+arrows shrink. Shift+↑/↓ in a field steps 10. Esc clears."
+  },
+  "overlay": {
+    "image": "Image $1",
+    "drop": "Drop, paste or click to choose design images",
+    "addAnother": "Add another image…",
+    "opacity": "Opacity",
+    "blend": "Blend",
+    "normal": "Normal",
+    "difference": "Difference",
+    "scale": "Scale %",
+    "visible": "Visible",
+    "hidden": "Hidden",
+    "pin": "Pin to screen",
+    "pinTitle": "Keep the image fixed while scrolling",
+    "remove": "Remove",
+    "hint": "Click an image (or its thumbnail) to select it. Drag the middle to move, a corner to resize. Arrow keys nudge the selected image 1px (Shift: 10px)."
+  },
+  "find": {
+    "title": "Find Element",
+    "selector": "CSS Selector",
+    "hidden": "$1 hidden",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "audit": {
+    "title": "Page styles",
+    "colors": "Colors",
+    "fonts": "Typography",
+    "spacing": "Spacing",
+    "offGrid": "$1 value(s) are not multiples of 4px (shown in red).",
+    "highlight": "Click to highlight elements",
+    "copy": "Copy",
+    "rescan": "Rescan",
+    "all": "All",
+    "allTitle": "Copy all rows in this tab",
+    "empty": "Nothing found."
   }
 }

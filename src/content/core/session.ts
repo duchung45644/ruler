@@ -3,8 +3,9 @@ import Dock from '../../ui/Dock.svelte';
 import { mountUi } from '../../ui/mount';
 import { themePref } from '../../lib/settings';
 import { detectPageIsDark, resolveTheme, type ThemePref } from '../../lib/theme';
+import { installDragGuard, resetDrag } from './drag';
 import { routeKey } from './keys';
-import { mountLayer } from './overlay';
+import { mountLayer, requestPaint } from './overlay';
 import { setPaused } from './registry.svelte';
 import { state } from './state.svelte';
 
@@ -32,10 +33,13 @@ export async function startSession(ctx: ContentScriptContext): Promise<void> {
 
 async function start(ctx: ContentScriptContext): Promise<void> {
   const signal = sessionSignal();
+  installDragGuard(signal); // first: runs before every tool's window-capture listener
+  onStop(resetDrag);
   const ui = await mountUi(ctx, Dock);
   if (signal.aborted) return ui.remove(); // stopped while mounting
   onStop(ui.remove);
   onStop(mountLayer(ui.shadow));
+  window.addEventListener('resize', requestPaint, { signal });
   window.addEventListener('keydown', routeKey, { signal });
   // isolateEvents stops keydown at our shadow root (page never sees our typing), so route it here too
   ui.shadow.addEventListener('keydown', routeKey as EventListener, { signal });
@@ -64,5 +68,7 @@ export function stopSession(): void {
     selected: null,
     inspectOn: false,
     dockCollapsed: false,
+    popover: null,
+    dockNotice: null,
   });
 }

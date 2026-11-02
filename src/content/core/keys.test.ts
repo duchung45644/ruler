@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { isQuitKey, routeKey, shouldIgnoreKey } from './keys';
+import { addKeyHandler, isQuitKey, routeKey, shouldIgnoreKey } from './keys';
 import { items, registerItem } from './registry.svelte';
 import { state } from './state.svelte';
 
@@ -64,11 +64,86 @@ describe('routeKey', () => {
     expect(run).toHaveBeenCalledOnce();
   });
 
+  it('matches letter keys case-insensitively', () => {
+    const run = vi.fn();
+    registerItem({
+      id: 't1',
+      icon: {} as never,
+      label: 'dock.quit',
+      key: 'o',
+      group: 'utilities',
+      run,
+    });
+    state.paused = false;
+    const div = document.body.appendChild(document.createElement('div'));
+    routeKey(keyFrom(div, { key: 'O', shiftKey: true }));
+    routeKey(keyFrom(div, { key: 'o' }));
+    expect(run).toHaveBeenCalledTimes(2);
+  });
+
+  it('calls runKey instead of run when present', () => {
+    const run = vi.fn();
+    const runKey = vi.fn();
+    registerItem({
+      id: 't1',
+      icon: {} as never,
+      label: 'dock.quit',
+      key: '3',
+      group: 'utilities',
+      run,
+      runKey,
+    });
+    state.paused = false;
+    routeKey(keyFrom(document.body, { key: '3' }));
+    expect(runKey).toHaveBeenCalledOnce();
+    expect(run).not.toHaveBeenCalled();
+  });
+
+  it('Esc with no selection closes the popover', () => {
+    state.selected = null;
+    state.popover = 'find';
+    routeKey(keyFrom(document.body, { key: 'Escape', cancelable: true }));
+    expect(state.popover).toBeNull();
+  });
+
   it('Esc releases the selection', () => {
     state.selected = document.body;
     const ev = keyFrom(document.body, { key: 'Escape', cancelable: true });
     routeKey(ev);
     expect(state.selected).toBeNull();
     expect(ev.defaultPrevented).toBe(true);
+  });
+});
+
+describe('addKeyHandler', () => {
+  it('first handler returning true stops the rest and prevents default', () => {
+    state.paused = false;
+    const a = vi.fn(() => true);
+    const b = vi.fn(() => true);
+    const offA = addKeyHandler(a);
+    const offB = addKeyHandler(b);
+    const ev = keyFrom(document.body, { key: 'ArrowLeft', cancelable: true });
+    routeKey(ev);
+    offA();
+    offB();
+    expect(a).toHaveBeenCalledOnce();
+    expect(b).not.toHaveBeenCalled();
+    expect(ev.defaultPrevented).toBe(true);
+  });
+
+  it('skips keys typed in an input inside a shadow root', () => {
+    state.paused = false;
+    const host = document.body.appendChild(document.createElement('panel-host'));
+    const input = host.attachShadow({ mode: 'open' }).appendChild(document.createElement('input'));
+    let ev!: KeyboardEvent;
+    host.addEventListener('keydown', (e) => (ev = e as KeyboardEvent), { once: true });
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true }),
+    );
+    const fn = vi.fn(() => true);
+    const off = addKeyHandler(fn);
+    routeKey(ev);
+    off();
+    expect(fn).not.toHaveBeenCalled();
   });
 });

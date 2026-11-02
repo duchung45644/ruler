@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isOwnEvent } from './events';
+import { isOwnEvent, ownNodes } from './events';
 
 describe('isOwnEvent', () => {
   it('is true for composed events from inside the host shadow root', () => {
@@ -21,5 +21,17 @@ describe('isOwnEvent', () => {
     window.addEventListener('click', (e) => (seen = e), { once: true, capture: true });
     p.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
     expect(isOwnEvent(seen!, host)).toBe(false);
+  });
+
+  it('is true for events from an element in ownNodes', () => {
+    const host = document.createElement('bo-doi-ui');
+    const img = document.createElement('img');
+    document.body.append(host, img);
+    ownNodes.add(img);
+    let seen: Event | null = null;
+    window.addEventListener('click', (e) => (seen = e), { once: true, capture: true });
+    img.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+    expect(isOwnEvent(seen!, host)).toBe(true);
+    ownNodes.delete(img);
   });
 });

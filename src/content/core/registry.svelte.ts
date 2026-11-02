@@ -9,9 +9,21 @@ import { sendToBackground } from '../../lib/messaging';
 import { layer, requestPaint } from './overlay';
 import { state } from './state.svelte';
 
-export type MessageKey = keyof GeneratedI18nStructure;
-/** Display order (inventory 1.16); later phases add groups. */
-export const DOCK_GROUPS = ['selections', 'inspectTools', 'utilities', 'quit'] as const;
+/** Keys without substitutions (dock labels are called as i18n.t(key)). */
+export type MessageKey = {
+  [K in keyof GeneratedI18nStructure]: GeneratedI18nStructure[K]['substitutions'] extends 0
+    ? K
+    : never;
+}[keyof GeneratedI18nStructure];
+/** Display order (inventory 1.16 + 1.45, legacy getControlBar :30105). Empty groups are not drawn. */
+export const DOCK_GROUPS = [
+  'selections',
+  'inspectTools',
+  'utilities',
+  'environment',
+  'designTools',
+  'quit',
+] as const;
 export type DockGroup = (typeof DOCK_GROUPS)[number];
 
 export interface DockItem {
@@ -26,6 +38,12 @@ export interface DockItem {
   run(): void;
   isActive?(): boolean;
   isDisabled?(): boolean;
+  /** Stays usable while paused. */
+  alwaysEnabled?: boolean;
+  /** Drawn above the button while state.popover === id; destroyed on close (clean up in onDestroy). */
+  popover?: Component;
+  /** Shortcut handler, replacing run for the key. */
+  runKey?(): void;
 }
 
 export const items: DockItem[] = $state([]);
@@ -34,10 +52,16 @@ export function registerItem(item: DockItem): void {
   if (!items.some((i) => i.id === item.id)) items.push(item);
 }
 
+/** One popover at a time (1.31, legacy closeOtherPopovers :38452). */
+export function togglePopover(id: string): void {
+  state.popover = state.popover === id ? null : id;
+}
+
 /** Pause (1.17, legacy pauseExtension :41937): hide overlays, panel and pins; the dock locks everything but pause/quit. */
 export function setPaused(paused: boolean): void {
   if (state.paused === paused) return; // stopSession calls it: no stray paint
   state.paused = paused;
+  if (paused) state.popover = null;
   layer.style.display = paused ? 'none' : '';
   requestPaint(); // the floating panel hides/shows in its painter
 }
@@ -49,7 +73,10 @@ registerItem({
   activeIcon: PanelBottomOpen,
   activeLabel: 'dock.show',
   group: 'utilities',
-  run: () => (state.dockCollapsed = !state.dockCollapsed),
+  run: () => {
+    state.dockCollapsed = !state.dockCollapsed;
+    if (state.dockCollapsed) state.popover = null; // 1.19
+  },
   isActive: () => state.dockCollapsed,
 });
 registerItem({
@@ -59,6 +86,7 @@ registerItem({
   activeIcon: Play,
   activeLabel: 'dock.resume',
   group: 'utilities',
+  alwaysEnabled: true,
   run: () => setPaused(!state.paused),
   isActive: () => state.paused,
 });
@@ -67,5 +95,6 @@ registerItem({
   icon: X,
   label: 'dock.quit',
   group: 'quit',
+  alwaysEnabled: true,
   run: () => void sendToBackground('close_extension'),
 });

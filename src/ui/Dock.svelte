@@ -2,8 +2,10 @@
   import { DOCK_GROUPS, items } from '../content/core/registry.svelte';
   import { state as app } from '../content/core/state.svelte';
   import DockButton from './DockButton.svelte';
+  import Popover from './Popover.svelte';
 
-  const ALWAYS_ON = ['pause', 'quit'];
+  let dock: HTMLElement = $state()!;
+  const open = $derived(items.find((i) => i.id === app.popover && i.popover));
   const groups = $derived(
     DOCK_GROUPS.map((g) =>
       items.filter((i) => i.group === g && (!app.dockCollapsed || i.id === 'minimize')),
@@ -29,6 +31,7 @@
 <svelte:window onresize={onResize} />
 
 <div
+  bind:this={dock}
   data-dock
   class="fixed bottom-[10px] left-1/2 flex -translate-x-1/2 items-center gap-[2px] rounded-panel border border-line bg-surface p-1 font-sans text-fg shadow-[0_10px_28px_rgba(0,0,0,.35)] backdrop-blur-surface"
   class:transition-all={!resizing}
@@ -36,12 +39,12 @@
   {#each groups as group, gi (gi)}
     {#if gi}<span class="mx-[3px] h-4 w-px bg-line-strong"></span>{/if}
     {#each group as item (item.id)}
-      <DockButton
-        {item}
-        disabled={(app.paused && !ALWAYS_ON.includes(item.id)) || !!item.isDisabled?.()}
-      />
+      <DockButton {item} disabled={(app.paused && !item.alwaysEnabled) || !!item.isDisabled?.()} />
     {/each}
   {/each}
+  {#if open?.popover}
+    {#key open.id}<Popover id={open.id} {dock} body={open.popover} />{/key}
+  {/if}
 </div>
 
 {#if size}

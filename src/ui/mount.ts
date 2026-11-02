@@ -10,7 +10,16 @@ export async function mountUi(
     name: 'bo-doi-ui',
     position: 'inline', // stacking comes from the :host rule in theme.css
     anchor: 'html',
-    isolateEvents: true,
+    // legacy makePanel stopped these at the panel (bd/core.js:238); window-capture listeners still see them first
+    isolateEvents: [
+      'keydown',
+      'keyup',
+      'keypress',
+      'pointerdown',
+      'mousedown',
+      'click',
+      'mousemove',
+    ],
     onMount: (container) => mount(component, { target: container, props }),
     onRemove: (app) => app && unmount(app),
   });
@@ -22,4 +31,18 @@ export async function mountUi(
     if ((e.target as Element).closest?.('button')) e.preventDefault();
   });
   return { host, shadow: ui.shadow, remove: () => ui.remove() };
+}
+
+/** Mount a component into a fresh div in the shadow root; returns the unmount fn. */
+export function mountInShadow(
+  shadow: ShadowRoot,
+  component: Component,
+  props?: Record<string, unknown>,
+): () => void {
+  const target = shadow.appendChild(document.createElement('div'));
+  const app = mount(component, { target, props });
+  return () => {
+    unmount(app);
+    target.remove();
+  };
 }

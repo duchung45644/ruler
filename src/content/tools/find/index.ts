@@ -3,7 +3,7 @@ import { isRendered } from '../../../lib/dom';
 import { findAll, isVisible } from '../../../lib/find';
 import { addPainter, draw, requestPaint } from '../../core/overlay';
 import { registerItem, togglePopover } from '../../core/registry.svelte';
-import { onStop } from '../../core/session';
+import { onStop, sessionSignal } from '../../core/session';
 import { state } from '../../core/state.svelte';
 import FindPopover from './FindPopover.svelte';
 
@@ -52,6 +52,9 @@ export function initFind(): void {
     isActive: () => state.findOn,
   });
   onStop(clearFind);
+  const opts = { signal: sessionSignal(), passive: true, capture: true }; // capture: nested scrollers too
+  window.addEventListener('scroll', requestPaint, opts);
+  window.addEventListener('resize', requestPaint, opts);
   addPainter('find', (box) => {
     find.results.forEach((el, i) => {
       if (!isRendered(el)) return;

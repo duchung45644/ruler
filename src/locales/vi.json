@@ -19,7 +19,8 @@
     "eyedropper": "Chọn Màu",
     "grid": "Lưới Bố cục",
     "measure": "Kéo vùng để đo",
-    "overlay": "Đè ảnh thiết kế"
+    "overlay": "Đè ảnh thiết kế",
+    "find": "Tìm Phần tử"
   },
   "inspect": {
     "layout": "Box Model",
@@ -71,5 +72,12 @@
     "pinTitle": "Ảnh đứng yên khi cuộn trang",
     "remove": "Xoá ảnh",
     "hint": "Bấm vào ảnh (hoặc ảnh nhỏ ở trên) để chọn. Kéo giữa ảnh để di chuyển, kéo góc để co giãn. Phím mũi tên dịch ảnh đang chọn 1px (giữ Shift: 10px)."
+  },
+  "find": {
+    "title": "Tìm Phần tử",
+    "selector": "Bộ chọn CSS",
+    "hidden": "$1 bị ẩn",
+    "prev": "Trước",
+    "next": "Sau"
   }
 }

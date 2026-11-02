@@ -101,3 +101,22 @@ it('registers overlay in designTools on O, before measure (its arrow keys win)',
   const o = items.find((i) => i.id === 'overlay')!;
   expect([o.key, o.label]).toEqual(['o', 'dock.overlay']);
 });
+
+it('registers find on 7 after eyedropper; a match lights it, closing clears it', async () => {
+  const { runFind, clearFind, find } = await import('./find');
+  const { state } = await import('../core/state.svelte');
+  await initTools();
+  const ids = items.filter((i) => i.group === 'utilities').map((i) => i.id);
+  expect(ids.slice(ids.indexOf('eyedropper'))).toEqual(['eyedropper', 'find']);
+  const f = items.find((i) => i.id === 'find')!;
+  expect([f.key, f.label]).toEqual(['7', 'dock.find']);
+  f.run();
+  expect(state.popover).toBe('find');
+  document.body.innerHTML = '<p class=x></p>';
+  document.body.firstElementChild!.getBoundingClientRect = () => new DOMRect(0, 0, 10, 10);
+  Element.prototype.scrollIntoView ??= () => {};
+  runFind('div[');
+  expect(f.isActive!()).toBe(false);
+  clearFind();
+  expect(find.results).toEqual([]);
+});

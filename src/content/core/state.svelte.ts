@@ -14,6 +14,8 @@ export const state = $state({
   rulerOn: false,
   /** Find popover has a query matching at least one visible element (3.08). */
   findOn: false,
+  auditOn: false,
+  measureOn: false,
   grid: { ...DEFAULT_SETTINGS.layoutGrid },
   /** Chip above the dock button `id` for 1500ms (legacy showButtonNotification :34691). */
   dockNotice: null as { id: string; color: string; text: string } | null,

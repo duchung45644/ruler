@@ -15,7 +15,6 @@ export const audit = {
   rows: { colors: [], fonts: [], spacing: [] } as Record<AuditTab, AuditRow[]>,
   highlights: [] as Element[],
 };
-let on = false;
 let unmountPanel: (() => void) | null = null;
 
 const isOwn = (el: Element) => el.localName === 'bo-doi-ui' || ownNodes.has(el);
@@ -33,7 +32,7 @@ export function highlight(row: AuditRow | null): void {
 }
 
 export function setOn(next: boolean): void {
-  on = next;
+  state.auditOn = next;
   if (next) {
     rescan();
     const shadow = layer.getRootNode();
@@ -53,8 +52,8 @@ export function initAudit(): void {
     label: 'dock.audit',
     key: 'a',
     group: 'designTools',
-    run: () => setOn(!on),
-    isActive: () => on,
+    run: () => setOn(!state.auditOn),
+    isActive: () => state.auditOn,
   });
   onStop(() => setOn(false));
   window.addEventListener('scroll', requestPaint, {

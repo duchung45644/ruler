@@ -137,3 +137,16 @@ it('registers audit in designTools on A; toggling mounts and clears highlights',
   expect(a.isActive!()).toBe(false);
   expect(audit.highlights).toEqual([]);
 });
+
+it('audit and measure isActive follow reactive state', async () => {
+  const { state } = await import('../core/state.svelte');
+  await initTools();
+  for (const id of ['audit', 'measure'] as const) {
+    const it = items.find((i) => i.id === id)!;
+    it.run();
+    expect(state[`${id}On`]).toBe(true);
+    expect(it.isActive!()).toBe(true);
+    it.run();
+    expect(state[`${id}On`]).toBe(false);
+  }
+});

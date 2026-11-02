@@ -22,7 +22,6 @@ import { CHIP } from '../ruler';
 import MeasurePanel from './MeasurePanel.svelte';
 
 /** Area measure (3.17 / 3.18), port of unpacked/scripts/bd/measure-guides.js. */
-let on = false;
 let box: Box | null = null;
 let unmountPanel: (() => void) | null = null;
 let cursor = '';
@@ -31,7 +30,7 @@ export const prefs = { color: '#FF3B6B', guides: false };
 export const panelSync: { fn: (() => void) | null } = { fn: null };
 
 const host = (): Element => (layer.getRootNode() as ShadowRoot).host ?? layer;
-const live = () => on && !state.paused;
+const live = () => state.measureOn && !state.paused;
 const scroll = () => ({ x: scrollX, y: scrollY });
 const page = () => ({
   width: document.documentElement.scrollWidth,
@@ -67,7 +66,7 @@ function setCursor(c: string): void {
 
 /** Legacy toggle (bd/core.js:43): on opens the panel; off closes it and clears the box. */
 export function setOn(next: boolean): void {
-  on = next;
+  state.measureOn = next;
   if (next) {
     const shadow = layer.getRootNode();
     if (shadow instanceof ShadowRoot && !unmountPanel)
@@ -113,8 +112,8 @@ export async function initMeasure(): Promise<void> {
     label: 'dock.measure',
     key: 'm',
     group: 'designTools',
-    run: () => setOn(!on),
-    isActive: () => on,
+    run: () => setOn(!state.measureOn),
+    isActive: () => state.measureOn,
   });
   const signal = sessionSignal();
   const opts = { capture: true, signal };
@@ -145,7 +144,7 @@ export async function initMeasure(): Promise<void> {
         setBox(null);
         return true;
       }
-      const next = on && nudgeBox(box, e);
+      const next = state.measureOn && nudgeBox(box, e);
       if (!next) return false;
       setBox(next);
       return true;

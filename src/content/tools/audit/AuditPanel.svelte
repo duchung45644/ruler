@@ -25,6 +25,16 @@
     sel = null;
     highlight(null);
   }
+  function refresh() {
+    rescan();
+    sel = null;
+    all = audit.rows;
+  }
+  function rowKey(e: KeyboardEvent, it: AuditRow) {
+    if (e.target !== e.currentTarget || (e.key !== 'Enter' && e.key !== ' ')) return;
+    e.preventDefault();
+    pick(it);
+  }
   function pick(it: AuditRow) {
     sel = sel === it ? null : it;
     highlight(sel);
@@ -45,7 +55,7 @@
         class="rounded-btn px-1 hover:bg-line"
         title={i18n.t('audit.rescan')}
         aria-label={i18n.t('audit.rescan')}
-        onclick={() => (rescan(), (sel = null), (all = audit.rows))}>↻</button
+        onclick={refresh}>↻</button
       >
     {/snippet}
     <div class="mb-2 flex gap-1">
@@ -74,7 +84,7 @@
           class:bg-line={sel === it}
           title={i18n.t('audit.highlight')}
           onclick={() => pick(it)}
-          onkeydown={(e) => e.key === 'Enter' && pick(it)}
+          onkeydown={(e) => rowKey(e, it)}
         >
           {#if tab === 'colors'}
             <span

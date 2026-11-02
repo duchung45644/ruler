@@ -132,13 +132,18 @@ export function addImage(
 
 /** FileReader -> data URL, like legacy loadOverlayFile. */
 export function loadFiles(files: Iterable<File> | null | undefined): void {
+  // both steps are async: drop the image if the tool was turned off or the session stopped meanwhile
+  const signal = sessionSignal();
+  const alive = () => on && !signal.aborted;
   for (const f of files ?? []) {
     if (!f.type.startsWith('image/')) continue;
     const fr = new FileReader();
     fr.onload = () => {
+      if (!alive()) return;
       const src = String(fr.result);
       const img = new Image();
-      img.onload = () => addImage(src, { width: img.naturalWidth, height: img.naturalHeight }, img);
+      img.onload = () =>
+        alive() && addImage(src, { width: img.naturalWidth, height: img.naturalHeight }, img);
       img.src = src;
     };
     fr.readAsDataURL(f);

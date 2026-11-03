@@ -96,3 +96,46 @@ export function compositeBackground(layers: BgLayer[]): Rgba | null {
   if (!stack.length) return null;
   return stack.reduceRight((under, c) => blend(c, under), { r: 255, g: 255, b: 255, a: 1 });
 }
+
+export type ColorFormat = 'HEX' | 'RGB' | 'HSL' | 'HSB';
+
+/** Port of legacy Cu (content.js:13177): HEX upper-case, alpha appended only below 1. */
+export function formatColor(c: Rgba, f: ColorFormat): string {
+  const [r, g, b] = [c.r, c.g, c.b].map((v) => Math.round(Math.min(255, Math.max(0, v)))) as [
+    number,
+    number,
+    number,
+  ];
+  const a = Math.round(c.a * 1000) / 1000;
+  if (f === 'HEX') {
+    const h = (n: number) => n.toString(16).padStart(2, '0').toUpperCase();
+    return `#${h(r)}${h(g)}${h(b)}${a < 1 ? h(Math.round(255 * a)) : ''}`;
+  }
+  if (f === 'RGB') return a < 1 ? `rgba(${r}, ${g}, ${b}, ${a})` : `rgb(${r}, ${g}, ${b})`;
+  const [R, G, B] = [r / 255, g / 255, b / 255] as [number, number, number];
+  const max = Math.max(R, G, B);
+  const min = Math.min(R, G, B);
+  const d = max - min;
+  let h = 0;
+  if (d) {
+    if (max === R) h = (G - B) / d + (G < B ? 6 : 0);
+    else if (max === G) h = (B - R) / d + 2;
+    else h = (R - G) / d + 4;
+    h /= 6;
+  }
+  const H = Math.round(360 * h);
+  if (f === 'HSL') {
+    const l = (max + min) / 2;
+    const s = d ? (l > 0.5 ? d / (2 - max - min) : d / (max + min)) : 0;
+    const body = `${H}, ${Math.round(100 * s)}%, ${Math.round(100 * l)}%`;
+    return a === 1 ? `hsl(${body})` : `hsla(${body}, ${a})`;
+  }
+  const body = `${H}, ${Math.round(100 * (max ? d / max : 0))}%, ${Math.round(100 * max)}%`;
+  return a === 1 ? `hsb(${body})` : `hsba(${body}, ${a})`;
+}
+
+/** Any parseable CSS colour in format `f`; anything else (gradients, keywords) unchanged. */
+export function formatCss(css: string, f: ColorFormat): string {
+  const c = parseColor(css);
+  return c ? formatColor(c, f) : css;
+}

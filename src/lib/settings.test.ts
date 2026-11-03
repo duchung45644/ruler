@@ -1,13 +1,16 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import {
+  DEFAULT_PANEL_PREFS,
   DEFAULT_SETTINGS,
+  getPanelPrefs,
   getSettings,
   includeHighlights,
   measureColor,
   measureGuides,
   screenshotPrefs,
   themePref,
+  updatePanelPrefs,
   updateSettings,
 } from './settings';
 
@@ -47,5 +50,30 @@ describe('screenshotPrefs', () => {
     expect(await screenshotPrefs.getValue()).toBeNull();
     expect(includeHighlights(null)).toBe(true);
     expect(includeHighlights({ includeHighlights: false })).toBe(false);
+  });
+});
+
+describe('sidePanelPreferences', () => {
+  it('defaults when empty', async () => {
+    const p = await getPanelPrefs();
+    expect(p).toEqual(DEFAULT_PANEL_PREFS);
+    expect(Object.keys(p.sectionVisibility)).toHaveLength(19);
+    expect(Object.values(p.sectionVisibility).every((v) => !v.collapsed)).toBe(true);
+    expect([p.colorFormat, p.codeViewMode, p.socialPreviewType]).toEqual([
+      'HEX',
+      'css',
+      'facebook',
+    ]);
+  });
+  it('merges stored sections deeply', async () => {
+    await fakeBrowser.storage.local.set({
+      sidePanelPreferences: { sectionVisibility: { css: { collapsed: true } }, colorFormat: 'RGB' },
+    });
+    const p = await getPanelPrefs();
+    expect(p.sectionVisibility.css.collapsed).toBe(true);
+    expect(p.sectionVisibility.layout.collapsed).toBe(false);
+    expect(p.colorFormat).toBe('RGB');
+    await updatePanelPrefs({ codeViewMode: 'tailwind' });
+    expect((await getPanelPrefs()).colorFormat).toBe('RGB');
   });
 });

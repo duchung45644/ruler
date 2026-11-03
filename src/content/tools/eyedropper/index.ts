@@ -1,6 +1,6 @@
 import Pipette from '@lucide/svelte/icons/pipette';
 import { copyText } from '../../../lib/clipboard';
-import { parseColor, toHex } from '../../../lib/color';
+import { formatCss } from '../../../lib/color';
 import { layer, requestPaint } from '../../core/overlay';
 import { registerItem } from '../../core/registry.svelte';
 import { sessionSignal } from '../../core/session';
@@ -35,10 +35,8 @@ async function pick(): Promise<void> {
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
     const { sRGBHex } = await new EyeDropper().open();
     reveal();
-    const c = parseColor(sRGBHex);
-    if (!c) return;
-    const hex = toHex(c).toUpperCase();
-    if (await copyText(hex)) state.dockNotice = { id: 'eyedropper', color: hex, text: hex };
+    const text = formatCss(sRGBHex, state.colorFormat);
+    if (await copyText(text)) state.dockNotice = { id: 'eyedropper', color: sRGBHex, text };
   } catch {
     reveal(); // Esc cancels with AbortError
   } finally {

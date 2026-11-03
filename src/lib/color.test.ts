@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { compositeBackground, contrastRatio, parseColor, toHex, wcagLevel } from './color';
+import {
+  compositeBackground,
+  contrastRatio,
+  formatColor,
+  formatCss,
+  parseColor,
+  toHex,
+  wcagLevel,
+} from './color';
 
 describe('color', () => {
   it('parses rgb/rgba/transparent', () => {
@@ -56,5 +64,31 @@ describe('compositeBackground', () => {
     ).toBeNull();
     expect(compositeBackground([{ color: 'red', image: 'linear-gradient(red, blue)' }])).toBeNull();
     expect(compositeBackground([{ color: 'transparent', image: 'none' }])).toBeNull();
+  });
+});
+
+describe('formatColor (legacy Cu)', () => {
+  const red = { r: 255, g: 0, b: 0, a: 1 };
+  it('formats each format', () => {
+    expect(formatColor(red, 'HEX')).toBe('#FF0000');
+    expect(formatColor(red, 'RGB')).toBe('rgb(255, 0, 0)');
+    expect(formatColor(red, 'HSL')).toBe('hsl(0, 100%, 50%)');
+    expect(formatColor(red, 'HSB')).toBe('hsb(0, 100%, 100%)');
+    expect(formatColor({ r: 99, g: 102, b: 241, a: 1 }, 'HSB')).toBe('hsb(239, 59%, 95%)');
+  });
+  it('keeps alpha', () => {
+    const half = { ...red, a: 0.5 };
+    expect(formatColor(half, 'HEX')).toBe('#FF000080');
+    expect(formatColor(half, 'RGB')).toBe('rgba(255, 0, 0, 0.5)');
+    expect(formatColor(half, 'HSL')).toBe('hsla(0, 100%, 50%, 0.5)');
+    expect(formatColor(half, 'HSB')).toBe('hsba(0, 100%, 100%, 0.5)');
+  });
+  it('formatCss parses first, passes through the rest', () => {
+    const c = parseColor(formatCss('oklch(0.628 0.258 29.23)', 'RGB'))!;
+    expect(Math.abs(c.r - 255)).toBeLessThanOrEqual(1);
+    expect(c.g).toBeLessThanOrEqual(1);
+    expect(c.b).toBeLessThanOrEqual(1);
+    expect(formatCss('oklch(0.628 0.258 29.23)', 'HEX')).toMatch(/^#F[EF]0[01]0[01]$/);
+    expect(formatCss('linear-gradient(red, blue)', 'HEX')).toBe('linear-gradient(red, blue)');
   });
 });

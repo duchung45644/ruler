@@ -15,7 +15,9 @@ describe('inspectGroups', () => {
     expect(rows({ 'font-size': '16px', 'line-height': '24px' })['line-height']).toBe('1.5');
   });
   it('colours as hex', () => {
-    expect(rows({ color: 'rgb(99, 102, 241)' }).color).toBe('#6366f1');
+    expect(rows({ color: 'rgb(99, 102, 241)' }).color).toBe('#6366F1');
+    const g = inspectGroups(fake({ color: 'rgb(99, 102, 241)' }), 'Inter', 'RGB');
+    expect(g[0]!.rows).toContainEqual(['color', 'rgb(99, 102, 241)']);
   });
   it('uses the rendered font', () => {
     expect(rows({ 'font-family': 'Foo, Inter' })['font-family']).toBe('Inter');

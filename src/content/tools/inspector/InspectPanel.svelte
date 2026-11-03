@@ -123,7 +123,7 @@
   import { cssSnippet, inspectGroups, renderedFont } from '../../../lib/css/inspect';
   import Info from '@lucide/svelte/icons/info';
   import { pinHintDone } from '../../../lib/settings';
-  import { panelTarget } from '../../core/state.svelte';
+  import { panelTarget, state as core } from '../../core/state.svelte';
 
   /** `el` set = content of a pinned inspector (fixed element, no frame, no hint). */
   let { el: fixed, pinned = false }: { el?: Element; pinned?: boolean } = $props();
@@ -141,7 +141,7 @@
     const img = el instanceof HTMLImageElement ? el : null;
     const format = img?.src.split('.').pop()?.split('?')[0]?.toUpperCase() ?? '';
     return {
-      groups: inspectGroups(s, renderedFont(el)),
+      groups: inspectGroups(s, renderedFont(el), core.colorFormat),
       contrast: contrastOf(el, s),
       img: img && {
         natural:
@@ -162,7 +162,7 @@
   let copied = $state(false);
   let timer = 0;
   async function copy() {
-    if (!el || !(await copyText(cssSnippet(el, getComputedStyle(el))))) return;
+    if (!el || !(await copyText(cssSnippet(el, getComputedStyle(el), core.colorFormat)))) return;
     copied = true;
     clearTimeout(timer);
     timer = window.setTimeout(() => (copied = false), 1200);

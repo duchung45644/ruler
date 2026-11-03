@@ -1,3 +1,4 @@
+import type { ColorFormat } from '../../lib/color';
 import { DEFAULT_SETTINGS } from '../../lib/settings';
 
 export const state = $state({
@@ -19,6 +20,8 @@ export const state = $state({
   measureOn: false,
   /** Capture bar / editor open: page tools pause, only the capture key handler runs. */
   capturing: false,
+  /** sidePanelPreferences.colorFormat, shared with the side panel (2.22, 3.23). */
+  colorFormat: 'HEX' as ColorFormat,
   grid: { ...DEFAULT_SETTINGS.layoutGrid },
   /** Chip above the dock button `id` for 1500ms (legacy showButtonNotification :34691). */
   dockNotice: null as { id: string; color: string; text: string } | null,

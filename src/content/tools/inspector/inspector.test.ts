@@ -57,6 +57,25 @@ it('mounts the panel in the shadow root and shows the selection', async () => {
   expect(shadow.textContent).not.toContain('inspect_copyCss');
 });
 
+it('shows colours in state.colorFormat (2.22)', async () => {
+  const host = document.createElement('bo-doi-ui');
+  document.body.append(host);
+  const shadow = host.attachShadow({ mode: 'open' });
+  shadow.append(layer);
+  const p = document.createElement('p');
+  p.textContent = 'hi';
+  p.style.color = 'rgb(10, 20, 30)';
+  document.body.append(p);
+  await initInspector();
+  state.colorFormat = 'RGB';
+  state.selected = p;
+  await new Promise((r) => setTimeout(r, 50));
+  expect(shadow.textContent).toContain('rgb(10, 20, 30)');
+  state.colorFormat = 'HEX';
+  await new Promise((r) => setTimeout(r, 50));
+  expect(shadow.textContent).toContain('#0A141E');
+});
+
 async function setup() {
   const host = document.createElement('bo-doi-ui');
   document.body.append(host);

@@ -1,4 +1,4 @@
-import { parseColor, toHex } from '../color';
+import { formatColor, formatCss, parseColor, type ColorFormat } from '../color';
 
 type Style = Pick<CSSStyleDeclaration, 'getPropertyValue'>;
 export type InspectGroup = {
@@ -25,11 +25,17 @@ const DEFAULTS: Record<string, string> = {
 const roundPx = (v: string) =>
   v.replace(/(-?[\d.]+)px/g, (_, n: string) => `${Math.round(parseFloat(n) * 10) / 10}px`);
 
-function value(prop: string, raw: string, style: Style, font: string): string | undefined {
+function value(
+  prop: string,
+  raw: string,
+  style: Style,
+  font: string,
+  f: ColorFormat,
+): string | undefined {
   if (!raw || raw === DEFAULTS[prop]) return;
   if (prop.includes('color')) {
     const c = parseColor(raw);
-    return c ? (c.a ? toHex(c) : undefined) : raw; // HEX only in phase 1 (2.10 colorFormat → phase 4)
+    return c ? (c.a ? formatColor(c, f) : undefined) : raw;
   }
   if (
     ['margin', 'padding', 'border-radius'].includes(prop) &&
@@ -45,11 +51,15 @@ function value(prop: string, raw: string, style: Style, font: string): string | 
   return roundPx(raw);
 }
 
-export function inspectGroups(style: Style, renderedFont: string): InspectGroup[] {
+export function inspectGroups(
+  style: Style,
+  renderedFont: string,
+  f: ColorFormat = 'HEX',
+): InspectGroup[] {
   return GROUPS.map(([label, props]) => ({
     label,
     rows: props.flatMap((p): Array<[string, string]> => {
-      const v = value(p, style.getPropertyValue(p), style, renderedFont);
+      const v = value(p, style.getPropertyValue(p), style, renderedFont, f);
       return v === undefined ? [] : [[p, v]];
     }),
   })).filter((g) => g.rows.length);
@@ -95,8 +105,8 @@ const SNIPPET_PROPS = [
   'grid-template-rows',
 ];
 
-/** Port of bdBuildCssSnippet (:42791). */
-export function cssSnippet(el: Element, style: Style): string {
+/** Port of bdBuildCssSnippet (:42791). Colours stay as computed unless `f` is given. */
+export function cssSnippet(el: Element, style: Style, f?: ColorFormat): string {
   const get = (p: string) => style.getPropertyValue(p);
   const display = get('display');
   const flex = display === 'flex' || display === 'inline-flex';
@@ -113,7 +123,7 @@ export function cssSnippet(el: Element, style: Style): string {
     const v = get(p);
     if (!v || ['none', 'normal', 'auto', '0px'].includes(v)) return [];
     if (p.includes('color') && v === 'rgba(0, 0, 0, 0)') return [];
-    return [`  ${p}: ${v};`];
+    return [`  ${p}: ${f && p.includes('color') ? formatCss(v, f) : v};`];
   });
   return `${elementSelector(el)} {\n${lines.join('\n')}\n}`;
 }

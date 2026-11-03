@@ -1,4 +1,5 @@
 import { storage } from '#imports';
+import type { ColorFormat } from './color';
 
 export interface LayoutGrid {
   isOn: boolean;
@@ -64,3 +65,69 @@ export const screenshotPrefs = storage.defineItem<{
 } | null>('local:screenshotPreferences', { fallback: null });
 export const includeHighlights = (p: { includeHighlights?: boolean } | null): boolean =>
   p?.includeHighlights !== false;
+
+/** Legacy sidePanelPreferences.sectionVisibility keys, in legacy order (sidepanel.js:12734). */
+export const SECTION_IDS = [
+  'layout',
+  'flexbox',
+  'textContent',
+  'css',
+  'assets',
+  'boxShadow',
+  'gradients',
+  'animations',
+  'transitions',
+  'colors',
+  'typography',
+  'documentOutline',
+  'issues',
+  'ogImage',
+  'metaTags',
+  'technologies',
+  'pageWeight',
+  'socialPreview',
+  'seoIssues',
+] as const;
+export type SectionId = (typeof SECTION_IDS)[number];
+export interface SidePanelPrefs {
+  sectionVisibility: Record<SectionId, { collapsed: boolean }>;
+  colorFormat: ColorFormat;
+  codeViewMode: 'css' | 'source' | 'tailwind';
+  socialPreviewType: 'facebook' | 'x' | 'linkedin';
+}
+export const DEFAULT_PANEL_PREFS: SidePanelPrefs = {
+  sectionVisibility: Object.fromEntries(
+    SECTION_IDS.map((id) => [id, { collapsed: false }]),
+  ) as SidePanelPrefs['sectionVisibility'],
+  colorFormat: 'HEX',
+  codeViewMode: 'css',
+  socialPreviewType: 'facebook',
+};
+
+export const panelPrefsItem = storage.defineItem<Partial<SidePanelPrefs>>(
+  'local:sidePanelPreferences',
+  { fallback: {} },
+);
+
+/** Port of legacy vi (sidepanel.js:12826): stored values win, missing sections get defaults. */
+export function mergePanelPrefs(p: Partial<SidePanelPrefs> | null | undefined): SidePanelPrefs {
+  const sv: Partial<SidePanelPrefs['sectionVisibility']> = p?.sectionVisibility ?? {};
+  return {
+    ...DEFAULT_PANEL_PREFS,
+    ...p,
+    sectionVisibility: Object.fromEntries(
+      [...new Set([...SECTION_IDS, ...Object.keys(sv)])].map((id) => [
+        id,
+        { ...DEFAULT_PANEL_PREFS.sectionVisibility[id as SectionId], ...sv[id as SectionId] },
+      ]),
+    ) as SidePanelPrefs['sectionVisibility'],
+  };
+}
+
+export async function getPanelPrefs(): Promise<SidePanelPrefs> {
+  return mergePanelPrefs(await panelPrefsItem.getValue());
+}
+
+export async function updatePanelPrefs(patch: Partial<SidePanelPrefs>): Promise<void> {
+  await panelPrefsItem.setValue({ ...(await panelPrefsItem.getValue()), ...patch });
+}

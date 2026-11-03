@@ -1,7 +1,8 @@
 import type { ContentScriptContext } from '#imports';
 import Dock from '../../ui/Dock.svelte';
 import { mountUi } from '../../ui/mount';
-import { themePref } from '../../lib/settings';
+import { panelPrefsItem, themePref } from '../../lib/settings';
+import type { ColorFormat } from '../../lib/color';
 import { detectPageIsDark, resolveTheme, type ThemePref } from '../../lib/theme';
 import { installDragGuard, resetDrag } from './drag';
 import { routeKey } from './keys';
@@ -71,6 +72,13 @@ async function start(ctx: ContentScriptContext): Promise<void> {
   if (signal.aborted) return; // stopped while reading the pref
   applyTheme(pref);
   onStop(themePref.watch(applyTheme));
+
+  const applyFormat = (p: { colorFormat?: ColorFormat } | null) =>
+    (state.colorFormat = p?.colorFormat ?? 'HEX');
+  const prefs = await panelPrefsItem.getValue();
+  if (signal.aborted) return;
+  applyFormat(prefs);
+  onStop(panelPrefsItem.watch(applyFormat));
 }
 
 export function stopSession(): void {

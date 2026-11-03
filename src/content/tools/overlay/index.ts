@@ -103,12 +103,16 @@ function onPointerDown(e: PointerEvent): void {
   );
 }
 
+/** Most images kept at once; further pastes/drops are ignored. */
+export const MAX_IMAGES = 5;
+
 /** Adds an image (already decoded when `img` is given); it becomes the selected one. */
 export function addImage(
   src: string,
   size: { width: number; height: number },
   img = new Image(),
 ): void {
+  if (list.length >= MAX_IMAGES) return; // checked here so async loads finishing together can't overshoot
   img.src = src;
   img.alt = '';
   img.dataset.boDoi = '';
@@ -142,8 +146,10 @@ export function loadFiles(files: Iterable<File> | null | undefined): void {
       if (!alive()) return;
       const src = String(fr.result);
       const img = new Image();
-      img.onload = () =>
-        alive() && addImage(src, { width: img.naturalWidth, height: img.naturalHeight }, img);
+      img.onload = () => {
+        img.onload = null; // addImage reassigns src, which would fire onload again (endless images)
+        if (alive()) addImage(src, { width: img.naturalWidth, height: img.naturalHeight }, img);
+      };
       img.src = src;
     };
     fr.readAsDataURL(f);

@@ -2,7 +2,7 @@ import { afterEach, expect, it, vi } from 'vitest';
 import { ownNodes } from '../../core/events';
 import { items } from '../../core/registry.svelte';
 import { stopSession } from '../../core/session';
-import { addImage, initOverlay, loadFiles } from '.';
+import { MAX_IMAGES, addImage, initOverlay, loadFiles } from '.';
 
 afterEach(() => stopSession());
 
@@ -17,6 +17,13 @@ it('registers the overlay item and stopSession leaves the page clean (Review Foc
   stopSession();
   expect(document.querySelectorAll('img[data-bo-doi]')).toHaveLength(0);
   expect(ownNodes.size).toBe(0);
+});
+
+it('keeps at most MAX_IMAGES images', () => {
+  initOverlay();
+  for (let i = 0; i < MAX_IMAGES + 3; i++)
+    addImage(`data:image/png;base64,${i}`, { width: 400, height: 300 });
+  expect(document.querySelectorAll('img[data-bo-doi]')).toHaveLength(MAX_IMAGES);
 });
 
 it('an image that finishes loading after stopSession is dropped', () => {

@@ -86,9 +86,9 @@
 
 <Section id="css" title={i18n.t('panel.code')}>
   {#snippet actions()}
-    {#if mode !== 'tailwind'}<CopyButton
-        text={() => (mode === 'css' ? computed : sourceText())}
-      />{/if}
+    <CopyButton
+      text={() => (mode === 'css' ? computed : mode === 'source' ? sourceText() : el.tailwind)}
+    />
   {/snippet}
   <div class="mb-2 flex rounded-btn border border-line p-0.5" role="radiogroup" data-modes>
     {#each modes as [m, label] (m)}
@@ -164,9 +164,7 @@
         {/each}
       {/if}
     {:else}
-      <div class="py-2 text-center font-sans text-fg-muted" data-tailwind-soon>
-        {i18n.t('panel.tailwindSoon')}
-      </div>
+      <div class="break-words" data-tailwind>{el.tailwind}</div>
     {/if}
   </div>
 </Section>

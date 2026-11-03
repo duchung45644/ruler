@@ -180,8 +180,7 @@
     "copied": "Đã sao chép",
     "previous": "Trước",
     "next": "Sau",
-    "noMatchedRules": "/* Không tìm thấy rule nào khớp */",
-    "tailwindSoon": "Class Tailwind sẽ có trong bản cập nhật sau."
+    "noMatchedRules": "/* Không tìm thấy rule nào khớp */"
   },
   "dialog": {
     "ok": "OK",

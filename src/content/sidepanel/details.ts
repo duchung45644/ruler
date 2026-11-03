@@ -4,6 +4,7 @@ import { boxModel } from '../../lib/element/box';
 import { canvasInfo, canvasPalette, PALETTE_SAMPLE } from '../../lib/element/canvas';
 import { colorsOf, elementColors } from '../../lib/element/colors';
 import { parseGradients } from '../../lib/element/gradients';
+import { tailwindClasses } from '../../lib/css/tailwind';
 import { compactTracks, elementLayout } from '../../lib/element/layout';
 import { animations, transitions } from '../../lib/element/motion';
 import { splitShadows } from '../../lib/element/shadow';
@@ -380,7 +381,7 @@ function parentAcross(el: Element): Element | null {
 
 /**
  * Port of sendElementToSidePanel's inspect branch (content.js:39602–40760): plain JSON for the
- * panel. `elementId` tags elements with data-sr-id-*. Matched rules come on demand (get_matched_rules); Tailwind in 4b.
+ * panel. `elementId` tags elements with data-sr-id-*. Matched rules come on demand (get_matched_rules).
  */
 export function collectElementDetails(
   el: Element,
@@ -393,6 +394,7 @@ export function collectElementDetails(
   const parent = parentAcross(el);
   const top = !parent || parent === document.body || parent === document.documentElement;
   const child = childOf(el);
+  const css = computedCss(s);
   const details: ElementDetails = {
     id: elementId(el),
     name: displaySelector(el),
@@ -413,7 +415,8 @@ export function collectElementDetails(
     issues: collectIssues(el, elementId),
     canvas: canvasInfo(el, parseFloat(s.width) || rect.width),
     layout: elementLayout(s),
-    css: computedCss(s),
+    css,
+    tailwind: tailwindClasses(css),
     skippedCrossOriginCount: skippedCrossOriginCount(el),
   };
   const before = getComputedStyle(el, '::before');

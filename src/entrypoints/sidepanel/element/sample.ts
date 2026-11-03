@@ -134,6 +134,7 @@ export function sampleElement(patch: Partial<ElementDetails> = {}): ElementDetai
       gap: '8px',
     },
     css: { display: 'flex', padding: '4px 8px', 'font-size': '16px', color: 'rgb(31, 41, 55)' },
+    tailwind: 'flex px-[8px] py-[4px] text-[16px] text-[rgb(31,41,55)]',
     after: { content: '"→"', color: 'rgb(99, 102, 241)' },
     skippedCrossOriginCount: 0,
     ...patch,

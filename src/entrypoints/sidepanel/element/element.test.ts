@@ -87,6 +87,21 @@ it('asks for matched rules once per element and offers cross-origin access', asy
   expect((await getPanelPrefs()).codeViewMode).toBe('source');
 });
 
+it('shows and copies the Tailwind classes', async () => {
+  const write = vi.fn(async () => {});
+  Object.defineProperty(navigator, 'clipboard', {
+    value: { writeText: write },
+    configurable: true,
+  });
+  show();
+  $('[data-mode="tailwind"]').click();
+  flushSync();
+  const classes = 'flex px-[8px] py-[4px] text-[16px] text-[rgb(31,41,55)]';
+  expect($('[data-tailwind]').textContent).toBe(classes);
+  $('[data-section="css"] [data-copy]').click();
+  await vi.waitFor(() => expect(write).toHaveBeenCalledWith(classes));
+});
+
 it('strikes overridden declarations in Source', async () => {
   const rule = (selector: string, score: number, sourceIndex: number, color: string) => ({
     selector,

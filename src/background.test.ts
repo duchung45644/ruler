@@ -288,6 +288,27 @@ describe('side panel', () => {
     });
   });
 
+  it('run_tech_detection runs the detector in the MAIN world and returns its result', async () => {
+    start();
+    const exec = vi
+      .spyOn(fakeBrowser.scripting, 'executeScript')
+      .mockResolvedValue([{ frameId: 0, documentId: 'd', result: [{ id: 'react' }] }] as never);
+    expect(await call('run_tech_detection', [])).toEqual({
+      success: true,
+      technologies: [{ id: 'react' }],
+    });
+    expect(exec).toHaveBeenCalledWith({
+      target: { tabId: 5, frameIds: [0] },
+      files: ['/detect-technologies.js'],
+      world: 'MAIN',
+    });
+    exec.mockRejectedValue(new Error('Cannot access'));
+    expect(await call('run_tech_detection', [])).toEqual({
+      success: false,
+      error: 'Cannot access',
+    });
+  });
+
   it('fetch_stylesheet needs <all_urls>', async () => {
     start();
     vi.spyOn(fakeBrowser.permissions, 'contains').mockResolvedValue(false as never);

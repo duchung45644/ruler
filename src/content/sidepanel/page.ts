@@ -1,17 +1,19 @@
 import { i18n } from '#i18n';
 import { collectPageMetadata } from '../../lib/page/meta';
 import { collectSeoIssues } from '../../lib/page/seo';
-import type { PageData, PageWeight, SeoFinding, SeoIssue } from '../../lib/page/types';
+import type { PageData, PageWeight, SeoFinding, SeoIssue, Technology } from '../../lib/page/types';
 import { WeightTotals } from '../../lib/page/weight';
-import { sendToSidePanel } from '../../lib/messaging';
+import { sendToBackground, sendToSidePanel } from '../../lib/messaging';
 import { displaySelector } from '../../lib/selector';
 import { onStop, sessionSignal } from '../core/session';
 
+const DETECT_TIMEOUT = 2000; // legacy waited 2s for TECH_DETECTION_RESULT
 const THROTTLE = 250; // page_weight_update at most 4×/s (7.09)
 const isOwn = (el: Element) => el.tagName.toLowerCase() === 'bo-doi-ui';
 
 let idOf: (el: Element) => string = () => '';
 let cached: PageData | null = null;
+let technologies: Technology[] | null = null;
 let totals = new WeightTotals();
 let observer: PerformanceObserver | null = null;
 let timer: ReturnType<typeof setTimeout> | undefined;
@@ -41,15 +43,45 @@ const localise = (f: SeoFinding): SeoIssue => ({
   ),
 });
 
-/** Port of getPageData (content.js:39538): cached until a navigation or refresh_page_data. */
+/**
+ * Port of detectTechnologies (content.js:48056). Only the background's executeScript result counts,
+ * never a page postMessage (Review Focus 7); no answer in 2s means none.
+ */
+export function detectTechnologies(): Promise<Technology[]> {
+  const run = sendToBackground('run_tech_detection').then(
+    (r) => (r?.success ? r.technologies : []),
+    () => [],
+  );
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<Technology[]>(
+    (res) => (timer = setTimeout(() => res([]), DETECT_TIMEOUT)),
+  );
+  return Promise.race([run, timeout]).finally(() => clearTimeout(timer));
+}
+
+/**
+ * Port of getPageData (content.js:39538): cached until a navigation or refresh_page_data;
+ * technologies follow as page_technologies once detected.
+ */
 export function getPageData(): PageData {
-  cached ??= {
+  if (cached) {
+    send(sendToSidePanel('page_data', cached));
+    if (technologies) send(sendToSidePanel('page_technologies', technologies));
+    return cached;
+  }
+  const data: PageData = (cached = {
     ...collectPageMetadata(document, location.href),
     pageWeight: pageWeight(),
     seoIssues: collectSeoIssues(document, idOf, displaySelector, isOwn).map(localise),
-  };
-  send(sendToSidePanel('page_data', cached));
-  return cached;
+  });
+  technologies = null;
+  send(sendToSidePanel('page_data', data));
+  void detectTechnologies().then((t) => {
+    if (cached !== data) return; // a navigation started a newer round
+    technologies = t;
+    send(sendToSidePanel('page_technologies', t));
+  });
+  return data;
 }
 
 export function refreshPageData(): void {
@@ -117,6 +149,7 @@ export function initPageData(elementId: (el: Element) => string): void {
   onStop(() => {
     unsubscribeWeight();
     cached = null;
+    technologies = null;
     totals = new WeightTotals();
     lastSent = 0;
   });

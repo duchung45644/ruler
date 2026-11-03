@@ -1,5 +1,6 @@
 import { browser, storage, type Browser } from '#imports';
 import { sendToTab, sendToTabPanel, type BackgroundApi, type Handlers } from '../lib/messaging';
+import type { Technology } from '../lib/page/types';
 import { detachBounds, panelPath, type Bounds } from '../lib/panels';
 import { fetchStylesheet } from '../lib/stylesheet-fetch';
 
@@ -167,6 +168,22 @@ export const panelHandlers: Handlers<BackgroundApi> = {
       () => true,
       () => false,
     );
+  },
+  /** 7.01: the detector's return value is the result; a page cannot forge it via postMessage. */
+  async run_tech_detection(sender) {
+    const tabId = sender.tab?.id;
+    if (tabId === undefined) return { success: false, error: 'No tab ID' };
+    try {
+      const [r] = await browser.scripting.executeScript({
+        target: { tabId, frameIds: [sender.frameId ?? 0] },
+        files: ['/detect-technologies.js'],
+        world: 'MAIN',
+      });
+      const technologies = Array.isArray(r?.result) ? (r.result as Technology[]) : [];
+      return { success: true, technologies };
+    } catch (e) {
+      return { success: false, error: String((e as Error)?.message ?? e) };
+    }
   },
   async fetch_stylesheet(url) {
     if (!(await browser.permissions.contains({ origins: ['<all_urls>'] })))

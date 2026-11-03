@@ -1,8 +1,9 @@
-import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
-import { sendToSidePanel } from '../../lib/messaging';
+import { sendToBackground, sendToSidePanel } from '../../lib/messaging';
 import { stopSession } from '../core/session';
 import {
+  detectTechnologies,
   getPageData,
   initPageData,
   refreshPageData,
@@ -18,6 +19,7 @@ vi.mock('../../lib/messaging', async (orig) => ({
 fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
 
 const toPanel = vi.mocked(sendToSidePanel);
+const toBg = vi.mocked(sendToBackground);
 const sent = (type: string) => toPanel.mock.calls.filter((c) => c[0] === type);
 
 let feed: (entries: object[]) => void;
@@ -34,6 +36,8 @@ beforeEach(() => {
   vi.useFakeTimers();
   vi.stubGlobal('PerformanceObserver', FakeObserver);
   toPanel.mockClear();
+  toBg.mockReset();
+  toBg.mockResolvedValue(undefined);
   disconnect.mockClear();
   document.head.innerHTML = '';
   document.body.innerHTML = '<h1>a</h1><h1>b</h1>';
@@ -95,4 +99,34 @@ it('resends page data on hashchange', () => {
   document.title = 'After hash';
   window.dispatchEvent(new Event('hashchange'));
   expect(sent('page_data').at(-1)![1]).toMatchObject({ title: 'After hash' });
+});
+
+describe('detectTechnologies', () => {
+  const react = { id: 'react', name: 'React', version: null, url: '', icon: 'react' };
+
+  it('takes the run_tech_detection answer, not a page postMessage', async () => {
+    toBg.mockImplementation((async (type: string) =>
+      type === 'run_tech_detection'
+        ? { success: true, technologies: [react] }
+        : undefined) as never);
+    window.postMessage({ type: 'TECH_DETECTION_RESULT', technologies: [{ id: 'x' }] }, '*');
+    await expect(detectTechnologies()).resolves.toEqual([react]);
+  });
+
+  it('gives up after 2s without an answer', async () => {
+    toBg.mockImplementation(() => new Promise(() => {}));
+    window.postMessage({ type: 'TECH_DETECTION_RESULT', technologies: [{ id: 'x' }] }, '*');
+    const r = detectTechnologies();
+    await vi.advanceTimersByTimeAsync(2000);
+    await expect(r).resolves.toEqual([]);
+  });
+
+  it('sends page_technologies after page_data, and again from the cache', async () => {
+    toBg.mockResolvedValue({ success: true, technologies: [react] } as never);
+    getPageData();
+    await vi.waitFor(() => expect(sent('page_technologies')).toHaveLength(1));
+    getPageData();
+    expect(sent('page_technologies')).toHaveLength(2);
+    expect(sent('page_technologies')[1]![1]).toEqual([react]);
+  });
 });

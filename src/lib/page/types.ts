@@ -62,6 +62,7 @@ export interface Technology {
   id: string;
   name: string;
   version: string | null;
-  url: string;
-  icon: string;
+  url: string | null;
+  /** Logo name in public/logos; null or a missing file shows the initial. */
+  icon: string | null;
 }

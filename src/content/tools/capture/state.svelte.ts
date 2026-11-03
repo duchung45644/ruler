@@ -1,4 +1,5 @@
 import type { SelRect } from '../../../lib/capture';
+import type { BackdropId } from '../../../lib/frame';
 import type { MarkTool } from '../../../lib/markup';
 
 export type EditorImage = HTMLImageElement | HTMLCanvasElement;
@@ -21,5 +22,8 @@ export const cap = $state({
     color: '',
     size: 4,
     canUndo: false,
+    /** Frame padding (CSS px) and backdrop, applied on copy/save. */
+    pad: 0,
+    backdrop: 'gradient' as BackdropId,
   },
 });

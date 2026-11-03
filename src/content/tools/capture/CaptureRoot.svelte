@@ -61,8 +61,12 @@
   }
 </script>
 
-<!-- the frozen screen stays under the editor until it has drawn (no flash) -->
-<div bind:this={areaRoot} class="font-sans text-[13px]"></div>
+<!-- area hint and selection hide under the editor (it was showing through the dim backdrop) -->
+<div
+  bind:this={areaRoot}
+  class="font-sans text-[13px]"
+  style:visibility={cap.view === 'editor' ? 'hidden' : undefined}
+></div>
 {#if cap.view === 'editor'}
   <EditorView />
 {:else if cap.modeBar}

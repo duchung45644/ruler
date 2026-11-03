@@ -1,3 +1,4 @@
+import { BACKDROPS, frameLayout, type BackdropId } from '../../../lib/frame';
 import {
   MARK_COLORS,
   MARK_TOOLS,
@@ -16,6 +17,8 @@ import { cap } from './state.svelte';
 
 /** Last markup tool, remembered for the page session (4.12). */
 let markTool: MarkTool = 'arrow';
+/** Last backdrop, remembered like the tool. */
+let backdrop: BackdropId = 'gradient';
 
 /**
  * Opens the image editor (port of editor.js:24). `src` may be an already drawn canvas, which skips
@@ -25,6 +28,7 @@ export async function openCaptureEditor(
   src: string | HTMLCanvasElement,
   markup = false,
   note: string | null = null,
+  pad = 0,
 ): Promise<void> {
   const img = typeof src === 'string' ? await loadImg(src).catch(() => null) : src;
   if (!img || !(await ensureCapture())) return;
@@ -36,8 +40,50 @@ export async function openCaptureEditor(
     color: MARK_COLORS[0]!,
     size: 4,
     canUndo: false,
+    pad,
+    backdrop,
   });
   cap.view = 'editor';
+}
+
+export function setBackdrop(b: BackdropId): void {
+  backdrop = cap.editor.backdrop = b;
+}
+
+/** The image with its frame (padding, backdrop, rounded corners, shadow); the canvas itself at pad 0. */
+export function framed(src: HTMLCanvasElement): HTMLCanvasElement {
+  const dpr = devicePixelRatio || 1;
+  const f = frameLayout(src.width, src.height, cap.editor.pad, dpr);
+  if (!f.x) return src;
+  const c = document.createElement('canvas');
+  c.width = f.width;
+  c.height = f.height;
+  const ctx = c.getContext('2d')!;
+  const bd = BACKDROPS.find((b) => b.id === cap.editor.backdrop) ?? BACKDROPS[0];
+  if (bd.stops.length > 1) {
+    const g = ctx.createLinearGradient(0, 0, f.width, f.height);
+    bd.stops.forEach((s, i) => g.addColorStop(i / (bd.stops.length - 1), s));
+    ctx.fillStyle = g;
+  } else ctx.fillStyle = bd.stops[0];
+  ctx.fillRect(0, 0, f.width, f.height);
+  const clip = () => {
+    ctx.beginPath();
+    ctx.roundRect(f.x, f.y, src.width, src.height, f.radius);
+  };
+  ctx.save();
+  ctx.shadowColor = 'rgba(0,0,0,.25)';
+  ctx.shadowBlur = f.shadow;
+  ctx.shadowOffsetY = Math.round(f.shadow / 3);
+  clip();
+  ctx.fillStyle = '#fff';
+  ctx.fill();
+  ctx.restore();
+  ctx.save();
+  clip();
+  ctx.clip();
+  ctx.drawImage(src, f.x, f.y);
+  ctx.restore();
+  return c;
 }
 
 export function setTool(t: MarkTool): void {

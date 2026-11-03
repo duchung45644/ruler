@@ -117,6 +117,7 @@
     "text": "Text",
     "undo": "Undo (Ctrl+Z)",
     "fullPageBusy": "Capturing full page…",
-    "fastFailed": "Fast capture failed ($1), used scroll & stitch instead. Close DevTools on this tab if it is open."
+    "fastFailed": "Fast capture failed ($1), used scroll & stitch instead. Close DevTools on this tab if it is open.",
+    "padding": "Padding"
   }
 }

@@ -35,7 +35,7 @@ export async function captureElement(el: Element): Promise<void> {
       ),
     ).catch(() => null);
     if (!r?.success || !state.capturing) return;
-    await openCaptureEditor(r.dataUrl);
+    await openCaptureEditor(r.dataUrl, false, null, 32); // a bare element looks lost: framed by default
     opened = state.capturing;
     if (opened) flash();
   } finally {

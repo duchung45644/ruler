@@ -9,9 +9,11 @@
   import Type from '@lucide/svelte/icons/type';
   import Undo2 from '@lucide/svelte/icons/undo-2';
   import X from '@lucide/svelte/icons/x';
+  import Frame from '@lucide/svelte/icons/frame';
+  import { BACKDROPS, PADDINGS } from '../../../lib/frame';
   import { MARK_COLORS, MARK_SIZES, MARK_TOOLS } from '../../../lib/markup';
   import CapButton from './CapButton.svelte';
-  import { attachEditor, setTool } from './editor';
+  import { attachEditor, framed, setBackdrop, setTool } from './editor';
   import { capAction, closeCapture, copyCanvas, saveCanvas } from './session';
   import { cap } from './state.svelte';
 
@@ -45,7 +47,7 @@
         else saveLabel = label;
         busy = disabled;
       },
-      () => (which === 'copy' ? copyCanvas : saveCanvas)(canvas),
+      () => (which === 'copy' ? copyCanvas : saveCanvas)(framed(canvas)),
       which === 'copy' ? 'capture.copied' : 'capture.saved',
       false,
     );
@@ -66,12 +68,21 @@
   <div
     class="flex min-h-0 w-full flex-[0_1_auto] items-start justify-center overflow-auto px-[16px]"
   >
-    <canvas
-      bind:this={canvas}
-      class="block rounded-[10px] bg-white shadow-[0_8px_32px_rgba(0,0,0,.4)]"
-      class:cursor-crosshair={e.marking && e.tool !== 'text'}
-      class:cursor-text={e.marking && e.tool === 'text'}
-    ></canvas>
+    <!-- the frame preview is CSS; copy/save draw the same frame with framed() -->
+    <div
+      class="shrink-0 rounded-[10px]"
+      style:padding="{e.pad}px"
+      style:background={e.pad ? BACKDROPS.find((b) => b.id === e.backdrop)?.css : undefined}
+    >
+      <canvas
+        bind:this={canvas}
+        class="block bg-white {e.pad
+          ? 'rounded-[8px] shadow-[0_8px_24px_rgba(0,0,0,.25)]'
+          : 'rounded-[10px] shadow-[0_8px_32px_rgba(0,0,0,.4)]'}"
+        class:cursor-crosshair={e.marking && e.tool !== 'text'}
+        class:cursor-text={e.marking && e.tool === 'text'}
+      ></canvas>
+    </div>
   </div>
   <div
     data-bar="editor"
@@ -98,6 +109,34 @@
         e.marking = !e.marking;
       }}
     />
+    <div class="mx-1 h-[20px] w-px bg-line"></div>
+    <div data-frame class="flex items-center gap-1" title={i18n.t('capture.padding')}>
+      <Frame size={16} class="mx-1 text-fg-muted" />
+      {#each PADDINGS as p (p)}
+        <button
+          type="button"
+          class="h-[28px] min-w-[28px] rounded-btn px-1.5 text-[12px] {e.pad === p
+            ? 'bg-line shadow-[inset_0_0_0_1.5px_var(--color-accent)]'
+            : 'text-fg-muted hover:bg-line'}"
+          aria-pressed={e.pad === p}
+          onclick={() => (e.pad = p)}>{p}</button
+        >
+      {/each}
+      {#if e.pad}
+        {#each BACKDROPS as b (b.id)}
+          <button
+            type="button"
+            class="size-[22px] rounded-full {e.backdrop === b.id
+              ? 'shadow-[0_0_0_2px_var(--color-accent)]'
+              : 'shadow-[inset_0_0_0_1px_var(--color-line)]'}"
+            style:background={b.css}
+            aria-label={b.id}
+            aria-pressed={e.backdrop === b.id}
+            onclick={() => setBackdrop(b.id)}
+          ></button>
+        {/each}
+      {/if}
+    </div>
     {#if e.marking}
       <div data-tools class="flex items-center gap-1">
         <div class="mx-1 h-[20px] w-px bg-line"></div>

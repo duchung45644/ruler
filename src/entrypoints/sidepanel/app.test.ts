@@ -127,3 +127,50 @@ it('forwards digit keys to the page, not when typing', async () => {
   input.dispatchEvent(new KeyboardEvent('keydown', { key: '2', bubbles: true }));
   expect(sent('keyboard_shortcut')).toHaveLength(1);
 });
+
+it('undock from the Page tab reopens the detached window on that tab and scroll', async () => {
+  await open();
+  button('panel_tabPage').click();
+  flushSync();
+  const scroller = document.scrollingElement ?? document.documentElement;
+  scroller.scrollTop = 300;
+  button('panel_undock').click();
+  await vi.waitFor(() => expect(window.close).toHaveBeenCalled());
+  unmount(ui.app!);
+  scroller.scrollTop = 0;
+  Object.assign(panel, { selectedTab: 'element', switching: false, shortcuts: {} });
+  await open('?tabId=5&detached=1');
+  expect(panel.selectedTab).toBe('page');
+  await vi.waitFor(() => expect(scroller.scrollTop).toBe(300));
+});
+
+it('ignores a handoff older than 30s', async () => {
+  await fakeBrowser.storage.session.set({
+    'panelHandoff:5': { selectedTab: 'page', scrollTop: 120, at: Date.now() - 31_000 },
+  });
+  await open('?tabId=5&detached=1');
+  expect(panel.selectedTab).toBe('element');
+});
+
+it('dock asks the background and closes the detached window', async () => {
+  await open('?tabId=5&detached=1');
+  button('panel_dock').click();
+  await vi.waitFor(() => expect(bg).toHaveBeenCalledWith('dock_panel', 5));
+  await vi.waitFor(() => expect(window.close).toHaveBeenCalled());
+  expect(panel.switching).toBe(true);
+});
+
+it('drops select_element while switching', async () => {
+  await open();
+  panel.switching = true;
+  await toPanel('select_element', 5, sampleElement());
+  expect(panel.element).toBeNull();
+});
+
+it('follows a theme change without reopening', async () => {
+  await open();
+  await fakeBrowser.storage.local.set({ theme: 'light' });
+  await vi.waitFor(() => expect(document.documentElement.dataset.theme).toBe('light'));
+  await fakeBrowser.storage.local.set({ theme: 'dark' });
+  await vi.waitFor(() => expect(document.documentElement.dataset.theme).toBe('dark'));
+});

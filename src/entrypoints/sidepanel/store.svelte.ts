@@ -192,9 +192,12 @@ export async function toggleDetach(scrollTop: number): Promise<void> {
   try {
     await storage.setItem(handoffKey(tabId), handoff);
     if (panel.detached) {
-      // the background closes this window itself once the docked panel is open
+      // the background also closes it, unless its window map lost this tab
       const r = await sendToBackground('dock_panel', tabId);
-      if (r?.success) panel.switching = true;
+      if (r?.success) {
+        panel.switching = true;
+        window.close();
+      }
     } else {
       const r = await sendToBackground('detach_panel', tabId, {
         width: innerWidth,

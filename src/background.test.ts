@@ -233,6 +233,20 @@ describe('side panel', () => {
     expect(setOptions).toHaveBeenCalledWith({ tabId: 5, enabled: false });
   });
 
+  it('dock_panel opens the docked panel in the gesture and closes the window', async () => {
+    await fakeBrowser.storage.session.set({ detachedPanels: { 5: 42, 6: 43 } });
+    const { open } = start();
+    await tick();
+    const remove = vi.spyOn(fakeBrowser.windows, 'remove').mockResolvedValue(undefined);
+    const p = call('dock_panel', [5]);
+    expect(open).toHaveBeenCalledWith({ tabId: 5 });
+    expect(await p).toEqual({ success: true });
+    expect(remove).toHaveBeenCalledWith(42);
+    expect((await fakeBrowser.storage.session.get('detachedPanels')).detachedPanels).toEqual({
+      6: 43,
+    });
+  });
+
   it('closing the detached window re-enables the panel for an active tab', async () => {
     await fakeBrowser.storage.session.set({ detachedPanels: { 5: 42 } });
     const { setOptions } = start();

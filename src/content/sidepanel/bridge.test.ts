@@ -168,3 +168,25 @@ describe('contrast issues and highlights', () => {
     expect(observers[0]!.disconnect).toHaveBeenCalled();
   });
 });
+
+it('a burst of five selections sends select_element once, for the last', async () => {
+  bridge.panelOpen = true;
+  const tags = ['p', 'span', 'em', 'b', 'section'];
+  for (const t of tags) {
+    state.selected = document.body.appendChild(document.createElement(t));
+    flushSync();
+  }
+  await Promise.resolve();
+  expect(sent('select_element')).toHaveLength(1);
+  expect((sent('select_element')[0]![1] as ElementDetails).name).toMatch(/^section/);
+});
+
+it('keyboard_shortcut Escape deselects and clears the panel', () => {
+  bridge.panelOpen = true;
+  state.selected = document.body.appendChild(document.createElement('p'));
+  flushSync();
+  sidePanelHandlers.keyboard_shortcut!('Escape', {} as never);
+  flushSync();
+  expect(state.selected).toBeNull();
+  expect(sent('clear')).toHaveLength(1);
+});

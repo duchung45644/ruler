@@ -115,6 +115,8 @@
     "rect": "Khung",
     "highlight": "Tô sáng",
     "text": "Chữ",
-    "undo": "Hoàn tác (Ctrl+Z)"
+    "undo": "Hoàn tác (Ctrl+Z)",
+    "fullPageBusy": "Đang chụp cả trang…",
+    "fastFailed": "Không chụp nhanh được ($1), đã chuyển sang cuộn để chụp. Nếu đang mở DevTools ở tab này thì đóng lại rồi thử lại."
   }
 }

@@ -87,7 +87,7 @@
       label={i18n.t('capture.fullPage')}
       onclick={() => {
         const snap = cap.snap;
-        closeCapture();
+        closeCapture({ keepCapturing: true });
         void captureFullPage(snap);
       }}
     />

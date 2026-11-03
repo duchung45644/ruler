@@ -62,7 +62,8 @@ export async function withHiddenUi<T>(fn: () => Promise<T>): Promise<T> {
   }
 }
 
-export function closeCapture(): void {
+/** `keepCapturing`: the next step (full page) follows at once, so the main UI stays hidden. */
+export function closeCapture({ keepCapturing = false } = {}): void {
   setCaptureKeyHandler(null);
   viewKey = null;
   if (ui) {
@@ -72,6 +73,7 @@ export function closeCapture(): void {
   }
   Object.assign(cap, { view: 'bar', snap: '', modeBar: true, element: null, sel: null });
   cap.editor.img = null;
+  if (keepCapturing) return;
   hideUi(null);
   state.capturing = false;
 }

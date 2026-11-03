@@ -138,5 +138,15 @@
     "ok": "OK",
     "elementNotFoundTitle": "Không tìm thấy phần tử",
     "issueElementNotFound": "Không thể tìm thấy phần tử có vấn đề. Phần tử có thể đã bị xóa hoặc trang đã thay đổi."
+  },
+  "issue": {
+    "contrastAaMessage": "Văn bản có tỷ lệ tương phản không đủ $1:1 (yêu cầu $2:1 cho văn bản $3)",
+    "contrastAaRecommendation": "Tăng tương phản lên ít nhất $1:1 để tuân thủ WCAG AA",
+    "contrastAaaMessage": "Tương phản văn bản $1:1 đạt AA nhưng không đạt AAA (yêu cầu $2:1 cho văn bản $3)",
+    "contrastAaaRecommendation": "Cân nhắc tăng tương phản lên $1:1 để tuân thủ WCAG AAA",
+    "textSizeLarge": "lớn",
+    "textSizeNormal": "thường",
+    "iconContrastMessage": "Biểu tượng có tỷ lệ tương phản không đủ $1:1 (yêu cầu $2:1 cho phần tử không phải văn bản)",
+    "iconContrastRecommendation": "Tăng tương phản lên ít nhất $1:1 để tuân thủ WCAG 1.4.11"
   }
 }

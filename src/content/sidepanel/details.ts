@@ -20,6 +20,7 @@ import { typographyKey, typographyStyles } from '../../lib/element/typography';
 import { displaySelector, fullPath } from '../../lib/selector';
 import { isTextHeavy } from '../core/contrast';
 import { childOf } from '../tools/inspector';
+import { collectIssues } from './issues';
 
 const MAX_DEPTH = 100;
 const isOwn = (el: Element) => el.tagName.toLowerCase() === 'bo-doi-ui';
@@ -378,8 +379,7 @@ function parentAcross(el: Element): Element | null {
 
 /**
  * Port of sendElementToSidePanel's inspect branch (content.js:39602–40760): plain JSON for the
- * panel. `elementId` tags elements with data-sr-id-*. Issues, Tailwind and matched rules are
- * filled in by their own modules.
+ * panel. `elementId` tags elements with data-sr-id-*. Tailwind and matched rules come later.
  */
 export function collectElementDetails(
   el: Element,
@@ -409,7 +409,7 @@ export function collectElementDetails(
     transitions: transitions(s),
     boxShadow: splitShadows(s.boxShadow ?? ''),
     typography: collectTypography(el),
-    issues: [],
+    issues: collectIssues(el, elementId),
     canvas: canvasInfo(el, parseFloat(s.width) || rect.width),
     layout: elementLayout(s),
     css: computedCss(s),

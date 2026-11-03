@@ -12,8 +12,16 @@ import { runShortcut } from '../core/keys';
 import { onStop, sessionSignal } from '../core/session';
 import { state } from '../core/state.svelte';
 import { selectChild, selectElement, selectParent } from '../tools/inspector';
-import { collectElementDetails } from './details';
-import { clearHighlights, highlight, repaintHighlights } from './highlight';
+import { collectElementDetails, styleMap } from './details';
+import {
+  canHighlight,
+  clearHighlights,
+  highlight,
+  highlightForColor,
+  highlightForTypography,
+  repaintHighlights,
+} from './highlight';
+import { currentIssues, stopIssues } from './issues';
 
 export const bridge = $state({ panelOpen: false, panelApi: true });
 
@@ -64,6 +72,16 @@ function withId(id: string | undefined, then: () => void): void {
   then();
 }
 
+const notFound = () =>
+  alertDialog(i18n.t('dialog.elementNotFoundTitle'), i18n.t('dialog.issueElementNotFound'));
+
+/** Drop everything derived from the last selection. */
+function forgetSelection(): void {
+  stopIssues();
+  styleMap.clear();
+  clearHighlights();
+}
+
 /** ContentApi handlers the panel uses, merged into the entrypoint's table. */
 export const sidePanelHandlers: Handlers<ContentApi> = {
   select_parent: (id) => withId(typeof id === 'string' ? id : undefined, selectParent),
@@ -74,13 +92,26 @@ export const sidePanelHandlers: Handlers<ContentApi> = {
   },
   remove_highlight_hovered: () => clearHighlights(),
   clear_element_highlights: () => clearHighlights(),
+  highlight_elements_for_color: (color) => highlightForColor(styleMap, color),
+  highlight_elements_for_typography: (key) => highlightForTypography(styleMap, key),
+  highlight_elements_for_issue(issueId) {
+    const ids = currentIssues().find((i) => i.id === issueId)?.elementIds ?? [];
+    highlight(ids.map(elementById).filter((el): el is Element => !!el && canHighlight(el)));
+  },
+  /** Port of highlightIssueElement: frame and scroll to one instance (6.35, 2.20). */
+  async highlight_issue_element(id) {
+    const el = elementById(id);
+    if (!el?.isConnected) {
+      await notFound();
+      return;
+    }
+    el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    highlight([el]);
+  },
   async go_to_selected_element(id) {
     const el = id ? elementById(id) : state.selected;
     if (!el?.isConnected) {
-      await alertDialog(
-        i18n.t('dialog.elementNotFoundTitle'),
-        i18n.t('dialog.issueElementNotFound'),
-      );
+      await notFound();
       return false;
     }
     selectElement(el, { scroll: true });
@@ -111,12 +142,15 @@ export async function initSidePanelBridge(): Promise<void> {
       const el = state.selected;
       const open = bridge.panelOpen;
       if (el && open) sendElement(el);
-      else if (!el) void sendToSidePanel('clear').catch(() => {});
+      else if (!el) {
+        forgetSelection();
+        void sendToSidePanel('clear').catch(() => {});
+      }
     });
   });
   onStop(() => {
     stopEffect();
-    clearHighlights();
+    forgetSelection();
     void sendToSidePanel('clear').catch(() => {});
   });
   void sendToSidePanel('content_script_loaded').catch(() => {});

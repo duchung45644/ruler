@@ -1,12 +1,14 @@
 import { flushSync } from 'svelte';
-import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { routeKey } from '../core/keys';
 import { layer } from '../core/overlay';
 import { registerItem } from '../core/registry.svelte';
 import { sessionSignal, stopSession } from '../core/session';
 import { state } from '../core/state.svelte';
+import type { ElementDetails } from '../../lib/element/types';
 import { sendToBackground, sendToSidePanel } from '../../lib/messaging';
+import { highlightCount } from './highlight';
 import { bridge, initSidePanelBridge, sidePanelHandlers, toggleSidePanel } from './bridge.svelte';
 
 vi.mock('../../lib/messaging', async (orig) => ({
@@ -97,4 +99,72 @@ it('sends select_element while open and clear on deselect / stop', async () => {
   expect(sent('clear')).toHaveLength(1);
   stopSession();
   expect(sent('clear')).toHaveLength(2);
+});
+
+describe('contrast issues and highlights', () => {
+  const observers: { disconnect: ReturnType<typeof vi.fn>; observe: ReturnType<typeof vi.fn> }[] =
+    [];
+  let offscreen: Element | null = null;
+  beforeEach(() => {
+    vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(function (
+      this: Element,
+    ) {
+      return this === offscreen ? new DOMRect(0, 5000, 50, 20) : new DOMRect(0, 0, 50, 20);
+    });
+    document.elementsFromPoint = () => [...document.querySelectorAll('span, div')];
+    vi.stubGlobal(
+      'IntersectionObserver',
+      vi.fn(function () {
+        const o = { observe: vi.fn(), unobserve: vi.fn(), disconnect: vi.fn() };
+        observers.push(o);
+        return o;
+      }),
+    );
+    document.body.innerHTML =
+      '<div style="background-color: #fff"><span style="color: #eee">x</span></div>';
+    bridge.panelOpen = true;
+  });
+  afterEach(() => {
+    offscreen = null;
+    observers.length = 0;
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
+  const select = async (el: Element) => {
+    state.selected = el;
+    flushSync();
+    await Promise.resolve();
+    return sent('select_element').at(-1)![1] as ElementDetails;
+  };
+
+  it('reports low contrast text and highlights by colour', async () => {
+    const span = document.querySelector('span')!;
+    const d = await select(document.querySelector('div')!);
+    expect(d.issues).toHaveLength(1);
+    expect(d.issues[0]).toMatchObject({ severity: 'warning', type: 'contrast-failure' });
+    expect(d.issues[0]!.elementIds).toEqual([
+      span.getAttribute(`data-sr-id-${fakeBrowser.runtime.id}`),
+    ]);
+    sidePanelHandlers.highlight_elements_for_color!('#eeeeee', {} as never);
+    expect(highlightCount()).toBe(1);
+    sidePanelHandlers.highlight_elements_for_issue!(d.issues[0]!.id, {} as never);
+    expect(highlightCount()).toBe(1);
+    sidePanelHandlers.clear_element_highlights!({} as never);
+    expect(highlightCount()).toBe(0);
+  });
+
+  it('alerts for a missing issue element', async () => {
+    void sidePanelHandlers.highlight_issue_element!('v-x', {} as never);
+    flushSync();
+    expect(shadow.querySelector('[role=alertdialog]')).not.toBeNull();
+  });
+
+  it('watches off-screen findings until the selection changes', async () => {
+    offscreen = document.querySelector('span');
+    await select(document.querySelector('div')!);
+    expect(observers).toHaveLength(1);
+    expect(observers[0]!.observe).toHaveBeenCalledWith(offscreen);
+    await select(document.querySelector('span')!);
+    expect(observers[0]!.disconnect).toHaveBeenCalled();
+  });
 });

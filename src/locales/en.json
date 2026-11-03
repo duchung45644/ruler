@@ -138,5 +138,15 @@
     "ok": "OK",
     "elementNotFoundTitle": "Element Not Found",
     "issueElementNotFound": "Unable to locate the issue element. It may have been removed or the page may have changed."
+  },
+  "issue": {
+    "contrastAaMessage": "Text has insufficient contrast ratio of $1:1 (requires $2:1 for $3 text)",
+    "contrastAaRecommendation": "Increase contrast to at least $1:1 for WCAG AA compliance",
+    "contrastAaaMessage": "Text contrast $1:1 meets AA but not AAA (requires $2:1 for $3 text)",
+    "contrastAaaRecommendation": "Consider increasing contrast to $1:1 for WCAG AAA compliance",
+    "textSizeLarge": "large",
+    "textSizeNormal": "normal",
+    "iconContrastMessage": "Icon has insufficient contrast ratio of $1:1 (requires $2:1 for non-text elements)",
+    "iconContrastRecommendation": "Increase contrast to at least $1:1 for WCAG 1.4.11 compliance"
   }
 }

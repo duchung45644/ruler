@@ -47,3 +47,17 @@ it('an image that finishes loading after stopSession is dropped', () => {
   expect(document.querySelectorAll('img[data-bo-doi]')).toHaveLength(0);
   expect(ownNodes.size).toBe(0);
 });
+
+it('arrow keys do not nudge an image while capturing (3.25)', async () => {
+  const { routeKey } = await import('../../core/keys');
+  const { state } = await import('../../core/state.svelte');
+  const { images } = await import('.');
+  initOverlay();
+  items.find((i) => i.id === 'overlay')!.run();
+  addImage('data:image/png;base64,x', { width: 400, height: 300 });
+  const x = images()[0]!.x;
+  state.capturing = true;
+  routeKey(new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
+  state.capturing = false;
+  expect(images()[0]!.x).toBe(x);
+});

@@ -42,7 +42,7 @@
       pos = placeSelBar(cap.sel, selBar.offsetWidth, selBar.offsetHeight, innerWidth, innerHeight);
   });
 
-  const pick = (fn: () => void) => () => (closeCapture(), fn());
+  const pick = (fn: () => void) => () => (closeCapture({ keepCapturing: true }), fn());
   const act = (which: 'copy' | 'save') =>
     capAction(
       (label, disabled) => {

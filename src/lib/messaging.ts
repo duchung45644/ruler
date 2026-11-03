@@ -27,6 +27,7 @@ export interface ContentApi {
   toggle_script(): { active: boolean };
   select_parent(): void;
   select_child(): void;
+  save_screenshot(): void;
 }
 
 type Handlers<A extends object> = {

@@ -132,6 +132,19 @@ export async function openCaptureBar(opts: { element?: () => void } = {}): Promi
   if (!(await mountCapture())) closeCapture();
 }
 
+/** White flash over the capture UI (legacy animateScreenshotEffect content.js:47765). */
+export function flash(): void {
+  if (!ui) return;
+  const f = document.createElement('div');
+  f.style.cssText = 'position:fixed;inset:0;pointer-events:none;background-color:#fff';
+  ui.shadow.append(f);
+  setTimeout(() => {
+    f.style.transition = 'background-color 0.25s ease';
+    f.style.backgroundColor = 'transparent';
+    setTimeout(() => f.remove(), 250);
+  }, 100);
+}
+
 export async function copyCanvas(c: HTMLCanvasElement): Promise<void> {
   if (!isSecureContext) throw new Error(i18n.t('capture.copyNeedsHttps'));
   if (!(await copyImage(toBlob(c)))) throw new Error(i18n.t('capture.failed'));

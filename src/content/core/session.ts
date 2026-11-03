@@ -23,7 +23,8 @@ export function sessionCtx(): ContentScriptContext {
 /** Hides the main UI while capturing: 'all', or everything but the inspector highlight. */
 export function hideUi(mode: 'all' | 'keepHighlight' | null): void {
   if (!uiRef) return;
-  if (mode === 'all') uiRef.host.dataset.capture = 'all';
+  if (mode)
+    uiRef.host.dataset.capture = mode; // theme.css hides the host for 'all'
   else delete uiRef.host.dataset.capture;
   const keep = mode === 'keepHighlight';
   for (const el of uiRef.shadow.children)

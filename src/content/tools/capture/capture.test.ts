@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { i18n } from '#i18n';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { ContentScriptContext } from 'wxt/utils/content-script-context';
@@ -6,6 +6,10 @@ import * as messaging from '../../../lib/messaging';
 import { routeKey } from '../../core/keys';
 import { startSession, stopSession } from '../../core/session';
 import { state } from '../../core/state.svelte';
+import { screenshotPrefs } from '../../../lib/settings';
+import * as editor from './editor';
+import { captureElement } from './element';
+import { openBar } from '.';
 import { capAction, openCaptureBar } from './session';
 
 // fakeBrowser has no i18n.getMessage; the UI renders labels
@@ -13,6 +17,8 @@ fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.
 
 let grab: ReturnType<typeof vi.spyOn>;
 beforeEach(async () => {
+  fakeBrowser.reset();
+  fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
   grab = vi
     .spyOn(messaging, 'sendToBackground')
     .mockResolvedValue({ success: true, dataUrl: 'data:image/png;base64,x' } as never);
@@ -92,4 +98,57 @@ it('drawing an area swaps the mode bar for the area bar; a tiny one is dropped',
   ptr(shade, 'pointerup', 150, 120);
   await vi.waitFor(() => expect(bar('sel')).toBeTruthy());
   expect(bar('mode')).toBeFalsy();
+});
+
+describe('captureElement', () => {
+  const target = () => {
+    const p = document.body.appendChild(document.createElement('p'));
+    p.getBoundingClientRect = () => ({ left: 100, top: 100, right: 200, bottom: 150 }) as DOMRect;
+    return p;
+  };
+  const seen: (string | undefined)[] = [];
+  const spyGrab = (ok: boolean) =>
+    grab.mockImplementation((async (_t: string, rect: unknown) => {
+      seen.push(mainHost().dataset.capture);
+      return ok
+        ? { success: true, dataUrl: 'data:x', rect }
+        : { success: false, error: 'CAPTURE_FAILED' };
+    }) as never);
+  beforeEach(() => {
+    seen.length = 0;
+    vi.stubGlobal('devicePixelRatio', 2);
+    vi.spyOn(editor, 'openCaptureEditor').mockResolvedValue();
+  });
+  afterEach(() => vi.unstubAllGlobals());
+
+  it('sends the padded device rect, keeping the highlight by default', async () => {
+    spyGrab(true);
+    await captureElement(target());
+    expect(grab).toHaveBeenCalledWith('capture_tab', {
+      left: 100,
+      top: 100,
+      right: 500,
+      bottom: 400,
+    });
+    expect(seen).toEqual(['keepHighlight']);
+  });
+
+  it('hides everything when highlights are off', async () => {
+    await screenshotPrefs.setValue({ includeHighlights: false });
+    spyGrab(true);
+    await captureElement(target());
+    expect(seen).toEqual(['all']);
+  });
+
+  it('a failed capture restores the UI', async () => {
+    spyGrab(false);
+    await captureElement(target());
+    expect(state.capturing).toBe(false);
+    expect(mainHost().dataset.capture).toBeUndefined();
+  });
+});
+
+it('save_screenshot path (openBar) opens the mode bar', async () => {
+  openBar();
+  await vi.waitFor(() => expect(bar('mode')).toBeTruthy());
 });

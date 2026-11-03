@@ -3,6 +3,7 @@ import { startSession, stopSession } from '../../content/core/session';
 import { state } from '../../content/core/state.svelte';
 import { initInspector, selectChild, selectParent } from '../../content/tools/inspector';
 import { initTools } from '../../content/tools';
+import { openBar } from '../../content/tools/capture';
 import { handleMessages } from '../../lib/messaging';
 import { loadFonts } from '../../ui/fonts';
 import './style.css';
@@ -35,6 +36,7 @@ export default defineContentScript({
       ping: () => ({ active: state.active }),
       select_parent: selectParent,
       select_child: selectChild,
+      save_screenshot: () => (state.active ? openBar() : undefined),
       toggle_script: async () => {
         if (state.active) stopSession();
         else await start();

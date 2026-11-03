@@ -108,6 +108,13 @@
     "copied": "Đã copy",
     "saved": "Đã lưu",
     "failed": "Lỗi",
-    "copyNeedsHttps": "Copy cần HTTPS — hãy dùng Lưu"
+    "copyNeedsHttps": "Copy cần HTTPS — hãy dùng Lưu",
+    "markup": "Vẽ chú thích",
+    "pen": "Bút",
+    "arrow": "Mũi tên",
+    "rect": "Khung",
+    "highlight": "Tô sáng",
+    "text": "Chữ",
+    "undo": "Hoàn tác (Ctrl+Z)"
   }
 }

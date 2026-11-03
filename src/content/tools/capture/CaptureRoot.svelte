@@ -10,6 +10,7 @@
   import X from '@lucide/svelte/icons/x';
   import { placeSelBar } from '../../../lib/capture';
   import CapButton from './CapButton.svelte';
+  import EditorView from './EditorView.svelte';
   import { startAreaSelect } from './area';
   import { openCaptureEditor } from './editor';
   import { captureFullPage } from './fullpage';
@@ -55,12 +56,15 @@
     );
   async function markup() {
     const c = await crop?.().catch(() => null);
-    if (c) openCaptureEditor(c, true);
+    if (c) void openCaptureEditor(c, true);
   }
 </script>
 
+<!-- the frozen screen stays under the editor until it has drawn (no flash) -->
 <div bind:this={areaRoot} class="font-sans text-[13px]"></div>
-{#if cap.modeBar}
+{#if cap.view === 'editor'}
+  <EditorView />
+{:else if cap.modeBar}
   <div
     data-bar="mode"
     class="bd-in pointer-events-auto fixed top-[16px] left-1/2 flex -translate-x-1/2 items-center gap-0.5 rounded-panel border border-line bg-surface p-[5px] font-sans text-[13px] text-fg shadow-[0_8px_24px_rgba(0,0,0,.18)] backdrop-blur-surface"
@@ -76,7 +80,7 @@
     <CapButton
       icon={Monitor}
       label={i18n.t('capture.visible')}
-      onclick={() => openCaptureEditor(cap.snap)}
+      onclick={() => void openCaptureEditor(cap.snap)}
     />
     <CapButton
       icon={ScrollText}
@@ -91,7 +95,7 @@
     <CapButton icon={X} title={i18n.t('capture.close')} onclick={closeCapture} />
   </div>
 {/if}
-{#if cap.sel}
+{#if cap.view === 'bar' && cap.sel}
   <div
     bind:this={selBar}
     data-bar="sel"

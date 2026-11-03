@@ -108,6 +108,13 @@
     "copied": "Copied",
     "saved": "Saved",
     "failed": "Failed",
-    "copyNeedsHttps": "Copy needs HTTPS — use Save"
+    "copyNeedsHttps": "Copy needs HTTPS — use Save",
+    "markup": "Markup",
+    "pen": "Pen",
+    "arrow": "Arrow",
+    "rect": "Rectangle",
+    "highlight": "Highlight",
+    "text": "Text",
+    "undo": "Undo (Ctrl+Z)"
   }
 }

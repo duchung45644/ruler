@@ -70,9 +70,22 @@ export function closeCapture(): void {
     ui.remove();
     ui = null;
   }
-  Object.assign(cap, { snap: '', modeBar: true, element: null, sel: null });
+  Object.assign(cap, { view: 'bar', snap: '', modeBar: true, element: null, sel: null });
+  cap.editor.img = null;
   hideUi(null);
   state.capturing = false;
+}
+
+/** Opens the capture session if needed (editor straight from element / full page capture). */
+export async function ensureCapture(): Promise<boolean> {
+  if (ui) return true;
+  if (!state.capturing) {
+    state.capturing = true;
+    hideUi('all');
+  }
+  if (await mountCapture()) return true;
+  closeCapture();
+  return false;
 }
 
 /** Mounts the capture host showing CaptureRoot; capture state is already set. */
@@ -107,7 +120,13 @@ export async function openCaptureBar(opts: { element?: () => void } = {}): Promi
   await frames();
   const snap = await grabVisible().catch(() => null);
   if (!snap || !state.capturing) return closeCapture();
-  Object.assign(cap, { snap, modeBar: true, element: opts.element ?? null, sel: null });
+  Object.assign(cap, {
+    view: 'bar',
+    snap,
+    modeBar: true,
+    element: opts.element ?? null,
+    sel: null,
+  });
   if (!(await mountCapture())) closeCapture();
 }
 

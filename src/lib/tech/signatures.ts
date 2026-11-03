@@ -44,6 +44,17 @@ function l(): ShadowRoot[] {
   return (roots = out);
 }
 /** querySelector across open shadow roots (legacy `u`). */
+const REACT_KEY =
+  /^(__reactFiber\$|__reactInternalInstance\$|__reactContainer\$|_reactRootContainer$)/;
+
+function hasReactNode(): boolean {
+  const has = (el: Element) => Object.keys(el).some((k) => REACT_KEY.test(k));
+  if (!document.body || has(document.body)) return !!document.body;
+  const all = document.body.getElementsByTagName('*');
+  for (let i = 0; i < all.length && i < 300; i++) if (has(all[i]!)) return true;
+  return false;
+}
+
 function u(sel: string, root?: ParentNode): any {
   try {
     const hit = (root || document).querySelector(sel);
@@ -412,12 +423,9 @@ export const SIGNATURES: Record<string, Signature> = {
           version: t.React.version || null,
         };
       }
-      if (
-        u('[data-reactroot], [data-reactid]') ||
-        u('*').__reactFiber$$ ||
-        u('*').__reactInternalInstance$$ ||
-        Object.keys(document.body).some((t) => t.startsWith('__reactContainer'))
-      ) {
+      // bundled React exposes no global: look for the per-node keys it attaches
+      // (`__reactFiber$<random>` etc.) on the first elements of the page
+      if (u('[data-reactroot], [data-reactid]') || hasReactNode()) {
         return {
           version: t.React?.version || null,
         };

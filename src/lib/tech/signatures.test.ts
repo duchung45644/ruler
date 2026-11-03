@@ -50,3 +50,12 @@ it('ships a logo for every icon but the generic one', () => {
     .filter((icon): icon is string => !!icon && !logos.has(`${icon}.svg`));
   expect(new Set(missing)).toEqual(new Set(['icon38']));
 });
+
+it('detects bundled React from the keys it puts on DOM nodes', () => {
+  const root = document.body.appendChild(document.createElement('div'));
+  const child = root.appendChild(document.createElement('main'));
+  Object.assign(child, { __reactFiber$k3x9: {} });
+  expect(detectAll(win({}))).toContainEqual(expect.objectContaining({ id: 'react' }));
+  root.remove();
+  expect(detectAll(win({}))).not.toContainEqual(expect.objectContaining({ id: 'react' }));
+});

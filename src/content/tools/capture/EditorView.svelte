@@ -13,7 +13,7 @@
   import { BACKDROPS, PADDINGS } from '../../../lib/frame';
   import { MARK_COLORS, MARK_SIZES, MARK_TOOLS } from '../../../lib/markup';
   import CapButton from './CapButton.svelte';
-  import { attachEditor, framed, setBackdrop, setTool } from './editor';
+  import { attachEditor, setBackdrop, setTool } from './editor';
   import { capAction, closeCapture, copyCanvas, saveCanvas } from './session';
   import { cap } from './state.svelte';
 
@@ -30,13 +30,17 @@
   $effect(() => {
     const img = e.img;
     if (!img) return;
-    canvas.width = img.width;
-    canvas.height = img.height;
     api = attachEditor(canvas, ed, img);
     return () => {
       api?.destroy();
       api = null;
     };
+  });
+
+  $effect(() => {
+    void e.pad;
+    void e.backdrop;
+    api?.reframe();
   });
 
   const act = (which: 'copy' | 'save') => {
@@ -47,7 +51,7 @@
         else saveLabel = label;
         busy = disabled;
       },
-      () => (which === 'copy' ? copyCanvas : saveCanvas)(framed(canvas)),
+      () => (which === 'copy' ? copyCanvas : saveCanvas)(canvas),
       which === 'copy' ? 'capture.copied' : 'capture.saved',
       false,
     );
@@ -68,21 +72,14 @@
   <div
     class="flex min-h-0 w-full flex-[0_1_auto] items-start justify-center overflow-auto px-[16px]"
   >
-    <!-- the frame preview is CSS; copy/save draw the same frame with framed() -->
-    <div
-      class="shrink-0 rounded-[10px]"
-      style:padding="{e.pad}px"
-      style:background={e.pad ? BACKDROPS.find((b) => b.id === e.backdrop)?.css : undefined}
-    >
-      <canvas
-        bind:this={canvas}
-        class="block bg-white {e.pad
-          ? 'rounded-[8px] shadow-[0_8px_24px_rgba(0,0,0,.25)]'
-          : 'rounded-[10px] shadow-[0_8px_32px_rgba(0,0,0,.4)]'}"
-        class:cursor-crosshair={e.marking && e.tool !== 'text'}
-        class:cursor-text={e.marking && e.tool === 'text'}
-      ></canvas>
-    </div>
+    <canvas
+      bind:this={canvas}
+      class="block bg-white {e.pad
+        ? 'rounded-[4px]'
+        : 'rounded-[10px] shadow-[0_8px_32px_rgba(0,0,0,.4)]'}"
+      class:cursor-crosshair={e.marking && e.tool !== 'text'}
+      class:cursor-text={e.marking && e.tool === 'text'}
+    ></canvas>
   </div>
   <div
     data-bar="editor"

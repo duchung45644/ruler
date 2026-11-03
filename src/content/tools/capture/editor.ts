@@ -50,15 +50,13 @@ export function setBackdrop(b: BackdropId): void {
   backdrop = cap.editor.backdrop = b;
 }
 
-/** The image with its frame (padding, backdrop, rounded corners, shadow); the canvas itself at pad 0. */
-export function framed(src: HTMLCanvasElement): HTMLCanvasElement {
-  const dpr = devicePixelRatio || 1;
-  const f = frameLayout(src.width, src.height, cap.editor.pad, dpr);
-  if (!f.x) return src;
-  const c = document.createElement('canvas');
-  c.width = f.width;
-  c.height = f.height;
-  const ctx = c.getContext('2d')!;
+/** Draws the image, inside its frame (backdrop, rounded corners, shadow) when the layout has padding. */
+function drawBase(
+  ctx: CanvasRenderingContext2D,
+  img: CanvasImageSource & { width: number; height: number },
+  f: ReturnType<typeof frameLayout>,
+): void {
+  if (!f.x) return void ctx.drawImage(img, 0, 0);
   const bd = BACKDROPS.find((b) => b.id === cap.editor.backdrop) ?? BACKDROPS[0];
   if (bd.stops.length > 1) {
     const g = ctx.createLinearGradient(0, 0, f.width, f.height);
@@ -68,7 +66,7 @@ export function framed(src: HTMLCanvasElement): HTMLCanvasElement {
   ctx.fillRect(0, 0, f.width, f.height);
   const clip = () => {
     ctx.beginPath();
-    ctx.roundRect(f.x, f.y, src.width, src.height, f.radius);
+    ctx.roundRect(f.x, f.y, img.width, img.height, f.radius);
   };
   ctx.save();
   ctx.shadowColor = 'rgba(0,0,0,.25)';
@@ -81,9 +79,8 @@ export function framed(src: HTMLCanvasElement): HTMLCanvasElement {
   ctx.save();
   clip();
   ctx.clip();
-  ctx.drawImage(src, f.x, f.y);
+  ctx.drawImage(img, f.x, f.y);
   ctx.restore();
-  return c;
 }
 
 export function setTool(t: MarkTool): void {
@@ -91,20 +88,34 @@ export function setTool(t: MarkTool): void {
 }
 
 /** Drawing on the editor canvas; plain DOM on the hot path. Returns undo / commitText / teardown. */
-export function attachEditor(canvas: HTMLCanvasElement, ed: HTMLElement, img: CanvasImageSource) {
+export function attachEditor(
+  canvas: HTMLCanvasElement,
+  ed: HTMLElement,
+  img: CanvasImageSource & { width: number; height: number },
+) {
   const ctx = canvas.getContext('2d')!;
   const items: MarkItem[] = [];
   const ac = new AbortController();
   const { signal } = ac;
   let text: { inp: HTMLInputElement; x: number; y: number; fs: number; color: string } | null =
     null;
-  const w = canvas.width,
-    h = canvas.height;
-  canvas.style.cssText = editorCanvasStyle(w, h, devicePixelRatio);
+  // the canvas is the framed image: markup can go on the padding too, and copy/save take it as is
+  let frame = frameLayout(img.width, img.height, 0, 1);
   const sync = () => (cap.editor.canUndo = items.length > 0);
   const paint = () => {
-    ctx.drawImage(img, 0, 0);
+    drawBase(ctx, img, frame);
     items.forEach((s) => drawItem(ctx, s));
+  };
+  /** Resize for the current padding/backdrop; markup keeps its place on the image. */
+  const reframe = () => {
+    const next = frameLayout(img.width, img.height, cap.editor.pad, devicePixelRatio || 1);
+    const d = next.x - frame.x;
+    if (d) for (const s of items) s.pts = s.pts.map(([x, y]) => [x + d, y + d] as Pt);
+    frame = next;
+    canvas.width = frame.width;
+    canvas.height = frame.height;
+    canvas.style.cssText = editorCanvasStyle(frame.width, frame.height, devicePixelRatio);
+    paint();
   };
   const undo = () => {
     items.pop();
@@ -174,7 +185,7 @@ export function attachEditor(canvas: HTMLCanvasElement, ed: HTMLElement, img: Ca
       const end = hit?.end ?? 1;
       const before = s.pts.slice() as Pt[];
       if (hit) {
-        ctx.drawImage(img, 0, 0); // the image without it; the arrow lives on the preview while dragged
+        drawBase(ctx, img, frame); // the image without it; the arrow lives on the preview while dragged
         items.forEach((x) => x !== s && drawItem(ctx, x));
       } else {
         items.push(s);
@@ -261,10 +272,11 @@ export function attachEditor(canvas: HTMLCanvasElement, ed: HTMLElement, img: Ca
     setTool(t.id);
     return true;
   });
-  paint();
+  reframe();
   return {
     undo,
     commitText,
+    reframe,
     destroy: () => {
       ac.abort();
       text?.inp.remove();

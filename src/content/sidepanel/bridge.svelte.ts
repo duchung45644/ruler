@@ -1,24 +1,18 @@
 import { browser, type Browser } from '#imports';
 import { i18n } from '#i18n';
-import type { ElementDetails } from '../../lib/element/types';
 import {
   sendToBackground,
   sendToSidePanel,
   type ContentApi,
   type Handlers,
 } from '../../lib/messaging';
-import {
-  displaySelector,
-  ensureElementId,
-  fullPath,
-  ID_ATTR,
-  resolveElementById,
-} from '../../lib/selector';
+import { ensureElementId, ID_ATTR, resolveElementById } from '../../lib/selector';
 import { alertDialog } from '../core/dialog';
 import { runShortcut } from '../core/keys';
 import { onStop, sessionSignal } from '../core/session';
 import { state } from '../core/state.svelte';
 import { selectChild, selectElement, selectParent } from '../tools/inspector';
+import { collectElementDetails } from './details';
 import { clearHighlights, highlight, repaintHighlights } from './highlight';
 
 export const bridge = $state({ panelOpen: false, panelApi: true });
@@ -29,32 +23,21 @@ const attr = () => ID_ATTR(browser.runtime.id);
 export const elementId = (el: Element) => ensureElementId(el, attr(), ids);
 export const elementById = (id: string) => resolveElementById(id, attr(), ids);
 
-/** Selection → panel. Task 6 replaces this with the full inspectDetails. */
-function collectDetails(el: Element): ElementDetails {
-  const r = el.getBoundingClientRect();
-  const zero = { top: 0, right: 0, bottom: 0, left: 0 };
-  return {
-    id: elementId(el),
-    name: displaySelector(el),
-    parentSelectable: !!el.parentElement,
-    selector: fullPath(el),
-    boxModel: { width: r.width, height: r.height, margin: zero, border: zero, padding: zero },
-    colors: [],
-    gradients: [],
-    assets: [],
-    animations: [],
-    transitions: [],
-    boxShadow: [],
-    typography: [],
-    issues: [],
-    layout: null,
-    css: {},
-    skippedCrossOriginCount: 0,
-  };
-}
+let pending: Element | null = null;
 
+/** Selection → panel, once per microtask so a burst of selects sends only the last (6.09). */
 export function sendElement(el: Element): void {
-  void sendToSidePanel('select_element', collectDetails(el)).catch(() => {});
+  const queued = pending;
+  pending = el;
+  if (queued) return;
+  queueMicrotask(() => {
+    const target = pending;
+    pending = null;
+    if (!target?.isConnected) return;
+    void sendToSidePanel('select_element', collectElementDetails(target, elementId)).catch(
+      () => {},
+    );
+  });
 }
 
 /** Port of toggleSidePanel (content.js:39108): an answering panel closes, else open one. */

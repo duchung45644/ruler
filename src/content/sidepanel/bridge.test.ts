@@ -84,10 +84,13 @@ it('panel port disconnect drops panelOpen and the highlight', async () => {
   expect(layer.childElementCount).toBe(0);
 });
 
-it('sends select_element while open and clear on deselect / stop', () => {
+it('sends select_element while open and clear on deselect / stop', async () => {
   bridge.panelOpen = true;
   state.selected = document.body.appendChild(document.createElement('p'));
   flushSync();
+  state.selected = document.body.appendChild(document.createElement('p'));
+  flushSync();
+  await Promise.resolve();
   expect(sent('select_element')).toHaveLength(1);
   state.selected = null;
   flushSync();

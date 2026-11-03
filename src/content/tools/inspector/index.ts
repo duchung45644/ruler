@@ -92,6 +92,10 @@ export function selectParent(): void {
   select(p, true);
 }
 
+/** The element selectChild would go to (the side panel's child row, 6.21). */
+export const childOf = (el: Element): Element | null =>
+  (el === state.selected && stack.at(-1)) || firstChildOf(el, isOwn);
+
 /** Port of selectChild (legacy-src/content.js:47070). */
 export function selectChild(): void {
   if (!state.selected) return;

@@ -2,6 +2,7 @@ import { flushSync, mount, unmount } from 'svelte';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import App from './App.svelte';
+import { sampleElement } from './element/sample';
 import { panel } from './store.svelte';
 
 const ui = { app: null as ReturnType<typeof mount> | null };
@@ -73,7 +74,7 @@ it('only takes select_element from its own tab', async () => {
   await toPanel('select_element', 7, { name: 'div.other' });
   flushSync();
   expect(document.querySelector('[data-empty]')).not.toBeNull();
-  await toPanel('select_element', 5, { name: 'div.mine' });
+  await toPanel('select_element', 5, sampleElement());
   await vi.waitFor(() => expect(panel.element).not.toBeNull());
   flushSync();
   expect(document.querySelector('[data-empty]')).toBeNull();

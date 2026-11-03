@@ -1,6 +1,9 @@
 @import 'tailwindcss';
 @import '../../ui/theme.css';
 
+/* Panel theme is data-theme on <html>, not the OS scheme, so tints for light get their own variant. */
+@custom-variant light (&:where([data-theme='light'], [data-theme='light'] *));
+
 /* Extension page, not the host page: plain @font-face is fine here (no hoisting, no page CSP). */
 @font-face {
   font-family: 'Bo doi Geist';

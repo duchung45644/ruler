@@ -2,6 +2,7 @@
   import { onDestroy, onMount, tick } from 'svelte';
   import { forwardKey } from '../../lib/panel-keys';
   import EmptyElement from './EmptyElement.svelte';
+  import ElementTab from './element/ElementTab.svelte';
   import TabBar from './TabBar.svelte';
   import { panel, startPanel, takePendingScroll, toPage } from './store.svelte';
 
@@ -40,7 +41,7 @@
 <main>
   {#if panel.selectedTab === 'element'}
     {#if panel.element}
-      <div class="p-3 font-mono" data-element>{panel.element.name}</div>
+      <ElementTab el={panel.element} />
     {:else}
       <EmptyElement />
     {/if}

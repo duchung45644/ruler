@@ -8,8 +8,18 @@
     id,
     title,
     count,
+    actions,
+    onleave,
     children,
-  }: { id: SectionId; title: string; count?: number; children: Snippet } = $props();
+  }: {
+    id: SectionId;
+    title: string;
+    count?: number;
+    /** Controls on the right of the title row (not part of the toggle). */
+    actions?: Snippet;
+    onleave?: () => void;
+    children: Snippet;
+  } = $props();
   const collapsed = $derived(panel.prefs.sectionVisibility[id]?.collapsed ?? false);
 
   function toggle() {
@@ -22,18 +32,25 @@
   }
 </script>
 
-<section class="border-b border-line" data-section={id}>
-  <button
-    type="button"
-    class="flex w-full items-center gap-2 px-3 py-2 text-left font-semibold hover:bg-line"
-    aria-expanded={!collapsed}
-    onclick={toggle}
-  >
-    <span class="flex-1">{title}</span>
-    {#if count !== undefined}<span class="text-fg-muted tabular-nums">{count}</span>{/if}
-    <ChevronDown
-      class="size-4 text-fg-muted transition-transform {collapsed ? '-rotate-90' : ''}"
-    />
-  </button>
+<section class="border-b border-line" aria-label={title} data-section={id} onmouseleave={onleave}>
+  <div class="flex items-center pr-2">
+    <button
+      type="button"
+      class="flex min-w-0 flex-1 items-center gap-1.5 py-2 pl-2 text-left font-semibold"
+      aria-expanded={!collapsed}
+      onclick={toggle}
+    >
+      <ChevronDown
+        class="size-3.5 shrink-0 text-fg-muted transition-transform {collapsed ? '-rotate-90' : ''}"
+      />
+      <span class="truncate">{title}</span>
+      {#if count !== undefined}
+        <span class="rounded-full bg-line px-1.5 text-[10px] font-medium text-fg-muted tabular-nums"
+          >{count}</span
+        >
+      {/if}
+    </button>
+    {#if actions && !collapsed}{@render actions()}{/if}
+  </div>
   {#if !collapsed}<div class="px-3 pb-3">{@render children()}</div>{/if}
 </section>

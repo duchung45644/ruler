@@ -403,6 +403,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 8 tách các phần
 | `capture.copied` | Copied | Đã copy |
 | `capture.saved` | Saved | Đã lưu |
 | `capture.failed` | Failed | Lỗi |
+| `capture.copyNeedsHttps` | Copy needs HTTPS — use Save | Copy cần HTTPS — hãy dùng Lưu |
 
 - [ ] **Step 1: Viết test fail** (`capture.test.ts`; stub `sendToBackground` và `loadImg`):
   - `openCaptureBar()` khi `capture_tab` trả `{success:false}` → không có host `bo-doi-capture`, `state.capturing === false`, host chính không còn `data-capture`;

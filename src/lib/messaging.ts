@@ -86,7 +86,7 @@ export interface SidePanelApi {
   clear(): void;
 }
 
-type Handlers<A extends object> = {
+export type Handlers<A extends object> = {
   [K in keyof A]?: A[K] extends (...a: infer P) => infer R
     ? (...a: [...P, sender: Browser.runtime.MessageSender]) => R | Promise<R>
     : never;
@@ -102,6 +102,8 @@ interface Packet {
   target: Target;
   type: string;
   data: unknown[];
+  /** Background → panel: the tab the message is about (it has no sender tab). */
+  tabId?: number;
 }
 
 export function sendToBackground<K extends keyof BackgroundApi>(
@@ -133,11 +135,23 @@ export function sendToFrame<K extends keyof ContentApi>(
 }
 
 /** No panel open is normal: "Receiving end does not exist" resolves undefined. */
-export async function sendToSidePanel<K extends keyof SidePanelApi>(
+export function sendToSidePanel<K extends keyof SidePanelApi>(
   type: K,
   ...data: Parameters<SidePanelApi[K]>
 ): Promise<ReturnType<SidePanelApi[K]> | undefined> {
-  const packet: Packet = { target: 'sidepanel', type, data };
+  return postToPanel({ target: 'sidepanel', type, data });
+}
+
+/** From the background, which has no tab: the panel of `tabId` accepts it. */
+export function sendToTabPanel<K extends keyof SidePanelApi>(
+  tabId: number,
+  type: K,
+  ...data: Parameters<SidePanelApi[K]>
+): Promise<ReturnType<SidePanelApi[K]> | undefined> {
+  return postToPanel({ target: 'sidepanel', type, data, tabId });
+}
+
+async function postToPanel<R>(packet: Packet): Promise<R | undefined> {
   try {
     return await browser.runtime.sendMessage(packet);
   } catch (e) {
@@ -150,20 +164,32 @@ export function handleMessages<T extends Target>(
   target: T,
   handlers: Handlers<ApiOf<T>>,
   signal?: AbortSignal,
-  opts: { accept?: (sender: Browser.runtime.MessageSender) => boolean } = {},
+  opts: {
+    /** `tabId` is set only by sendToTabPanel. */
+    accept?: (sender: Browser.runtime.MessageSender, tabId?: number) => boolean;
+    /** Run in the listener itself, not a microtask later: sidePanel.open needs the user gesture. */
+    sync?: readonly (keyof ApiOf<T>)[];
+  } = {},
 ): void {
   const table = handlers as unknown as Record<string, (...a: unknown[]) => unknown>;
   const listener = (msg: unknown, sender: unknown, sendResponse: (r?: unknown) => void) => {
     const p = msg as Packet | null;
     if (!p || p.target !== target || !Object.hasOwn(table, p.type)) return false; // unknown: no reply
     // several panels listen at once (one per tab + detached windows): only the addressee answers
-    if (opts.accept?.(sender as Browser.runtime.MessageSender) === false) return false;
-    Promise.resolve()
-      .then(() => table[p.type]!(...(p.data ?? []), sender))
-      .then(sendResponse, (e) => {
-        console.error(`[bo-doi] handler "${p.type}" failed`, e);
-        sendResponse(undefined); // ponytail: sender gets undefined, not a hung promise
-      });
+    if (opts.accept?.(sender as Browser.runtime.MessageSender, p.tabId) === false) return false;
+    const run = () => table[p.type]!(...(p.data ?? []), sender);
+    let result: Promise<unknown>;
+    if ((opts.sync as readonly string[] | undefined)?.includes(p.type)) {
+      try {
+        result = Promise.resolve(run());
+      } catch (e) {
+        result = Promise.reject(e);
+      }
+    } else result = Promise.resolve().then(run);
+    result.then(sendResponse, (e) => {
+      console.error(`[bo-doi] handler "${p.type}" failed`, e);
+      sendResponse(undefined); // ponytail: sender gets undefined, not a hung promise
+    });
     return true;
   };
   browser.runtime.onMessage.addListener(listener);

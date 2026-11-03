@@ -8,10 +8,15 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-const stubs = () => ({
-  exec: vi.spyOn(fakeBrowser.scripting, 'executeScript').mockResolvedValue([] as never),
-  icon: vi.spyOn(fakeBrowser.action, 'setIcon').mockResolvedValue(undefined),
-});
+const stubs = () => {
+  vi.spyOn(fakeBrowser.windows.onBoundsChanged, 'addListener').mockImplementation(() => {});
+  return {
+    exec: vi.spyOn(fakeBrowser.scripting, 'executeScript').mockResolvedValue([] as never),
+    icon: vi.spyOn(fakeBrowser.action, 'setIcon').mockResolvedValue(undefined),
+    setOptions: vi.spyOn(fakeBrowser.sidePanel, 'setOptions').mockResolvedValue(undefined),
+    open: vi.spyOn(fakeBrowser.sidePanel, 'open').mockResolvedValue(undefined),
+  };
+};
 
 describe('toggleTab', () => {
   it('injects once when no content script answers', async () => {
@@ -168,5 +173,127 @@ describe('capture', () => {
     expect(cmds).toContain('Emulation.clearDeviceMetricsOverride');
     expect(cmds).toContain('Runtime.evaluate(R)');
     expect(detach).toHaveBeenCalled();
+  });
+});
+
+describe('side panel', () => {
+  const start = () => {
+    const s = stubs();
+    for (const ev of [fakeBrowser.contextMenus.onClicked, fakeBrowser.commands.onCommand])
+      vi.spyOn(ev, 'addListener').mockImplementation(() => {});
+    background.main();
+    return s;
+  };
+  const call = (type: string, data: unknown[], tab: object = { id: 5, index: 2, windowId: 1 }) =>
+    new Promise<unknown>((res) => {
+      void fakeBrowser.runtime.onMessage.trigger(
+        { target: 'background', type, data },
+        { tab } as never,
+        res,
+      );
+    });
+  const tick = () => new Promise((r) => setTimeout(r, 0));
+
+  it('open_side_panel calls sidePanel.open synchronously (user gesture)', async () => {
+    const { open, setOptions } = start();
+    await tick(); // detached map loaded
+    const order: string[] = [];
+    setOptions.mockImplementation(async () => void order.push('setOptions'));
+    open.mockImplementation(async () => void order.push('open'));
+    const p = call('open_side_panel', []);
+    expect(order).toEqual(['setOptions', 'open']); // before the listener returned
+    expect(open).toHaveBeenCalledWith({ tabId: 5 });
+    expect(await p).toEqual({ success: true });
+  });
+
+  it('open_side_panel focuses an existing detached window instead', async () => {
+    await fakeBrowser.storage.session.set({ detachedPanels: { 5: 77 } });
+    const { open } = start();
+    await tick();
+    const update = vi.spyOn(fakeBrowser.windows, 'update').mockResolvedValue({} as never);
+    expect(await call('open_side_panel', [])).toEqual({ success: true });
+    expect(update).toHaveBeenCalledWith(77, { focused: true });
+    expect(open).not.toHaveBeenCalled();
+  });
+
+  it('detach_panel opens a popup window and disables the docked panel', async () => {
+    const { setOptions } = start();
+    const create = vi
+      .spyOn(fakeBrowser.windows, 'create')
+      .mockResolvedValue({ id: 42, width: 300, height: 700 } as never);
+    expect(await call('detach_panel', [5, { width: 300, height: 700 }])).toEqual({
+      success: true,
+    });
+    const arg = create.mock.calls[0]![0]!;
+    expect(arg).toMatchObject({ type: 'popup', focused: true, width: 300, height: 700 });
+    expect(arg.url).toContain('tabId=5&detached=1');
+    expect((await fakeBrowser.storage.session.get('detachedPanels')).detachedPanels).toEqual({
+      5: 42,
+    });
+    expect(setOptions).toHaveBeenCalledWith({ tabId: 5, enabled: false });
+  });
+
+  it('closing the detached window re-enables the panel for an active tab', async () => {
+    await fakeBrowser.storage.session.set({ detachedPanels: { 5: 42 } });
+    const { setOptions } = start();
+    vi.spyOn(fakeBrowser.tabs, 'sendMessage').mockResolvedValue({ scriptIsActive: true } as never);
+    await fakeBrowser.windows.onRemoved.trigger(42);
+    await vi.waitFor(() =>
+      expect(setOptions).toHaveBeenCalledWith({
+        tabId: 5,
+        path: 'sidepanel.html?tabId=5',
+        enabled: true,
+      }),
+    );
+    expect((await fakeBrowser.storage.session.get('detachedPanels')).detachedPanels).toEqual({});
+  });
+
+  it('activating a tab without the script disables its panel and clears it', async () => {
+    const { setOptions } = start();
+    vi.spyOn(fakeBrowser.tabs, 'sendMessage').mockRejectedValue(new Error('no receiver'));
+    const toPanel = vi.spyOn(fakeBrowser.runtime, 'sendMessage').mockResolvedValue(undefined);
+    await fakeBrowser.tabs.onActivated.trigger({ tabId: 9, windowId: 1 });
+    await vi.waitFor(() =>
+      expect(toPanel).toHaveBeenCalledWith({
+        target: 'sidepanel',
+        type: 'clear',
+        data: [],
+        tabId: 9,
+      }),
+    );
+    expect(setOptions).toHaveBeenCalledWith({ tabId: 9, enabled: false });
+  });
+
+  it('close_extension disables the panel and closes the detached window', async () => {
+    await fakeBrowser.storage.session.set({ detachedPanels: { 5: 42 } });
+    const { setOptions } = start();
+    vi.spyOn(fakeBrowser.tabs, 'sendMessage').mockResolvedValue({ active: false } as never);
+    const remove = vi.spyOn(fakeBrowser.windows, 'remove').mockResolvedValue(undefined);
+    await call('close_extension', []);
+    expect(setOptions).toHaveBeenCalledWith({ tabId: 5, enabled: false });
+    expect(remove).toHaveBeenCalledWith(42);
+  });
+
+  it('open_external_tab only opens http(s)', async () => {
+    start();
+    const create = vi.spyOn(fakeBrowser.tabs, 'create').mockResolvedValue({} as never);
+    expect(await call('open_external_tab', ['javascript:alert(1)'])).toBe(false);
+    expect(create).not.toHaveBeenCalled();
+    expect(await call('open_external_tab', ['https://a.com/'])).toBe(true);
+    expect(create).toHaveBeenCalledWith({
+      url: 'https://a.com/',
+      active: true,
+      openerTabId: 5,
+      index: 3,
+    });
+  });
+
+  it('fetch_stylesheet needs <all_urls>', async () => {
+    start();
+    vi.spyOn(fakeBrowser.permissions, 'contains').mockResolvedValue(false as never);
+    expect(await call('fetch_stylesheet', ['https://a.com/x.css'])).toEqual({
+      ok: false,
+      error: 'no permission',
+    });
   });
 });

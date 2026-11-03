@@ -14,6 +14,13 @@ import {
   type FullCaptureResult,
 } from '../lib/messaging';
 import { isInjectable } from '../lib/tabs';
+import {
+  closePanelFor,
+  enableFor,
+  initPanels,
+  panelHandlers,
+  setupPanels,
+} from '../background/panels';
 
 const icon = (tabId: number, active: boolean) =>
   browser.action
@@ -32,6 +39,8 @@ export async function toggleTab(tabId: number): Promise<void> {
     });
     active = true;
   }
+  if (active) enableFor(tabId);
+  else await closePanelFor(tabId);
   await icon(tabId, active);
 }
 
@@ -131,6 +140,7 @@ async function fullCapture(tabId: number, o: FullCaptureOpts): Promise<FullCaptu
 
 // Port legacy-src/background.js:4560 (menu), :4618 (declarativeContent)
 async function setup() {
+  await setupPanels().catch(() => {});
   await browser.contextMenus.removeAll();
   browser.contextMenus.create({
     id: 'activate',
@@ -153,6 +163,7 @@ async function setup() {
 }
 
 export default defineBackground(() => {
+  initPanels();
   browser.runtime.onInstalled.addListener(() => void setup().catch(() => {}));
   browser.runtime.onStartup.addListener(() => void setup().catch(() => {}));
   browser.action.onClicked.addListener((tab) => void toggleIfAllowed(tab));
@@ -166,20 +177,27 @@ export default defineBackground(() => {
   browser.tabs.onUpdated.addListener((tabId, info) => {
     if (info.status === 'loading') void icon(tabId, false);
   });
-  handleMessages('background', {
-    async close_extension(sender) {
-      const tabId = sender.tab?.id;
-      if (tabId === undefined) return;
-      await sendToTab(tabId, 'toggle_script').catch(() => {});
-      await icon(tabId, false);
+  handleMessages(
+    'background',
+    {
+      ...panelHandlers,
+      async close_extension(sender) {
+        const tabId = sender.tab?.id;
+        if (tabId === undefined) return;
+        await sendToTab(tabId, 'toggle_script').catch(() => {});
+        await closePanelFor(tabId);
+        await icon(tabId, false);
+      },
+      // Port legacy-src/background.js:3409
+      request_clipboard_permission: () =>
+        browser.permissions.request({ permissions: ['clipboardWrite'] }),
+      capture_tab: (rect, sender) => captureTab(rect, sender.tab),
+      full_capture: (opts, sender) =>
+        sender.tab?.id === undefined
+          ? { ok: false, error: 'no tab' }
+          : fullCapture(sender.tab.id, opts),
     },
-    // Port legacy-src/background.js:3409
-    request_clipboard_permission: () =>
-      browser.permissions.request({ permissions: ['clipboardWrite'] }),
-    capture_tab: (rect, sender) => captureTab(rect, sender.tab),
-    full_capture: (opts, sender) =>
-      sender.tab?.id === undefined
-        ? { ok: false, error: 'no tab' }
-        : fullCapture(sender.tab.id, opts),
-  });
+    undefined,
+    { sync: ['open_side_panel', 'dock_panel'] },
+  );
 });

@@ -1,14 +1,16 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import {
   handleMessages,
   sendToBackground,
   sendToFrame,
   sendToSidePanel,
+  sendToTabPanel,
   sendToTab,
 } from './messaging';
 
 beforeEach(() => fakeBrowser.reset());
+afterEach(() => vi.restoreAllMocks());
 
 describe('messaging', () => {
   it('returns async handler value', async () => {
@@ -100,5 +102,32 @@ describe('side panel channel', () => {
         frameId: 0,
       },
     );
+  });
+
+  it('sendToTabPanel carries tabId for accept', async () => {
+    const accept = vi.fn<(s: unknown, t?: number) => boolean>(() => true);
+    handleMessages('sidepanel', { clear: () => {} }, undefined, { accept });
+    await sendToTabPanel(4, 'clear');
+    expect(accept).toHaveBeenCalledWith({}, 4);
+  });
+
+  it('sync handlers run inside the listener', () => {
+    const order: string[] = [];
+    let listener!: (m: unknown, s: unknown, r: (v?: unknown) => void) => unknown;
+    vi.spyOn(fakeBrowser.runtime.onMessage, 'addListener').mockImplementation(((l: never) => {
+      listener = l;
+    }) as never);
+    handleMessages(
+      'background',
+      {
+        check_panel_api: () => (order.push('sync'), true),
+        get_tab_id: () => (order.push('async'), 1),
+      },
+      undefined,
+      { sync: ['check_panel_api'] },
+    );
+    listener({ target: 'background', type: 'check_panel_api', data: [] }, {}, () => {});
+    listener({ target: 'background', type: 'get_tab_id', data: [] }, {}, () => {});
+    expect(order).toEqual(['sync']);
   });
 });

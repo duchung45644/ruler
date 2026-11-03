@@ -18,6 +18,12 @@ let stopHooked = false;
 export const frames = (): Promise<void> =>
   new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
 export const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
+/** After hiding our UI: two frames is not enough, captureVisibleTab still returned a frame with the
+ * dock in it (80ms failed, 150ms passed in Chromium), so wait a little longer before grabbing. */
+export const settle = async (): Promise<void> => {
+  await frames();
+  await sleep(200);
+};
 export const loadImg = (src: string): Promise<HTMLImageElement> =>
   new Promise((res, rej) => {
     const i = new Image();
@@ -49,15 +55,19 @@ export async function grabVisible(): Promise<string> {
 
 /** Hide every extension UI (main host and capture host) while fn grabs the tab (capture.js:132). */
 export async function withHiddenUi<T>(fn: () => Promise<T>): Promise<T> {
+  // an attribute, not style.display: WXT's `:host { all: initial !important }` beats inline styles
   const host = ui?.host;
-  const display = host?.style.display ?? '';
-  if (host) host.style.display = 'none';
+  const was = host?.dataset.capture;
+  if (host) host.dataset.capture = 'all';
   hideUi('all');
-  await frames();
+  await settle();
   try {
     return await fn();
   } finally {
-    if (host) host.style.display = display;
+    if (host) {
+      if (was === undefined) delete host.dataset.capture;
+      else host.dataset.capture = was;
+    }
     if (!state.capturing) hideUi(null);
   }
 }
@@ -119,7 +129,7 @@ export async function openCaptureBar(opts: { element?: () => void } = {}): Promi
   if (state.capturing) return;
   state.capturing = true;
   hideUi('all');
-  await frames();
+  await settle();
   const snap = await grabVisible().catch(() => null);
   if (!snap || !state.capturing) return closeCapture();
   Object.assign(cap, {

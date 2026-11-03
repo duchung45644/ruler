@@ -5,7 +5,7 @@ import { layer } from '../../core/overlay';
 import { hideUi } from '../../core/session';
 import { state } from '../../core/state.svelte';
 import { openCaptureEditor } from './editor';
-import { flash, frames } from './session';
+import { flash, settle } from './session';
 
 /** Selected-element capture, port of saveScreenshot (legacy-src/content.js:46700). */
 export async function captureElement(el: Element): Promise<void> {
@@ -24,7 +24,7 @@ export async function captureElement(el: Element): Promise<void> {
     // includePadding is not sent: legacy sent it and the background ignored it
     const keep = includeHighlights(await screenshotPrefs.getValue());
     hideUi(keep ? 'keepHighlight' : 'all');
-    await frames();
+    await settle();
     const rects = [el.getBoundingClientRect()];
     if (keep)
       for (const n of layer.querySelectorAll('[data-painter="inspector"] *'))

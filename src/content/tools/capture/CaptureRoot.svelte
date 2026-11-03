@@ -67,7 +67,7 @@
 {:else if cap.modeBar}
   <div
     data-bar="mode"
-    class="bd-in pointer-events-auto fixed bottom-[16px] left-1/2 flex -translate-x-1/2 items-center gap-0.5 rounded-panel border border-line bg-surface p-[5px] font-sans text-[13px] text-fg shadow-[0_8px_24px_rgba(0,0,0,.18)] backdrop-blur-surface"
+    class="bd-in pointer-events-auto fixed bottom-[16px] left-1/2 flex -translate-x-1/2 items-center gap-0.5 capbar p-[5px] font-sans text-[13px]"
   >
     {#if cap.element}
       <CapButton
@@ -99,7 +99,7 @@
   <div
     bind:this={selBar}
     data-bar="sel"
-    class="pointer-events-auto fixed flex items-center gap-0.5 rounded-panel border border-line bg-surface p-[5px] font-sans text-[13px] text-fg shadow-[0_8px_24px_rgba(0,0,0,.18)] backdrop-blur-surface"
+    class="pointer-events-auto fixed flex items-center gap-0.5 capbar p-[5px] font-sans text-[13px]"
     style:top="{pos.top}px"
     style:left="{pos.left}px"
   >

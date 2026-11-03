@@ -57,6 +57,23 @@
   visibility: hidden !important;
 }
 
+/* Floating bar over a dimmed or frozen page (capture bars): solid raised surface plus a light
+   ring, so it stands out from a dark backdrop where the translucent panel surface blends in. */
+@utility capbar {
+  border-radius: var(--radius-panel);
+  background: var(--color-zinc-800);
+  color: var(--color-fg);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.16),
+    0 8px 28px rgba(0, 0, 0, 0.55);
+  :host([data-theme='light']) & {
+    background: #fff;
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.08),
+      0 8px 28px rgba(0, 0, 0, 0.35);
+  }
+}
+
 /* Shared text/number/select field for panels and popovers (spec §6.3). */
 @utility field {
   border-radius: var(--radius-btn);

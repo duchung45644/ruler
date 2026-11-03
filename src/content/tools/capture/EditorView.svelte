@@ -75,7 +75,7 @@
   </div>
   <div
     data-bar="editor"
-    class="mt-[14px] flex max-w-[calc(100vw-32px)] shrink-0 flex-wrap items-center justify-center gap-0.5 rounded-panel border border-line bg-surface p-[5px] text-fg shadow-[0_8px_24px_rgba(0,0,0,.18)]"
+    class="mt-[14px] flex max-w-[calc(100vw-32px)] shrink-0 flex-wrap items-center justify-center gap-0.5 capbar p-[5px]"
   >
     <CapButton
       icon={Copy}

@@ -21,7 +21,8 @@
     "measure": "Kéo vùng để đo",
     "overlay": "Đè ảnh thiết kế",
     "find": "Tìm Phần tử",
-    "audit": "Màu & font của trang"
+    "audit": "Màu & font của trang",
+    "capture": "Chụp Màn hình"
   },
   "inspect": {
     "layout": "Box Model",
@@ -93,5 +94,20 @@
     "all": "Tất cả",
     "allTitle": "Copy toàn bộ danh sách của tab này",
     "empty": "Không tìm thấy."
+  },
+  "capture": {
+    "area": "Chụp vùng",
+    "element": "Phần tử đang chọn",
+    "visible": "Chụp màn hình",
+    "fullPage": "Chụp cả trang",
+    "close": "Đóng (Esc)",
+    "dragHint": "Kéo chuột để chọn vùng · Esc để huỷ",
+    "copy": "Copy",
+    "save": "Lưu",
+    "markupCapture": "Vẽ chú thích",
+    "copied": "Đã copy",
+    "saved": "Đã lưu",
+    "failed": "Lỗi",
+    "copyNeedsHttps": "Copy cần HTTPS — hãy dùng Lưu"
   }
 }

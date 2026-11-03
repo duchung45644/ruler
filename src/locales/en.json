@@ -21,7 +21,8 @@
     "measure": "Measure area (drag)",
     "overlay": "Design overlay",
     "find": "Find Element",
-    "audit": "Page colors & fonts"
+    "audit": "Page colors & fonts",
+    "capture": "Capture Screenshot"
   },
   "inspect": {
     "layout": "Box Model",
@@ -93,5 +94,20 @@
     "all": "All",
     "allTitle": "Copy all rows in this tab",
     "empty": "Nothing found."
+  },
+  "capture": {
+    "area": "Capture area",
+    "element": "Selected element",
+    "visible": "Capture visible area",
+    "fullPage": "Capture full page",
+    "close": "Close (Esc)",
+    "dragHint": "Drag to select an area · Esc to cancel",
+    "copy": "Copy",
+    "save": "Save",
+    "markupCapture": "Markup capture",
+    "copied": "Copied",
+    "saved": "Saved",
+    "failed": "Failed",
+    "copyNeedsHttps": "Copy needs HTTPS — use Save"
   }
 }

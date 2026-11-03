@@ -1,5 +1,6 @@
 import { initAudit } from './audit';
 import { initBreakpoints } from './breakpoints';
+import { initCapture } from './capture';
 import { initEyedropper } from './eyedropper';
 import { initFind } from './find';
 import { initGrid } from './grid';
@@ -21,6 +22,7 @@ export async function initTools(): Promise<void> {
   await initBreakpoints();
   initEyedropper();
   initFind(); // utilities: after eyedropper (legacy dock order)
+  initCapture(); // utilities: after find
   initOverlay(); // designTools: before measure so its arrow keys win (legacy load order)
   await initMeasure();
   initAudit(); // designTools: after measure (legacy dock order)

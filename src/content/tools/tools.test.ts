@@ -111,7 +111,7 @@ it('registers find on 7 after eyedropper; a match lights it, closing clears it',
   const { state } = await import('../core/state.svelte');
   await initTools();
   const ids = items.filter((i) => i.group === 'utilities').map((i) => i.id);
-  expect(ids.slice(ids.indexOf('eyedropper'))).toEqual(['eyedropper', 'find']);
+  expect(ids.slice(ids.indexOf('eyedropper'))).toEqual(['eyedropper', 'find', 'capture']);
   const f = items.find((i) => i.id === 'find')!;
   expect([f.key, f.label]).toEqual(['7', 'dock.find']);
   f.run();

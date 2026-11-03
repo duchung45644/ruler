@@ -7,6 +7,7 @@ import { initGrid } from './grid';
 import { initMeasure } from './measure';
 import { initOverlay } from './overlay';
 import { initRuler } from './ruler';
+import { initSidePanel } from '../sidepanel';
 import { initXray } from './xray';
 
 /**
@@ -26,4 +27,5 @@ export async function initTools(): Promise<void> {
   initOverlay(); // designTools: before measure so its arrow keys win (legacy load order)
   await initMeasure();
   initAudit(); // designTools: after measure (legacy dock order)
+  await initSidePanel();
 }

@@ -7,6 +7,9 @@ import { fakeBrowser } from 'wxt/testing/fake-browser';
 
 // fakeBrowser has no i18n.getMessage; the audit panel renders labels
 fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
+// nor runtime.onConnect, which the side panel bridge listens on
+fakeBrowser.runtime.onConnect.addListener = () => {};
+fakeBrowser.runtime.onConnect.removeListener = () => {};
 
 afterEach(() => {
   stopSession();

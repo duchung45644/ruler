@@ -20,6 +20,8 @@ export const state = $state({
   measureOn: false,
   /** Capture bar / editor open: page tools pause, only the capture key handler runs. */
   capturing: false,
+  /** Alert dialog up: tool keys stop (9.24). */
+  dialog: false,
   /** sidePanelPreferences.colorFormat, shared with the side panel (2.22, 3.23). */
   colorFormat: 'HEX' as ColorFormat,
   grid: { ...DEFAULT_SETTINGS.layoutGrid },

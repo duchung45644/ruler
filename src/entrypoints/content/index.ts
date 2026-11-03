@@ -1,7 +1,8 @@
 import { defineContentScript } from '#imports';
 import { startSession, stopSession } from '../../content/core/session';
 import { state } from '../../content/core/state.svelte';
-import { initInspector, selectChild, selectParent } from '../../content/tools/inspector';
+import { initInspector } from '../../content/tools/inspector';
+import { sidePanelHandlers } from '../../content/sidepanel';
 import { initTools } from '../../content/tools';
 import { openBar } from '../../content/tools/capture';
 import { handleMessages } from '../../lib/messaging';
@@ -33,9 +34,8 @@ export default defineContentScript({
     };
     loadFonts();
     handleMessages('content', {
+      ...sidePanelHandlers,
       ping: () => ({ active: state.active }),
-      select_parent: selectParent,
-      select_child: selectChild,
       save_screenshot: () => (state.active ? openBar() : undefined),
       toggle_script: async () => {
         if (state.active) stopSession();

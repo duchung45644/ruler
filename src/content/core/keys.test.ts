@@ -1,5 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { addKeyHandler, isQuitKey, routeKey, setCaptureKeyHandler, shouldIgnoreKey } from './keys';
+import {
+  addKeyHandler,
+  isQuitKey,
+  routeKey,
+  runShortcut,
+  setCaptureKeyHandler,
+  shouldIgnoreKey,
+} from './keys';
 import { items, registerItem } from './registry.svelte';
 import { state } from './state.svelte';
 
@@ -193,5 +200,43 @@ describe('routeKey while capturing', () => {
     expect(quit).toHaveBeenCalledOnce();
     quit.mockRestore();
     off();
+  });
+});
+
+describe('runShortcut (side panel keyboard_shortcut)', () => {
+  afterEach(() => {
+    items.splice(
+      items.findIndex((i) => i.id === 't2'),
+      1,
+    );
+    Object.assign(state, { paused: false, capturing: false, dialog: false, selected: null });
+  });
+
+  it('runs the item like a real key press, except paused, capturing or under a dialog', () => {
+    const run = vi.fn();
+    registerItem({
+      id: 't2',
+      icon: {} as never,
+      label: 'dock.quit',
+      key: '2',
+      group: 'utilities',
+      run,
+    });
+    expect(runShortcut('2')).toBe(true);
+    expect(run).toHaveBeenCalledOnce();
+    for (const flag of ['paused', 'capturing', 'dialog'] as const) {
+      state[flag] = true;
+      expect(runShortcut('2')).toBe(false);
+      state[flag] = false;
+    }
+    expect(run).toHaveBeenCalledOnce();
+  });
+
+  it('Escape deselects', () => {
+    registerItem({ id: 't2', icon: {} as never, label: 'dock.quit', group: 'utilities', run() {} });
+    state.selected = document.body;
+    expect(runShortcut('Escape')).toBe(true);
+    expect(state.selected).toBeNull();
+    expect(runShortcut('Escape')).toBe(false);
   });
 });

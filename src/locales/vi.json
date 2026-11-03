@@ -22,7 +22,9 @@
     "overlay": "Đè ảnh thiết kế",
     "find": "Tìm Phần tử",
     "audit": "Màu & font của trang",
-    "capture": "Chụp Màn hình"
+    "capture": "Chụp Màn hình",
+    "sidePanel": "Bật/Tắt Bảng Bên",
+    "sidePanelUnsupported": "Bảng bên không được hỗ trợ trên trình duyệt này"
   },
   "inspect": {
     "layout": "Box Model",
@@ -131,5 +133,10 @@
     "shortcutChild": "Chọn phần tử con",
     "shortcutTogglePanel": "Bật/tắt bảng điều khiển",
     "shortcutDeselect": "Bỏ chọn"
+  },
+  "dialog": {
+    "ok": "OK",
+    "elementNotFoundTitle": "Không tìm thấy phần tử",
+    "issueElementNotFound": "Không thể tìm thấy phần tử có vấn đề. Phần tử có thể đã bị xóa hoặc trang đã thay đổi."
   }
 }

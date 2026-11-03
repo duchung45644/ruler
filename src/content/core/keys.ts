@@ -43,6 +43,26 @@ function hookName(e: KeyboardEvent): string | null {
   return null;
 }
 
+/**
+ * Esc / dock item key, shared by real keys and the side panel's keyboard_shortcut (6.15).
+ * Returns whether something ran.
+ */
+export function runShortcut(key: string): boolean {
+  if (state.paused || state.capturing || state.dialog) return false;
+  if (key === 'Escape') {
+    if (state.selected) state.selected = null;
+    else if (state.popover)
+      state.popover = null; // legacy executeShortcut :47540
+    else return false;
+    return true;
+  }
+  const item = items.find((i) => i.key === key.toLowerCase() && !i.isDisabled?.());
+  if (!item) return false;
+  if (item.runKey) item.runKey();
+  else item.run();
+  return true;
+}
+
 export function routeKey(e: KeyboardEvent): void {
   if (isQuitKey(e)) {
     e.preventDefault();
@@ -54,23 +74,11 @@ export function routeKey(e: KeyboardEvent): void {
     if (captureKey?.(e)) e.preventDefault();
     return;
   }
-  if (shouldIgnoreKey(e, state)) return;
+  if (state.dialog || shouldIgnoreKey(e, state)) return;
   if (handlers.some((fn) => fn(e))) return e.preventDefault();
-  if (e.key === 'Escape') {
-    if (state.selected) state.selected = null;
-    else if (state.popover)
-      state.popover = null; // legacy executeShortcut :47540
-    else return;
-    e.preventDefault();
-    return;
-  }
-  if (!e.ctrlKey && !e.metaKey && !e.altKey) {
-    const key = e.key.toLowerCase();
-    const item = items.find((i) => i.key === key && !i.isDisabled?.());
-    if (item) {
-      e.preventDefault();
-      return item.runKey ? item.runKey() : item.run();
-    }
+  if (e.key === 'Escape' || (!e.ctrlKey && !e.metaKey && !e.altKey)) {
+    if (runShortcut(e.key)) return e.preventDefault();
+    if (e.key === 'Escape') return;
   }
   const name = hookName(e);
   if (name && hooks.get(name)?.(e)) e.preventDefault();

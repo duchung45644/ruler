@@ -22,7 +22,9 @@
     "overlay": "Design overlay",
     "find": "Find Element",
     "audit": "Page colors & fonts",
-    "capture": "Capture Screenshot"
+    "capture": "Capture Screenshot",
+    "sidePanel": "Toggle Side Panel",
+    "sidePanelUnsupported": "Side Panel Not Supported in This Browser"
   },
   "inspect": {
     "layout": "Box Model",
@@ -131,5 +133,10 @@
     "shortcutChild": "Select Child",
     "shortcutTogglePanel": "Toggle Panel",
     "shortcutDeselect": "Deselect"
+  },
+  "dialog": {
+    "ok": "OK",
+    "elementNotFoundTitle": "Element Not Found",
+    "issueElementNotFound": "Unable to locate the issue element. It may have been removed or the page may have changed."
   }
 }

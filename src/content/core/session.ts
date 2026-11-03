@@ -97,6 +97,7 @@ export function stopSession(): void {
     popover: null,
     dockNotice: null,
     capturing: false,
+    dialog: false,
   });
   ctxRef = null;
 }

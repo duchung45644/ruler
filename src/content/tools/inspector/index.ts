@@ -77,6 +77,12 @@ export function setInspect(on: boolean): void {
   requestPaint();
 }
 
+/** Port of selectElementById (content.js:47176): select from outside the page (side panel). */
+export function selectElement(el: Element, { scroll = false } = {}): void {
+  if (scroll) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  select(el);
+}
+
 /** Port of selectParent (legacy-src/content.js:46993). */
 export function selectParent(): void {
   const cur = state.selected;

@@ -36,13 +36,13 @@ export async function mountUi(
 }
 
 /** Mount a component into a fresh div in the shadow root; returns the unmount fn. */
-export function mountInShadow(
+export function mountInShadow<P extends Record<string, unknown>>(
   shadow: ShadowRoot,
-  component: Component,
-  props?: Record<string, unknown>,
+  component: Component<P>,
+  props?: P,
 ): () => void {
   const target = shadow.appendChild(document.createElement('div'));
-  const app = mount(component, { target, props });
+  const app = mount(component, { target, props: props ?? ({} as P) });
   return () => {
     unmount(app);
     target.remove();

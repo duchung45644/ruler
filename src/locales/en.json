@@ -262,5 +262,34 @@
       "message": "Missing og:image",
       "recommendation": "Add <meta property=\"og:image\"> so shared links include a preview image."
     }
+  },
+  "page": {
+    "untitled": "Untitled Page",
+    "noInfo": "No page info found",
+    "refresh": "Refresh",
+    "socialPreview": "Social Preview",
+    "facebook": "Facebook",
+    "x": "X",
+    "linkedin": "LinkedIn",
+    "ogImage": "Open Graph Image",
+    "metaTags": "Meta Tags",
+    "metaSeo": "SEO",
+    "metaOg": "Open Graph",
+    "metaTwitter": "Twitter Card",
+    "technology": "Technology",
+    "technologies": "Technologies",
+    "seoIssue": "SEO Issue",
+    "seoIssues": "SEO Issues",
+    "pageWeight": "Page Weight",
+    "pwDocument": "Document",
+    "pwScript": "Scripts",
+    "pwCss": "Stylesheets",
+    "pwImg": "Images",
+    "pwFont": "Fonts",
+    "pwMedia": "Media",
+    "pwFetch": "Fetch/XHR",
+    "pwOther": "Other",
+    "pwHidden": "$1 cross-origin resources hidden",
+    "pwBufferFull": "Resource buffer full, some entries may be missing"
   }
 }

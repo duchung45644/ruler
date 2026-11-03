@@ -1,3 +1,4 @@
+import { SEO_CHECKS } from '../lib/page/seo';
 import { describe, expect, it } from 'vitest';
 import en from './en.json';
 import vi from './vi.json';
@@ -21,5 +22,12 @@ describe('locales', () => {
         'cmdSelectChild',
       ]),
     );
+  });
+  it('mọi SEO_CHECKS có message + recommendation ở cả en và vi', () => {
+    const camel = (s: string) => s.replace(/-(\w)/g, (_, c: string) => c.toUpperCase());
+    for (const l of [en, vi])
+      for (const id of SEO_CHECKS)
+        for (const k of ['message', 'recommendation'])
+          expect(keys(l)).toContain(`seo.${camel(id)}.${k}`);
   });
 });

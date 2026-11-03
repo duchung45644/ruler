@@ -111,7 +111,9 @@ export async function startPanel(signal: AbortSignal, search = location.search):
       update_canvas_fps: (fps) => void (panel.canvasFps = fps),
       page_data: (d) => void (panel.page = d),
       page_technologies: (t) => void (panel.technologies = t),
-      page_weight_update: (w) => void (panel.weight = w),
+      page_weight_update(w) {
+        if (panel.selectedTab === 'page') panel.weight = w;
+      },
       update_issues: (i) => void (panel.issues = i),
       clear() {
         panel.element = null;
@@ -125,6 +127,19 @@ export async function startPanel(signal: AbortSignal, search = location.search):
         !panel.switching && panel.tabId !== null && (s.tab?.id ?? tabId) === panel.tabId,
     },
   );
+
+  // legacy Si (sidepanel.js:13180): a navigating tab drops its page data and asks again at once
+  const onUpdated = (id: number, info: Browser.tabs.OnUpdatedInfo) => {
+    if (id !== panel.tabId || info.status !== 'loading') return;
+    panel.page = null;
+    panel.technologies = null;
+    panel.weight = null;
+    void toPage('refresh_page_data');
+  };
+  browser.tabs.onUpdated.addListener(onUpdated);
+  signal.addEventListener('abort', () => browser.tabs.onUpdated.removeListener(onUpdated), {
+    once: true,
+  });
 
   const onVisibility = () => (panel.visible = document.visibilityState === 'visible');
   document.addEventListener('visibilitychange', onVisibility, { signal });

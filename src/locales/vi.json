@@ -262,5 +262,34 @@
       "message": "Thiếu og:image",
       "recommendation": "Thêm <meta property=\"og:image\"> để các link được chia sẻ bao gồm hình ảnh xem trước."
     }
+  },
+  "page": {
+    "untitled": "Trang Không có Tiêu đề",
+    "noInfo": "Không tìm thấy thông tin trang",
+    "refresh": "Tải lại",
+    "socialPreview": "Xem trước Mạng Xã hội",
+    "facebook": "Facebook",
+    "x": "X",
+    "linkedin": "LinkedIn",
+    "ogImage": "Hình ảnh Open Graph",
+    "metaTags": "Meta Tags",
+    "metaSeo": "SEO",
+    "metaOg": "Open Graph",
+    "metaTwitter": "Twitter Card",
+    "technology": "Công nghệ",
+    "technologies": "Công nghệ",
+    "seoIssue": "Vấn đề SEO",
+    "seoIssues": "Vấn đề SEO",
+    "pageWeight": "Dung lượng Trang",
+    "pwDocument": "Tài liệu",
+    "pwScript": "Scripts",
+    "pwCss": "Stylesheets",
+    "pwImg": "Hình ảnh",
+    "pwFont": "Font",
+    "pwMedia": "Phương tiện",
+    "pwFetch": "Fetch/XHR",
+    "pwOther": "Khác",
+    "pwHidden": "$1 tài nguyên cross-origin bị ẩn",
+    "pwBufferFull": "Bộ đệm tài nguyên đã đầy, một số mục có thể bị thiếu"
   }
 }

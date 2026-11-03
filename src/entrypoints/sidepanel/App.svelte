@@ -3,6 +3,7 @@
   import { forwardKey } from '../../lib/panel-keys';
   import EmptyElement from './EmptyElement.svelte';
   import ElementTab from './element/ElementTab.svelte';
+  import PageTab from './page/PageTab.svelte';
   import TabBar from './TabBar.svelte';
   import { panel, startPanel, takePendingScroll, toPage } from './store.svelte';
 
@@ -46,6 +47,6 @@
       <EmptyElement />
     {/if}
   {:else}
-    <div class="p-3" data-page>{panel.page?.title ?? ''}</div>
+    <PageTab />
   {/if}
 </main>

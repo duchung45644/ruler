@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { drawItem, editorCanvasStyle, isTooSmall, textFontCss, type MarkItem } from './markup';
+import {
+  drawItem,
+  editorCanvasStyle,
+  hitArrowEnd,
+  isTooSmall,
+  textFontCss,
+  type MarkItem,
+} from './markup';
 
 function recorder() {
   const calls: [string, ...unknown[]][] = [];
@@ -74,4 +81,32 @@ it('isTooSmall, textFontCss, editorCanvasStyle', () => {
   expect(textFontCss(4)).toBe(22);
   expect(editorCanvasStyle(1000, 2500, 2)).toContain('max-height:none');
   expect(editorCanvasStyle(1000, 1500, 2)).toContain('calc(100vh - 100px)');
+});
+
+it('hitArrowEnd finds the topmost arrow head or tail', () => {
+  const a = item({
+    tool: 'arrow',
+    pts: [
+      [0, 0],
+      [100, 0],
+    ],
+  });
+  const b = item({
+    tool: 'arrow',
+    pts: [
+      [100, 5],
+      [200, 5],
+    ],
+  });
+  const r = item({
+    tool: 'rect',
+    pts: [
+      [0, 0],
+      [100, 0],
+    ],
+  });
+  expect(hitArrowEnd([a, b], [3, 2], 10)).toEqual({ i: 0, end: 0 });
+  expect(hitArrowEnd([a, b], [101, 2], 10)).toEqual({ i: 1, end: 0 });
+  expect(hitArrowEnd([a, b], [50, 0], 10)).toBeNull();
+  expect(hitArrowEnd([r], [0, 0], 10)).toBeNull();
 });

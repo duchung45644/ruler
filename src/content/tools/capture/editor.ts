@@ -1,8 +1,10 @@
 import {
   MARK_COLORS,
   MARK_TOOLS,
+  ARROW_GRAB,
   drawItem,
   editorCanvasStyle,
+  hitArrowEnd,
   isTooSmall,
   textFontCss,
   type MarkItem,
@@ -112,15 +114,26 @@ export function attachEditor(canvas: HTMLCanvasElement, ed: HTMLElement, img: Ca
       const k = canvas.width / b.width;
       if (cap.editor.tool === 'text') return startText(e, b, k);
       const pt = (ev: PointerEvent): Pt => [(ev.clientX - b.left) * k, (ev.clientY - b.top) * k];
-      const s: MarkItem = {
-        tool: cap.editor.tool,
-        color: cap.editor.color,
-        size: cap.editor.size * k,
-        k,
-        pts: [pt(e)],
-      };
-      items.push(s);
-      sync();
+      // grabbing an arrow's head or tail re-drags that end instead of drawing a new shape
+      const hit = hitArrowEnd(items, pt(e), ARROW_GRAB * k);
+      const s: MarkItem = hit
+        ? items[hit.i]!
+        : {
+            tool: cap.editor.tool,
+            color: cap.editor.color,
+            size: cap.editor.size * k,
+            k,
+            pts: [pt(e)],
+          };
+      const end = hit?.end ?? 1;
+      const before = s.pts.slice() as Pt[];
+      if (hit) {
+        ctx.drawImage(img, 0, 0); // the image without it; the arrow lives on the preview while dragged
+        items.forEach((x) => x !== s && drawItem(ctx, x));
+      } else {
+        items.push(s);
+        sync();
+      }
       if (s.tool === 'pen') drawItem(ctx, s);
       canvas.setPointerCapture?.(e.pointerId);
       // shapes are previewed on a screen-sized layer and drawn into the image once on release:
@@ -128,11 +141,19 @@ export function attachEditor(canvas: HTMLCanvasElement, ed: HTMLElement, img: Ca
       const dpr = devicePixelRatio;
       const prev = s.tool === 'pen' ? null : document.createElement('canvas');
       const pctx = prev?.getContext('2d') ?? null;
+      const preview = () => {
+        if (!prev || !pctx) return;
+        pctx.setTransform(1, 0, 0, 1, 0, 0);
+        pctx.clearRect(0, 0, prev.width, prev.height);
+        pctx.setTransform(dpr / k, 0, 0, dpr / k, b.left * dpr, b.top * dpr);
+        drawItem(pctx, s);
+      };
       if (prev) {
         prev.width = Math.round(innerWidth * dpr);
         prev.height = Math.round(innerHeight * dpr);
         prev.style.cssText = `position:fixed;left:0;top:0;width:${innerWidth}px;height:${innerHeight}px;pointer-events:none`;
         ed.append(prev);
+        if (hit) preview();
       }
       const drag = new AbortController();
       const opts = { signal: AbortSignal.any([signal, drag.signal]) };
@@ -143,12 +164,8 @@ export function attachEditor(canvas: HTMLCanvasElement, ed: HTMLElement, img: Ca
             s.pts.push(pt(ev));
             return drawItem(ctx, s, s.pts.length - 1); // only the new segment
           }
-          s.pts[1] = pt(ev);
-          if (!prev || !pctx) return;
-          pctx.setTransform(1, 0, 0, 1, 0, 0);
-          pctx.clearRect(0, 0, prev.width, prev.height);
-          pctx.setTransform(dpr / k, 0, 0, dpr / k, b.left * dpr, b.top * dpr);
-          drawItem(pctx, s);
+          s.pts[end] = pt(ev);
+          preview();
         },
         opts,
       );
@@ -158,13 +175,31 @@ export function attachEditor(canvas: HTMLCanvasElement, ed: HTMLElement, img: Ca
           drag.abort();
           prev?.remove();
           if (s.tool === 'pen') return;
-          if (isTooSmall(s.pts[0]!, s.pts[1], k)) {
+          const tooSmall = isTooSmall(s.pts[0]!, s.pts[1], k);
+          if (hit) {
+            if (tooSmall) s.pts = before; // collapsing an arrow keeps its old ends
+            paint(); // back in its original stacking order
+          } else if (tooSmall) {
             items.pop();
             sync();
           } else drawItem(ctx, s);
         },
         opts,
       );
+    },
+    { signal },
+  );
+
+  // hover feedback: an arrow end can be grabbed
+  canvas.addEventListener(
+    'pointermove',
+    (e) => {
+      if (e.buttons) return;
+      const b = canvas.getBoundingClientRect();
+      const k = canvas.width / b.width;
+      const p: Pt = [(e.clientX - b.left) * k, (e.clientY - b.top) * k];
+      canvas.style.cursor =
+        cap.editor.marking && hitArrowEnd(items, p, ARROW_GRAB * k) ? 'move' : '';
     },
     { signal },
   );

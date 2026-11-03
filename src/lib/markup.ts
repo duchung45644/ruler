@@ -91,6 +91,22 @@ export function drawItem(c: Ctx, s: MarkItem, from = 1): void {
   c.restore();
 }
 
+/** Grab radius (CSS px) around an arrow's head or tail. */
+export const ARROW_GRAB = 10;
+
+/** Topmost arrow whose tail (end 0) or head (end 1) is within `r` image px of `p`. */
+export function hitArrowEnd(items: MarkItem[], p: Pt, r: number): { i: number; end: 0 | 1 } | null {
+  for (let i = items.length - 1; i >= 0; i--) {
+    const s = items[i]!;
+    if (s.tool !== 'arrow' || s.pts.length < 2) continue;
+    for (const end of [1, 0] as const) {
+      const q = s.pts[end]!;
+      if (Math.hypot(q[0] - p[0], q[1] - p[1]) <= r) return { i, end };
+    }
+  }
+  return null;
+}
+
 /** A shape needs an actual drag; plain clicks are dropped. */
 export const isTooSmall = (a: Pt, z: Pt | undefined, k: number): boolean =>
   !z || Math.hypot(z[0] - a[0], z[1] - a[1]) < 4 * k;

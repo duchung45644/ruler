@@ -152,3 +152,29 @@ it('save_screenshot path (openBar) opens the mode bar', async () => {
   openBar();
   await vi.waitFor(() => expect(bar('mode')).toBeTruthy());
 });
+
+it('selection guides spanning the viewport do not grow the element crop', async () => {
+  vi.stubGlobal('devicePixelRatio', 1);
+  vi.spyOn(editor, 'openCaptureEditor').mockResolvedValue();
+  const { layer } = await import('../../core/overlay');
+  const box = document.createElement('div');
+  box.dataset.painter = 'inspector';
+  const guide = box.appendChild(document.createElement('div'));
+  guide.getBoundingClientRect = () =>
+    ({
+      left: 0,
+      top: 120,
+      right: innerWidth,
+      bottom: 121,
+      width: innerWidth,
+      height: 1,
+    }) as DOMRect;
+  layer.append(box);
+  const p = document.body.appendChild(document.createElement('p'));
+  p.getBoundingClientRect = () =>
+    ({ left: 100, top: 100, right: 200, bottom: 150, width: 100, height: 50 }) as DOMRect;
+  await captureElement(p);
+  expect(grab).toHaveBeenCalledWith('capture_tab', { left: 50, top: 50, right: 250, bottom: 200 });
+  box.remove();
+  vi.unstubAllGlobals();
+});

@@ -27,8 +27,12 @@ export async function captureElement(el: Element): Promise<void> {
     await settle();
     const rects = [el.getBoundingClientRect()];
     if (keep)
-      for (const n of layer.querySelectorAll('[data-painter="inspector"] *'))
-        rects.push(n.getBoundingClientRect());
+      for (const n of layer.querySelectorAll('[data-painter="inspector"] *')) {
+        const b = n.getBoundingClientRect();
+        // skip empty boxes and the selection's alignment guides: they span the viewport and
+        // would grow the crop to the whole screen (tag, numbers and margin bands are kept)
+        if (b.width && b.height && b.width < innerWidth && b.height < innerHeight) rects.push(b);
+      }
     const r = await sendToBackground(
       'capture_tab',
       elementCaptureRect(rects, innerWidth, innerHeight, devicePixelRatio || 1),

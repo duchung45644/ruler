@@ -21,6 +21,7 @@ import { displaySelector, fullPath } from '../../lib/selector';
 import { isTextHeavy } from '../core/contrast';
 import { childOf } from '../tools/inspector';
 import { collectIssues } from './issues';
+import { skippedCrossOriginCount } from './rules';
 
 const MAX_DEPTH = 100;
 const isOwn = (el: Element) => el.tagName.toLowerCase() === 'bo-doi-ui';
@@ -379,7 +380,7 @@ function parentAcross(el: Element): Element | null {
 
 /**
  * Port of sendElementToSidePanel's inspect branch (content.js:39602–40760): plain JSON for the
- * panel. `elementId` tags elements with data-sr-id-*. Tailwind and matched rules come later.
+ * panel. `elementId` tags elements with data-sr-id-*. Matched rules come on demand (get_matched_rules); Tailwind in 4b.
  */
 export function collectElementDetails(
   el: Element,
@@ -413,7 +414,7 @@ export function collectElementDetails(
     canvas: canvasInfo(el, parseFloat(s.width) || rect.width),
     layout: elementLayout(s),
     css: computedCss(s),
-    skippedCrossOriginCount: 0,
+    skippedCrossOriginCount: skippedCrossOriginCount(el),
   };
   const before = getComputedStyle(el, '::before');
   const after = getComputedStyle(el, '::after');

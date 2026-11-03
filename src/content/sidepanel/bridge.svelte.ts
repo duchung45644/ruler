@@ -22,6 +22,7 @@ import {
   repaintHighlights,
 } from './highlight';
 import { currentIssues, stopIssues } from './issues';
+import { enableCrossOriginStyles, getMatchedRules } from './rules';
 
 export const bridge = $state({ panelOpen: false, panelApi: true });
 
@@ -63,6 +64,23 @@ function onConnect(port: Browser.runtime.Port): void {
     bridge.panelOpen = false;
     clearHighlights();
   });
+  void autoEnableCrossOrigin();
+}
+
+let crossOriginTried = false;
+
+/** First panel open with <all_urls> granted: read cross-origin sheets without asking (6.26). */
+async function autoEnableCrossOrigin(): Promise<void> {
+  if (crossOriginTried) return;
+  crossOriginTried = true;
+  if (await sendToBackground('has_host_permission').catch(() => false)) await enableCrossOrigin();
+}
+
+async function enableCrossOrigin(): Promise<{ success: boolean }> {
+  const r = await enableCrossOriginStyles(state.selected);
+  // the skipped count in the panel is stale now
+  if (state.selected && bridge.panelOpen) sendElement(state.selected);
+  return r;
 }
 
 /** Select `id` first when the panel names an element (2.19). */
@@ -123,6 +141,8 @@ export const sidePanelHandlers: Handlers<ContentApi> = {
   side_panel_loaded() {
     if (state.active && state.selected) sendElement(state.selected);
   },
+  get_matched_rules: () => getMatchedRules(state.selected),
+  enable_cross_origin_styles: () => enableCrossOrigin(),
   keyboard_shortcut(key) {
     if (state.active) runShortcut(key);
   },

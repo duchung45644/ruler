@@ -89,8 +89,14 @@ export function cropSource(r: SelRect, imgW: number, vw: number) {
   };
 }
 
-/** Legacy calculateElementCoordinates (content.js:45410): union + 50px, clamped, in device px. */
-export function elementCaptureRect(rects: Edges[], vw: number, vh: number, dpr: number): Edges {
+/** Legacy calculateElementCoordinates (content.js:45410): union + `pad` px (legacy 50), clamped, in device px. */
+export function elementCaptureRect(
+  rects: Edges[],
+  vw: number,
+  vh: number,
+  dpr: number,
+  pad = 50,
+): Edges {
   if (!rects.length) return { left: 0, top: 0, right: vw * dpr, bottom: vh * dpr };
   const u = rects.reduce((a, r) => ({
     left: Math.min(a.left, r.left),
@@ -99,10 +105,10 @@ export function elementCaptureRect(rects: Edges[], vw: number, vh: number, dpr: 
     bottom: Math.max(a.bottom, r.bottom),
   }));
   return {
-    left: Math.max(0, u.left - 50) * dpr,
-    top: Math.max(0, u.top - 50) * dpr,
-    right: Math.min(vw, u.right + 50) * dpr,
-    bottom: Math.min(vh, u.bottom + 50) * dpr,
+    left: Math.max(0, u.left - pad) * dpr,
+    top: Math.max(0, u.top - pad) * dpr,
+    right: Math.min(vw, u.right + pad) * dpr,
+    bottom: Math.min(vh, u.bottom + pad) * dpr,
   };
 }
 

@@ -1,13 +1,14 @@
 import { elementCaptureRect, isFullyVisible } from '../../../lib/capture';
 import { sendToBackground } from '../../../lib/messaging';
-import { includeHighlights, screenshotPrefs } from '../../../lib/settings';
-import { layer } from '../../core/overlay';
 import { hideUi } from '../../core/session';
 import { state } from '../../core/state.svelte';
 import { openCaptureEditor } from './editor';
 import { flash, settle } from './session';
 
-/** Selected-element capture, port of saveScreenshot (legacy-src/content.js:46700). */
+/**
+ * Selected-element capture, after saveScreenshot (legacy-src/content.js:46700). Unlike legacy
+ * (+50px, highlight kept), the owner wants only the element: all our UI hidden, cropped to its box.
+ */
 export async function captureElement(el: Element): Promise<void> {
   state.capturing = true;
   const x0 = scrollX,
@@ -21,24 +22,19 @@ export async function captureElement(el: Element): Promise<void> {
         el.scrollIntoView();
       }
     }
-    // includePadding is not sent: legacy sent it and the background ignored it
-    const keep = includeHighlights(await screenshotPrefs.getValue());
-    hideUi(keep ? 'keepHighlight' : 'all');
+    hideUi('all');
     await settle();
-    const rects = [el.getBoundingClientRect()];
-    if (keep)
-      for (const n of layer.querySelectorAll('[data-painter="inspector"] *')) {
-        const b = n.getBoundingClientRect();
-        // skip empty boxes and the selection's alignment guides: they span the viewport and
-        // would grow the crop to the whole screen (tag, numbers and margin bands are kept)
-        if (b.width && b.height && b.width < innerWidth && b.height < innerHeight) rects.push(b);
-      }
     const r = await sendToBackground(
       'capture_tab',
-      elementCaptureRect(rects, innerWidth, innerHeight, devicePixelRatio || 1),
+      elementCaptureRect(
+        [el.getBoundingClientRect()],
+        innerWidth,
+        innerHeight,
+        devicePixelRatio || 1,
+        0,
+      ),
     ).catch(() => null);
     if (!r?.success || !state.capturing) return;
-    hideUi('all');
     await openCaptureEditor(r.dataUrl);
     opened = state.capturing;
     if (opened) flash();

@@ -6,7 +6,6 @@ import * as messaging from '../../../lib/messaging';
 import { routeKey } from '../../core/keys';
 import { startSession, stopSession } from '../../core/session';
 import { state } from '../../core/state.svelte';
-import { screenshotPrefs } from '../../../lib/settings';
 import * as editor from './editor';
 import { captureElement } from './element';
 import { openBar } from '.';
@@ -108,10 +107,10 @@ describe('captureElement', () => {
   };
   const seen: (string | undefined)[] = [];
   const spyGrab = (ok: boolean) =>
-    grab.mockImplementation((async (_t: string, rect: unknown) => {
+    grab.mockImplementation((async () => {
       seen.push(mainHost().dataset.capture);
       return ok
-        ? { success: true, dataUrl: 'data:x', rect }
+        ? { success: true, dataUrl: 'data:x' }
         : { success: false, error: 'CAPTURE_FAILED' };
     }) as never);
   beforeEach(() => {
@@ -121,22 +120,15 @@ describe('captureElement', () => {
   });
   afterEach(() => vi.unstubAllGlobals());
 
-  it('sends the padded device rect, keeping the highlight by default', async () => {
+  it('crops to the element box only, with all our UI hidden', async () => {
     spyGrab(true);
     await captureElement(target());
     expect(grab).toHaveBeenCalledWith('capture_tab', {
-      left: 100,
-      top: 100,
-      right: 500,
-      bottom: 400,
+      left: 200,
+      top: 200,
+      right: 400,
+      bottom: 300,
     });
-    expect(seen).toEqual(['keepHighlight']);
-  });
-
-  it('hides everything when highlights are off', async () => {
-    await screenshotPrefs.setValue({ includeHighlights: false });
-    spyGrab(true);
-    await captureElement(target());
     expect(seen).toEqual(['all']);
   });
 
@@ -151,30 +143,4 @@ describe('captureElement', () => {
 it('save_screenshot path (openBar) opens the mode bar', async () => {
   openBar();
   await vi.waitFor(() => expect(bar('mode')).toBeTruthy());
-});
-
-it('selection guides spanning the viewport do not grow the element crop', async () => {
-  vi.stubGlobal('devicePixelRatio', 1);
-  vi.spyOn(editor, 'openCaptureEditor').mockResolvedValue();
-  const { layer } = await import('../../core/overlay');
-  const box = document.createElement('div');
-  box.dataset.painter = 'inspector';
-  const guide = box.appendChild(document.createElement('div'));
-  guide.getBoundingClientRect = () =>
-    ({
-      left: 0,
-      top: 120,
-      right: innerWidth,
-      bottom: 121,
-      width: innerWidth,
-      height: 1,
-    }) as DOMRect;
-  layer.append(box);
-  const p = document.body.appendChild(document.createElement('p'));
-  p.getBoundingClientRect = () =>
-    ({ left: 100, top: 100, right: 200, bottom: 150, width: 100, height: 50 }) as DOMRect;
-  await captureElement(p);
-  expect(grab).toHaveBeenCalledWith('capture_tab', { left: 50, top: 50, right: 250, bottom: 200 });
-  box.remove();
-  vi.unstubAllGlobals();
 });

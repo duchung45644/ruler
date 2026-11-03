@@ -5,14 +5,14 @@ import { themePref } from '../../lib/settings';
 import { detectPageIsDark, resolveTheme, type ThemePref } from '../../lib/theme';
 import { installDragGuard, resetDrag } from './drag';
 import { routeKey } from './keys';
-import { layer, mountLayer, requestPaint } from './overlay';
+import { mountLayer, requestPaint } from './overlay';
 import { setPaused } from './registry.svelte';
 import { state } from './state.svelte';
 
 let controller: AbortController | null = null;
 let cleanups: (() => void)[] = [];
 let ctxRef: ContentScriptContext | null = null;
-let uiRef: { host: HTMLElement; shadow: ShadowRoot } | null = null;
+let uiRef: { host: HTMLElement } | null = null;
 
 /** Context of the running session (capture mounts its own hosts with it). */
 export function sessionCtx(): ContentScriptContext {
@@ -20,18 +20,11 @@ export function sessionCtx(): ContentScriptContext {
   return ctxRef;
 }
 
-/** Hides the main UI while capturing: 'all', or everything but the inspector highlight. */
-export function hideUi(mode: 'all' | 'keepHighlight' | null): void {
+/** Hides the main UI while capturing (theme.css :host([data-capture='all'])). */
+export function hideUi(mode: 'all' | null): void {
   if (!uiRef) return;
-  if (mode)
-    uiRef.host.dataset.capture = mode; // theme.css hides the host for 'all'
+  if (mode) uiRef.host.dataset.capture = mode;
   else delete uiRef.host.dataset.capture;
-  const keep = mode === 'keepHighlight';
-  for (const el of uiRef.shadow.children)
-    if (el !== layer) (el as HTMLElement).style.visibility = keep ? 'hidden' : '';
-  for (const box of layer.children)
-    (box as HTMLElement).style.visibility =
-      keep && (box as HTMLElement).dataset.painter !== 'inspector' ? 'hidden' : '';
 }
 
 export function sessionSignal(): AbortSignal {

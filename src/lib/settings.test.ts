@@ -3,8 +3,10 @@ import { fakeBrowser } from 'wxt/testing/fake-browser';
 import {
   DEFAULT_SETTINGS,
   getSettings,
+  includeHighlights,
   measureColor,
   measureGuides,
+  screenshotPrefs,
   themePref,
   updateSettings,
 } from './settings';
@@ -37,5 +39,13 @@ describe('settings', () => {
     expect(s.rulerIsOn).toBe(false);
     expect(await measureColor.getValue()).toBe('#FF3B6B');
     expect(await measureGuides.getValue()).toBe(false);
+  });
+});
+
+describe('screenshotPrefs', () => {
+  it('null by default means highlights on', async () => {
+    expect(await screenshotPrefs.getValue()).toBeNull();
+    expect(includeHighlights(null)).toBe(true);
+    expect(includeHighlights({ includeHighlights: false })).toBe(false);
   });
 });

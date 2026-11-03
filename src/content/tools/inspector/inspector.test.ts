@@ -142,3 +142,22 @@ it('a click right after a drag does not select (regression)', async () => {
   ac.abort();
   expect(state.selected).toBe(null);
 });
+
+it('ignores hover and click while capturing', async () => {
+  const host = document.createElement('bo-doi-ui');
+  document.body.append(host);
+  host.attachShadow({ mode: 'open' }).append(layer);
+  const p = document.createElement('p');
+  document.body.append(p);
+  const prev = document.elementsFromPoint;
+  document.elementsFromPoint = () => [p];
+  await initInspector();
+  state.inspectOn = true;
+  state.capturing = true;
+  p.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, composed: true }));
+  p.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+  state.capturing = false;
+  document.elementsFromPoint = prev;
+  expect(state.hovered).toBeNull();
+  expect(state.selected).toBeNull();
+});

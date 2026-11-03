@@ -6,6 +6,7 @@ let raf = 0;
 
 export function addPainter(id: string, paint: (layer: HTMLElement) => void): () => void {
   const box = document.createElement('div');
+  box.dataset.painter = id; // hideUi('keepHighlight') keeps only the inspector's box
   layer.append(box);
   painters.set(id, { box, paint });
   return () => {

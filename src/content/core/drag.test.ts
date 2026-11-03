@@ -1,5 +1,6 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import { installDragGuard, isDragging, resetDrag, startDrag } from './drag';
+import { state } from './state.svelte';
 
 afterEach(() => {
   resetDrag();
@@ -84,4 +85,14 @@ it('guard swallows pointerup mid-drag but still ends the drag', () => {
   expect(onEnd).toHaveBeenCalledTimes(1);
   expect(ups).toBe(0);
   ac.abort();
+});
+
+it('does not start while capturing', () => {
+  state.capturing = true;
+  const onMove = vi.fn();
+  startDrag(ptr('pointerdown'), onMove);
+  window.dispatchEvent(ptr('pointermove'));
+  state.capturing = false;
+  expect(onMove).not.toHaveBeenCalled();
+  expect(isDragging()).toBe(false);
 });

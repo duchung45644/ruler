@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { addKeyHandler, isQuitKey, routeKey, shouldIgnoreKey } from './keys';
+import { addKeyHandler, isQuitKey, routeKey, setCaptureKeyHandler, shouldIgnoreKey } from './keys';
 import { items, registerItem } from './registry.svelte';
 import { state } from './state.svelte';
 
@@ -145,5 +145,53 @@ describe('addKeyHandler', () => {
     routeKey(ev);
     off();
     expect(fn).not.toHaveBeenCalled();
+  });
+});
+
+describe('routeKey while capturing', () => {
+  afterEach(() => {
+    state.capturing = false;
+    setCaptureKeyHandler(null);
+    const i = items.findIndex((x) => x.id === 't1');
+    if (i >= 0) items.splice(i, 1);
+  });
+
+  it('only the capture handler sees keys; Ctrl+Q still quits; inputs are skipped', () => {
+    const run = vi.fn();
+    registerItem({
+      id: 't1',
+      icon: {} as never,
+      label: 'dock.quit',
+      key: '2',
+      group: 'utilities',
+      run,
+    });
+    const tool = vi.fn(() => true);
+    const off = addKeyHandler(tool);
+    const cap = vi.fn(() => true);
+    setCaptureKeyHandler(cap);
+    state.paused = false;
+    state.capturing = true;
+    const div = document.body.appendChild(document.createElement('div'));
+    routeKey(keyFrom(div, { key: '2' }));
+    routeKey(keyFrom(div, { key: 'ArrowLeft' }));
+    expect(run).not.toHaveBeenCalled();
+    expect(tool).not.toHaveBeenCalled();
+    expect(cap).toHaveBeenCalledTimes(2);
+
+    const host = document.body.appendChild(document.createElement('bo-doi-capture'));
+    const input = host.attachShadow({ mode: 'open' }).appendChild(document.createElement('input'));
+    let ev!: KeyboardEvent;
+    host.addEventListener('keydown', (e) => (ev = e as KeyboardEvent), { once: true });
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'p', bubbles: true, composed: true }));
+    routeKey(ev);
+    expect(cap).toHaveBeenCalledTimes(2);
+
+    const quitItem = items.find((x) => x.id === 'quit')!;
+    const quit = vi.spyOn(quitItem, 'run').mockImplementation(() => {});
+    routeKey(keyFrom(div, { key: 'q', ctrlKey: true }));
+    expect(quit).toHaveBeenCalledOnce();
+    quit.mockRestore();
+    off();
   });
 });

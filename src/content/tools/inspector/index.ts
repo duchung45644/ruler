@@ -235,7 +235,7 @@ export async function initInspector(): Promise<void> {
     requestPaint();
   };
   const hitTest = () => hover(mouse && host ? pageElementAt(mouse.x, mouse.y, host) : null);
-  const live = () => state.inspectOn && !state.paused;
+  const live = () => state.inspectOn && !state.paused && !state.capturing;
   const opts = { signal, capture: true };
 
   // 2.06 hover

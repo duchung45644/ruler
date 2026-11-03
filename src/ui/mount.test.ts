@@ -20,3 +20,11 @@ describe('mountUi', () => {
     expect(page).not.toHaveBeenCalled();
   });
 });
+
+it('mounts a named host marked as ours', async () => {
+  const ctx = { onInvalidated: () => () => {}, isInvalid: false } as never;
+  const ui = await mountUi(ctx, Empty, {}, { name: 'bo-doi-capture' });
+  expect(ui.host.localName).toBe('bo-doi-capture');
+  expect(ui.host.hasAttribute('data-bo-doi')).toBe(true);
+  ui.remove();
+});

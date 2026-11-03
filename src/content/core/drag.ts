@@ -1,3 +1,5 @@
+import { state } from './state.svelte';
+
 /** Shared drag (spec §9): while dragging and ~50ms after, page clicks/hover-inspect are swallowed. */
 let drag: AbortController | null = null;
 let justDragged = false;
@@ -11,6 +13,7 @@ export function startDrag(
   onEnd?: (u: PointerEvent) => void,
   onDone?: () => void, // any teardown, incl. blur and abort
 ): void {
+  if (state.capturing) return; // capture UI owns the pointer
   e.preventDefault();
   e.stopImmediatePropagation();
   drag?.abort();

@@ -5,12 +5,33 @@ import { themePref } from '../../lib/settings';
 import { detectPageIsDark, resolveTheme, type ThemePref } from '../../lib/theme';
 import { installDragGuard, resetDrag } from './drag';
 import { routeKey } from './keys';
-import { mountLayer, requestPaint } from './overlay';
+import { layer, mountLayer, requestPaint } from './overlay';
 import { setPaused } from './registry.svelte';
 import { state } from './state.svelte';
 
 let controller: AbortController | null = null;
 let cleanups: (() => void)[] = [];
+let ctxRef: ContentScriptContext | null = null;
+let uiRef: { host: HTMLElement; shadow: ShadowRoot } | null = null;
+
+/** Context of the running session (capture mounts its own hosts with it). */
+export function sessionCtx(): ContentScriptContext {
+  if (!ctxRef) throw new Error('no session');
+  return ctxRef;
+}
+
+/** Hides the main UI while capturing: 'all', or everything but the inspector highlight. */
+export function hideUi(mode: 'all' | 'keepHighlight' | null): void {
+  if (!uiRef) return;
+  if (mode === 'all') uiRef.host.dataset.capture = 'all';
+  else delete uiRef.host.dataset.capture;
+  const keep = mode === 'keepHighlight';
+  for (const el of uiRef.shadow.children)
+    if (el !== layer) (el as HTMLElement).style.visibility = keep ? 'hidden' : '';
+  for (const box of layer.children)
+    (box as HTMLElement).style.visibility =
+      keep && (box as HTMLElement).dataset.painter !== 'inspector' ? 'hidden' : '';
+}
 
 export function sessionSignal(): AbortSignal {
   return (controller ??= new AbortController()).signal;
@@ -33,11 +54,14 @@ export async function startSession(ctx: ContentScriptContext): Promise<void> {
 
 async function start(ctx: ContentScriptContext): Promise<void> {
   const signal = sessionSignal();
+  ctxRef = ctx;
   installDragGuard(signal); // first: runs before every tool's window-capture listener
   onStop(resetDrag);
   const ui = await mountUi(ctx, Dock);
   if (signal.aborted) return ui.remove(); // stopped while mounting
   onStop(ui.remove);
+  uiRef = ui;
+  onStop(() => (uiRef = null));
   onStop(mountLayer(ui.shadow));
   window.addEventListener('resize', requestPaint, { signal });
   window.addEventListener('keydown', routeKey, { signal });
@@ -70,5 +94,7 @@ export function stopSession(): void {
     dockCollapsed: false,
     popover: null,
     dockNotice: null,
+    capturing: false,
   });
+  ctxRef = null;
 }

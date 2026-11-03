@@ -40,6 +40,10 @@
 :host([data-theme='light']) {
   color-scheme: light !important;
 }
+/* Capture hides the whole main UI (hideUi('all')). */
+:host([data-capture='all']) {
+  visibility: hidden !important;
+}
 /* Eyedropper hides the whole UI while picking (3.07). */
 :host([data-hidden]) {
   visibility: hidden !important;

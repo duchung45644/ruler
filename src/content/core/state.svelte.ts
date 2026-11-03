@@ -17,6 +17,8 @@ export const state = $state({
   auditOn: false,
   overlayOn: false,
   measureOn: false,
+  /** Capture bar / editor open: page tools pause, only the capture key handler runs. */
+  capturing: false,
   grid: { ...DEFAULT_SETTINGS.layoutGrid },
   /** Chip above the dock button `id` for 1500ms (legacy showButtonNotification :34691). */
   dockNotice: null as { id: string; color: string; text: string } | null,

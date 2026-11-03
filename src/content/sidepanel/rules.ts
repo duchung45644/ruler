@@ -54,7 +54,16 @@ export function getMatchedRules(el: Element | null): {
  * background (it needs <all_urls>) and parse a detached copy with replaceSync.
  */
 export async function enableCrossOriginStyles(el: Element | null): Promise<{ success: boolean }> {
-  const hrefs = [...sheetsFor(el).blocked].filter((h) => /^https?:/.test(h));
+  return { success: await fetchCrossOrigin([...sheetsFor(el).blocked]) };
+}
+
+/** Fetched copy of a cross-origin sheet, if we have one. */
+export const fetchedCopy = (href: string | null): CSSStyleSheet | undefined =>
+  href ? fetched.get(href) : undefined;
+
+/** Fetches and caches readable copies; true when every sheet was fetched. */
+export async function fetchCrossOrigin(hrefs: string[]): Promise<boolean> {
+  hrefs = hrefs.filter((h) => /^https?:/.test(h) && !fetched.has(h));
   const results = await Promise.all(
     hrefs.map(async (href) => {
       const r = await sendToBackground('fetch_stylesheet', href).catch(() => undefined);
@@ -69,5 +78,5 @@ export async function enableCrossOriginStyles(el: Element | null): Promise<{ suc
       }
     }),
   );
-  return { success: results.every(Boolean) };
+  return results.every(Boolean);
 }

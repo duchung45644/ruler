@@ -33,3 +33,29 @@ describe('breakpoints', () => {
     expect(breakpointLabel({ width: 768, kind: 'both' })).toBe('768px');
   });
 });
+
+it('reads a fetched copy of a cross-origin sheet and reports the rest as blocked', () => {
+  const crossOrigin = (href: string) => ({
+    href,
+    get cssRules(): CSSRuleList {
+      throw new DOMException('cross-origin', 'SecurityError');
+    },
+  });
+  const copy = new CSSStyleSheet();
+  copy.replaceSync('@media (min-width: 768px) { a { color: red } }');
+  const root = {
+    styleSheets: [
+      crossOrigin('https://cdn.example/a.css'),
+      crossOrigin('https://cdn.example/b.css'),
+    ],
+    adoptedStyleSheets: [],
+  } as never;
+  const blocked: string[] = [];
+  const conds = mediaConditions(
+    [root],
+    (h) => (h === 'https://cdn.example/a.css' ? copy : undefined),
+    blocked,
+  );
+  expect(conds).toEqual(['(min-width: 768px)']);
+  expect(blocked).toEqual(['https://cdn.example/b.css']);
+});

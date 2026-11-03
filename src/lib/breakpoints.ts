@@ -22,16 +22,28 @@ export function parseBreakpoints(conditions: string[]): Breakpoint[] {
   return [...out].map(([width, kind]) => ({ width, kind })).sort((a, b) => a.width - b.width);
 }
 
-/** Media conditions of every readable sheet; cross-origin sheets (cssRules throws) are skipped. */
-export function mediaConditions(roots: (Document | ShadowRoot)[]): string[] {
+/**
+ * Media conditions of every readable sheet. A cross-origin sheet (cssRules throws) is read from
+ * `copyOf` when we fetched one, else its href goes to `blocked`.
+ */
+export function mediaConditions(
+  roots: (Document | ShadowRoot)[],
+  copyOf: (href: string | null) => CSSStyleSheet | undefined = () => undefined,
+  blocked: string[] = [],
+): string[] {
   const out: string[] = [];
+  const read = (sheet: CSSStyleSheet) => {
+    for (const rule of sheet.cssRules)
+      if (rule instanceof CSSMediaRule) out.push(rule.conditionText);
+  };
   for (const r of roots)
     for (const sheet of [...r.styleSheets, ...(r.adoptedStyleSheets ?? [])]) {
       try {
-        for (const rule of sheet.cssRules)
-          if (rule instanceof CSSMediaRule) out.push(rule.conditionText);
+        read(sheet);
       } catch {
-        /* SecurityError: cross-origin sheet */
+        const copy = copyOf(sheet.href);
+        if (copy) read(copy);
+        else if (sheet.href) blocked.push(sheet.href);
       }
     }
   return out;

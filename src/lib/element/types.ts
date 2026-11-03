@@ -141,6 +141,7 @@ export interface GridInfo {
 }
 
 export interface CanvasInfo {
+  /** Unknown (null): reading it safely is impossible, see canvasInfo. */
   contextType: string | null;
   width: number;
   height: number;

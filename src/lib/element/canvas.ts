@@ -29,28 +29,16 @@ export function canvasPalette(data: Uint8ClampedArray, w: number, h: number): st
   return kept.map(([r, g, b]) => formatColor({ r: r!, g: g!, b: b!, a: 1 }, 'HEX'));
 }
 
-const CONTEXTS = ['2d', 'webgl2', 'webgl', 'bitmaprenderer', 'experimental-webgl'];
-
 /**
- * Canvas part of `m` (content.js:39785): context in use, backing size, backing / CSS width ratio.
- * Like legacy it probes with getContext, which returns the existing context of that type.
+ * Canvas part of `m` (content.js:39785): backing size and backing / CSS width ratio. Legacy probed
+ * getContext for the context type, but that creates a 2d context on a canvas that has none and the
+ * page can then never get WebGL on it. No API reads the type without that risk, so it stays null.
  */
 export function canvasInfo(el: Element, cssWidth: number): CanvasInfo | null {
   if (!(el instanceof HTMLCanvasElement)) return null;
-  let contextType: string | null = null;
-  for (const type of CONTEXTS) {
-    try {
-      if (el.getContext(type)) {
-        contextType = type;
-        break;
-      }
-    } catch {
-      // a context of another kind already exists: keep probing
-    }
-  }
   const ratio = el.width / cssWidth;
   return {
-    contextType,
+    contextType: null,
     width: el.width,
     height: el.height,
     pixelRatio: Number.isFinite(ratio) ? Math.round(100 * ratio) / 100 : 1,

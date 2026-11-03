@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest';
+import { expect, it, vi } from 'vitest';
 import { canvasInfo, canvasPalette } from './canvas';
 
 const pixels = (...runs: [number, [number, number, number, number]][]) => {
@@ -22,4 +22,12 @@ it('drops translucent pixels and keeps colours at or above 1%', () => {
 
 it('is null for anything but a canvas', () => {
   expect(canvasInfo(document.createElement('div'), 10)).toBeNull();
+});
+
+it('never calls getContext on the page canvas', () => {
+  const c = document.createElement('canvas');
+  c.width = 200;
+  const spy = vi.spyOn(c, 'getContext');
+  expect(canvasInfo(c, 100)).toEqual({ contextType: null, width: 200, height: 150, pixelRatio: 2 });
+  expect(spy).not.toHaveBeenCalled();
 });

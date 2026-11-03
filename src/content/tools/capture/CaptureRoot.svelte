@@ -17,7 +17,7 @@
   import { capAction, closeCapture, copyCanvas, saveCanvas } from './session';
   import { cap } from './state.svelte';
 
-  // Mode bar + area bar, port of openCaptureBar / startAreaSelect (capture.js:184, :204).
+  // Mode bar (at the bottom, near the dock the user just clicked) + area bar, port of openCaptureBar / startAreaSelect (capture.js:184, :204).
   let areaRoot: HTMLElement;
   let selBar: HTMLElement | undefined = $state();
   let crop: (() => Promise<HTMLCanvasElement>) | null = null;
@@ -67,7 +67,7 @@
 {:else if cap.modeBar}
   <div
     data-bar="mode"
-    class="bd-in pointer-events-auto fixed top-[16px] left-1/2 flex -translate-x-1/2 items-center gap-0.5 rounded-panel border border-line bg-surface p-[5px] font-sans text-[13px] text-fg shadow-[0_8px_24px_rgba(0,0,0,.18)] backdrop-blur-surface"
+    class="bd-in pointer-events-auto fixed bottom-[16px] left-1/2 flex -translate-x-1/2 items-center gap-0.5 rounded-panel border border-line bg-surface p-[5px] font-sans text-[13px] text-fg shadow-[0_8px_24px_rgba(0,0,0,.18)] backdrop-blur-surface"
   >
     {#if cap.element}
       <CapButton
@@ -128,7 +128,7 @@
   @keyframes bd-in {
     from {
       opacity: 0;
-      translate: -50% -4px;
+      translate: -50% 4px;
     }
   }
 </style>

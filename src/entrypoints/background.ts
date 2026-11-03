@@ -1,5 +1,18 @@
 import { browser, defineBackground, i18n } from '#imports';
-import { handleMessages, sendToTab } from '../lib/messaging';
+import {
+  CAPTURE_GAP,
+  chunkClips,
+  cropBox,
+  nextCaptureDelay,
+  type DeviceRect,
+} from '../lib/capture-bg';
+import {
+  handleMessages,
+  sendToTab,
+  type CaptureResult,
+  type FullCaptureOpts,
+  type FullCaptureResult,
+} from '../lib/messaging';
 import { isInjectable } from '../lib/tabs';
 
 const icon = (tabId: number, active: boolean) =>
@@ -25,6 +38,95 @@ export async function toggleTab(tabId: number): Promise<void> {
 async function toggleIfAllowed(tab?: { id?: number; url?: string; discarded?: boolean }) {
   if (tab?.id === undefined || tab.discarded || !isInjectable(tab.url)) return;
   await toggleTab(tab.id).catch(() => {});
+}
+
+// All captureVisibleTab calls go through one queue spaced CAPTURE_GAP apart.
+let queue: Promise<unknown> = Promise.resolve();
+let lastCapture = -CAPTURE_GAP;
+function captureVisible(windowId: number): Promise<string> {
+  const run = async () => {
+    const wait = nextCaptureDelay(lastCapture, Date.now());
+    if (wait) await new Promise((r) => setTimeout(r, wait));
+    try {
+      return await browser.tabs.captureVisibleTab(windowId, { format: 'png' });
+    } finally {
+      lastCapture = Date.now();
+    }
+  };
+  const p = queue.then(run, run);
+  queue = p.catch(() => {});
+  return p;
+}
+
+/** Crop in device px; any failure keeps the full image (legacy $e). */
+async function crop(dataUrl: string, rect: DeviceRect): Promise<string> {
+  try {
+    const { x, y, w, h } = cropBox(rect);
+    const bmp = await createImageBitmap(await (await fetch(dataUrl)).blob());
+    const c = new OffscreenCanvas(w, h);
+    c.getContext('2d')!.drawImage(bmp, x, y, w, h, 0, 0, w, h);
+    const blob = await c.convertToBlob({ type: 'image/png' });
+    return await new Promise<string>((res, rej) => {
+      const fr = new FileReader();
+      fr.onload = () => res(String(fr.result));
+      fr.onerror = rej;
+      fr.readAsDataURL(blob);
+    });
+  } catch {
+    return dataUrl;
+  }
+}
+
+async function captureTab(
+  rect: DeviceRect | null,
+  tab?: { windowId?: number; url?: string },
+): Promise<CaptureResult> {
+  if (!tab || !isInjectable(tab.url)) return { success: false, error: 'INVALID_URL' };
+  try {
+    const dataUrl = await captureVisible(tab.windowId ?? browser.windows.WINDOW_ID_CURRENT);
+    return { success: true, dataUrl: rect ? await crop(dataUrl, rect) : dataUrl };
+  } catch {
+    return { success: false, error: 'CAPTURE_FAILED' };
+  }
+}
+
+/** Port of bdFullCapture: the viewport is enlarged to the full height first, since
+ * captureBeyondViewport alone leaves the off-screen part unpainted. */
+async function fullCapture(tabId: number, o: FullCaptureOpts): Promise<FullCaptureResult> {
+  const target = { tabId };
+  const send = (method: string, params?: object) =>
+    browser.debugger.sendCommand(target, method, params) as Promise<{ data: string }>;
+  try {
+    await browser.debugger.attach(target, '1.3');
+    try {
+      await send('Emulation.setDeviceMetricsOverride', {
+        width: o.width,
+        height: o.height + o.shift,
+        deviceScaleFactor: o.dpr,
+        mobile: false,
+      });
+      if (o.before) await send('Runtime.evaluate', { expression: o.before });
+      await new Promise((r) => setTimeout(r, 300)); // let layout and lazy images settle
+      const parts: string[] = [];
+      for (const clip of chunkClips(o.height, o.chunk, o.shift, o.width)) {
+        const res = await send('Page.captureScreenshot', {
+          format: 'png',
+          captureBeyondViewport: false,
+          optimizeForSpeed: true,
+          clip,
+        });
+        parts.push(`data:image/png;base64,${res.data}`);
+      }
+      return { ok: true, parts };
+    } finally {
+      if (o.after) await send('Runtime.evaluate', { expression: o.after }).catch(() => {});
+      await send('Emulation.clearDeviceMetricsOverride').catch(() => {});
+      if (o.restore) await send('Runtime.evaluate', { expression: o.restore }).catch(() => {});
+      await browser.debugger.detach(target).catch(() => {});
+    }
+  } catch (e) {
+    return { ok: false, error: String((e as Error)?.message ?? e) };
+  }
 }
 
 // Port legacy-src/background.js:4560 (menu), :4618 (declarativeContent)
@@ -74,5 +176,10 @@ export default defineBackground(() => {
     // Port legacy-src/background.js:3409
     request_clipboard_permission: () =>
       browser.permissions.request({ permissions: ['clipboardWrite'] }),
+    capture_tab: (rect, sender) => captureTab(rect, sender.tab),
+    full_capture: (opts, sender) =>
+      sender.tab?.id === undefined
+        ? { ok: false, error: 'no tab' }
+        : fullCapture(sender.tab.id, opts),
   });
 });

@@ -1,8 +1,26 @@
 import { browser, type Browser } from '#imports';
+import type { DeviceRect } from './capture-bg';
+
+export type CaptureResult =
+  { success: true; dataUrl: string } | { success: false; error: 'INVALID_URL' | 'CAPTURE_FAILED' };
+export interface FullCaptureOpts {
+  width: number;
+  height: number;
+  dpr: number;
+  chunk: number;
+  /** The page is pushed down this much (`before`) so the cover sits above the captured area. */
+  shift: number;
+  before?: string;
+  after?: string;
+  restore?: string;
+}
+export type FullCaptureResult = { ok: true; parts: string[] } | { ok: false; error: string };
 
 export interface BackgroundApi {
   close_extension(): void;
   request_clipboard_permission(): boolean;
+  capture_tab(rect: DeviceRect | null): CaptureResult;
+  full_capture(opts: FullCaptureOpts): FullCaptureResult;
 }
 export interface ContentApi {
   ping(): { active: boolean };

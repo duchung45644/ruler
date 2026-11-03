@@ -119,5 +119,17 @@
     "fullPageBusy": "Đang chụp cả trang…",
     "fastFailed": "Không chụp nhanh được ($1), đã chuyển sang cuộn để chụp. Nếu đang mở DevTools ở tab này thì đóng lại rồi thử lại.",
     "padding": "Khoảng đệm"
+  },
+  "panel": {
+    "tabElement": "Phần tử",
+    "tabPage": "Trang",
+    "undock": "Mở trong cửa sổ",
+    "dock": "Chuyển về bảng bên",
+    "emptyInspect": "Nhấp vào một phần tử để chọn",
+    "shortcutToggleRuler": "Bật/tắt tiện ích",
+    "shortcutParent": "Chọn phần tử cha",
+    "shortcutChild": "Chọn phần tử con",
+    "shortcutTogglePanel": "Bật/tắt bảng điều khiển",
+    "shortcutDeselect": "Bỏ chọn"
   }
 }

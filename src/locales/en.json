@@ -119,5 +119,17 @@
     "fullPageBusy": "Capturing full page…",
     "fastFailed": "Fast capture failed ($1), used scroll & stitch instead. Close DevTools on this tab if it is open.",
     "padding": "Padding"
+  },
+  "panel": {
+    "tabElement": "Element",
+    "tabPage": "Page",
+    "undock": "Open in a window",
+    "dock": "Move to side panel",
+    "emptyInspect": "Click an Element to Select",
+    "shortcutToggleRuler": "Toggle Extension",
+    "shortcutParent": "Select Parent",
+    "shortcutChild": "Select Child",
+    "shortcutTogglePanel": "Toggle Panel",
+    "shortcutDeselect": "Deselect"
   }
 }

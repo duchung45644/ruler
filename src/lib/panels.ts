@@ -4,7 +4,7 @@ export const DETACH_W = 400;
 export const DETACH_H = 800;
 
 /** Per-tab panel page (legacy me, background.js:4699); the detached window adds `&detached=1`. */
-export const panelPath = (tabId: number, detached = false): string =>
+export const panelPath = (tabId: number, detached = false): `sidepanel.html${string}` =>
   `sidepanel.html?tabId=${tabId}${detached ? '&detached=1' : ''}`;
 
 /** Port of be (background.js:4707): saved size, else the size the panel had, else 400×800. */

@@ -13,7 +13,8 @@
   --font-mono: 'Bo doi Geist Mono', ui-monospace, monospace;
 }
 
-:host([data-theme='light']) {
+:host([data-theme='light']),
+:root[data-theme='light'] {
   --color-surface: #fff;
   --color-line: var(--color-zinc-200);
   --color-line-strong: var(--color-zinc-300);

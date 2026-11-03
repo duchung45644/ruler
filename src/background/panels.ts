@@ -47,9 +47,6 @@ export async function closePanelFor(tabId: number): Promise<void> {
   await sendToTabPanel(tabId, 'clear').catch(() => {});
 }
 
-// the page entrypoint is added later; PublicPath does not know it yet
-const extUrl = (p: string) => (browser.runtime.getURL as (p: string) => string)(`/${p}`);
-
 /** Port of be (background.js:4707). */
 async function detach(tabId: number, size: { width: number; height: number } | null) {
   await ready;
@@ -65,7 +62,7 @@ async function detach(tabId: number, size: { width: number; height: number } | n
   const saved = await boundsItem.getValue();
   const b = detachBounds(saved, size);
   const win = await browser.windows.create({
-    url: extUrl(panelPath(tabId, true)),
+    url: browser.runtime.getURL(`/${panelPath(tabId, true)}`),
     type: 'popup',
     focused: true,
     ...b,

@@ -196,5 +196,71 @@
     "textSizeNormal": "normal",
     "iconContrastMessage": "Icon has insufficient contrast ratio of $1:1 (requires $2:1 for non-text elements)",
     "iconContrastRecommendation": "Increase contrast to at least $1:1 for WCAG 1.4.11 compliance"
+  },
+  "seo": {
+    "missingTitle": {
+      "message": "Missing title tag",
+      "recommendation": "Add a descriptive <title> element to the page head."
+    },
+    "titleTooShort": {
+      "message": "Title is shorter than 30 characters",
+      "recommendation": "Aim for 50 to 60 characters so the title is descriptive in search results."
+    },
+    "titleTooLong": {
+      "message": "Title is longer than 60 characters",
+      "recommendation": "Search engines may truncate long titles. Shorten to 50 to 60 characters."
+    },
+    "missingDescription": {
+      "message": "Missing meta description",
+      "recommendation": "Add a meta description to summarize the page for search results."
+    },
+    "descriptionTooShort": {
+      "message": "Description is shorter than 70 characters",
+      "recommendation": "Aim for 120 to 160 characters for a descriptive snippet."
+    },
+    "descriptionTooLong": {
+      "message": "Description is longer than 160 characters",
+      "recommendation": "Search engines may truncate long descriptions. Trim to 120 to 160 characters."
+    },
+    "missingH1": {
+      "message": "Missing H1 heading",
+      "recommendation": "Every page should have one clear H1 that describes its main topic."
+    },
+    "multipleH1": {
+      "message": "Page has more than one H1",
+      "recommendation": "Use a single H1 per page and demote secondary headings to H2 or H3."
+    },
+    "missingCanonical": {
+      "message": "Missing canonical link",
+      "recommendation": "Add <link rel=\"canonical\"> to declare the preferred URL for this page."
+    },
+    "missingViewport": {
+      "message": "Missing viewport meta tag",
+      "recommendation": "Add <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> for mobile rendering."
+    },
+    "missingLang": {
+      "message": "Missing lang attribute on <html>",
+      "recommendation": "Set a lang attribute (e.g. lang=\"en\") to help search engines and screen readers."
+    },
+    "robotsNoindex": {
+      "message": "Page is set to noindex",
+      "recommendation": "Search engines will not index this page. Remove noindex if this is unintentional."
+    },
+    "missingAlt": {
+      "message": "Image is missing alt text",
+      "recommendation": "Add an alt attribute to every img. Use alt=\"\" for purely decorative images."
+    },
+    "missingOgTitle": {
+      "message": "Missing og:title",
+      "recommendation": "Add <meta property=\"og:title\"> so shared links display a clear title."
+    },
+    "missingOgDescription": {
+      "message": "Missing og:description",
+      "recommendation": "Add <meta property=\"og:description\"> for share previews."
+    },
+    "missingOgImage": {
+      "message": "Missing og:image",
+      "recommendation": "Add <meta property=\"og:image\"> so shared links include a preview image."
+    }
   }
 }

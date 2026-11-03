@@ -22,6 +22,13 @@ import {
   repaintHighlights,
 } from './highlight';
 import { currentIssues, stopIssues } from './issues';
+import {
+  getPageData,
+  initPageData,
+  refreshPageData,
+  subscribeWeight,
+  unsubscribeWeight,
+} from './page';
 import { enableCrossOriginStyles, getMatchedRules } from './rules';
 
 export const bridge = $state({ panelOpen: false, panelApi: true });
@@ -139,8 +146,15 @@ export const sidePanelHandlers: Handlers<ContentApi> = {
   get_url: () => location.href,
   check_script_is_active: () => ({ scriptIsActive: state.active }),
   side_panel_loaded() {
-    if (state.active && state.selected) sendElement(state.selected);
+    if (!state.active) return;
+    getPageData();
+    if (state.selected) sendElement(state.selected);
   },
+  refresh_page_data() {
+    if (state.active) refreshPageData();
+  },
+  page_weight_subscribe: () => subscribeWeight(),
+  page_weight_unsubscribe: () => unsubscribeWeight(),
   get_matched_rules: () => getMatchedRules(state.selected),
   enable_cross_origin_styles: () => enableCrossOrigin(),
   keyboard_shortcut(key) {
@@ -156,6 +170,7 @@ export async function initSidePanelBridge(): Promise<void> {
     once: true,
   });
   window.addEventListener('scroll', repaintHighlights, { signal, passive: true, capture: true });
+  initPageData(elementId);
 
   const stopEffect = $effect.root(() => {
     $effect(() => {

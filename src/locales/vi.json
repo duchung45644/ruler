@@ -196,5 +196,71 @@
     "textSizeNormal": "thường",
     "iconContrastMessage": "Biểu tượng có tỷ lệ tương phản không đủ $1:1 (yêu cầu $2:1 cho phần tử không phải văn bản)",
     "iconContrastRecommendation": "Tăng tương phản lên ít nhất $1:1 để tuân thủ WCAG 1.4.11"
+  },
+  "seo": {
+    "missingTitle": {
+      "message": "Thiếu thẻ title",
+      "recommendation": "Thêm phần tử <title> mô tả vào phần head của trang."
+    },
+    "titleTooShort": {
+      "message": "Tiêu đề ngắn hơn 30 ký tự",
+      "recommendation": "Hướng tới 50 đến 60 ký tự để tiêu đề có tính mô tả trong kết quả tìm kiếm."
+    },
+    "titleTooLong": {
+      "message": "Tiêu đề dài hơn 60 ký tự",
+      "recommendation": "Công cụ tìm kiếm có thể cắt bớt tiêu đề dài. Rút ngắn xuống 50 đến 60 ký tự."
+    },
+    "missingDescription": {
+      "message": "Thiếu meta description",
+      "recommendation": "Thêm meta description để tóm tắt trang cho kết quả tìm kiếm."
+    },
+    "descriptionTooShort": {
+      "message": "Mô tả ngắn hơn 70 ký tự",
+      "recommendation": "Hướng tới 120 đến 160 ký tự cho đoạn mô tả có tính mô tả."
+    },
+    "descriptionTooLong": {
+      "message": "Mô tả dài hơn 160 ký tự",
+      "recommendation": "Công cụ tìm kiếm có thể cắt bớt mô tả dài. Cắt còn 120 đến 160 ký tự."
+    },
+    "missingH1": {
+      "message": "Thiếu tiêu đề H1",
+      "recommendation": "Mỗi trang nên có một H1 rõ ràng mô tả chủ đề chính."
+    },
+    "multipleH1": {
+      "message": "Trang có nhiều hơn một H1",
+      "recommendation": "Sử dụng một H1 duy nhất cho mỗi trang và hạ các tiêu đề phụ xuống H2 hoặc H3."
+    },
+    "missingCanonical": {
+      "message": "Thiếu link canonical",
+      "recommendation": "Thêm <link rel=\"canonical\"> để khai báo URL ưu tiên cho trang này."
+    },
+    "missingViewport": {
+      "message": "Thiếu meta tag viewport",
+      "recommendation": "Thêm <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> để hiển thị trên thiết bị di động."
+    },
+    "missingLang": {
+      "message": "Thiếu thuộc tính lang trên <html>",
+      "recommendation": "Đặt thuộc tính lang (ví dụ: lang=\"vi\") để giúp công cụ tìm kiếm và trình đọc màn hình."
+    },
+    "robotsNoindex": {
+      "message": "Trang được đặt thành noindex",
+      "recommendation": "Công cụ tìm kiếm sẽ không lập chỉ mục trang này. Xóa noindex nếu điều này không có chủ ý."
+    },
+    "missingAlt": {
+      "message": "Hình ảnh thiếu văn bản alt",
+      "recommendation": "Thêm thuộc tính alt cho mọi img. Sử dụng alt=\"\" cho hình ảnh thuần trang trí."
+    },
+    "missingOgTitle": {
+      "message": "Thiếu og:title",
+      "recommendation": "Thêm <meta property=\"og:title\"> để các link được chia sẻ hiển thị tiêu đề rõ ràng."
+    },
+    "missingOgDescription": {
+      "message": "Thiếu og:description",
+      "recommendation": "Thêm <meta property=\"og:description\"> để xem trước khi chia sẻ."
+    },
+    "missingOgImage": {
+      "message": "Thiếu og:image",
+      "recommendation": "Thêm <meta property=\"og:image\"> để các link được chia sẻ bao gồm hình ảnh xem trước."
+    }
   }
 }

@@ -81,7 +81,7 @@ export interface SidePanelApi {
   update_canvas_fps(fps: number): void;
   page_data(d: PageData): void;
   page_technologies(t: Technology[]): void;
-  page_weight_update(w: PageWeight): void;
+  page_weight_update(w: PageWeight | null): void;
   update_issues(issues: Issue[]): void;
   clear(): void;
 }

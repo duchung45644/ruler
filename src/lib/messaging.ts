@@ -1,6 +1,18 @@
 import { browser, type Browser } from '#imports';
 import type { DeviceRect } from './capture-bg';
 import type { ElementDetails, Issue, MatchedRule } from './element/types';
+import type { HtmlChange } from './edit/changes';
+import type { Decl } from './edit/decls';
+import type { RuleAddress } from './edit/rule-address';
+import type { SerializedEdit } from './edit/serialize';
+import type {
+  EditResult,
+  EditState,
+  EditableRule,
+  InsertPosition,
+  RuleChange,
+  RulePayload,
+} from './edit/types';
 import type { PageData, PageWeight, Technology } from './page/types';
 
 export type CaptureResult =
@@ -71,6 +83,41 @@ export interface ContentApi {
   };
   enable_cross_origin_styles(): { success: boolean };
   check_script_is_active(): { scriptIsActive: boolean };
+  // Edit mode (legacy `editor` / `rule_editor` targets, D3). Every edit replies with its EditState.
+  edit_undo(): EditResult;
+  edit_redo(): EditResult;
+  edit_copy(): EditResult;
+  edit_cut(): EditResult;
+  edit_paste(): EditResult;
+  edit_duplicate(): EditResult;
+  edit_delete(): EditResult;
+  get_history_state(): EditResult;
+  set_element_styles(id: string, decls: Decl[]): EditResult;
+  set_element_classes(id: string, classes: string): EditResult;
+  get_page_classes(): string[];
+  /** Html is sanitized on the content side before it touches the DOM. */
+  set_text_content(id: string, text: string): EditResult;
+  set_inner_html(id: string, html: string): EditResult;
+  insert_html(id: string, pos: InsertPosition, html: string): EditResult;
+  get_rule_edit_payload(): RulePayload | null;
+  cascade_ghost_probe(): string[];
+  rule_edit(addr: RuleAddress, declsText: string): EditResult;
+  inline_style_edit(id: string, declsText: string): EditResult;
+  merge_rule_styles(addr: RuleAddress, decls: Decl[]): EditResult;
+  rule_selector_edit(addr: RuleAddress, selector: string): EditResult;
+  rule_add(selector?: string): EditResult;
+  get_rule_changes(): RuleChange[];
+  get_all_flattened_changes(): { rules: RuleChange[]; html: HtmlChange[] };
+  get_html_changes(): HtmlChange[];
+  revert_rule_change(recordId: string): EditResult;
+  revert_all_rule_changes(): EditResult;
+  revert_all_edits(): EditResult;
+  clear_elements_by_ids(ids: string[], scope: 'all' | 'html' | 'css'): EditResult;
+  clear_changes(): EditResult;
+  force_element_state(state: string | null): EditResult;
+  apply_pending_rule_edits(edits: SerializedEdit[]): EditResult;
+  set_edit_mode(on: boolean): EditResult;
+  select_edited_element(id: string): boolean;
 }
 export interface SidePanelApi {
   ping(): { isOpen: true };
@@ -84,6 +131,13 @@ export interface SidePanelApi {
   page_weight_update(w: PageWeight | null): void;
   update_issues(issues: Issue[]): void;
   clear(): void;
+  // Edit view (legacy `editor_panel` target, D3).
+  set_mode(mode: 'edit' | 'inspect'): void;
+  edit_payload_extras(paySeq: number, inherited: EditableRule[]): void;
+  media_activity(active: Record<string, boolean>): void;
+  refresh_changes(): void;
+  page_updated(): void;
+  edit_state(s: EditState): void;
 }
 
 export type Handlers<A extends object> = {

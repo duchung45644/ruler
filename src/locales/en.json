@@ -185,7 +185,9 @@
   "dialog": {
     "ok": "OK",
     "elementNotFoundTitle": "Element Not Found",
-    "issueElementNotFound": "Unable to locate the issue element. It may have been removed or the page may have changed."
+    "issueElementNotFound": "Unable to locate the issue element. It may have been removed or the page may have changed.",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
   },
   "issue": {
     "contrastAaMessage": "Text has insufficient contrast ratio of $1:1 (requires $2:1 for $3 text)",
@@ -291,5 +293,9 @@
     "pwOther": "Other",
     "pwHidden": "$1 cross-origin resources hidden",
     "pwBufferFull": "Resource buffer full, some entries may be missing"
+  },
+  "toast": {
+    "editsRestoredOne": "1 saved edit restored",
+    "editsRestoredMany": "$1 saved edits restored"
   }
 }

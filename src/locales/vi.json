@@ -185,7 +185,9 @@
   "dialog": {
     "ok": "OK",
     "elementNotFoundTitle": "Không tìm thấy phần tử",
-    "issueElementNotFound": "Không thể tìm thấy phần tử có vấn đề. Phần tử có thể đã bị xóa hoặc trang đã thay đổi."
+    "issueElementNotFound": "Không thể tìm thấy phần tử có vấn đề. Phần tử có thể đã bị xóa hoặc trang đã thay đổi.",
+    "cancel": "Hủy",
+    "confirm": "Xác nhận"
   },
   "issue": {
     "contrastAaMessage": "Văn bản có tỷ lệ tương phản không đủ $1:1 (yêu cầu $2:1 cho văn bản $3)",
@@ -291,5 +293,9 @@
     "pwOther": "Khác",
     "pwHidden": "$1 tài nguyên cross-origin bị ẩn",
     "pwBufferFull": "Bộ đệm tài nguyên đã đầy, một số mục có thể bị thiếu"
+  },
+  "toast": {
+    "editsRestoredOne": "Đã khôi phục 1 chỉnh sửa đã lưu",
+    "editsRestoredMany": "Đã khôi phục $1 chỉnh sửa đã lưu"
   }
 }

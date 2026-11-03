@@ -66,6 +66,23 @@ describe('messaging edge cases', () => {
     handleMessages('content', { ping: () => ({ active: true }) });
     expect(await sendToTab(1, 'ping')).toEqual({ active: true });
   });
+
+  it('edit commands reach the content handler with their typed reply', async () => {
+    vi.spyOn(fakeBrowser.tabs, 'sendMessage').mockImplementation(((_id: number, m: unknown) =>
+      fakeBrowser.runtime.sendMessage(m)) as never);
+    const addr = { stylesheet: 'a.css', selector: '.a', wrappers: [], occ: 0, scopeAddress: null };
+    const rule_edit = vi.fn(() => ({
+      ok: true,
+      canUndo: false,
+      canRedo: false,
+      editCount: 1,
+      hasClipboard: false,
+    }));
+    handleMessages('content', { rule_edit });
+    const res = await sendToTab(1, 'rule_edit', addr, 'color: red;');
+    expect(res.editCount).toBe(1);
+    expect(rule_edit).toHaveBeenCalledWith(addr, 'color: red;', expect.anything());
+  });
 });
 
 describe('side panel channel', () => {

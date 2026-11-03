@@ -1,4 +1,5 @@
 import type { ColorFormat } from '../../lib/color';
+import { EMPTY_EDIT_STATE } from '../../lib/edit/types';
 import { DEFAULT_SETTINGS } from '../../lib/settings';
 
 export const state = $state({
@@ -27,6 +28,10 @@ export const state = $state({
   grid: { ...DEFAULT_SETTINGS.layoutGrid },
   /** Chip above the dock button `id` for 1500ms (legacy showButtonNotification :34691). */
   dockNotice: null as { id: string; color: string; text: string } | null,
+  /** Edit mode (dock Inspect / Edit switch) and its text-editing sub-mode. */
+  editOn: false,
+  textEditOn: false,
+  editState: { ...EMPTY_EDIT_STATE },
 });
 
 /** Element the inspector panel describes: live hover wins, else the selection. */

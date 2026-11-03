@@ -1,3 +1,4 @@
+import type { RulePayload } from '../edit/types';
 /**
  * Data the content script sends to the side panel for the selected element. Field names follow
  * legacy `inspectDetails` (content.js:40487) so MCP (phase 8) can reuse them. Everything is plain
@@ -196,4 +197,6 @@ export interface ElementDetails {
   tailwind: string;
   matchedRules?: MatchedRule[];
   skippedCrossOriginCount: number;
+  /** Present in edit mode (6.49). */
+  edit?: { payload: RulePayload; editCount: number };
 }

@@ -2,7 +2,18 @@
   import { i18n } from '#i18n';
   import { onMount } from 'svelte';
 
-  let { title, message, close }: { title: string; message: string; close: () => void } = $props();
+  let {
+    title,
+    message,
+    buttons = null,
+    close,
+  }: {
+    title: string;
+    message: string;
+    /** Labels for a cancel / confirm pair; null shows a single OK. */
+    buttons?: { cancel: string; confirm: string } | null;
+    close: (ok?: boolean) => void;
+  } = $props();
   let ok: HTMLButtonElement;
   onMount(() => ok.focus());
 
@@ -11,7 +22,7 @@
     e.stopPropagation();
     if (e.key !== 'Enter' && e.key !== 'Escape') return;
     e.preventDefault();
-    close();
+    close(e.key === 'Enter');
   }
 </script>
 
@@ -27,12 +38,19 @@
   >
     <h2 id="bd-dialog-title" class="mb-1.5 font-semibold">{title}</h2>
     <p id="bd-dialog-msg" class="mb-4 text-fg-muted">{message}</p>
-    <div class="flex justify-end">
+    <div class="flex justify-end gap-2">
+      {#if buttons}
+        <button
+          type="button"
+          class="rounded-btn px-4 py-1 font-medium text-fg hover:bg-line"
+          onclick={() => close(false)}>{buttons.cancel}</button
+        >
+      {/if}
       <button
         bind:this={ok}
         type="button"
         class="rounded-btn bg-accent px-4 py-1 font-medium text-white"
-        onclick={close}>{i18n.t('dialog.ok')}</button
+        onclick={() => close(true)}>{buttons?.confirm ?? i18n.t('dialog.ok')}</button
       >
     </div>
   </div>

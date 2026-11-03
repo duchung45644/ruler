@@ -14,10 +14,10 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-it('registers inspectTools in legacy dock order', async () => {
+it('registers inspectTools in legacy dock order (inspect first, as the content entry loads it)', async () => {
   await initTools();
   const ids = items.filter((i) => i.group === 'inspectTools').map((i) => i.id);
-  expect(ids).toEqual(['xray', 'grid', 'ruler', 'breakpoints']);
+  expect(ids).toEqual(['inspect', 'xray', 'grid', 'ruler', 'breakpoints']);
 });
 
 document.elementsFromPoint ??= () => [];

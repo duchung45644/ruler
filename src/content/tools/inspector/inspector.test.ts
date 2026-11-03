@@ -8,7 +8,7 @@ import { stopSession } from '../../core/session';
 import { state } from '../../core/state.svelte';
 import { routeKey } from '../../core/keys';
 import { setPaused } from '../../core/registry.svelte';
-import { initInspector } from '.';
+import { initInspector, pickElement } from '.';
 import { pins } from './pins.svelte';
 import { installDragGuard, startDrag } from '../../core/drag';
 
@@ -160,4 +160,27 @@ it('ignores hover and click while capturing', async () => {
   document.elementsFromPoint = prev;
   expect(state.hovered).toBeNull();
   expect(state.selected).toBeNull();
+});
+
+it('pickElement resolves the clicked element, restores inspect state, Esc cancels', async () => {
+  const host = document.createElement('bo-doi-ui');
+  document.body.append(host);
+  host.attachShadow({ mode: 'open' }).append(layer);
+  const p = document.createElement('p');
+  document.body.append(p);
+  const prev = document.elementsFromPoint;
+  document.elementsFromPoint = () => [p];
+  await initInspector();
+  state.inspectOn = false;
+  const picked = pickElement();
+  expect(state.inspectOn).toBe(true);
+  p.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+  expect(await picked).toBe(p);
+  expect(state.inspectOn).toBe(false);
+  expect(state.selected).toBeNull();
+
+  const cancelled = pickElement();
+  routeKey(new KeyboardEvent('keydown', { key: 'Escape' }));
+  expect(await cancelled).toBeNull();
+  document.elementsFromPoint = prev;
 });

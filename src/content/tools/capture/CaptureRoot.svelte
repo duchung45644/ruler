@@ -42,7 +42,8 @@
       pos = placeSelBar(cap.sel, selBar.offsetWidth, selBar.offsetHeight, innerWidth, innerHeight);
   });
 
-  const pick = (fn: () => void) => () => (closeCapture({ keepCapturing: true }), fn());
+  // the page must be live to pick an element: close fully, the element capture hides the UI again
+  const pick = (fn: () => void) => () => (closeCapture(), fn());
   const act = (which: 'copy' | 'save') =>
     capAction(
       (label, disabled) => {

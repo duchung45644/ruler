@@ -8,7 +8,7 @@ import { getSettings, pinHintDone, updateSettings } from '../../../lib/settings'
 import { detectPageIsDark, measureColor } from '../../../lib/theme';
 import { isOwnEvent, pageElementAt } from '../../core/events';
 import { isDragging } from '../../core/drag';
-import { onKey } from '../../core/keys';
+import { addKeyHandler, onKey } from '../../core/keys';
 import { addPainter, draw, drawNumber, layer, requestPaint } from '../../core/overlay';
 import { registerItem } from '../../core/registry.svelte';
 import { onStop, sessionSignal } from '../../core/session';
@@ -29,6 +29,36 @@ let stack: Element[] = [];
  * Cleared by the next page mousemove or select, so a repaint can't bring it back over a pin.
  */
 let panelHidden = false;
+/** One-shot element pick (capture "Selected element"): the next page click goes here. */
+let picker: ((el: Element | null) => void) | null = null;
+
+/** Turns inspecting on until the user clicks an element (resolves it) or presses Esc (null). */
+export function pickElement(): Promise<Element | null> {
+  picker?.(null);
+  const wasOn = state.inspectOn;
+  state.inspectOn = true;
+  return new Promise((resolve) => {
+    const offKey = addKeyHandler((e) => {
+      if (e.key !== 'Escape') return false;
+      picker?.(null);
+      return true;
+    });
+    const offStop = sessionSignal();
+    const done = (el: Element | null) => {
+      if (picker !== done) return;
+      picker = null;
+      offKey();
+      offStop.removeEventListener('abort', cancel);
+      state.inspectOn = wasOn;
+      state.hovered = null;
+      requestPaint();
+      resolve(el);
+    };
+    const cancel = () => done(null);
+    offStop.addEventListener('abort', cancel, { once: true });
+    picker = done;
+  });
+}
 
 function select(el: Element | null, keepStack = false): void {
   if (!keepStack) stack = [];
@@ -283,6 +313,7 @@ export async function initInspector(): Promise<void> {
       e.preventDefault();
       e.stopImmediatePropagation(); // also stops page listeners on window registered after ours
       const el = pageElementAt(e.clientX, e.clientY, host);
+      if (el && picker) return picker(el);
       if (el) select(el === state.selected ? null : el);
     },
     opts,

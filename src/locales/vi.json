@@ -97,7 +97,7 @@
   },
   "capture": {
     "area": "Chụp vùng",
-    "element": "Phần tử đang chọn",
+    "element": "Phần tử",
     "visible": "Chụp màn hình",
     "fullPage": "Chụp cả trang",
     "close": "Đóng (Esc)",

@@ -97,7 +97,7 @@
   },
   "capture": {
     "area": "Capture area",
-    "element": "Selected element",
+    "element": "Element",
     "visible": "Capture visible area",
     "fullPage": "Capture full page",
     "close": "Close (Esc)",

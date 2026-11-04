@@ -5,21 +5,32 @@ import { sendToBackground } from '../../lib/messaging';
 /** Fetched copies of cross-origin sheets by href; never attached to the page. */
 const fetched = new Map<string, CSSStyleSheet>();
 
-const rootOf = (el: Element | null) => {
+export const rootOf = (el: Element | null) => {
   const root = el?.getRootNode();
   return root instanceof ShadowRoot ? root : document;
 };
 
-/** Rules styling `el`'s tree, fetched copies swapped in, and the sheets still unreadable. */
-function sheetsFor(el: Element | null): { rules: KnownRule[]; blocked: Set<string> } {
-  const sheets = sheetsOf(rootOf(el)).map((s) => {
+/** Source of the edit tracker's own `<style>`, kept apart so page `<style>` addresses never shift. */
+export const OWN_SOURCE = 'sr-rule-edits';
+
+/** Rules styling `root`'s tree, fetched copies swapped in, and the sheets still unreadable. */
+export function rulesOf(root: Document | ShadowRoot): { rules: KnownRule[]; blocked: Set<string> } {
+  const own = new Set(
+    [...root.querySelectorAll(`style[id^="${OWN_SOURCE}-"]`)].map(
+      (n) => (n as HTMLStyleElement).sheet,
+    ),
+  );
+  const sheets = sheetsOf(root).map((s) => {
     const copy = fetched.get(s.source);
-    return copy ? { sheet: copy, source: s.source } : s;
+    if (copy) return { sheet: copy, source: s.source };
+    return own.has(s.sheet) ? { sheet: s.sheet, source: OWN_SOURCE } : s;
   });
   const blocked = new Set<string>();
   const rules = collectRules(sheets, (s) => blocked.add(s.source));
   return { rules, blocked };
 }
+
+const sheetsFor = (el: Element | null) => rulesOf(rootOf(el));
 
 const unreadable = (sheet: CSSStyleSheet) => {
   try {

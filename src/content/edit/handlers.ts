@@ -20,6 +20,7 @@ import {
   ruleTracker,
   setEditMode,
   stateForcer,
+  toggleTextEdit,
 } from './mode.svelte';
 import {
   buildPayload,
@@ -184,6 +185,10 @@ export const editHandlers: Handlers<ContentApi> = {
   async set_edit_mode(on) {
     await setEditMode(on);
     return ok();
+  },
+  toggle_text_edit() {
+    toggleTextEdit();
+    return state.textEditOn;
   },
   select_edited_element(id) {
     const el = elementById(id);

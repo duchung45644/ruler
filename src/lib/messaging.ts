@@ -117,6 +117,8 @@ export interface ContentApi {
   force_element_state(state: string | null): EditResult;
   apply_pending_rule_edits(edits: SerializedEdit[]): EditResult;
   set_edit_mode(on: boolean): EditResult;
+  /** Returns whether text editing is now on. */
+  toggle_text_edit(): boolean;
   select_edited_element(id: string): boolean;
   select_rule_target(selector: string, scopeAddress: string | null): boolean;
 }

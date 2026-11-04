@@ -5,6 +5,7 @@
   import CssEditor from './CssEditor.svelte';
   import EditEmpty from './EditEmpty.svelte';
   import EditHeader from './EditHeader.svelte';
+  import EditToolbar from './EditToolbar.svelte';
   import { command, edit, loadChanges } from './edit-store.svelte';
 
   // seed the header once; later states ride on every edit reply and edit_state
@@ -33,6 +34,7 @@
 <svelte:window {onkeydown} />
 
 <div data-edit-view>
+  <EditToolbar />
   {#if edit.tab === 'css'}
     {#if panel.element && edit.payload}
       <EditHeader el={panel.element} payload={edit.payload} />

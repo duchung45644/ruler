@@ -1,15 +1,6 @@
-import ClipboardPaste from '@lucide/svelte/icons/clipboard-paste';
-import Copy from '@lucide/svelte/icons/copy';
-import CopyPlus from '@lucide/svelte/icons/copy-plus';
-import Pencil from '@lucide/svelte/icons/pencil';
-import Redo2 from '@lucide/svelte/icons/redo-2';
-import Scissors from '@lucide/svelte/icons/scissors';
-import Trash from '@lucide/svelte/icons/trash';
-import Type from '@lucide/svelte/icons/type';
-import Undo2 from '@lucide/svelte/icons/undo-2';
 import type { EditResult } from '../../lib/edit/types';
 import { addKeyHandler } from '../core/keys';
-import { items, registerItem, type MessageKey } from '../core/registry.svelte';
+import { items } from '../core/registry.svelte';
 import { onStop, sessionSignal } from '../core/session';
 import { state } from '../core/state.svelte';
 import type { HtmlEditor } from './engine';
@@ -20,7 +11,6 @@ import {
   ruleTracker,
   setEditMode,
   stopEditMode,
-  toggleTextEdit,
 } from './mode.svelte';
 import { editHandlers, initEditHandlers, resendSelection } from './handlers';
 import { persistNow, restorePersisted, schedulePersist } from './persist';
@@ -59,21 +49,9 @@ function onKey(e: KeyboardEvent): boolean {
   return false;
 }
 
-const needsSelection = () => !state.selected;
-
-function editItem(
-  id: string,
-  icon: typeof Copy,
-  label: MessageKey,
-  cmd: Command,
-  isDisabled: () => boolean,
-): void {
-  registerItem({ id, icon, label, group: 'edit', run: () => runEditCommand(cmd), isDisabled });
-}
-
 let inspectWrapped = false;
 
-/** Mode switch, edit dock group and edit keys (1.20, 1.44, 5.02–5.04). Called once per session. */
+/** Inspect/edit switch and edit keys; the edit buttons live in the panel's Edit tab (1.20, 1.44, 5.02–5.04). Called once per session. */
 export function initEdit(): void {
   // one inspect button: while editing, it leaves edit mode and inspects
   const inspect = items.find((i) => i.id === 'inspect');
@@ -87,35 +65,6 @@ export function initEdit(): void {
     };
     inspect.isActive = () => state.inspectOn && !state.editOn;
   }
-  registerItem({
-    id: 'editMode',
-    icon: Pencil,
-    label: 'dock.editMode',
-    group: 'mode',
-    run: () => void setEditMode(!state.editOn),
-    isActive: () => state.editOn,
-  });
-  registerItem({
-    id: 'editText',
-    icon: Type,
-    label: 'dock.editText',
-    group: 'edit',
-    run: toggleTextEdit,
-    isActive: () => state.textEditOn,
-  });
-  editItem('editCopy', Copy, 'dock.copy', 'copy', needsSelection);
-  editItem('editCut', Scissors, 'dock.cut', 'cut', needsSelection);
-  editItem(
-    'editPaste',
-    ClipboardPaste,
-    'dock.paste',
-    'paste',
-    () => !state.selected || !state.editState.hasClipboard,
-  );
-  editItem('editDuplicate', CopyPlus, 'dock.duplicate', 'duplicate', needsSelection);
-  editItem('editDelete', Trash, 'dock.delete', 'delete', needsSelection);
-  editItem('editUndo', Undo2, 'dock.undo', 'undo', () => !state.editState.canUndo);
-  editItem('editRedo', Redo2, 'dock.redo', 'redo', () => !state.editState.canRedo);
   onStop(addKeyHandler(onKey));
   onStop(stopEditMode);
   initEditHandlers();

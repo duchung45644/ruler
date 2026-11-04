@@ -64,6 +64,20 @@ it('switches to the edit view only on set_mode from frame 0', async () => {
   expect(document.querySelector('[data-edit-view]')).toBeNull();
 });
 
+it('the Edit tab turns edit mode on in the page and shows the edit actions', async () => {
+  await open();
+  const send = vi.mocked(fakeBrowser.tabs.sendMessage);
+  (document.querySelector('[data-tab="edit"]') as HTMLElement).click();
+  flushSync();
+  expect(document.querySelector('[data-edit-toolbar] [data-action="edit_cut"]')).not.toBeNull();
+  expect(send.mock.calls.some(([, m]) => (m as { type: string }).type === 'set_edit_mode')).toBe(
+    true,
+  );
+  (document.querySelector('[data-tab="element"]') as HTMLElement).click();
+  flushSync();
+  expect(document.querySelector('[data-edit-view]')).toBeNull();
+});
+
 it('keeps an edit selection that arrives before the edit view mounts', async () => {
   await open();
   const d = { ...sampleElement(), edit: { payload: payload(1), editCount: 0, classes: '' } };

@@ -2,23 +2,20 @@
   import { i18n } from '#i18n';
   import AppWindow from '@lucide/svelte/icons/app-window';
   import PanelRight from '@lucide/svelte/icons/panel-right';
-  import { edit, setEditTab, type EditTab } from './edit/edit-store.svelte';
-  import { panel, toggleDetach, type PanelTab } from './store.svelte';
+  import { panel, toPage, toggleDetach, type PanelTab } from './store.svelte';
 
-  const inspectTabs: [PanelTab, string][] = [
+  const tabs: [PanelTab | 'edit', string][] = [
     ['element', i18n.t('panel.tabElement')],
     ['page', i18n.t('panel.tabPage')],
+    ['edit', i18n.t('panel.tabEdit')],
   ];
-  const editTabs: [EditTab, string][] = [
-    ['css', i18n.t('edit.css')],
-    ['changes', i18n.t('edit.changes')],
-  ];
-  // edit mode swaps Element / Page for CSS / Changes (6.38)
-  const tabs = $derived(panel.mode === 'edit' ? editTabs : inspectTabs);
-  const current = $derived(panel.mode === 'edit' ? edit.tab : panel.selectedTab);
-  function pick(id: string) {
-    if (panel.mode === 'edit') setEditTab(id as EditTab);
-    else panel.selectedTab = id as PanelTab;
+  // the Edit tab is edit mode on the page: opening it turns the editor on, leaving turns it off
+  const current = $derived(panel.mode === 'edit' ? 'edit' : panel.selectedTab);
+  function pick(id: PanelTab | 'edit') {
+    if (id === current) return;
+    if (id !== 'edit') panel.selectedTab = id;
+    panel.mode = id === 'edit' ? 'edit' : 'inspect';
+    void toPage('set_edit_mode', id === 'edit');
   }
   const dockLabel = $derived(i18n.t(panel.detached ? 'panel.dock' : 'panel.undock'));
   const scroller = () => (document.scrollingElement ?? document.documentElement).scrollTop;

@@ -198,5 +198,5 @@ export interface ElementDetails {
   matchedRules?: MatchedRule[];
   skippedCrossOriginCount: number;
   /** Present in edit mode (6.49). */
-  edit?: { payload: RulePayload; editCount: number };
+  edit?: { payload: RulePayload; editCount: number; classes: string };
 }

@@ -2,12 +2,24 @@
   import { i18n } from '#i18n';
   import AppWindow from '@lucide/svelte/icons/app-window';
   import PanelRight from '@lucide/svelte/icons/panel-right';
+  import { edit, setEditTab, type EditTab } from './edit/edit-store.svelte';
   import { panel, toggleDetach, type PanelTab } from './store.svelte';
 
-  const tabs: [PanelTab, string][] = [
+  const inspectTabs: [PanelTab, string][] = [
     ['element', i18n.t('panel.tabElement')],
     ['page', i18n.t('panel.tabPage')],
   ];
+  const editTabs: [EditTab, string][] = [
+    ['css', i18n.t('edit.css')],
+    ['changes', i18n.t('edit.changes')],
+  ];
+  // edit mode swaps Element / Page for CSS / Changes (6.38)
+  const tabs = $derived(panel.mode === 'edit' ? editTabs : inspectTabs);
+  const current = $derived(panel.mode === 'edit' ? edit.tab : panel.selectedTab);
+  function pick(id: string) {
+    if (panel.mode === 'edit') setEditTab(id as EditTab);
+    else panel.selectedTab = id as PanelTab;
+  }
   const dockLabel = $derived(i18n.t(panel.detached ? 'panel.dock' : 'panel.undock'));
   const scroller = () => (document.scrollingElement ?? document.documentElement).scrollTop;
 </script>
@@ -21,10 +33,11 @@
       type="button"
       role="tab"
       class="rounded-btn px-2.5 py-1 font-medium hover:bg-line"
-      class:bg-line={panel.selectedTab === id}
-      class:text-fg-muted={panel.selectedTab !== id}
-      aria-selected={panel.selectedTab === id}
-      onclick={() => (panel.selectedTab = id)}>{label}</button
+      class:bg-line={current === id}
+      class:text-fg-muted={current !== id}
+      aria-selected={current === id}
+      data-tab={id}
+      onclick={() => pick(id)}>{label}</button
     >
   {/each}
   <span class="flex-1"></span>

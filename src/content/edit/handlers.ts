@@ -84,7 +84,11 @@ function editDetails(el: Element): ElementDetails['edit'] {
   const payload = buildPayload(el, stateForcer());
   scheduleExtras(el, payload.paySeq);
   watchMedia(payload.rules);
-  return { payload, editCount: editor()?.changeCount(el) ?? 0 };
+  return {
+    payload,
+    editCount: editor()?.changeCount(el) ?? 0,
+    classes: el.getAttribute('class') ?? '',
+  };
 }
 
 function clearDetails(): void {

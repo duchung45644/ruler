@@ -16,6 +16,14 @@ import {
   themePref,
 } from '../../lib/settings';
 import type { ThemePref } from '../../lib/theme';
+import {
+  changesInvalidated,
+  clearEdit,
+  edit,
+  takeEditDetails,
+  takeExtras,
+  takeState,
+} from './edit/edit-store.svelte';
 
 export type PanelTab = 'element' | 'page';
 
@@ -26,6 +34,7 @@ export const panel = $state({
   switching: false,
   visible: true,
   selectedTab: 'element' as PanelTab,
+  mode: 'inspect' as 'inspect' | 'edit',
   element: null as ElementDetails | null,
   canvasFps: null as number | null,
   issues: null as Issue[] | null,
@@ -107,6 +116,9 @@ export async function startPanel(signal: AbortSignal, search = location.search):
         panel.element = d;
         panel.issues = d.issues ?? null;
         panel.canvasFps = null;
+        takeEditDetails(d);
+        // a panel opened while edit mode is on hears no set_mode, only edit details
+        if (d.edit) panel.mode = 'edit';
       },
       update_canvas_fps: (fps) => void (panel.canvasFps = fps),
       page_data: (d) => void (panel.page = d),
@@ -119,7 +131,21 @@ export async function startPanel(signal: AbortSignal, search = location.search):
         panel.element = null;
         panel.issues = null;
         panel.canvasFps = null;
+        clearEdit();
       },
+      set_mode(mode, sender) {
+        // responsive iframes (phase 6) must not flip the panel (6.50)
+        if (sender?.frameId !== undefined && sender.frameId !== 0) return;
+        panel.mode = mode === 'edit' ? 'edit' : 'inspect';
+      },
+      edit_payload_extras: (seq, inherited) => takeExtras(seq, inherited),
+      media_activity(active) {
+        if (active && typeof active === 'object')
+          edit.mediaActive = { ...edit.mediaActive, ...active };
+      },
+      edit_state: (s) => takeState(s),
+      refresh_changes: () => changesInvalidated(),
+      page_updated: () => void (edit.changes = null),
     },
     signal,
     {

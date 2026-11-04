@@ -307,5 +307,18 @@
   "toast": {
     "editsRestoredOne": "1 saved edit restored",
     "editsRestoredMany": "$1 saved edits restored"
+  },
+  "edit": {
+    "css": "CSS",
+    "changes": "Changes",
+    "emptyEdit": "Click an Element to Select",
+    "shortcutToggleRuler": "Toggle Extension",
+    "shortcutUndo": "Undo",
+    "shortcutRedo": "Redo",
+    "shortcutCopy": "Copy",
+    "shortcutPaste": "Paste",
+    "countNone": "No edits",
+    "countOne": "1 edit",
+    "countOther": "$1 edits"
   }
 }

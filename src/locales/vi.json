@@ -307,5 +307,18 @@
   "toast": {
     "editsRestoredOne": "Đã khôi phục 1 chỉnh sửa đã lưu",
     "editsRestoredMany": "Đã khôi phục $1 chỉnh sửa đã lưu"
+  },
+  "edit": {
+    "css": "CSS",
+    "changes": "Thay đổi",
+    "emptyEdit": "Nhấp vào một phần tử để chọn",
+    "shortcutToggleRuler": "Bật/tắt tiện ích",
+    "shortcutUndo": "Hoàn tác",
+    "shortcutRedo": "Làm lại",
+    "shortcutCopy": "Sao chép",
+    "shortcutPaste": "Dán",
+    "countNone": "Không có chỉnh sửa",
+    "countOne": "1 chỉnh sửa",
+    "countOther": "$1 chỉnh sửa"
   }
 }

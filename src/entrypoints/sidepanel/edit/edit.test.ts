@@ -23,7 +23,7 @@ afterEach(() => {
   if (ui.app) unmount(ui.app);
   ui.app = null;
   document.body.replaceChildren();
-  Object.assign(panel, { mode: 'inspect', element: null, shortcuts: {} });
+  Object.assign(panel, { selectedTab: 'element', element: null, shortcuts: {} });
   clearEdit();
   edit.editState = { canUndo: false, canRedo: false, editCount: 0, hasClipboard: false };
   vi.restoreAllMocks();
@@ -52,42 +52,16 @@ const payload = (paySeq: number): RulePayload => ({
   crossOriginMissing: 0,
 });
 
-it('switches to the edit view only on set_mode from frame 0', async () => {
-  await open();
-  await toPanel('set_mode', 2, 'edit');
-  expect(document.querySelector('[data-edit-view]')).toBeNull();
-  await toPanel('set_mode', 0, 'edit');
-  expect(document.querySelector('[data-edit-view]')).not.toBeNull();
-  expect(document.querySelector('[data-tab="css"]')).not.toBeNull();
-  expect(document.body.textContent).toContain('edit_emptyEdit');
-  await toPanel('set_mode', 0, 'inspect');
-  expect(document.querySelector('[data-edit-view]')).toBeNull();
-});
-
-it('the Edit tab turns edit mode on in the page and shows the edit actions', async () => {
-  await open();
-  const send = vi.mocked(fakeBrowser.tabs.sendMessage);
-  (document.querySelector('[data-tab="edit"]') as HTMLElement).click();
-  flushSync();
-  expect(document.querySelector('[data-edit-toolbar] [data-action="edit_cut"]')).not.toBeNull();
-  expect(send.mock.calls.some(([, m]) => (m as { type: string }).type === 'set_edit_mode')).toBe(
-    true,
-  );
-  (document.querySelector('[data-tab="element"]') as HTMLElement).click();
-  flushSync();
-  expect(document.querySelector('[data-edit-view]')).toBeNull();
-});
-
-it('keeps an edit selection that arrives before the edit view mounts', async () => {
+it('the Element tab carries the edit toolbar and the CSS rules of the selection', async () => {
   await open();
   const d = { ...sampleElement(), edit: { payload: payload(1), editCount: 0, classes: '' } };
   await toPanel('select_element', 0, d);
-  // the details flipped the mode; hold the inspect view to stand for one not yet mounted
-  panel.mode = 'inspect';
+  expect(document.querySelector('[data-edit-toolbar] [data-action="edit_cut"]')).not.toBeNull();
+  expect(document.querySelector('[data-section="cssRules"]')).not.toBeNull();
+  (document.querySelector('[data-tab="changes"]') as HTMLElement).click();
   flushSync();
-  expect(document.querySelector('[data-edit-header]')).toBeNull();
-  await toPanel('set_mode', 0, 'edit');
-  expect(document.querySelector('[data-edit-header]')?.textContent).toContain(d.name);
+  expect(document.querySelector('[data-changes-view]')).not.toBeNull();
+  expect(document.querySelector('[data-edit-toolbar]')).toBeNull();
 });
 
 it('drops edit_payload_extras for an older payload', async () => {
@@ -108,7 +82,7 @@ it('drops edit_payload_extras for an older payload', async () => {
   expect(edit.inherited).toEqual([rule]);
 });
 
-it('shows the edit count from edit_state', async () => {
+it('shows the edit count from edit_state on the Changes tab', async () => {
   await open();
   const d = { ...sampleElement(), edit: { payload: payload(1), editCount: 0, classes: '' } };
   await toPanel('select_element', 0, d);
@@ -118,7 +92,7 @@ it('shows the edit count from edit_state', async () => {
     editCount: 1,
     hasClipboard: false,
   });
-  expect(document.querySelector('[data-edit-count]')?.textContent).toBe('edit_countOne');
+  expect(document.querySelector('[data-edit-count]')?.textContent).toBe('1');
   const undo = document.querySelector<HTMLButtonElement>('[data-action="edit_undo"]')!;
   expect(undo.disabled).toBe(false);
 });

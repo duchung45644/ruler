@@ -132,7 +132,6 @@
   "panel": {
     "tabElement": "Phần tử",
     "tabPage": "Trang",
-    "tabEdit": "Sửa",
     "undock": "Mở trong cửa sổ",
     "dock": "Chuyển về bảng bên",
     "emptyInspect": "Nhấp vào một phần tử để chọn",

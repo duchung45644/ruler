@@ -29,12 +29,9 @@ export const HANDOFF_TTL = 30000;
 
 /** State a panel leaves in `panelHandoff:<tabId>` when it detaches / docks (7.11). */
 export interface Handoff {
-  selectedTab: 'element' | 'page';
+  selectedTab: 'element' | 'page' | 'changes';
   scrollTop: number;
   at: number;
-  /** Phase 5: the edit view and its tab survive the move. */
-  mode?: 'inspect' | 'edit';
-  selectedEditTab?: string;
 }
 
 export const readHandoff = (h: Handoff | undefined | null, now: number): Handoff | null =>

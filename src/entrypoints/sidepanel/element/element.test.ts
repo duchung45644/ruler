@@ -55,7 +55,7 @@ it('shows the header and goes to the tab before selecting the element', async ()
   expect($('[data-size]').textContent).toBe('100 × 20.25');
   $('[data-selector]').click();
   await vi.waitFor(() => expect(types('page')).toContain('go_to_selected_element'));
-  expect(log.map((l) => l.slice(0, 3))).toEqual([
+  expect(log.filter((l) => l[1] !== 'get_history_state').map((l) => l.slice(0, 3))).toEqual([
     ['bg', 'go_to_tab', 5],
     ['page', 'go_to_selected_element', 'v-1'],
   ]);

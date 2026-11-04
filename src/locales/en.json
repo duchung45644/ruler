@@ -132,7 +132,6 @@
   "panel": {
     "tabElement": "Element",
     "tabPage": "Page",
-    "tabEdit": "Edit",
     "undock": "Open in a window",
     "dock": "Move to side panel",
     "emptyInspect": "Click an Element to Select",

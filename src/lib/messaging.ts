@@ -116,7 +116,6 @@ export interface ContentApi {
   clear_changes(): EditResult;
   force_element_state(state: string | null): EditResult;
   apply_pending_rule_edits(edits: SerializedEdit[]): EditResult;
-  set_edit_mode(on: boolean): EditResult;
   /** Returns whether text editing is now on. */
   toggle_text_edit(): boolean;
   select_edited_element(id: string): boolean;
@@ -135,7 +134,6 @@ export interface SidePanelApi {
   update_issues(issues: Issue[]): void;
   clear(): void;
   // Edit view (legacy `editor_panel` target, D3).
-  set_mode(mode: 'edit' | 'inspect'): void;
   edit_payload_extras(paySeq: number, inherited: EditableRule[]): void;
   media_activity(active: Record<string, boolean>): void;
   refresh_changes(): void;

@@ -66,25 +66,6 @@ afterEach(() => {
   document.head.replaceChildren();
 });
 
-it('opens the side panel before switching it to edit, and turns X-Ray off', async () => {
-  setXray(true);
-  await setEditMode(true);
-  expect(order.indexOf('open_side_panel')).toBeGreaterThanOrEqual(0);
-  expect(order.indexOf('open_side_panel')).toBeLessThan(order.indexOf('set_mode:edit'));
-  expect(state.xrayOn).toBe(false);
-  expect(state.editOn).toBe(true);
-});
-
-it('edit mode turns off the keys of the tools it hides (grid) but not capture', async () => {
-  await setEditMode(true);
-  key('g');
-  key('s');
-  expect(ran).toEqual({ three: 0, eight: 1 });
-  await setEditMode(false);
-  key('g');
-  expect(ran.three).toBe(1);
-});
-
 it('Ctrl+Z typed in an input does not undo the page', async () => {
   const p = document.body.appendChild(document.createElement('p'));
   const input = document.body.appendChild(document.createElement('input'));
@@ -199,22 +180,15 @@ it('end to end: a rule edit is listed, saved, and still applied after a session 
   ruleTracker().revertAll();
 });
 
-it('the inspect button leaves edit mode and inspects, even if it was off before (regression)', async () => {
-  const { items } = await import('../core/registry.svelte');
-  state.inspectOn = false;
-  await setEditMode(true);
-  items.find((i) => i.id === 'inspect')!.run();
-  expect(state.editOn).toBe(false);
-  expect(state.inspectOn).toBe(true);
-});
-
-it('edit mode hides grid-like tools but keeps inspect and capture', async () => {
-  const { itemShown } = await import('../core/registry.svelte');
-  const tool = (id: string) => ({ id, group: 'inspectTools' }) as never;
-  await setEditMode(true);
-  expect([itemShown(tool('grid')), itemShown(tool('inspect')), itemShown(tool('capture'))]).toEqual(
-    [false, true, true],
-  );
-  await setEditMode(false);
-  expect(itemShown(tool('grid'))).toBe(true);
+it('editing needs no mode: the session starts the engine and keeps X-Ray and the dock as they are', async () => {
+  setXray(true);
+  initEdit();
+  expect(state.editOn).toBe(true);
+  expect(editor()).not.toBeNull();
+  expect(state.xrayOn).toBe(true);
+  const p = document.body.appendChild(document.createElement('p'));
+  state.selected = p;
+  key('Delete');
+  expect(p.style.display).toBe('none'); // delete hides, so undo can bring it back
+  setXray(false);
 });

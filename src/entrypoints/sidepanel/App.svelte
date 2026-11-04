@@ -2,7 +2,7 @@
   import { onDestroy, onMount, tick } from 'svelte';
   import { forwardKey } from '../../lib/panel-keys';
   import EmptyElement from './EmptyElement.svelte';
-  import EditView from './edit/EditView.svelte';
+  import ChangesView from './edit/ChangesView.svelte';
   import ElementTab from './element/ElementTab.svelte';
   import PageTab from './page/PageTab.svelte';
   import TabBar from './TabBar.svelte';
@@ -22,12 +22,7 @@
   onDestroy(() => ac.abort());
 
   // 7.10: page weight streams only while the Page tab is on screen (legacy Ti)
-  const weighing = $derived(
-    panel.mode === 'inspect' &&
-      panel.selectedTab === 'page' &&
-      panel.visible &&
-      panel.tabId !== null,
-  );
+  const weighing = $derived(panel.selectedTab === 'page' && panel.visible && panel.tabId !== null);
   $effect(() => {
     if (!weighing) return;
     void toPage('page_weight_subscribe');
@@ -46,8 +41,8 @@
 
 <TabBar />
 <main>
-  {#if panel.mode === 'edit'}
-    <EditView />
+  {#if panel.selectedTab === 'changes'}
+    <ChangesView />
   {:else if panel.selectedTab === 'element'}
     {#if panel.element}
       <ElementTab el={panel.element} />

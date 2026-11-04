@@ -209,7 +209,7 @@ function placePanel(
 ): void {
   const t = panelTarget();
   // edit mode keeps hover/select but drops the floating panel (legacy applyInspectVisuals(false))
-  if (!t || !box.firstElementChild || panelHidden || state.paused || state.editOn) {
+  if (!t || !box.firstElementChild || panelHidden || state.paused) {
     box.style.visibility = 'hidden';
     return;
   }

@@ -2,21 +2,14 @@
   import { i18n } from '#i18n';
   import AppWindow from '@lucide/svelte/icons/app-window';
   import PanelRight from '@lucide/svelte/icons/panel-right';
-  import { panel, toPage, toggleDetach, type PanelTab } from './store.svelte';
+  import { edit } from './edit/edit-store.svelte';
+  import { panel, toggleDetach, type PanelTab } from './store.svelte';
 
-  const tabs: [PanelTab | 'edit', string][] = [
+  const tabs: [PanelTab, string][] = [
     ['element', i18n.t('panel.tabElement')],
     ['page', i18n.t('panel.tabPage')],
-    ['edit', i18n.t('panel.tabEdit')],
+    ['changes', i18n.t('edit.changes')],
   ];
-  // the Edit tab is edit mode on the page: opening it turns the editor on, leaving turns it off
-  const current = $derived(panel.mode === 'edit' ? 'edit' : panel.selectedTab);
-  function pick(id: PanelTab | 'edit') {
-    if (id === current) return;
-    if (id !== 'edit') panel.selectedTab = id;
-    panel.mode = id === 'edit' ? 'edit' : 'inspect';
-    void toPage('set_edit_mode', id === 'edit');
-  }
   const dockLabel = $derived(i18n.t(panel.detached ? 'panel.dock' : 'panel.undock'));
   const scroller = () => (document.scrollingElement ?? document.documentElement).scrollTop;
 </script>
@@ -30,11 +23,15 @@
       type="button"
       role="tab"
       class="rounded-btn px-2.5 py-1 font-medium hover:bg-line"
-      class:bg-line={current === id}
-      class:text-fg-muted={current !== id}
-      aria-selected={current === id}
+      class:bg-line={panel.selectedTab === id}
+      class:text-fg-muted={panel.selectedTab !== id}
+      aria-selected={panel.selectedTab === id}
       data-tab={id}
-      onclick={() => pick(id)}>{label}</button
+      onclick={() => (panel.selectedTab = id)}
+      >{label}{#if id === 'changes' && edit.editState.editCount}<span
+          class="ml-1 rounded-full bg-accent px-1.5 text-[10px] text-white tabular-nums"
+          data-edit-count>{edit.editState.editCount}</span
+        >{/if}</button
     >
   {/each}
   <span class="flex-1"></span>

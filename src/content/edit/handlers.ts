@@ -18,7 +18,6 @@ import {
   isOwn,
   onEditChange,
   ruleTracker,
-  setEditMode,
   stateForcer,
   toggleTextEdit,
 } from './mode.svelte';
@@ -180,10 +179,6 @@ export const editHandlers: Handlers<ContentApi> = {
     const list = Array.isArray(edits) ? edits.filter(isSerializedEdit) : [];
     ruleTracker().applySerialized(list);
     schedulePersist();
-    return ok();
-  },
-  async set_edit_mode(on) {
-    await setEditMode(on);
     return ok();
   },
   toggle_text_edit() {

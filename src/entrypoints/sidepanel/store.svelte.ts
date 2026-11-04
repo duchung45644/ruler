@@ -20,13 +20,12 @@ import {
   changesInvalidated,
   clearEdit,
   edit,
-  setEditTab,
   takeEditDetails,
   takeExtras,
   takeState,
 } from './edit/edit-store.svelte';
 
-export type PanelTab = 'element' | 'page';
+export type PanelTab = 'element' | 'page' | 'changes';
 
 export const panel = $state({
   tabId: null as number | null,
@@ -35,7 +34,6 @@ export const panel = $state({
   switching: false,
   visible: true,
   selectedTab: 'element' as PanelTab,
-  mode: 'inspect' as 'inspect' | 'edit',
   element: null as ElementDetails | null,
   canvasFps: null as number | null,
   issues: null as Issue[] | null,
@@ -118,8 +116,6 @@ export async function startPanel(signal: AbortSignal, search = location.search):
         panel.issues = d.issues ?? null;
         panel.canvasFps = null;
         takeEditDetails(d);
-        // a panel opened while edit mode is on hears no set_mode, only edit details
-        if (d.edit) panel.mode = 'edit';
       },
       update_canvas_fps: (fps) => void (panel.canvasFps = fps),
       page_data: (d) => void (panel.page = d),
@@ -133,11 +129,6 @@ export async function startPanel(signal: AbortSignal, search = location.search):
         panel.issues = null;
         panel.canvasFps = null;
         clearEdit();
-      },
-      set_mode(mode, sender) {
-        // responsive iframes (phase 6) must not flip the panel (6.50)
-        if (sender?.frameId !== undefined && sender.frameId !== 0) return;
-        panel.mode = mode === 'edit' ? 'edit' : 'inspect';
       },
       edit_payload_extras: (seq, inherited) => takeExtras(seq, inherited),
       media_activity(active) {
@@ -196,10 +187,6 @@ export async function startPanel(signal: AbortSignal, search = location.search):
   if (h) {
     panel.selectedTab = h.selectedTab;
     pendingScroll = h.scrollTop;
-    // with nothing selected no select_element would tell the new window it is in edit mode
-    if (h.mode === 'edit') panel.mode = 'edit';
-    if (h.selectedEditTab === 'css' || h.selectedEditTab === 'changes')
-      setEditTab(h.selectedEditTab);
   }
   if (panel.tabId !== null && !signal.aborted) {
     const timer = announce();
@@ -223,8 +210,6 @@ export async function toggleDetach(scrollTop: number): Promise<void> {
     selectedTab: panel.selectedTab,
     scrollTop,
     at: Date.now(),
-    mode: panel.mode,
-    selectedEditTab: edit.tab,
   };
   try {
     await storage.setItem(handoffKey(tabId), handoff);

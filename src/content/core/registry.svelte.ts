@@ -49,14 +49,10 @@ export interface DockItem {
 export const items: DockItem[] = $state([]);
 
 /** Dock items text editing leaves usable (5.06): text edit, mode, dock, side panel, quit. */
-const TEXT_EDIT_ITEMS = ['editText', 'inspect', 'editMode', 'sidepanel', 'quit'];
+const TEXT_EDIT_ITEMS = ['inspect', 'sidepanel', 'quit'];
 
-/** Tools edit mode turns off (1.42); hidden then, which also disables their keys. */
-const EDIT_MODE_HIDDEN = ['xray', 'grid', 'ruler', 'breakpoints', 'eyedropper', 'find'];
-
-/** The edit group shows only in edit mode (1.44); tools edit mode turns off hide in it. */
-export const itemShown = (i: DockItem): boolean =>
-  state.editOn ? !EDIT_MODE_HIDDEN.includes(i.id) : i.group !== 'edit';
+/** The edit group (none registered now; edit buttons are in the panel) stays off the dock. */
+export const itemShown = (i: DockItem): boolean => i.group !== 'edit';
 
 /**
  * Dock layout by purpose: select, page overlays, measuring, design tools, output/panel, session.

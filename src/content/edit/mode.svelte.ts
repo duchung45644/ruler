@@ -1,15 +1,9 @@
-/** Edit mode on the page (port of setEditMode :34709, updateEditModeUiOnly :34774, ensureEditorEngine :34806; 5.05). */
+/** Page editing (after setEditMode :34709, updateEditModeUiOnly :34774, ensureEditorEngine :34806; 5.05). */
 import { browser } from '#imports';
 import { EMPTY_EDIT_STATE, type EditState } from '../../lib/edit/types';
-import { sendToBackground, sendToSidePanel } from '../../lib/messaging';
-import { getSettings } from '../../lib/settings';
-import { requestPaint } from '../core/overlay';
 import { state } from '../core/state.svelte';
 import { elementIdMap, sendElement } from '../sidepanel/bridge.svelte';
-import { clearFind } from '../tools/find';
 import { selectElement } from '../tools/inspector';
-import { clearPins } from '../tools/inspector/pins.svelte';
-import { setXray } from '../tools/xray';
 import { HtmlEditor } from './engine';
 import { cancelScheduledExtras, unwatchMedia } from './payload';
 import { RuleTracker } from './rules';
@@ -21,8 +15,6 @@ export const isOwn = (el: Element): boolean => el.localName === 'bo-doi-ui';
 let engine: HtmlEditor | null = null;
 let tracker: RuleTracker | null = null;
 let forcer: StateForcer | null = null;
-/** Inspect state before edit mode forced it on (edit mode selects through the inspector). */
-let inspectBefore = false;
 const changeListeners: (() => void)[] = [];
 const exitListeners: (() => void)[] = [];
 
@@ -84,36 +76,21 @@ function teardown(): void {
   tracker?.unwatch();
 }
 
+/**
+ * Editing is always available while the session runs (no separate edit mode): this only starts or
+ * stops the HTML engine and the rule watcher. `state.editOn` means "engine alive".
+ */
 export function setEditMode(on: boolean): Promise<void> {
   if (state.editOn === on) return Promise.resolve();
-  // first, inside the click: sidePanel.open needs the user gesture
-  const opened = on ? sendToBackground('open_side_panel').catch(() => undefined) : null;
   setTextEdit(false, engine, isOwn);
   state.editOn = on;
   if (on) {
-    inspectBefore = state.inspectOn;
-    state.inspectOn = true;
-    clearPins();
-    setXray(false);
-    state.popover = null;
-    clearFind();
     ensureEngine();
     ruleTracker().watch();
-  } else {
-    teardown();
-    state.inspectOn = inspectBefore;
-    if (!inspectBefore) state.hovered = null;
-    void getSettings().then((s) => {
-      if (s.xrayModeIsOn && !state.editOn && state.active) setXray(true);
-    });
-  }
+  } else teardown();
   state.editState = editState();
-  requestPaint();
-  return (async () => {
-    await opened;
-    await sendToSidePanel('set_mode', on ? 'edit' : 'inspect').catch(() => {});
-    if (state.selected) sendElement(state.selected);
-  })();
+  if (state.selected) sendElement(state.selected);
+  return Promise.resolve();
 }
 
 export function toggleTextEdit(): void {

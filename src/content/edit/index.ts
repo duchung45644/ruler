@@ -1,6 +1,5 @@
 import type { EditResult } from '../../lib/edit/types';
 import { addKeyHandler } from '../core/keys';
-import { items } from '../core/registry.svelte';
 import { onStop, sessionSignal } from '../core/session';
 import { state } from '../core/state.svelte';
 import type { HtmlEditor } from './engine';
@@ -49,22 +48,9 @@ function onKey(e: KeyboardEvent): boolean {
   return false;
 }
 
-let inspectWrapped = false;
-
-/** Inspect/edit switch and edit keys; the edit buttons live in the panel's Edit tab (1.20, 1.44, 5.02–5.04). Called once per session. */
+/** Edit keys and the edit engine (editing is always on in a session; buttons live in the panel). */
 export function initEdit(): void {
-  // one inspect button: while editing, it leaves edit mode and inspects
-  const inspect = items.find((i) => i.id === 'inspect');
-  if (inspect && !inspectWrapped) {
-    inspectWrapped = true; // items outlive sessions; initEdit runs per session
-    const toggle = inspect.run;
-    inspect.run = () => {
-      if (!state.editOn) return toggle();
-      void setEditMode(false);
-      if (!state.inspectOn) toggle();
-    };
-    inspect.isActive = () => state.inspectOn && !state.editOn;
-  }
+  void setEditMode(true);
   onStop(addKeyHandler(onKey));
   onStop(stopEditMode);
   initEditHandlers();

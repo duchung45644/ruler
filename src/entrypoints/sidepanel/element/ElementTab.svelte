@@ -15,6 +15,8 @@
   import TextContent from './TextContent.svelte';
   import TypographySection from './TypographySection.svelte';
   import { clearHighlights } from './actions';
+  import CssRulesSection from '../edit/CssRulesSection.svelte';
+  import EditToolbar from '../edit/EditToolbar.svelte';
 
   let { el }: { el: ElementDetails } = $props();
   const issues = $derived(panel.issues ?? el.issues);
@@ -27,8 +29,10 @@
 <!-- Order: what the element is, what is wrong with it, its geometry, its look, then code. -->
 <div data-element-tab role="presentation" onmouseleave={clearHighlights}>
   <Header {el} />
+  <EditToolbar />
   <DocumentSection {el} />
   {#if issues.length}<IssuesSection {issues} />{/if}
+  <CssRulesSection {el} />
   <BoxModel {el} fps={panel.canvasFps} />
   {#if el.layout}<LayoutSection layout={el.layout} />{/if}
   {#if el.textContent}<TextContent text={el.textContent} />{/if}

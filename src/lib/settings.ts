@@ -87,6 +87,7 @@ export const SECTION_IDS = [
   'pageWeight',
   'socialPreview',
   'seoIssues',
+  'cssRules',
 ] as const;
 export type SectionId = (typeof SECTION_IDS)[number];
 export interface SidePanelPrefs {

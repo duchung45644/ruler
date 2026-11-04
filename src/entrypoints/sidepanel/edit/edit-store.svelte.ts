@@ -11,19 +11,9 @@ import type { ElementDetails } from '../../../lib/element/types';
 import { sendToFrame, type ContentApi } from '../../../lib/messaging';
 import { panel, toPage } from '../store.svelte';
 
-export type EditTab = 'css' | 'changes';
 export interface Changes {
   rules: RuleChange[];
   html: HtmlChange[];
-}
-
-const TAB_KEY = 'bd-edit-tab';
-function savedTab(): EditTab {
-  try {
-    return sessionStorage.getItem(TAB_KEY) === 'changes' ? 'changes' : 'css';
-  } catch {
-    return 'css';
-  }
 }
 
 export const edit = $state({
@@ -33,19 +23,9 @@ export const edit = $state({
   mediaActive: {} as Record<string, boolean>,
   editState: { ...EMPTY_EDIT_STATE } as EditState,
   classes: '',
-  tab: savedTab(),
   /** null: not loaded, or stale since the last refresh_changes / page_updated. */
   changes: null as Changes | null,
 });
-
-export function setEditTab(t: EditTab): void {
-  edit.tab = t;
-  try {
-    sessionStorage.setItem(TAB_KEY, t);
-  } catch {
-    // private window: the tab is simply not remembered
-  }
-}
 
 /** Kept even while the inspect view is on screen, so the edit view draws it once it mounts (6.50). */
 export function takeEditDetails(d: ElementDetails): void {
@@ -111,7 +91,7 @@ export async function loadChanges(): Promise<void> {
 
 /** 6.39: the Changes tab reloads at once; otherwise the list is fetched when it opens. */
 export function changesInvalidated(): void {
-  if (panel.mode === 'edit' && edit.tab === 'changes') void loadChanges();
+  if (panel.selectedTab === 'changes') void loadChanges();
   else edit.changes = null;
 }
 

@@ -319,6 +319,18 @@
     "shortcutPaste": "Dán",
     "countNone": "Không có chỉnh sửa",
     "countOne": "1 chỉnh sửa",
-    "countOther": "$1 chỉnh sửa"
+    "countOther": "$1 chỉnh sửa",
+    "effectiveStyles": "Kiểu hiệu lực",
+    "inheritedFrom": "Kế thừa từ $1",
+    "rules": "Quy tắc",
+    "addRule": "Thêm quy tắc",
+    "invalidProperty": "Thuộc tính không xác định",
+    "invalidValue": "Giá trị không hợp lệ",
+    "overriddenBy": "Bị ghi đè bởi $1",
+    "notInherited": "Không được kế thừa bởi phần tử này",
+    "overriddenHidden": "Bị ghi đè bởi một stylesheet mà Bo doi không thể thấy",
+    "overriddenHiddenGrant": "Bị ghi đè bởi một stylesheet mà Bo doi không thể thấy. Cấp quyền truy cập cross-origin để xem.",
+    "crossOriginMissing": "Một số kiểu có thể bị thiếu.",
+    "stateDefault": "Mặc định"
   }
 }

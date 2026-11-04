@@ -319,6 +319,18 @@
     "shortcutPaste": "Paste",
     "countNone": "No edits",
     "countOne": "1 edit",
-    "countOther": "$1 edits"
+    "countOther": "$1 edits",
+    "effectiveStyles": "Effective Styles",
+    "inheritedFrom": "Inherited from $1",
+    "rules": "Rules",
+    "addRule": "Add Rule",
+    "invalidProperty": "Unknown property",
+    "invalidValue": "Invalid value",
+    "overriddenBy": "Overridden by $1",
+    "notInherited": "Not inherited by this element",
+    "overriddenHidden": "Overridden by a stylesheet Bo doi can't see",
+    "overriddenHiddenGrant": "Overridden by a stylesheet Bo doi can't see. Grant cross-origin access to reveal it.",
+    "crossOriginMissing": "Some styles may be missing.",
+    "stateDefault": "Default"
   }
 }

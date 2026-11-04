@@ -231,3 +231,8 @@ export function overriddenDecls(rules: MatchedRule[]): Set<string> {
   });
   return new Set(all.filter((d) => winner.get(d.property)?.key !== d.key).map((d) => d.key));
 }
+
+/** Properties children take from ancestors; inherited rules only matter for these. */
+const INHERITED =
+  /^(--|color$|font|line-height$|letter-spacing$|word-spacing$|text-(align|indent|transform|shadow|decoration-color)|white-space$|visibility$|cursor$|direction$|quotes$|list-style|tab-size$|hyphens$|writing-mode$)/;
+export const inheritedProperty = (p: string): boolean => INHERITED.test(p.toLowerCase());

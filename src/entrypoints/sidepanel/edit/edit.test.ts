@@ -80,7 +80,14 @@ it('drops edit_payload_extras for an older payload', async () => {
   await open();
   const d = { ...sampleElement(), edit: { payload: payload(2), editCount: 0, classes: '' } };
   await toPanel('select_element', 0, d);
-  const rule = { selector: 'body' } as never;
+  const rule = {
+    selector: 'body',
+    wrappers: [],
+    declarations: [],
+    source: 'style',
+    line: null,
+    editable: false,
+  } as never;
   await toPanel('edit_payload_extras', 0, 1, [rule]);
   expect(edit.inherited).toEqual([]);
   await toPanel('edit_payload_extras', 0, 2, [rule]);

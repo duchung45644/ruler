@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { panel } from '../store.svelte';
+  import CssEditor from './CssEditor.svelte';
   import EditEmpty from './EditEmpty.svelte';
   import EditHeader from './EditHeader.svelte';
   import { command, edit, loadChanges } from './edit-store.svelte';
@@ -33,7 +34,8 @@
 <div data-edit-view>
   {#if edit.tab === 'css'}
     {#if panel.element && edit.payload}
-      <EditHeader el={panel.element} />
+      <EditHeader el={panel.element} payload={edit.payload} />
+      <CssEditor el={panel.element} payload={edit.payload} />
     {:else}
       <EditEmpty />
     {/if}

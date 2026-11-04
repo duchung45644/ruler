@@ -4,6 +4,7 @@ import {
   matchedRules,
   overriddenDecls,
   declKey,
+  inheritedProperty,
   type KnownRule,
 } from '../../lib/css/matched';
 import { parseDecls } from '../../lib/edit/decls';
@@ -44,17 +45,13 @@ export function buildPayload(el: Element, forcer: StateForcer): RulePayload {
   };
 }
 
-/** Properties children take from ancestors; inherited rules only matter for these. */
-const INHERITED =
-  /^(--|color$|font|line-height$|letter-spacing$|word-spacing$|text-(align|indent|transform|shadow|decoration-color)|white-space$|visibility$|cursor$|direction$|quotes$|list-style|tab-size$|hyphens$|writing-mode$)/;
-
 /** Ancestor rules that set an inherited property, nearest ancestor first. */
 export function inheritedRules(el: Element): EditableRule[] {
   const out: EditableRule[] = [];
   for (let a = el.parentElement; a; a = a.parentElement) {
     const root = rootOf(a);
     const rules = editable(a, rulesOf(root).rules, root).filter((r) =>
-      r.declarations.some((d) => INHERITED.test(d.property)),
+      r.declarations.some((d) => inheritedProperty(d.property)),
     );
     out.push(...rules);
   }

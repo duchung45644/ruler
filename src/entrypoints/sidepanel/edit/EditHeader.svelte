@@ -2,11 +2,13 @@
   import { i18n } from '#i18n';
   import Redo2 from '@lucide/svelte/icons/redo-2';
   import Undo2 from '@lucide/svelte/icons/undo-2';
+  import type { RulePayload } from '../../../lib/edit/types';
   import type { ElementDetails } from '../../../lib/element/types';
   import { onPage } from '../element/actions';
+  import StateSelect from './StateSelect.svelte';
   import { command, edit } from './edit-store.svelte';
 
-  let { el }: { el: ElementDetails } = $props();
+  let { el, payload }: { el: ElementDetails; payload: RulePayload } = $props();
   const n = $derived(edit.editState.editCount);
   const count = $derived(
     n === 0
@@ -30,6 +32,7 @@
     >
     <div class="mt-0.5 text-fg-muted tabular-nums" data-edit-count>{count}</div>
   </div>
+  <StateSelect {payload} />
   <div class="flex items-center gap-0.5">
     {#each [[undo, 'edit_undo', edit.editState.canUndo, Undo2], [redo, 'edit_redo', edit.editState.canRedo, Redo2]] as const as [label, cmd, enabled, Icon] (cmd)}
       <button

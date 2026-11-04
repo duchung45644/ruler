@@ -114,3 +114,9 @@ export function changesInvalidated(): void {
   if (panel.mode === 'edit' && edit.tab === 'changes') void loadChanges();
   else edit.changes = null;
 }
+
+/** After a selector edit, an added rule or a class change the addresses move: read them again. */
+export async function refreshPayload(): Promise<void> {
+  const r = await toPage('get_rule_edit_payload');
+  if (r && Array.isArray(r.rules)) edit.payload = r;
+}

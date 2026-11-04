@@ -198,3 +198,17 @@ it('end to end: a rule edit is listed, saved, and still applied after a session 
   expect(color()).toBe('blue');
   ruleTracker().revertAll();
 });
+
+it('Inspect mode after Edit turns the inspector on even if it was off before (regression)', async () => {
+  const { items } = await import('../core/registry.svelte');
+  const inspect = items.find((i) => i.id === 'inspect');
+  const run = inspect
+    ? vi.spyOn(inspect, 'run').mockImplementation(() => (state.inspectOn = true))
+    : null;
+  state.inspectOn = false;
+  await setEditMode(true);
+  items.find((i) => i.id === 'inspectMode')!.run();
+  expect(state.editOn).toBe(false);
+  expect(state.inspectOn).toBe(true);
+  run?.mockRestore();
+});

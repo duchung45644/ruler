@@ -10,7 +10,7 @@ import Type from '@lucide/svelte/icons/type';
 import Undo2 from '@lucide/svelte/icons/undo-2';
 import type { EditResult } from '../../lib/edit/types';
 import { addKeyHandler } from '../core/keys';
-import { registerItem, type MessageKey } from '../core/registry.svelte';
+import { items, registerItem, type MessageKey } from '../core/registry.svelte';
 import { onStop, sessionSignal } from '../core/session';
 import { state } from '../core/state.svelte';
 import type { HtmlEditor } from './engine';
@@ -79,7 +79,12 @@ export function initEdit(): void {
     icon: MousePointer2,
     label: 'dock.inspectMode',
     group: 'mode',
-    run: () => void setEditMode(false),
+    // choosing Inspect means inspecting: leaving edit mode restores the pre-edit inspect state,
+    // which is off when the user went straight to Edit, so turn it on like the inspect button does
+    run: () => {
+      void setEditMode(false);
+      if (!state.inspectOn) items.find((i) => i.id === 'inspect')?.run();
+    },
     isActive: () => !state.editOn,
   });
   registerItem({

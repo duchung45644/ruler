@@ -77,7 +77,7 @@ export function rootAt(scopeAddress: string | null): Root | null {
 }
 
 /** 1-based line of `selector` in a `<style>` owner's text; null when unknown. */
-function lineOf(rule: CSSStyleRule, selector: string): number | null {
+export function lineOf(rule: CSSStyleRule, selector: string): number | null {
   const node = rule.parentStyleSheet?.ownerNode;
   const text = node instanceof HTMLStyleElement ? node.textContent : null;
   const at = text?.indexOf(selector) ?? -1;
@@ -85,7 +85,7 @@ function lineOf(rule: CSSStyleRule, selector: string): number | null {
 }
 
 /** True when the rule sits in a sheet attached to `root` (not a fetched copy) we may write to. */
-function writable(rule: CSSStyleRule, root: Root): boolean {
+export function writable(rule: CSSStyleRule, root: Root): boolean {
   let sheet: CSSStyleSheet | null = rule.parentStyleSheet;
   while (sheet?.ownerRule?.parentStyleSheet) sheet = sheet.ownerRule.parentStyleSheet;
   const attached = sheetsOf(root).find((s) => s.sheet === sheet);

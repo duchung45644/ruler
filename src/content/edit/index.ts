@@ -23,9 +23,11 @@ import {
   stopEditMode,
   toggleTextEdit,
 } from './mode.svelte';
+import { editHandlers, initEditHandlers } from './handlers';
 import { persistNow, restorePersisted, schedulePersist } from './persist';
 
 export { editor, ruleTracker, setEditMode } from './mode.svelte';
+export { editHandlers };
 
 type Command = 'copy' | 'cut' | 'paste' | 'duplicate' | 'delete' | 'undo' | 'redo';
 
@@ -109,6 +111,7 @@ export function initEdit(): void {
   editItem('editRedo', Redo2, 'dock.redo', 'redo', () => !state.editState.canRedo);
   onStop(addKeyHandler(onKey));
   onStop(stopEditMode);
+  initEditHandlers();
 
   const signal = sessionSignal();
   onStop(onEditChange(schedulePersist));

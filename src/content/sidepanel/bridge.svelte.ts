@@ -1,4 +1,5 @@
 import { browser, type Browser } from '#imports';
+import type { ElementDetails } from '../../lib/element/types';
 import { i18n } from '#i18n';
 import {
   sendToBackground,
@@ -43,6 +44,16 @@ export const elementById = (id: string) => resolveElementById(id, attr(), ids);
 
 let pending: Element | null = null;
 
+interface EditHooks {
+  /** Edit-mode extras for select_element (6.49); undefined outside edit mode. */
+  details(el: Element): ElementDetails['edit'];
+  /** Selection dropped: stop the per-selection watchers. */
+  clear(): void;
+}
+// set by the edit module, which depends on this bridge (not the other way round)
+let editHooks: EditHooks | null = null;
+export const setEditHooks = (h: EditHooks | null) => (editHooks = h);
+
 /** Selection → panel, once per microtask so a burst of selects sends only the last (6.09). */
 export function sendElement(el: Element): void {
   const queued = pending;
@@ -52,9 +63,10 @@ export function sendElement(el: Element): void {
     const target = pending;
     pending = null;
     if (!target?.isConnected) return;
-    void sendToSidePanel('select_element', collectElementDetails(target, elementId)).catch(
-      () => {},
-    );
+    const details = collectElementDetails(target, elementId);
+    const edit = editHooks?.details(target);
+    if (edit) details.edit = edit;
+    void sendToSidePanel('select_element', details).catch(() => {});
   });
 }
 
@@ -181,6 +193,7 @@ export async function initSidePanelBridge(): Promise<void> {
       if (el && open) sendElement(el);
       else if (!el) {
         forgetSelection();
+        editHooks?.clear();
         void sendToSidePanel('clear').catch(() => {});
       }
     });

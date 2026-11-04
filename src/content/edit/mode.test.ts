@@ -199,16 +199,24 @@ it('end to end: a rule edit is listed, saved, and still applied after a session 
   ruleTracker().revertAll();
 });
 
-it('Inspect mode after Edit turns the inspector on even if it was off before (regression)', async () => {
+it('the inspect button leaves edit mode and inspects, even if it was off before (regression)', async () => {
   const { items } = await import('../core/registry.svelte');
-  const inspect = items.find((i) => i.id === 'inspect');
-  const run = inspect
-    ? vi.spyOn(inspect, 'run').mockImplementation(() => (state.inspectOn = true))
-    : null;
   state.inspectOn = false;
   await setEditMode(true);
-  items.find((i) => i.id === 'inspectMode')!.run();
+  items.find((i) => i.id === 'inspect')!.run();
   expect(state.editOn).toBe(false);
   expect(state.inspectOn).toBe(true);
-  run?.mockRestore();
+});
+
+it('edit mode hides the number-key tools but keeps 1, 8 and 0', async () => {
+  const { itemShown } = await import('../core/registry.svelte');
+  const tool = (key: string) => ({ id: key, key, group: 'inspectTools' }) as never;
+  await setEditMode(true);
+  expect([itemShown(tool('3')), itemShown(tool('1')), itemShown(tool('8'))]).toEqual([
+    false,
+    true,
+    true,
+  ]);
+  await setEditMode(false);
+  expect(itemShown(tool('3'))).toBe(true);
 });

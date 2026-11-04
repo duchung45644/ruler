@@ -1,7 +1,6 @@
 import ClipboardPaste from '@lucide/svelte/icons/clipboard-paste';
 import Copy from '@lucide/svelte/icons/copy';
 import CopyPlus from '@lucide/svelte/icons/copy-plus';
-import MousePointer2 from '@lucide/svelte/icons/mouse-pointer-2';
 import Pencil from '@lucide/svelte/icons/pencil';
 import Redo2 from '@lucide/svelte/icons/redo-2';
 import Scissors from '@lucide/svelte/icons/scissors';
@@ -72,27 +71,28 @@ function editItem(
   registerItem({ id, icon, label, group: 'edit', run: () => runEditCommand(cmd), isDisabled });
 }
 
+let inspectWrapped = false;
+
 /** Mode switch, edit dock group and edit keys (1.20, 1.44, 5.02–5.04). Called once per session. */
 export function initEdit(): void {
-  registerItem({
-    id: 'inspectMode',
-    icon: MousePointer2,
-    label: 'dock.inspectMode',
-    group: 'mode',
-    // choosing Inspect means inspecting: leaving edit mode restores the pre-edit inspect state,
-    // which is off when the user went straight to Edit, so turn it on like the inspect button does
-    run: () => {
+  // one inspect button: while editing, it leaves edit mode and inspects
+  const inspect = items.find((i) => i.id === 'inspect');
+  if (inspect && !inspectWrapped) {
+    inspectWrapped = true; // items outlive sessions; initEdit runs per session
+    const toggle = inspect.run;
+    inspect.run = () => {
+      if (!state.editOn) return toggle();
       void setEditMode(false);
-      if (!state.inspectOn) items.find((i) => i.id === 'inspect')?.run();
-    },
-    isActive: () => !state.editOn,
-  });
+      if (!state.inspectOn) toggle();
+    };
+    inspect.isActive = () => state.inspectOn && !state.editOn;
+  }
   registerItem({
     id: 'editMode',
     icon: Pencil,
     label: 'dock.editMode',
     group: 'mode',
-    run: () => void setEditMode(true),
+    run: () => void setEditMode(!state.editOn),
     isActive: () => state.editOn,
   });
   registerItem({

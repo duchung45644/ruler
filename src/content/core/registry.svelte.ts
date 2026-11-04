@@ -49,10 +49,16 @@ export interface DockItem {
 export const items: DockItem[] = $state([]);
 
 /** Dock items text editing leaves usable (5.06): text edit, mode, dock, side panel, quit. */
-const TEXT_EDIT_ITEMS = ['editText', 'inspectMode', 'editMode', 'sidepanel', 'quit'];
+const TEXT_EDIT_ITEMS = ['editText', 'inspect', 'editMode', 'sidepanel', 'quit'];
 
-/** The edit group shows only in edit mode (1.44). */
-export const itemShown = (i: DockItem): boolean => i.group !== 'edit' || state.editOn;
+/** Number keys that still work in edit mode (keys.ts); tools on the others are hidden then. */
+const EDIT_MODE_KEYS = ['1', '8', '0'];
+
+/** The edit group shows only in edit mode (1.44); the number-key tools hide in it (shorter dock). */
+export const itemShown = (i: DockItem): boolean =>
+  state.editOn
+    ? !i.key || !/^[0-9]$/.test(i.key) || EDIT_MODE_KEYS.includes(i.key)
+    : i.group !== 'edit';
 
 /** Paused or text editing: everything but a few items is locked. */
 export function itemLocked(i: DockItem): boolean {

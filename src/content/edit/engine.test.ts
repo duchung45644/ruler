@@ -125,3 +125,35 @@ it('clearAll puts everything back', () => {
   expect(ed.htmlChanges()).toEqual([]);
   expect(document.body.innerHTML).toBe(start);
 });
+
+it('removes an id the panel attached during edit mode once its edits are undone (2.24)', () => {
+  const ids = new Map<string, WeakRef<Element>>();
+  const p = document.querySelector('p')!;
+  const kept = lis()[0]!;
+  kept.setAttribute('data-sr-id-test', 'v-old');
+  ids.set('v-old', new WeakRef(kept));
+  const own = new HtmlEditor({
+    extId: 'test',
+    ids,
+    isOwn: () => false,
+    selected: () => sel,
+    select: (el) => (sel = el),
+    onChange: () => {},
+  });
+  // the bridge tags the selection before the engine sees it
+  p.setAttribute('data-sr-id-test', 'v-panel');
+  ids.set('v-panel', new WeakRef(p));
+  own.setClasses(p, 'y');
+  own.setClasses(kept, 'z');
+  own.undo();
+  own.undo();
+  expect(p.hasAttribute('data-sr-id-test')).toBe(false);
+  expect(ids.has('v-panel')).toBe(false);
+  expect(kept.getAttribute('data-sr-id-test')).toBe('v-old');
+
+  p.setAttribute('data-sr-id-test', 'v-panel2');
+  ids.set('v-panel2', new WeakRef(p));
+  own.setClasses(p, 'y');
+  own.clearAll();
+  expect(p.hasAttribute('data-sr-id-test')).toBe(false);
+});

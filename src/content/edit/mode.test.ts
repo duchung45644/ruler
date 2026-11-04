@@ -127,3 +127,74 @@ it('leaving edit mode removes its listeners but keeps the CSS edit style', async
   expect(document.getElementById(styleId)).not.toBeNull();
   expect(editor()).toBeNull();
 });
+
+it('edit keys do nothing while typing in an input inside a page shadow root (§9)', async () => {
+  const p = document.body.appendChild(document.createElement('p'));
+  const host = document.body.appendChild(document.createElement('div'));
+  const input = host.attachShadow({ mode: 'open' }).appendChild(document.createElement('input'));
+  await setEditMode(true);
+  state.selected = p;
+  const typed = (k: string, init: KeyboardEventInit = {}) =>
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { key: k, bubbles: true, composed: true, ...init }),
+    );
+  typed('Delete');
+  typed('Backspace');
+  typed('d', { ctrlKey: true });
+  expect(p.hasAttribute('style')).toBe(false);
+  expect(document.querySelectorAll('p')).toHaveLength(1);
+  expect(state.editState.canUndo).toBe(false);
+});
+
+it('text editing leaves clicks and input in the extension UI alone', async () => {
+  const ui = document.querySelector('bo-doi-ui')!;
+  const button = ui.shadowRoot!.appendChild(document.createElement('button'));
+  await setEditMode(true);
+  toggleTextEdit();
+  const click = new MouseEvent('click', { bubbles: true, cancelable: true, composed: true });
+  button.dispatchEvent(click);
+  expect(click.defaultPrevented).toBe(false);
+  expect(ui.hasAttribute('contenteditable')).toBe(false);
+  button.dispatchEvent(
+    new InputEvent('beforeinput', { inputType: 'insertText', bubbles: true, composed: true }),
+  );
+  toggleTextEdit();
+  expect(state.editState.canUndo).toBe(false);
+});
+
+it('end to end: a rule edit is listed, saved, and still applied after a session restart', async () => {
+  (window as unknown as { happyDOM: { setURL(u: string): void } }).happyDOM.setURL(
+    'https://site.test/page',
+  );
+  const style = document.head.appendChild(
+    Object.assign(document.createElement('style'), { textContent: '.card { color: red; }' }),
+  );
+  const color = () => (style.sheet!.cssRules[0] as CSSStyleRule).style.color;
+  ruleTracker().revertAll(); // page-wide: earlier tests may have left edits
+  const p = document.body.appendChild(document.createElement('p'));
+  p.className = 'card';
+  await setEditMode(true);
+  state.selected = p;
+  const { editHandlers: h } = await import('./handlers');
+  const payload = (await h.get_rule_edit_payload!({} as never))!;
+  const rule = payload.rules.find((r) => r.address?.selector === '.card')!;
+  expect((await h.rule_edit!(rule.address!, 'color: blue;', {} as never)).ok).toBe(true);
+  const changes = await h.get_all_flattened_changes!({} as never);
+  expect(changes.rules).toHaveLength(1);
+  stopSession(); // flushes the save timer
+  await vi.waitFor(async () =>
+    expect(await fakeBrowser.storage.local.get('persistedRuleEdits:https://site.test')).not.toEqual(
+      {},
+    ),
+  );
+  expect(color()).toBe('blue');
+
+  state.active = true;
+  sessionSignal();
+  await initSidePanelBridge();
+  initEdit();
+  await new Promise((r) => setTimeout(r, 0));
+  expect(ruleTracker().flattened()).toHaveLength(1);
+  expect(color()).toBe('blue');
+  ruleTracker().revertAll();
+});

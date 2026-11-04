@@ -46,6 +46,9 @@ export interface RuleChange {
   before: string;
   after: string;
   elementIds: string[];
+  /** Current selector and its scope, so a change with no element can still find one on the page. */
+  selector?: string;
+  scopeAddress?: string | null;
 }
 
 export type InsertPosition = 'beforebegin' | 'afterbegin' | 'beforeend' | 'afterend';

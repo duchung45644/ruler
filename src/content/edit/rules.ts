@@ -5,6 +5,7 @@ import { parseDecls, serializeDecls } from '../../lib/edit/decls';
 import { addressOf, locate, scopeAddressOf, type RuleAddress } from '../../lib/edit/rule-address';
 import type { SerializedEdit } from '../../lib/edit/serialize';
 import type { RuleChange } from '../../lib/edit/types';
+import { ID_ATTR } from '../../lib/selector';
 import { OWN_SOURCE, rulesOf } from '../sidepanel/rules';
 
 type Root = Document | ShadowRoot;
@@ -320,7 +321,8 @@ export class RuleTracker {
         line: null,
         before: r.before ?? '',
         after: r.current,
-        elementIds: [],
+        // the panel edited it by id, so the element carries one
+        elementIds: [r.el.getAttribute(ID_ATTR(this.extId))].filter((id): id is string => !!id),
       };
     const block = (c: { selector: string; declsText: string }) =>
       `${c.selector} { ${c.declsText} }`;
@@ -333,6 +335,8 @@ export class RuleTracker {
         before: '',
         after: block(r.current),
         elementIds: [],
+        selector: r.current.selector,
+        scopeAddress: r.scopeAddress,
       };
     return {
       recordId: r.recordId,
@@ -342,6 +346,8 @@ export class RuleTracker {
       before: block(r.before),
       after: block(r.current),
       elementIds: [],
+      selector: r.current.selector,
+      scopeAddress: r.scopeAddress,
     };
   }
 

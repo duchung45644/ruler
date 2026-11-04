@@ -13,6 +13,8 @@
     const out: Group[] = [];
     // eslint-disable-next-line svelte/prefer-svelte-reactivity -- built fresh inside the derived
     const byId = new Map<string, Group>();
+    // eslint-disable-next-line svelte/prefer-svelte-reactivity -- built fresh inside the derived
+    const bySelector = new Map<string, Group>();
     const of = (id: string, label: string) => {
       let g = byId.get(id);
       if (!g) {
@@ -24,10 +26,23 @@
     };
     for (const h of changes.html) of(h.id, h.selector).html.push(h);
     for (const c of changes.rules) {
-      const label = c.address?.selector ?? c.source;
+      const label = c.selector ?? c.address?.selector ?? c.source;
       const id = c.elementIds[0];
-      if (id) of(id, byId.get(id)?.label ?? label).rules.push(c);
-      else out.push({ id: null, label, rules: [c], html: [] });
+      if (id) {
+        of(id, byId.get(id)?.label ?? label).rules.push(c);
+        continue;
+      }
+      // no element known: one group per selector, which finds its first match on click
+      const scope = c.scopeAddress ?? null;
+      const key = `${scope ?? ''}\u0000${label}`;
+      let g = bySelector.get(key);
+      if (!g) {
+        g = { id: null, label, rules: [], html: [] };
+        if (c.selector) g.target = { selector: c.selector, scopeAddress: scope };
+        out.push(g);
+        bySelector.set(key, g);
+      }
+      g.rules.push(c);
     }
     return out;
   });
@@ -51,6 +66,16 @@
   async function select(id: string) {
     try {
       const found = await strict('select_edited_element', id);
+      if (!found)
+        await showAlert(i18n.t('dialog.elementNotFoundTitle'), i18n.t('dialog.noSelectedElement'));
+    } catch {
+      await unreachable();
+    }
+  }
+
+  async function find(target: NonNullable<Group['target']>) {
+    try {
+      const found = await strict('select_rule_target', target.selector, target.scopeAddress);
       if (!found)
         await showAlert(i18n.t('dialog.elementNotFoundTitle'), i18n.t('dialog.noSelectedElement'));
     } catch {
@@ -95,10 +120,11 @@
         onclick={clearAll}>{i18n.t('changes.clearChanges')}</button
       >
     </div>
-    {#each groups as g, i (g.id ?? `rule${i}`)}
+    {#each groups as g, i (g.id ?? `rule${i}:${g.label}`)}
       <ChangeGroup
         group={g}
         onselect={select}
+        onfind={find}
         onhover={hover}
         onclear={clearElement}
         onrevert={revert}

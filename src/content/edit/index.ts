@@ -23,7 +23,7 @@ import {
   stopEditMode,
   toggleTextEdit,
 } from './mode.svelte';
-import { editHandlers, initEditHandlers } from './handlers';
+import { editHandlers, initEditHandlers, resendSelection } from './handlers';
 import { persistNow, restorePersisted, schedulePersist } from './persist';
 
 export { editor, ruleTracker, setEditMode } from './mode.svelte';
@@ -33,7 +33,9 @@ type Command = 'copy' | 'cut' | 'paste' | 'duplicate' | 'delete' | 'undo' | 'red
 
 export function runEditCommand(cmd: Command): EditResult | null {
   const e: HtmlEditor | null = editor();
-  return e ? e[cmd]() : null;
+  if (!e) return null;
+  const r = e[cmd]();
+  return cmd === 'undo' || cmd === 'redo' ? resendSelection(r) : r;
 }
 
 const isMac = /mac/i.test(navigator.platform);

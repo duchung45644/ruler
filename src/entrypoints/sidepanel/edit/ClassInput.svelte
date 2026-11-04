@@ -35,8 +35,15 @@
   });
 
   let timer: ReturnType<typeof setTimeout> | undefined;
+  // undo / redo on the page resends the classes; typing not yet committed wins
+  $effect(() => {
+    const cls = edit.classes;
+    if (timer === undefined) value = cls;
+  });
+
   async function commit() {
     clearTimeout(timer);
+    timer = undefined;
     const next = value.trim().replace(/\s+/g, ' ');
     if (next === edit.classes) return;
     const r = await command('set_element_classes', id, next);
@@ -65,6 +72,7 @@
       // the page's history owns class edits (D4), not the field's own undo
       e.preventDefault();
       clearTimeout(timer);
+      timer = undefined;
       void command((k === 'z' && e.shiftKey) || k === 'y' ? 'edit_redo' : 'edit_undo');
       return;
     }

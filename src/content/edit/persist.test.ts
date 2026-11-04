@@ -91,3 +91,21 @@ it('reverts the page when the key is cleared from outside, without writing it ba
   await persistNow();
   expect(await fakeBrowser.storage.local.get(KEY)).toEqual({});
 });
+
+it('re-enabled in the same page: keeps the applied edits and shows no second toast', async () => {
+  await fakeBrowser.storage.local.set({ [KEY]: { edits: [own('r1', '.x')], updatedAt: 1 } });
+  stop = await restorePersisted(tracker);
+  stop();
+  vi.mocked(showToast).mockClear();
+  const apply = vi.spyOn(tracker, 'applySerialized');
+  stop = await restorePersisted(tracker);
+  expect(apply).not.toHaveBeenCalled();
+  expect(showToast).not.toHaveBeenCalled();
+  expect(tracker.flattened()).toHaveLength(1);
+
+  // a fresh page has a fresh tracker: the toast comes back
+  stop();
+  document.head.replaceChildren();
+  stop = await restorePersisted(new RuleTracker('ext', schedulePersist));
+  expect(showToast).toHaveBeenCalledWith('toast_editsRestoredOne', 5000);
+});

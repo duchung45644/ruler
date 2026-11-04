@@ -20,6 +20,7 @@ import {
   changesInvalidated,
   clearEdit,
   edit,
+  setEditTab,
   takeEditDetails,
   takeExtras,
   takeState,
@@ -195,6 +196,10 @@ export async function startPanel(signal: AbortSignal, search = location.search):
   if (h) {
     panel.selectedTab = h.selectedTab;
     pendingScroll = h.scrollTop;
+    // with nothing selected no select_element would tell the new window it is in edit mode
+    if (h.mode === 'edit') panel.mode = 'edit';
+    if (h.selectedEditTab === 'css' || h.selectedEditTab === 'changes')
+      setEditTab(h.selectedEditTab);
   }
   if (panel.tabId !== null && !signal.aborted) {
     const timer = announce();
@@ -214,7 +219,13 @@ export function takePendingScroll(): number | null {
 export async function toggleDetach(scrollTop: number): Promise<void> {
   const tabId = panel.tabId;
   if (tabId === null || panel.switching) return;
-  const handoff: Handoff = { selectedTab: panel.selectedTab, scrollTop, at: Date.now() };
+  const handoff: Handoff = {
+    selectedTab: panel.selectedTab,
+    scrollTop,
+    at: Date.now(),
+    mode: panel.mode,
+    selectedEditTab: edit.tab,
+  };
   try {
     await storage.setItem(handoffKey(tabId), handoff);
     if (panel.detached) {

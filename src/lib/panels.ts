@@ -32,7 +32,8 @@ export interface Handoff {
   selectedTab: 'element' | 'page';
   scrollTop: number;
   at: number;
-  /** Phase 5 (editor tabs). */
+  /** Phase 5: the edit view and its tab survive the move. */
+  mode?: 'inspect' | 'edit';
   selectedEditTab?: string;
 }
 

@@ -57,11 +57,14 @@ export class HtmlEditor {
   private clipboard: Element | null = null;
   private ids: Map<string, WeakRef<Element>>;
   private attr: string;
+  /** Ids that existed before edit mode; any other id was attached for this session's edits. */
+  private preexisting: Set<string>;
   private textEdits = new Map<Element, Node[]>();
 
   constructor(private opts: HtmlEditorOptions) {
     this.ids = opts.ids ?? new Map();
     this.attr = ID_ATTR(opts.extId);
+    this.preexisting = new Set(this.ids.keys());
   }
 
   // ---- ids, snapshots, change log ----
@@ -69,7 +72,8 @@ export class HtmlEditor {
   private idOf(el: Element): string {
     const had = el.hasAttribute(this.attr);
     const id = ensureElementId(el, this.attr, this.ids);
-    if (!had) this.ownIds.add(id);
+    // the bridge may have tagged the selection just before (panel open): still ours to remove
+    if (!had || !this.preexisting.has(id)) this.ownIds.add(id);
     return id;
   }
 

@@ -8,13 +8,14 @@ import { sendToSidePanel, type ContentApi, type Handlers } from '../../lib/messa
 import { requestPaint } from '../core/overlay';
 import { onStop } from '../core/session';
 import { state } from '../core/state.svelte';
-import { elementById, sendElement, setEditHooks } from '../sidepanel/bridge.svelte';
+import { bridge, elementById, sendElement, setEditHooks } from '../sidepanel/bridge.svelte';
 import { rootOf, rulesOf } from '../sidepanel/rules';
 import { selectElement } from '../tools/inspector';
 import type { HtmlEditor } from './engine';
 import {
   editor,
   editState,
+  isOwn,
   onEditChange,
   ruleTracker,
   setEditMode,
@@ -52,6 +53,12 @@ export function notifyChanged(): void {
     void sendToSidePanel('refresh_changes').catch(() => {});
     void sendToSidePanel('edit_state', editState()).catch(() => {});
   });
+}
+
+/** Undo / redo / class edits change what the panel shows for the selection (class field, name). */
+export function resendSelection<T>(r: T): T {
+  if (state.selected && bridge.panelOpen) sendElement(state.selected);
+  return r;
 }
 
 function withEngine(run: (e: HtmlEditor) => EditResult | null): EditResult {
@@ -104,8 +111,8 @@ export function initEditHandlers(): void {
 }
 
 export const editHandlers: Handlers<ContentApi> = {
-  edit_undo: () => withEngine((e) => e.undo()),
-  edit_redo: () => withEngine((e) => e.redo()),
+  edit_undo: () => resendSelection(withEngine((e) => e.undo())),
+  edit_redo: () => resendSelection(withEngine((e) => e.redo())),
   edit_copy: () => withEngine((e) => e.copy()),
   edit_cut: () => withEngine((e) => e.cut()),
   edit_paste: () => withEngine((e) => e.paste()),
@@ -113,7 +120,8 @@ export const editHandlers: Handlers<ContentApi> = {
   edit_delete: () => withEngine((e) => e.delete()),
   get_history_state: () => ok(),
   set_element_styles: (id, decls) => onElement(id, (e, el) => e.setStyles(el, decls)),
-  set_element_classes: (id, cls) => onElement(id, (e, el) => e.setClasses(el, cls)),
+  set_element_classes: (id, cls) =>
+    resendSelection(onElement(id, (e, el) => e.setClasses(el, cls))),
   get_page_classes: () => pageClasses(),
   set_text_content: (id, text) => onElement(id, (e, el) => e.setText(el, text)),
   set_inner_html: (id, html) => onElement(id, (e, el) => e.setInnerHtml(el, html)),
@@ -180,6 +188,19 @@ export const editHandlers: Handlers<ContentApi> = {
   select_edited_element(id) {
     const el = elementById(id);
     if (!el?.isConnected) return false;
+    selectElement(el, { scroll: true });
+    return true;
+  },
+  /** A rule change with no element: the first page element its selector matches. */
+  select_rule_target(selector, scopeAddress) {
+    const root = rootAt(scopeAddress);
+    let el: Element | undefined;
+    try {
+      el = [...(root?.querySelectorAll(selector) ?? [])].find((e) => !isOwn(e));
+    } catch {
+      return false;
+    }
+    if (!el) return false;
     selectElement(el, { scroll: true });
     return true;
   },

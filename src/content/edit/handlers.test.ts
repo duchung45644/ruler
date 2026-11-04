@@ -103,3 +103,60 @@ it('get_page_classes lists sorted unique classes', async () => {
   document.body.insertAdjacentHTML('beforeend', '<i class="b a"></i><i class="a c"></i>');
   expect(await h.get_page_classes!(sender)).toEqual(['a', 'b', 'c']);
 });
+
+const hasId = (el: Element) => el.getAttributeNames().some((n) => n.startsWith('data-sr-id'));
+
+it('panel open: the id the bridge attached in edit mode goes with undo and revert (2.24)', async () => {
+  const p = document.body.appendChild(document.createElement('p'));
+  bridge.panelOpen = true;
+  state.selected = p;
+  flushSync();
+  await tick();
+  expect(hasId(p)).toBe(true);
+  const id = (sent('select_element').at(-1)![1] as ElementDetails).id;
+  h.set_element_classes!(id, 'b', sender);
+  // checked before the resend re-tags the still-selected element for the panel
+  h.edit_undo!(sender);
+  expect(hasId(p)).toBe(false);
+  await tick();
+
+  state.selected = null;
+  flushSync();
+  state.selected = p;
+  flushSync();
+  await tick();
+  const id2 = (sent('select_element').at(-1)![1] as ElementDetails).id;
+  h.set_element_classes!(id2, 'c', sender);
+  h.revert_all_edits!(sender);
+  expect(hasId(p)).toBe(false);
+});
+
+it('undo / redo and class edits resend the selection with its current classes', async () => {
+  const p = document.body.appendChild(document.createElement('p'));
+  p.className = 'a';
+  bridge.panelOpen = true;
+  state.selected = p;
+  flushSync();
+  await tick();
+  const id = (sent('select_element').at(-1)![1] as ElementDetails).id;
+  toPanel.mockClear();
+  await h.set_element_classes!(id, 'a b', sender);
+  await tick();
+  expect((sent('select_element').at(-1)![1] as ElementDetails).edit!.classes).toBe('a b');
+  toPanel.mockClear();
+  await h.edit_undo!(sender);
+  await tick();
+  expect((sent('select_element').at(-1)![1] as ElementDetails).edit!.classes).toBe('a');
+  toPanel.mockClear();
+  await h.edit_redo!(sender);
+  await tick();
+  expect((sent('select_element').at(-1)![1] as ElementDetails).edit!.classes).toBe('a b');
+});
+
+it('select_rule_target selects the first match, or reports none', async () => {
+  document.body.insertAdjacentHTML('beforeend', '<i class="k"></i><b class="k"></b>');
+  expect(await h.select_rule_target!('.k', null, sender)).toBe(true);
+  expect(state.selected).toBe(document.querySelector('i.k'));
+  expect(await h.select_rule_target!('.none', null, sender)).toBe(false);
+  expect(await h.select_rule_target!('..', null, sender)).toBe(false);
+});

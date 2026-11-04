@@ -6,6 +6,8 @@
     /** The element's id; null for a rule no selected element touched. */
     id: string | null;
     label: string;
+    /** Set for a rule group with no element: what to look for on the page. */
+    target?: { selector: string; scopeAddress: string | null };
     rules: RuleChange[];
     html: HtmlChange[];
   }
@@ -20,12 +22,14 @@
   let {
     group,
     onselect,
+    onfind,
     onhover,
     onclear,
     onrevert,
   }: {
     group: Group;
     onselect: (id: string) => void;
+    onfind: (target: NonNullable<Group['target']>) => void;
     onhover: (id: string | null) => void;
     onclear: (id: string) => void;
     onrevert: (recordId: string) => void;
@@ -48,6 +52,15 @@
         onclick={() => onselect(id)}
         onmouseenter={() => onhover(id)}
         onmouseleave={() => onhover(null)}>{group.label}</button
+      >
+    {:else if group.target}
+      {@const target = group.target}
+      <button
+        type="button"
+        class="min-w-0 truncate text-left font-mono text-[12px] font-medium text-accent hover:underline"
+        title={group.label}
+        data-find
+        onclick={() => onfind(target)}>{group.label}</button
       >
     {:else}
       <span class="min-w-0 truncate font-mono text-[12px] font-medium" title={group.label}

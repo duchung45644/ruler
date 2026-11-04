@@ -7,7 +7,7 @@ import { panel } from '../store.svelte';
 import ClassInput from './ClassInput.svelte';
 import CssEditor from './CssEditor.svelte';
 import StateSelect from './StateSelect.svelte';
-import { clearEdit } from './edit-store.svelte';
+import { clearEdit, edit } from './edit-store.svelte';
 
 const ok = { ok: true, canUndo: true, canRedo: false, editCount: 1, hasClipboard: false };
 let ui: ReturnType<typeof mount> | null = null;
@@ -137,6 +137,22 @@ it('sends edit_undo for Ctrl+Z in the class field, not a class edit', async () =
   await vi.advanceTimersByTimeAsync(400);
   expect(sent('edit_undo')).toHaveLength(1);
   expect(sent('set_element_classes')).toHaveLength(0);
+});
+
+it('shows the classes the page resends after undo, unless typing is pending', async () => {
+  vi.useFakeTimers();
+  edit.classes = 'card lead';
+  ui = mount(ClassInput, { target: document.body, props: { id: 'v-1' } });
+  flushSync();
+  const input = document.querySelector<HTMLInputElement>('[data-class-input]')!;
+  expect(input.value).toBe('card lead');
+  edit.classes = 'card';
+  flushSync();
+  expect(input.value).toBe('card');
+  type(input, 'card x');
+  edit.classes = 'other';
+  flushSync();
+  expect(input.value).toBe('card x');
 });
 
 it('forces the picked state', async () => {

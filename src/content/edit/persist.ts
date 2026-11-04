@@ -67,6 +67,11 @@ export async function restorePersisted(t: RuleTracker): Promise<() => void> {
   };
   const key = persistKey(location);
   if (!key || !eligible()) return stop;
+  // re-enabled in the same page: the tracker kept its edits applied, nothing to restore
+  if (t.hasChanges()) {
+    written = JSON.stringify(t.serialize());
+    return stop;
+  }
   const saved = (await browser.storage.local.get(key))[key] as { edits?: unknown } | undefined;
   const edits = Array.isArray(saved?.edits) ? saved.edits.filter(isSerializedEdit) : [];
   if (!edits.length || tracker !== t) return stop;

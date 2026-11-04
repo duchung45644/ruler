@@ -3,6 +3,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import App from './App.svelte';
 import { sampleElement } from './element/sample';
+import { edit } from './edit/edit-store.svelte';
 import { panel } from './store.svelte';
 
 const ui = { app: null as ReturnType<typeof mount> | null };
@@ -35,7 +36,13 @@ afterEach(() => {
   ui.app = null;
   document.body.replaceChildren();
   document.documentElement.className = '';
-  Object.assign(panel, { selectedTab: 'element', element: null, switching: false, shortcuts: {} });
+  Object.assign(panel, {
+    selectedTab: 'element',
+    element: null,
+    switching: false,
+    shortcuts: {},
+    mode: 'inspect',
+  });
   vi.useRealTimers();
   vi.restoreAllMocks();
 });
@@ -173,4 +180,46 @@ it('follows a theme change without reopening', async () => {
   await vi.waitFor(() => expect(document.documentElement.dataset.theme).toBe('light'));
   await fakeBrowser.storage.local.set({ theme: 'dark' });
   await vi.waitFor(() => expect(document.documentElement.dataset.theme).toBe('dark'));
+});
+
+it('a detached window keeps edit mode and the edit tab through the handoff', async () => {
+  await open();
+  await toPanel('set_mode', 5, 'edit');
+  edit.tab = 'changes';
+  button('panel_undock').click();
+  await vi.waitFor(() => expect(window.close).toHaveBeenCalled());
+  expect((await fakeBrowser.storage.session.get('panelHandoff:5'))['panelHandoff:5']).toMatchObject(
+    { mode: 'edit', selectedEditTab: 'changes' },
+  );
+  unmount(ui.app!);
+  ui.app = null;
+  Object.assign(panel, { mode: 'inspect', switching: false, shortcuts: {} });
+  edit.tab = 'css';
+  await open('?tabId=5&detached=1');
+  expect(panel.mode).toBe('edit');
+  expect(edit.tab).toBe('changes');
+  edit.tab = 'css';
+});
+
+it('ignores refresh_changes and edit_state from another tab', async () => {
+  await open();
+  await toPanel('set_mode', 5, 'edit');
+  edit.changes = { rules: [], html: [] };
+  edit.editState = { canUndo: false, canRedo: false, editCount: 0, hasClipboard: false };
+  await toPanel('refresh_changes', 7);
+  await toPanel('edit_state', 7, {
+    canUndo: true,
+    canRedo: false,
+    editCount: 3,
+    hasClipboard: false,
+  });
+  expect(edit.changes).not.toBeNull();
+  expect(edit.editState.editCount).toBe(0);
+  await toPanel('edit_state', 5, {
+    canUndo: true,
+    canRedo: false,
+    editCount: 3,
+    hasClipboard: false,
+  });
+  expect(edit.editState.editCount).toBe(3);
 });

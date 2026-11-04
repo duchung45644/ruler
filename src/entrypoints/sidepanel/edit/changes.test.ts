@@ -107,3 +107,29 @@ it('says when the element is gone or the tab cannot be reached', async () => {
     expect(document.querySelector('[data-dialog]')!.textContent).toContain('dialog_tabUnavailable'),
   );
 });
+
+it('groups rule changes with no element by selector and finds a match on click', async () => {
+  const bare = { elementIds: [], selector: '.card', scopeAddress: null };
+  open({
+    rules: [change('r1', bare), change('r2', bare), change('r3', { ...bare, selector: '.b' })],
+    html: [],
+  });
+  expect(document.querySelectorAll('[data-group]')).toHaveLength(2);
+  // the dialog store is module-wide: the last test may have left one open
+  if (document.querySelector('[data-dialog]')) await click('[data-dialog-confirm]');
+  reply = (t) => (t === 'select_rule_target' ? true : ok);
+  await click('[data-find]');
+  await vi.waitFor(() => expect(types()).toContain('select_rule_target'));
+  const call = send.mock.calls.find(
+    (c) => (c[1] as { type: string }).type === 'select_rule_target',
+  );
+  expect((call![1] as { data: unknown[] }).data.slice(0, 2)).toEqual(['.card', null]);
+  expect(document.querySelector('[data-dialog]')).toBeNull();
+  reply = (t) => (t === 'select_rule_target' ? false : ok);
+  await click('[data-find]');
+  await vi.waitFor(() =>
+    expect(document.querySelector('[data-dialog]')!.textContent).toContain(
+      'dialog_noSelectedElement',
+    ),
+  );
+});

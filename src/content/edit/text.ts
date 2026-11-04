@@ -88,6 +88,7 @@ export function setTextEdit(
   document.addEventListener(
     'beforeinput',
     (e) => {
+      if (ours(e)) return;
       if (e.inputType.startsWith('format') || BLOCKED_INPUT.has(e.inputType))
         return e.preventDefault();
       if (e.inputType === 'insertParagraph') {

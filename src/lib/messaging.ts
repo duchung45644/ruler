@@ -118,6 +118,7 @@ export interface ContentApi {
   apply_pending_rule_edits(edits: SerializedEdit[]): EditResult;
   set_edit_mode(on: boolean): EditResult;
   select_edited_element(id: string): boolean;
+  select_rule_target(selector: string, scopeAddress: string | null): boolean;
 }
 export interface SidePanelApi {
   ping(): { isOpen: true };

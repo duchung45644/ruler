@@ -175,7 +175,8 @@
 <div bind:this={root} class="font-mono text-[11px] leading-5" data-decls>
   {#each rows as row (row.id)}
     {@const m = row.property ? mark?.(row.property) : null}
-    {@const bp = badProperty(row)}
+    {@const typing = open?.id === row.id && open.field === 'property' && items.length > 0}
+    {@const bp = !typing && badProperty(row)}
     {@const bv = badValue(row)}
     {@const title = bp
       ? i18n.t('edit.invalidProperty')
@@ -208,7 +209,7 @@
         oninput={(e) => oninput(row, 'property', e.currentTarget.value)}
         onkeydown={(e) => onkeydown(e, row, 'property')}
         {onblur}
-      /><span class="text-fg-muted">:</span>
+      /><span class="text-fg-muted" class:opacity-0={!row.property && !row.value}>:</span>
       <input
         class="field ml-1 min-w-0 flex-1"
         class:line-through={m?.kind === 'overridden'}

@@ -197,7 +197,14 @@
     "elementNotFoundTitle": "Element Not Found",
     "issueElementNotFound": "Unable to locate the issue element. It may have been removed or the page may have changed.",
     "cancel": "Cancel",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "clearElementTitle": "Clear Element",
+    "clearElement": "Are you sure you want to clear changes for this element?",
+    "clearAllTitle": "Clear All Changes",
+    "clearAll": "Are you sure you want to clear all changes on this page?",
+    "noSelectedElement": "Couldn't find the target element.",
+    "tabUnavailableTitle": "Tab Unavailable",
+    "tabUnavailable": "Couldn't communicate with the tab. Make sure Bo doi is active on the current tab."
   },
   "issue": {
     "contrastAaMessage": "Text has insufficient contrast ratio of $1:1 (requires $2:1 for $3 text)",
@@ -332,5 +339,14 @@
     "overriddenHiddenGrant": "Overridden by a stylesheet Bo doi can't see. Grant cross-origin access to reveal it.",
     "crossOriginMissing": "Some styles may be missing.",
     "stateDefault": "Default"
+  },
+  "changes": {
+    "elementsOne": "1 Element",
+    "elementsOther": "$1 Elements",
+    "rulesOne": "1 Rule",
+    "rulesOther": "$1 Rules",
+    "whitespaceOnly": "Whitespace-only changes",
+    "none": "No changes found",
+    "clearChanges": "Clear All Changes"
   }
 }

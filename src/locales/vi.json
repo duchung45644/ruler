@@ -197,7 +197,14 @@
     "elementNotFoundTitle": "Không tìm thấy phần tử",
     "issueElementNotFound": "Không thể tìm thấy phần tử có vấn đề. Phần tử có thể đã bị xóa hoặc trang đã thay đổi.",
     "cancel": "Hủy",
-    "confirm": "Xác nhận"
+    "confirm": "Xác nhận",
+    "clearElementTitle": "Xóa phần tử",
+    "clearElement": "Bạn có chắc muốn xóa các thay đổi cho phần tử này không?",
+    "clearAllTitle": "Xóa tất cả thay đổi",
+    "clearAll": "Bạn có chắc muốn xóa tất cả thay đổi trên trang này không?",
+    "noSelectedElement": "Không tìm thấy phần tử mục tiêu.",
+    "tabUnavailableTitle": "Tab không khả dụng",
+    "tabUnavailable": "Không thể giao tiếp với tab. Hãy đảm bảo Bo doi đang hoạt động trên tab hiện tại."
   },
   "issue": {
     "contrastAaMessage": "Văn bản có tỷ lệ tương phản không đủ $1:1 (yêu cầu $2:1 cho văn bản $3)",
@@ -332,5 +339,14 @@
     "overriddenHiddenGrant": "Bị ghi đè bởi một stylesheet mà Bo doi không thể thấy. Cấp quyền truy cập cross-origin để xem.",
     "crossOriginMissing": "Một số kiểu có thể bị thiếu.",
     "stateDefault": "Mặc định"
+  },
+  "changes": {
+    "elementsOne": "1 phần tử",
+    "elementsOther": "$1 phần tử",
+    "rulesOne": "1 quy tắc",
+    "rulesOther": "$1 quy tắc",
+    "whitespaceOnly": "Chỉ thay đổi khoảng trắng",
+    "none": "Không tìm thấy thay đổi",
+    "clearChanges": "Xóa Tất cả Thay đổi"
   }
 }

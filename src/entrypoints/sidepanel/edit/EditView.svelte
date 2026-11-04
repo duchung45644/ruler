@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { panel } from '../store.svelte';
+  import ChangesTab from './ChangesTab.svelte';
   import CssEditor from './CssEditor.svelte';
   import EditEmpty from './EditEmpty.svelte';
   import EditHeader from './EditHeader.svelte';
@@ -40,6 +41,6 @@
       <EditEmpty />
     {/if}
   {:else}
-    <div data-changes-tab></div>
+    {#if edit.changes}<ChangesTab changes={edit.changes} />{/if}
   {/if}
 </div>

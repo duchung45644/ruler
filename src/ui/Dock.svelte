@@ -1,16 +1,12 @@
 <script lang="ts">
-  import { DOCK_GROUPS, itemLocked, itemShown, items } from '../content/core/registry.svelte';
+  import { dockGroups, itemLocked, items } from '../content/core/registry.svelte';
   import { state as app } from '../content/core/state.svelte';
   import DockButton from './DockButton.svelte';
   import Popover from './Popover.svelte';
 
   let dock: HTMLElement = $state()!;
   const open = $derived(items.find((i) => i.id === app.popover && i.popover));
-  const groups = $derived(
-    DOCK_GROUPS.map((g) => items.filter((i) => i.group === g && itemShown(i))).filter(
-      (g) => g.length,
-    ),
-  );
+  const groups = $derived(dockGroups());
 
   // Resize label (1.29): show W × H for 800ms, freeze dock transitions for 150ms.
   let size = $state('');

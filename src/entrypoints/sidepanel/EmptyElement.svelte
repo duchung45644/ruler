@@ -9,7 +9,7 @@
       [i18n.t('panel.shortcutToggleRuler'), panel.shortcuts._execute_action],
       [i18n.t('panel.shortcutParent'), panel.shortcuts.select_parent],
       [i18n.t('panel.shortcutChild'), panel.shortcuts.select_child],
-      [i18n.t('panel.shortcutTogglePanel'), '0'],
+      [i18n.t('panel.shortcutTogglePanel'), 'P'],
       [i18n.t('panel.shortcutDeselect'), 'Esc'],
     ].filter((r): r is [string, string] => !!r[1]),
   );

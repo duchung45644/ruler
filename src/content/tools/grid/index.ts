@@ -24,7 +24,7 @@ export async function initGrid(): Promise<void> {
     id: 'grid',
     icon: LayoutGridIcon,
     label: 'dock.grid',
-    key: '3',
+    key: 'g',
     group: 'inspectTools',
     popover: GridPopover,
     run: () => togglePopover('grid'),

@@ -32,7 +32,7 @@ export async function initXray(): Promise<void> {
     id: 'xray',
     icon: ScanEye,
     label: 'dock.xray',
-    key: '2',
+    key: 'x',
     group: 'inspectTools',
     run: () => {
       setXray(!state.xrayOn);

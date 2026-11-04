@@ -24,9 +24,9 @@ it('setGrid merges and saves the whole layoutGrid', async () => {
   expect(layoutGrid.color).toBe('#FC48FF');
 });
 
-it('key 3 toggles the grid without opening the popover', async () => {
+it('key G toggles the grid without opening the popover', async () => {
   await initGrid();
-  routeKey(new KeyboardEvent('keydown', { key: '3' }));
+  routeKey(new KeyboardEvent('keydown', { key: 'g' }));
   await flush();
   expect((await getSettings()).layoutGrid.isOn).toBe(true);
   expect(state.grid.isOn).toBe(true);

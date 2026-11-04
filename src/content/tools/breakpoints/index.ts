@@ -44,7 +44,7 @@ export async function initBreakpoints(): Promise<void> {
     id: 'breakpoints',
     icon: RulerDimensionLine,
     label: 'dock.breakpoints',
-    key: '5',
+    key: 'b',
     group: 'inspectTools',
     run: () => {
       apply(!state.breakpointsOn);

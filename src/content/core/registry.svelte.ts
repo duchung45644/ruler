@@ -51,14 +51,38 @@ export const items: DockItem[] = $state([]);
 /** Dock items text editing leaves usable (5.06): text edit, mode, dock, side panel, quit. */
 const TEXT_EDIT_ITEMS = ['editText', 'inspect', 'editMode', 'sidepanel', 'quit'];
 
-/** Number keys that still work in edit mode (keys.ts); tools on the others are hidden then. */
-const EDIT_MODE_KEYS = ['1', '8', '0'];
+/** Tools edit mode turns off (1.42); hidden then, which also disables their keys. */
+const EDIT_MODE_HIDDEN = ['xray', 'grid', 'ruler', 'breakpoints', 'eyedropper', 'find'];
 
-/** The edit group shows only in edit mode (1.44); the number-key tools hide in it (shorter dock). */
+/** The edit group shows only in edit mode (1.44); tools edit mode turns off hide in it. */
 export const itemShown = (i: DockItem): boolean =>
-  state.editOn
-    ? !i.key || !/^[0-9]$/.test(i.key) || EDIT_MODE_KEYS.includes(i.key)
-    : i.group !== 'edit';
+  state.editOn ? !EDIT_MODE_HIDDEN.includes(i.id) : i.group !== 'edit';
+
+/**
+ * Dock layout by purpose: select, page overlays, measuring, design tools, output/panel, session.
+ * Items not listed fall back to their DOCK_GROUPS slot after these.
+ */
+export const DOCK_LAYOUT = [
+  ['inspect', 'select_parent', 'select_child'],
+  ['xray', 'grid', 'breakpoints'],
+  ['ruler', 'measure', 'eyedropper'],
+  ['overlay', 'find', 'audit'],
+  ['capture', 'sidepanel'],
+  ['pause', 'quit'],
+];
+
+const LISTED = DOCK_LAYOUT.flat();
+
+/** Dock groups in display order; empty groups are dropped. */
+export function dockGroups(): DockItem[][] {
+  const byId = (id: string) => items.find((i) => i.id === id);
+  return [
+    ...DOCK_LAYOUT.map((ids) => ids.map(byId).filter((i): i is DockItem => !!i)),
+    ...DOCK_GROUPS.map((g) => items.filter((i) => i.group === g && !LISTED.includes(i.id))),
+  ]
+    .map((g) => g.filter(itemShown))
+    .filter((g) => g.length);
+}
 
 /** Paused or text editing: everything but a few items is locked. */
 export function itemLocked(i: DockItem): boolean {

@@ -109,14 +109,14 @@ it('registers overlay in designTools on O, before measure (its arrow keys win)',
   expect([o.key, o.label]).toEqual(['o', 'dock.overlay']);
 });
 
-it('registers find on 7 after eyedropper; a match lights it, closing clears it', async () => {
+it('registers find on F after eyedropper; a match lights it, closing clears it', async () => {
   const { runFind, clearFind, find } = await import('./find');
   const { state } = await import('../core/state.svelte');
   await initTools();
   const ids = items.filter((i) => i.group === 'utilities').map((i) => i.id);
   expect(ids.slice(ids.indexOf('eyedropper'))).toEqual(['eyedropper', 'find', 'capture']);
   const f = items.find((i) => i.id === 'find')!;
-  expect([f.key, f.label]).toEqual(['7', 'dock.find']);
+  expect([f.key, f.label]).toEqual(['f', 'dock.find']);
   f.run();
   expect(state.popover).toBe('find');
   document.body.innerHTML = '<p class=x></p>';
@@ -152,4 +152,21 @@ it('audit and measure isActive follow reactive state', async () => {
     it.run();
     expect(state[`${id}On`]).toBe(false);
   }
+});
+
+it('the dock is laid out by purpose with mnemonic keys', async () => {
+  const { dockGroups } = await import('../core/registry.svelte');
+  await initTools();
+  const groups = dockGroups().map((g) => g.map((i) => i.id));
+  expect(groups.find((g) => g.includes('ruler'))).toEqual(['ruler', 'measure', 'eyedropper']);
+  expect(groups.at(-1)).toEqual(['pause', 'quit']);
+  const keyOf = (id: string) => items.find((i) => i.id === id)?.key;
+  expect(['xray', 'grid', 'ruler', 'breakpoints', 'eyedropper', 'capture'].map(keyOf)).toEqual([
+    'x',
+    'g',
+    'r',
+    'b',
+    'c',
+    's',
+  ]);
 });

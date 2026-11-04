@@ -49,7 +49,7 @@ export function initEyedropper(): void {
     id: 'eyedropper',
     icon: Pipette,
     label: 'dock.eyedropper',
-    key: '6',
+    key: 'c',
     group: 'utilities',
     run: () => void pick(),
   });

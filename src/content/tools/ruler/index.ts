@@ -141,7 +141,7 @@ export async function initRuler(): Promise<void> {
     id: 'ruler',
     icon: RulerIcon,
     label: 'dock.ruler',
-    key: '4',
+    key: 'r',
     group: 'inspectTools',
     run: () => {
       apply(!state.rulerOn);

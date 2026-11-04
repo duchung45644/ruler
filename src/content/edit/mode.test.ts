@@ -30,18 +30,18 @@ vi.mocked(sendToSidePanel).mockImplementation((async (t: string, ...a: unknown[]
 
 const ran = { three: 0, eight: 0 };
 registerItem({
-  id: 't3',
+  id: 'grid',
   icon: null!,
   label: 'dock.grid',
-  key: '3',
+  key: 'g',
   group: 'inspectTools',
   run: () => ran.three++,
 });
 registerItem({
-  id: 't8',
+  id: 'capture',
   icon: null!,
   label: 'dock.capture',
-  key: '8',
+  key: 's',
   group: 'utilities',
   run: () => ran.eight++,
 });
@@ -75,13 +75,13 @@ it('opens the side panel before switching it to edit, and turns X-Ray off', asyn
   expect(state.editOn).toBe(true);
 });
 
-it('keeps only the 8 and 0 number keys in edit mode', async () => {
+it('edit mode turns off the keys of the tools it hides (grid) but not capture', async () => {
   await setEditMode(true);
-  key('3');
-  key('8');
+  key('g');
+  key('s');
   expect(ran).toEqual({ three: 0, eight: 1 });
   await setEditMode(false);
-  key('3');
+  key('g');
   expect(ran.three).toBe(1);
 });
 
@@ -208,15 +208,13 @@ it('the inspect button leaves edit mode and inspects, even if it was off before 
   expect(state.inspectOn).toBe(true);
 });
 
-it('edit mode hides the number-key tools but keeps 1, 8 and 0', async () => {
+it('edit mode hides grid-like tools but keeps inspect and capture', async () => {
   const { itemShown } = await import('../core/registry.svelte');
-  const tool = (key: string) => ({ id: key, key, group: 'inspectTools' }) as never;
+  const tool = (id: string) => ({ id, group: 'inspectTools' }) as never;
   await setEditMode(true);
-  expect([itemShown(tool('3')), itemShown(tool('1')), itemShown(tool('8'))]).toEqual([
-    false,
-    true,
-    true,
-  ]);
+  expect([itemShown(tool('grid')), itemShown(tool('inspect')), itemShown(tool('capture'))]).toEqual(
+    [false, true, true],
+  );
   await setEditMode(false);
-  expect(itemShown(tool('3'))).toBe(true);
+  expect(itemShown(tool('grid'))).toBe(true);
 });

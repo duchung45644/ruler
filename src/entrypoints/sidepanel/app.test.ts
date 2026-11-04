@@ -126,12 +126,12 @@ it('detached window shows the dock button and is-detached class', async () => {
   expect(document.documentElement.classList.contains('is-detached')).toBe(true);
 });
 
-it('forwards digit keys to the page, not when typing', async () => {
+it('forwards dock letter keys to the page, not when typing', async () => {
   await open();
-  window.dispatchEvent(new KeyboardEvent('keydown', { key: '2' }));
+  window.dispatchEvent(new KeyboardEvent('keydown', { key: 'x' }));
   expect(sent('keyboard_shortcut')).toHaveLength(1);
   const input = document.body.appendChild(document.createElement('input'));
-  input.dispatchEvent(new KeyboardEvent('keydown', { key: '2', bubbles: true }));
+  input.dispatchEvent(new KeyboardEvent('keydown', { key: 'x', bubbles: true }));
   expect(sent('keyboard_shortcut')).toHaveLength(1);
 });
 

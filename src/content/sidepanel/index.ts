@@ -12,7 +12,7 @@ export async function initSidePanel(): Promise<void> {
     icon: PanelRight,
     // the API does not come and go: the first session's answer holds
     label: bridge.panelApi ? 'dock.sidePanel' : 'dock.sidePanelUnsupported',
-    key: '0',
+    key: 'p',
     group: 'environment',
     run: () => void toggleSidePanel(),
     isActive: () => bridge.panelOpen,

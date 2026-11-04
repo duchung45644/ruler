@@ -56,8 +56,6 @@ export function runShortcut(key: string): boolean {
     else return false;
     return true;
   }
-  // edit mode: of the number keys only capture (8) and side panel (0) stay (1.42)
-  if (state.editOn && /^[0-9]$/.test(key) && key !== '8' && key !== '0') return false;
   const item = items.find(
     (i) => i.key === key.toLowerCase() && itemShown(i) && !itemLocked(i) && !i.isDisabled?.(),
   );

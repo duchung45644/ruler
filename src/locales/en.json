@@ -24,7 +24,17 @@
     "audit": "Page colors & fonts",
     "capture": "Capture Screenshot",
     "sidePanel": "Toggle Side Panel",
-    "sidePanelUnsupported": "Side Panel Not Supported in This Browser"
+    "sidePanelUnsupported": "Side Panel Not Supported in This Browser",
+    "inspectMode": "Inspect",
+    "editMode": "Edit",
+    "editText": "Edit Text",
+    "copy": "Copy",
+    "cut": "Cut",
+    "paste": "Paste",
+    "duplicate": "Duplicate",
+    "delete": "Delete",
+    "undo": "Undo",
+    "redo": "Redo"
   },
   "inspect": {
     "layout": "Box Model",

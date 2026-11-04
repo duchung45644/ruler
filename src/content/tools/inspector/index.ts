@@ -208,7 +208,8 @@ function placePanel(
   mouse: { x: number; y: number } | null,
 ): void {
   const t = panelTarget();
-  if (!t || !box.firstElementChild || panelHidden || state.paused) {
+  // edit mode keeps hover/select but drops the floating panel (legacy applyInspectVisuals(false))
+  if (!t || !box.firstElementChild || panelHidden || state.paused || state.editOn) {
     box.style.visibility = 'hidden';
     return;
   }
@@ -275,7 +276,8 @@ export async function initInspector(): Promise<void> {
     requestPaint();
   };
   const hitTest = () => hover(mouse && host ? pageElementAt(mouse.x, mouse.y, host) : null);
-  const live = () => state.inspectOn && !state.paused && !state.capturing;
+  // text editing hands clicks to the page's contentEditable
+  const live = () => state.inspectOn && !state.paused && !state.capturing && !state.textEditOn;
   const opts = { signal, capture: true };
 
   // 2.06 hover

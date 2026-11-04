@@ -17,7 +17,9 @@ export type MessageKey = {
 }[keyof GeneratedI18nStructure];
 /** Display order (inventory 1.16 + 1.45, legacy getControlBar :30105). Empty groups are not drawn. */
 export const DOCK_GROUPS = [
+  'mode',
   'selections',
+  'edit',
   'inspectTools',
   'utilities',
   'environment',
@@ -47,6 +49,18 @@ export interface DockItem {
 }
 
 export const items: DockItem[] = $state([]);
+
+/** Dock items text editing leaves usable (5.06): text edit, mode, dock, side panel, quit. */
+const TEXT_EDIT_ITEMS = ['editText', 'inspectMode', 'editMode', 'minimize', 'sidepanel', 'quit'];
+
+/** The edit group shows only in edit mode (1.44). */
+export const itemShown = (i: DockItem): boolean => i.group !== 'edit' || state.editOn;
+
+/** Paused or text editing: everything but a few items is locked. */
+export function itemLocked(i: DockItem): boolean {
+  if (state.paused && !i.alwaysEnabled) return true;
+  return state.textEditOn && !TEXT_EDIT_ITEMS.includes(i.id);
+}
 
 export function registerItem(item: DockItem): void {
   if (!items.some((i) => i.id === item.id)) items.push(item);

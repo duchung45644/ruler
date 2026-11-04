@@ -35,6 +35,8 @@ export const bridge = $state({ panelOpen: false, panelApi: true });
 
 /** id → element; ids stay on the page after quit, as in legacy (decision #5). */
 const ids = new Map<string, WeakRef<Element>>();
+/** Shared with the edit engine so both resolve the same ids. */
+export const elementIdMap = () => ids;
 const attr = () => ID_ATTR(browser.runtime.id);
 export const elementId = (el: Element) => ensureElementId(el, attr(), ids);
 export const elementById = (id: string) => resolveElementById(id, attr(), ids);

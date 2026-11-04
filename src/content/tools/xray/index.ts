@@ -17,8 +17,8 @@ function addSheet(parent: Node, css: string): void {
   sheets.push(s);
 }
 
-/** 3.02 (legacy createXrayStyle :41829): page DOM <style>, plus one per open shadow root. */
-function apply(on: boolean): void {
+/** 3.02, not persisted (edit mode turns it off, 3.21) (legacy createXrayStyle :41829): page DOM <style>, plus one per open shadow root. */
+export function setXray(on: boolean): void {
   state.xrayOn = on;
   for (const s of sheets) s.remove();
   sheets = [];
@@ -35,13 +35,13 @@ export async function initXray(): Promise<void> {
     key: '2',
     group: 'inspectTools',
     run: () => {
-      apply(!state.xrayOn);
+      setXray(!state.xrayOn);
       void updateSettings({ xrayModeIsOn: state.xrayOn });
     },
     isActive: () => state.xrayOn,
   });
   const signal = sessionSignal();
-  onStop(() => apply(false)); // not persisted: next session restores it (1.43)
+  onStop(() => setXray(false)); // not persisted: next session restores it (1.43)
   const { xrayModeIsOn } = await getSettings();
-  if (xrayModeIsOn && !signal.aborted) apply(true);
+  if (xrayModeIsOn && !signal.aborted) setXray(true);
 }

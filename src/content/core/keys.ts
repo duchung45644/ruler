@@ -1,4 +1,4 @@
-import { items } from './registry.svelte';
+import { itemLocked, itemShown, items } from './registry.svelte';
 import { state } from './state.svelte';
 
 const hooks = new Map<string, (e: KeyboardEvent) => boolean>();
@@ -56,7 +56,11 @@ export function runShortcut(key: string): boolean {
     else return false;
     return true;
   }
-  const item = items.find((i) => i.key === key.toLowerCase() && !i.isDisabled?.());
+  // edit mode: of the number keys only capture (8) and side panel (0) stay (1.42)
+  if (state.editOn && /^[0-9]$/.test(key) && key !== '8' && key !== '0') return false;
+  const item = items.find(
+    (i) => i.key === key.toLowerCase() && itemShown(i) && !itemLocked(i) && !i.isDisabled?.(),
+  );
   if (!item) return false;
   if (item.runKey) item.runKey();
   else item.run();

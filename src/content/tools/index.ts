@@ -8,6 +8,7 @@ import { initMeasure } from './measure';
 import { initOverlay } from './overlay';
 import { initRuler } from './ruler';
 import { initSidePanel } from '../sidepanel';
+import { initEdit } from '../edit';
 import { initXray } from './xray';
 
 /**
@@ -28,4 +29,5 @@ export async function initTools(): Promise<void> {
   await initMeasure();
   initAudit(); // designTools: after measure (legacy dock order)
   await initSidePanel();
+  initEdit(); // after the bridge: edit mode reuses its element ids
 }

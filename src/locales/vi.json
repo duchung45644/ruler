@@ -24,7 +24,17 @@
     "audit": "Màu & font của trang",
     "capture": "Chụp Màn hình",
     "sidePanel": "Bật/Tắt Bảng Bên",
-    "sidePanelUnsupported": "Bảng bên không được hỗ trợ trên trình duyệt này"
+    "sidePanelUnsupported": "Bảng bên không được hỗ trợ trên trình duyệt này",
+    "inspectMode": "Kiểm tra",
+    "editMode": "Chỉnh sửa",
+    "editText": "Sửa văn bản",
+    "copy": "Sao chép",
+    "cut": "Cut",
+    "paste": "Dán",
+    "duplicate": "Nhân bản",
+    "delete": "Xóa",
+    "undo": "Hoàn tác",
+    "redo": "Làm lại"
   },
   "inspect": {
     "layout": "Box Model",

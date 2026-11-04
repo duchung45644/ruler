@@ -11,10 +11,19 @@ import Undo2 from '@lucide/svelte/icons/undo-2';
 import type { EditResult } from '../../lib/edit/types';
 import { addKeyHandler } from '../core/keys';
 import { registerItem, type MessageKey } from '../core/registry.svelte';
-import { onStop } from '../core/session';
+import { onStop, sessionSignal } from '../core/session';
 import { state } from '../core/state.svelte';
 import type { HtmlEditor } from './engine';
-import { editor, setEditMode, stopEditMode, toggleTextEdit } from './mode.svelte';
+import {
+  editor,
+  onEditChange,
+  onEditExit,
+  ruleTracker,
+  setEditMode,
+  stopEditMode,
+  toggleTextEdit,
+} from './mode.svelte';
+import { persistNow, restorePersisted, schedulePersist } from './persist';
 
 export { editor, ruleTracker, setEditMode } from './mode.svelte';
 
@@ -100,4 +109,10 @@ export function initEdit(): void {
   editItem('editRedo', Redo2, 'dock.redo', 'redo', () => !state.editState.canRedo);
   onStop(addKeyHandler(onKey));
   onStop(stopEditMode);
+
+  const signal = sessionSignal();
+  onStop(onEditChange(schedulePersist));
+  onStop(onEditExit(() => void persistNow()));
+  window.addEventListener('pagehide', () => void persistNow(), { signal });
+  void restorePersisted(ruleTracker()).then((stop) => (signal.aborted ? stop() : onStop(stop)));
 }

@@ -7,11 +7,9 @@
   let dock: HTMLElement = $state()!;
   const open = $derived(items.find((i) => i.id === app.popover && i.popover));
   const groups = $derived(
-    DOCK_GROUPS.map((g) =>
-      items.filter(
-        (i) => i.group === g && itemShown(i) && (!app.dockCollapsed || i.id === 'minimize'),
-      ),
-    ).filter((g) => g.length),
+    DOCK_GROUPS.map((g) => items.filter((i) => i.group === g && itemShown(i))).filter(
+      (g) => g.length,
+    ),
   );
 
   // Resize label (1.29): show W × H for 800ms, freeze dock transitions for 150ms.

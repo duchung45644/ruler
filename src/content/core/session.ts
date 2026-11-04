@@ -93,7 +93,6 @@ export function stopSession(): void {
     hovered: null,
     selected: null,
     inspectOn: false,
-    dockCollapsed: false,
     popover: null,
     dockNotice: null,
     capturing: false,

@@ -3,8 +3,6 @@ import type { GeneratedI18nStructure } from '#i18n';
 import Pause from '@lucide/svelte/icons/pause';
 import Play from '@lucide/svelte/icons/play';
 import X from '@lucide/svelte/icons/x';
-import PanelBottomClose from '@lucide/svelte/icons/panel-bottom-close';
-import PanelBottomOpen from '@lucide/svelte/icons/panel-bottom-open';
 import { sendToBackground } from '../../lib/messaging';
 import { layer, requestPaint } from './overlay';
 import { state } from './state.svelte';
@@ -51,7 +49,7 @@ export interface DockItem {
 export const items: DockItem[] = $state([]);
 
 /** Dock items text editing leaves usable (5.06): text edit, mode, dock, side panel, quit. */
-const TEXT_EDIT_ITEMS = ['editText', 'inspectMode', 'editMode', 'minimize', 'sidepanel', 'quit'];
+const TEXT_EDIT_ITEMS = ['editText', 'inspectMode', 'editMode', 'sidepanel', 'quit'];
 
 /** The edit group shows only in edit mode (1.44). */
 export const itemShown = (i: DockItem): boolean => i.group !== 'edit' || state.editOn;
@@ -80,19 +78,6 @@ export function setPaused(paused: boolean): void {
   requestPaint(); // the floating panel hides/shows in its painter
 }
 
-registerItem({
-  id: 'minimize',
-  icon: PanelBottomClose,
-  label: 'dock.hide',
-  activeIcon: PanelBottomOpen,
-  activeLabel: 'dock.show',
-  group: 'utilities',
-  run: () => {
-    state.dockCollapsed = !state.dockCollapsed;
-    if (state.dockCollapsed) state.popover = null; // 1.19
-  },
-  isActive: () => state.dockCollapsed,
-});
 registerItem({
   id: 'pause',
   icon: Pause,

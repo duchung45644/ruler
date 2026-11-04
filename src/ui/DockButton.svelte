@@ -28,7 +28,7 @@
 
 <button
   type="button"
-  class="group relative grid size-[26px] place-items-center rounded-btn text-fg hover:bg-line disabled:opacity-40 disabled:hover:bg-transparent {item.id ===
+  class="group relative grid size-[34px] place-items-center rounded-btn text-fg hover:bg-line disabled:opacity-40 disabled:hover:bg-transparent {item.id ===
   'quit'
     ? 'text-fg-muted'
     : ''}"
@@ -41,7 +41,7 @@
   onclick={() => item.run()}
   onmouseenter={clamp}
 >
-  <Icon size={15} />
+  <Icon size={19} />
   <span
     bind:this={tip}
     class:hidden={app.popover === item.id}

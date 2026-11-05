@@ -48,6 +48,45 @@ export interface DockItem {
   popover?: Component;
   /** Shortcut handler, replacing run for the key. */
   runKey?(): void;
+  /**
+   * Responsive mode: the parent sends run_item(id) to the frames instead of running it (2.25).
+   * The toggle (runKey, else run) is forwarded; a popover-opening run stays local.
+   */
+  forward?: boolean;
+}
+
+/** Set by the responsive shell; see forward.ts. */
+export interface Forwarder {
+  /** Forwarding is on (responsive, top page). */
+  on(): boolean;
+  run(id: string): void;
+  /** Mirrored active state of a forwarded item. */
+  isActive(id: string): boolean;
+  paused(paused: boolean): void;
+}
+let forwarder: Forwarder | null = null;
+export function setForwarder(f: Forwarder | null): void {
+  forwarder = f;
+}
+/** The unwrapped toggle and active check of forward items (to sync the parent on exit). */
+// eslint-disable-next-line svelte/prefer-svelte-reactivity -- bookkeeping, never rendered
+export const localOf = new Map<string, { toggle(): void; isActive?(): boolean }>();
+
+function wrapForward(item: DockItem): DockItem {
+  const { id, run, runKey, isActive, isDisabled } = item;
+  const toggle = runKey ?? run;
+  localOf.set(id, { toggle, isActive });
+  const fwd = (local: () => void) => () => {
+    if (forwarder?.on()) forwarder.run(id);
+    else local();
+  };
+  return {
+    ...item,
+    ...(runKey ? { runKey: fwd(runKey) } : { run: fwd(run) }),
+    ...(isActive && { isActive: () => (forwarder?.on() ? forwarder.isActive(id) : isActive()) }),
+    // the parent has no selection: the frames decide (select_parent / select_child)
+    ...(isDisabled && { isDisabled: () => !forwarder?.on() && isDisabled() }),
+  };
 }
 
 export const items: DockItem[] = $state([]);
@@ -90,7 +129,7 @@ export function itemLocked(i: DockItem): boolean {
 }
 
 export function registerItem(item: DockItem): void {
-  if (!items.some((i) => i.id === item.id)) items.push(item);
+  if (!items.some((i) => i.id === item.id)) items.push(item.forward ? wrapForward(item) : item);
 }
 
 /** One popover at a time (1.31, legacy closeOtherPopovers :38452). */
@@ -105,6 +144,7 @@ export function setPaused(paused: boolean): void {
   if (paused) state.popover = null;
   layer.style.display = paused ? 'none' : '';
   requestPaint(); // the floating panel hides/shows in its painter
+  if (forwarder?.on()) forwarder.paused(paused); // 1.47
 }
 
 registerItem({

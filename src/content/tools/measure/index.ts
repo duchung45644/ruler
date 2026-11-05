@@ -108,6 +108,7 @@ function onPointerDown(e: PointerEvent): void {
 export async function initMeasure(): Promise<void> {
   registerItem({
     id: 'measure',
+    forward: true,
     icon: SquareDashed,
     label: 'dock.measure',
     key: 'm',

@@ -73,7 +73,7 @@ export function setInspect(on: boolean): void {
     state.hovered = null;
     clearPins(); // 2.13 turning the inspector off drops every pin
   }
-  void updateSettings({ inspectIsOn: on });
+  if (!state.inFrame) void updateSettings({ inspectIsOn: on });
   requestPaint();
 }
 
@@ -105,6 +105,7 @@ export function selectChild(): void {
 
 registerItem({
   id: 'inspect',
+  forward: true,
   icon: SquareDashedMousePointer,
   label: 'dock.inspect',
   key: 'i',
@@ -114,6 +115,7 @@ registerItem({
 });
 registerItem({
   id: 'select_parent',
+  forward: true,
   icon: ArrowUpToLine,
   label: 'dock.selectParent',
   group: 'selections',
@@ -122,6 +124,7 @@ registerItem({
 });
 registerItem({
   id: 'select_child',
+  forward: true,
   icon: ArrowDownToLine,
   label: 'dock.selectChild',
   group: 'selections',
@@ -448,5 +451,5 @@ export async function initInspector(): Promise<void> {
 
   // 2.02, 1.26 restore the saved toggle
   const { inspectIsOn } = await getSettings();
-  if (!signal.aborted) state.inspectOn = inspectIsOn;
+  if (!signal.aborted && !state.inFrame) state.inspectOn = inspectIsOn;
 }

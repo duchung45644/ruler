@@ -192,6 +192,7 @@ export function setOn(next: boolean): void {
 export function initOverlay(): void {
   registerItem({
     id: 'overlay',
+    forward: true,
     icon: Images,
     label: 'dock.overlay',
     key: 'o',

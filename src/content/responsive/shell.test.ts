@@ -197,8 +197,12 @@ it('a frame asking for state gets the page CSS edits', async () => {
   await vi.waitFor(() =>
     expect(fakeWin.postMessage).toHaveBeenCalledWith(
       expect.objectContaining({
-        type: 'apply_rule_edits',
-        data: [[expect.objectContaining({ selector: '.carry' })]],
+        type: 'ready_ack',
+        data: [
+          expect.objectContaining({
+            ruleEdits: [expect.objectContaining({ selector: '.carry' })],
+          }),
+        ],
       }),
       location.origin,
     ),

@@ -4,6 +4,7 @@ import { addPainter, draw, requestPaint } from '../../core/overlay';
 import { registerItem, togglePopover } from '../../core/registry.svelte';
 import { onStop, sessionSignal } from '../../core/session';
 import { state } from '../../core/state.svelte';
+import { forwardSetting } from '../../responsive/forward';
 import GridPopover from './GridPopover.svelte';
 
 /** Port of updateMaxWidth (legacy-src/content.js:42695). */
@@ -15,13 +16,15 @@ export function parseMaxWidth(v: string): 'auto' | number {
 /** Merge, persist the whole layoutGrid (settings merge shallowly), repaint. */
 export function setGrid(patch: Partial<LayoutGrid>): void {
   Object.assign(state.grid, patch);
-  void updateSettings({ layoutGrid: { ...state.grid } });
+  forwardSetting('layoutGrid', patch); // responsive parent: the frames draw it
+  if (!state.inFrame) void updateSettings({ layoutGrid: { ...state.grid } });
   requestPaint();
 }
 
 export async function initGrid(): Promise<void> {
   registerItem({
     id: 'grid',
+    forward: true,
     icon: LayoutGridIcon,
     label: 'dock.grid',
     key: 'g',
@@ -46,7 +49,7 @@ export async function initGrid(): Promise<void> {
       draw(root, `position:static;height:100%;background:${g.color}`);
   });
   const { layoutGrid } = await getSettings();
-  if (signal.aborted) return;
+  if (signal.aborted || state.inFrame) return; // a frame takes the grid from ready_ack
   Object.assign(state.grid, layoutGrid);
   requestPaint();
 }

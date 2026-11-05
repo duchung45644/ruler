@@ -30,18 +30,19 @@ export function setXray(on: boolean): void {
 export async function initXray(): Promise<void> {
   registerItem({
     id: 'xray',
+    forward: true,
     icon: ScanEye,
     label: 'dock.xray',
     key: 'x',
     group: 'inspectTools',
     run: () => {
       setXray(!state.xrayOn);
-      void updateSettings({ xrayModeIsOn: state.xrayOn });
+      if (!state.inFrame) void updateSettings({ xrayModeIsOn: state.xrayOn });
     },
     isActive: () => state.xrayOn,
   });
   const signal = sessionSignal();
   onStop(() => setXray(false)); // not persisted: next session restores it (1.43)
   const { xrayModeIsOn } = await getSettings();
-  if (xrayModeIsOn && !signal.aborted) setXray(true);
+  if (xrayModeIsOn && !signal.aborted && !state.inFrame) setXray(true);
 }

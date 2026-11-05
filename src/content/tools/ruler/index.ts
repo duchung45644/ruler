@@ -139,13 +139,14 @@ function onPointerDown(e: PointerEvent): void {
 export async function initRuler(): Promise<void> {
   registerItem({
     id: 'ruler',
+    forward: true,
     icon: RulerIcon,
     label: 'dock.ruler',
     key: 'r',
     group: 'inspectTools',
     run: () => {
       apply(!state.rulerOn);
-      void updateSettings({ rulerIsOn: state.rulerOn });
+      if (!state.inFrame) void updateSettings({ rulerIsOn: state.rulerOn });
     },
     isActive: () => state.rulerOn,
   });
@@ -221,5 +222,5 @@ export async function initRuler(): Promise<void> {
       );
   });
   const { rulerIsOn } = await getSettings();
-  if (rulerIsOn && !signal.aborted) apply(true);
+  if (rulerIsOn && !signal.aborted && !state.inFrame) apply(true);
 }

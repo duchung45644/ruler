@@ -12,7 +12,17 @@ export interface ScrollRatio {
 /** Parent (shell) → frame. */
 export interface FrameApi {
   /** The shell saw `ready_for_state_sync` and sends the state to start from. */
-  ready_ack(s: { paused: boolean; uiScale: number; ruleEdits: SerializedEdit[] }): void;
+  ready_ack(s: {
+    paused: boolean;
+    uiScale: number;
+    ruleEdits: SerializedEdit[];
+    /** Forward items that are on. */
+    active: string[];
+    /** Tool settings by key, as set_setting carries them. */
+    settings: Record<string, unknown>;
+    /** Running find query ('' = none): the frame reports its count back. */
+    findQuery: string;
+  }): void;
   apply_rule_edits(edits: SerializedEdit[]): void;
   collect_rule_edits(): SerializedEdit[];
   get_current_url(): string;

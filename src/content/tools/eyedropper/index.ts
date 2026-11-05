@@ -47,6 +47,7 @@ async function pick(): Promise<void> {
 export function initEyedropper(): void {
   registerItem({
     id: 'eyedropper',
+    forward: true,
     icon: Pipette,
     label: 'dock.eyedropper',
     key: 'c',

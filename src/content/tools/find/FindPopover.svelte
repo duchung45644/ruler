@@ -6,7 +6,7 @@
   import { onDestroy, onMount } from 'svelte';
   import { findTitle } from '../../../lib/find';
   import { state as app } from '../../core/state.svelte';
-  import { clearFind, find, runFind, stepFind } from '.';
+  import { clearFind, find, onFindChange, runFind, stepFind } from '.';
 
   let query = $state(find.query);
   let input: HTMLInputElement;
@@ -14,25 +14,26 @@
   let view = $state({ index: 0, count: 0, hidden: 0 });
   let timer: ReturnType<typeof setTimeout> | undefined;
 
-  const sync = () =>
-    (view = { index: find.index, count: find.results.length, hidden: find.hidden });
-  const search = () => {
+  const sync = () => (view = { index: find.index, count: find.count, hidden: find.hidden });
+  const search = async () => {
     find.query = query;
-    runFind(query);
+    await runFind(query);
     sync();
   };
-  const step = (d: -1 | 1) => {
-    stepFind(d);
+  const step = async (d: -1 | 1) => {
+    await stepFind(d);
     sync();
   };
 
   onMount(() => {
-    search();
+    onFindChange(sync);
+    void search();
     input.focus();
     input.select();
   });
   onDestroy(() => {
     clearTimeout(timer);
+    onFindChange(null);
     find.query = query;
     clearFind();
   });
@@ -47,14 +48,14 @@
         aria-label={i18n.t('find.prev')}
         class="hover:text-fg disabled:opacity-40"
         disabled={view.count < 2}
-        onclick={() => step(-1)}><ChevronUp size={14} /></button
+        onclick={() => void step(-1)}><ChevronUp size={14} /></button
       >
       <button
         type="button"
         aria-label={i18n.t('find.next')}
         class="hover:text-fg disabled:opacity-40"
         disabled={view.count < 2}
-        onclick={() => step(1)}><ChevronDown size={14} /></button
+        onclick={() => void step(1)}><ChevronDown size={14} /></button
       >
       <button
         type="button"
@@ -73,7 +74,7 @@
     bind:value={query}
     oninput={() => {
       clearTimeout(timer);
-      timer = setTimeout(search, 150);
+      timer = setTimeout(() => void search(), 150);
     }}
   />
 </div>

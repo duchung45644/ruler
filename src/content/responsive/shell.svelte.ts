@@ -39,6 +39,7 @@ import { createShellSync, ESCAPE_MS } from './sync';
 import { connectToFrame, type Channel } from './bridge';
 import { BLOCK_CHECK_MS, blockedState, readDoc, type Blocked } from './blocked';
 import { loadTimer } from './frame';
+import { enterForward, exitForward, frameFindCount, installForward, readyState } from './forward';
 import Shell from './Shell.svelte';
 
 export interface ShellFrame {
@@ -78,6 +79,8 @@ export const shell = $state({
   bpKinds: {} as Record<number, Breakpoint['kind']>,
   /** The page has breakpoints (scanned at entry): B is disabled otherwise (8.22). */
   hasBreakpoints: false,
+  /** Active state of the forwarded dock items, mirrored from the frames (1.34). */
+  active: {} as Record<string, boolean>,
 });
 
 /** The scroll-sync toast stays this long (legacy 8s). */
@@ -163,6 +166,15 @@ setResponsiveBreakpoints({
   active: () => state.responsiveOn && !state.inFrame,
   available: () => shell.hasBreakpoints,
   toggle: (on) => setBreakpointMode(on),
+});
+
+installForward({
+  ready: () =>
+    shell.frames.flatMap((f) => {
+      const ch = channels.get(f.vp.id);
+      return ch && wasReady.has(f.vp.id) ? [[f.vp.id, ch] as [number, Channel<FrameApi>]] : [];
+    }),
+  active: shell.active,
 });
 
 function currentSettings(): ResponsiveSettings {
@@ -423,6 +435,7 @@ export async function enterResponsive(): Promise<boolean> {
     if (state.textEditOn) toggleTextEdit(); // 8.09
     controller = new AbortController();
     state.responsiveOn = true;
+    enterForward();
     state.hovered = null;
     // the parent's overlay must not draw over the shell (tools run inside the frames)
     layer.style.display = 'none';
@@ -478,8 +491,8 @@ export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
         if (f) Object.assign(f, { loading: false, timedOut: false, blocked: null });
         clearEscape(id);
         wasReady.add(id);
-        ch.send('apply_rule_edits', lastEdits);
-        ch.send('update_ui_scale', 1 / shell.zoom);
+        // late frames too: paused, forwarded tools, settings, find (1.32 / 1.47)
+        ch.send('ready_ack', { ...readyState(), uiScale: 1 / shell.zoom, ruleEdits: lastEdits });
       },
       request_ui_scale: () => 1 / shell.zoom,
       overflow_status: (s) => {
@@ -490,6 +503,7 @@ export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
         if (Array.isArray(edits)) lastEdits = edits.filter(isSerializedEdit);
       },
       shortcut: (key) => void runShortcut(String(key)),
+      report_find_count: (n) => frameFindCount(id, n),
       scroll_sync: (r) => sync.scroll(id, r),
       scroll_sync_conflict: () => sync.conflict(),
       spa_navigation: (url) => sync.spa(id, url),
@@ -574,6 +588,7 @@ export function teardownShell(): void {
   pausedMedia = [];
   layer.style.display = state.paused ? 'none' : '';
   state.responsiveOn = false;
+  exitForward();
 }
 
 /** Q8: take the first frame's edits and URL back to the page; navigate only when the URL moved. */

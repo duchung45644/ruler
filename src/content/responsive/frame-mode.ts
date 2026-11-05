@@ -11,6 +11,7 @@ import { state } from '../core/state.svelte';
 import { isSerializedEdit } from '../../lib/edit/serialize';
 import { ruleTracker } from '../edit/mode.svelte';
 import { createFrameSync } from './sync';
+import { applyReadyAck, applySetting, frameFind, frameFindGoto } from './forward';
 
 let controller: AbortController | null = null;
 let channel: Channel<ShellApi> | null = null;
@@ -31,10 +32,16 @@ export function startFrameMode(): void {
       run_item: (id) => void runItem(id),
       set_paused: (paused) => setPaused(!!paused),
       // the shell pushes the page's CSS edits on ready and collects them back on exit (Q8)
-      apply_rule_edits: (edits) => {
-        const list = Array.isArray(edits) ? edits.filter(isSerializedEdit) : [];
-        ruleTracker().applySerialized(list);
+      apply_rule_edits: applyRuleEdits,
+      ready_ack: (s) => {
+        applyRuleEdits(s?.ruleEdits);
+        applyUiScale(s?.uiScale);
+        const n = applyReadyAck(s);
+        if (n !== null) channel?.send('report_find_count', n);
       },
+      set_setting: (key, value) => applySetting(key, value),
+      find: (query) => frameFind(query),
+      find_goto: (local) => frameFindGoto(local),
       collect_rule_edits: () => ruleTracker().serialize(),
       get_current_url: () => location.href,
       update_ui_scale: (scale) => applyUiScale(scale),
@@ -50,6 +57,11 @@ export function startFrameMode(): void {
   void ch.call('request_ui_scale').then(applyUiScale, () => {});
   watchOverflow(ch, controller.signal);
   sync.start(ch, controller.signal);
+}
+
+function applyRuleEdits(edits: unknown): void {
+  const list = Array.isArray(edits) ? edits.filter(isSerializedEdit) : [];
+  ruleTracker().applySerialized(list);
 }
 
 /** Horizontal overflow badge (8.12): report documentElement wider than the frame, on change. */

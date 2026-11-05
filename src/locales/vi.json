@@ -110,6 +110,7 @@
     "element": "Phần tử",
     "visible": "Chụp màn hình",
     "fullPage": "Chụp cả trang",
+    "fullPageResponsive": "Không dùng được khi xem responsive",
     "close": "Đóng (Esc)",
     "dragHint": "Kéo chuột để chọn vùng · Esc để huỷ",
     "copy": "Copy",

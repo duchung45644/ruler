@@ -16,6 +16,8 @@ import { initResponsive } from '.';
 import {
   enterResponsive,
   exitResponsive,
+  frameSelectionRect,
+  hasFrameSelection,
   onFramesUnblocked,
   setZoom,
   shell,
@@ -247,6 +249,63 @@ it('a selection in frame A makes the shell clear it in frame B (8.19)', async ()
   );
   await vi.waitFor(() => expect(types(winB)).toContain('clear_selection'));
   expect(types(winA as never)).not.toContain('clear_selection');
+});
+
+it('element capture asks the selected frame for element_rect and maps it to the parent (Q6)', async () => {
+  const wins = new Map<HTMLIFrameElement, { postMessage: ReturnType<typeof vi.fn> }>();
+  vi.spyOn(HTMLIFrameElement.prototype, 'contentWindow', 'get').mockImplementation(function (
+    this: HTMLIFrameElement,
+  ) {
+    if (!wins.has(this)) {
+      const w: { postMessage: ReturnType<typeof vi.fn> } = {
+        postMessage: vi.fn((m: Envelope) => {
+          if (m.type !== 'element_rect' || m.id === undefined) return;
+          queueMicrotask(() =>
+            window.dispatchEvent(
+              new MessageEvent('message', {
+                data: {
+                  __bd: browser.runtime.id,
+                  dir: 'ruler-iframe',
+                  type: m.type,
+                  data: [{ left: 10, top: 20, right: 110, bottom: 70 }],
+                  id: m.id,
+                  reply: true,
+                },
+                source: w as unknown as Window,
+                origin: location.origin,
+              }),
+            ),
+          );
+        }),
+      };
+      wins.set(this, w);
+    }
+    return wins.get(this) as unknown as Window;
+  });
+  await enterResponsive();
+  setZoom(0.5);
+  flushSync();
+  const [a, b] = frames();
+  b!.getBoundingClientRect = () => new DOMRect(300, 100, 400, 400);
+  expect(hasFrameSelection()).toBe(false);
+  window.dispatchEvent(
+    new MessageEvent('message', {
+      data: {
+        __bd: browser.runtime.id,
+        dir: 'ruler-iframe',
+        type: 'selection_changed',
+        data: [{ selected: true }],
+      },
+      source: b!.contentWindow,
+      origin: location.origin,
+    }),
+  );
+  await vi.waitFor(() => expect(hasFrameSelection()).toBe(true));
+  expect(await frameSelectionRect()).toEqual({ left: 305, top: 110, right: 355, bottom: 135 });
+  const asked = (f: HTMLIFrameElement) =>
+    wins.get(f)!.postMessage.mock.calls.some((c) => (c[0] as Envelope).type === 'element_rect');
+  expect(asked(b!)).toBe(true);
+  expect(asked(a!)).toBe(false);
 });
 
 it('exit with the same URL applies the frame edits to the page without navigating', async () => {

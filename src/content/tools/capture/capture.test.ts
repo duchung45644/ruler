@@ -144,3 +144,23 @@ it('save_screenshot path (openBar) opens the mode bar', async () => {
   openBar();
   await vi.waitFor(() => expect(bar('mode')).toBeTruthy());
 });
+
+it('full page is disabled while responsive (Q6)', async () => {
+  state.responsiveOn = true;
+  try {
+    await openCaptureBar();
+    // area, visible, full page, close (no element button: no frame holds a selection)
+    const full = bar('mode')!.querySelectorAll('button')[2]!;
+    expect(full.disabled).toBe(true);
+    expect(full.title).toBeTruthy();
+  } finally {
+    state.responsiveOn = false;
+  }
+});
+
+it('full page stays enabled outside responsive', async () => {
+  await openCaptureBar();
+  const full = bar('mode')!.querySelectorAll('button')[2]!;
+  expect(full.disabled).toBe(false);
+  expect(full.title).toBe('');
+});

@@ -38,6 +38,7 @@
 <!-- Top bar (8.11): dark glass like the dock (spec §7). -->
 <div
   data-responsive-toolbar
+  data-responsive-chrome
   class="pointer-events-auto fixed top-2 left-1/2 z-10 flex max-w-[calc(100vw-16px)] -translate-x-1/2 items-center gap-1 rounded-panel border border-line bg-surface p-1 text-xs text-fg shadow-[0_10px_28px_rgba(0,0,0,.35)] backdrop-blur-surface"
 >
   <button

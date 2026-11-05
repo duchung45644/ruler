@@ -151,6 +151,7 @@
   {#if shell.syncOffToast}
     <div
       data-sync-off-toast
+      data-responsive-chrome
       role="status"
       aria-live="polite"
       class="fixed top-16 left-1/2 flex max-w-110 -translate-x-1/2 items-center gap-3 rounded-xl bg-zinc-900/90 px-3.5 py-2 text-[13px] text-white shadow-xl backdrop-blur-surface"

@@ -41,6 +41,10 @@ export interface FrameApi {
   update_ui_scale(scale: number): void;
   edit_undo(): EditState;
   edit_redo(): EditState;
+  /** Selected element's viewport rect (scrolled into view first); null when nothing is selected. */
+  element_rect(): { left: number; top: number; right: number; bottom: number } | null;
+  /** Hide (true) / show this frame's own UI while the parent grabs the tab (Q6). */
+  capture_hide(on: boolean): void;
 }
 
 /** Frame → parent (shell). */

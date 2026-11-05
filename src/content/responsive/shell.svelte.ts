@@ -22,9 +22,11 @@ import {
 } from '../../lib/responsive/viewports';
 import type { DevicePreset } from '../../lib/responsive/devices';
 import { clampZoom, stepZoom } from '../../lib/responsive/zoom';
+import { frameRectToParent, type Edges } from '../../lib/responsive/capture-rect';
 import { getSettings, updateSettings } from '../../lib/settings';
 import { confirmDialog, sizeDialog } from '../core/dialog';
 import { runShortcut } from '../core/keys';
+import { setHideUiHook } from '../core/session';
 import { layer } from '../core/overlay';
 import { state } from '../core/state.svelte';
 import { editor, ruleTracker, setUndoRoute, toggleTextEdit } from '../edit/mode.svelte';
@@ -114,6 +116,8 @@ const edits = createShellEdits(() =>
     return ch && wasReady.has(f.vp.id) ? [[f.vp.id, ch] as [number, Channel<FrameApi>]] : [];
   }),
 );
+/** Frame holding the selection (selection_changed), for "selected element" capture. */
+let selectedFrame: number | null = null;
 let savedOverflow = '';
 let pausedMedia: HTMLMediaElement[] = [];
 let busy = false;
@@ -480,10 +484,39 @@ export async function enterResponsive(): Promise<boolean> {
     target = document.createElement('div');
     root.prepend(target);
     app = mount(Shell, { target });
+    selectedFrame = null;
+    // frames' own selection boxes and labels must not end up in a capture (Q6)
+    setHideUiHook((mode) => {
+      for (const ch of channels.values()) ch.send('capture_hide', mode !== null);
+    });
     return true;
   } finally {
     busy = false;
   }
+}
+
+/** A frame holds a selected element. */
+export const hasFrameSelection = (): boolean =>
+  selectedFrame !== null && channels.has(selectedFrame);
+
+/** Selected element of the selected frame, in parent viewport CSS px (Q6), or null. */
+export async function frameSelectionRect(): Promise<Edges | null> {
+  const id = selectedFrame;
+  const ch = id === null ? undefined : channels.get(id);
+  const iframe = id === null ? undefined : iframes.get(id);
+  if (!ch || !iframe) return null;
+  const r = await ch.call('element_rect').catch(() => null);
+  if (!r) return null;
+  const o = iframe.getBoundingClientRect();
+  const p = frameRectToParent(r, o, shell.zoom);
+  // only the part showing inside the iframe
+  const c = {
+    left: Math.max(p.left, o.left),
+    top: Math.max(p.top, o.top),
+    right: Math.min(p.right, o.right),
+    bottom: Math.min(p.bottom, o.bottom),
+  };
+  return c.right > c.left && c.bottom > c.top ? c : null;
 }
 
 /** Shell.svelte calls this per iframe; returns the cleanup. */
@@ -519,7 +552,11 @@ export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
       edit_history_key: (redo) => void edits.step(!!redo),
       shortcut: (key) => void runShortcut(String(key)),
       selection_changed: (s) => {
-        if (!s?.selected) return;
+        if (!s?.selected) {
+          if (selectedFrame === id) selectedFrame = null;
+          return;
+        }
+        selectedFrame = id;
         for (const [other, c] of channels) if (other !== id) c.send('clear_selection');
       },
       report_find_count: (n) => frameFindCount(id, n),
@@ -581,6 +618,8 @@ export function teardownShell(): void {
   if (!state.responsiveOn) return;
   controller?.abort();
   controller = null;
+  setHideUiHook(null);
+  selectedFrame = null;
   if (saveTimer !== undefined) {
     clearTimeout(saveTimer);
     saveTimer = undefined;

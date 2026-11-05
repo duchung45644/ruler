@@ -7,6 +7,8 @@ import { parseFrameName } from '../../lib/responsive/frame-name';
 import { runItem, setForwardKey } from '../core/keys';
 import { layer } from '../core/overlay';
 import { setPaused } from '../core/registry.svelte';
+import { hideUi } from '../core/session';
+import { isFullyVisible } from '../../lib/capture';
 import { state } from '../core/state.svelte';
 import { ruleTracker } from '../edit/mode.svelte';
 import { setSelectionHook } from '../sidepanel/bridge.svelte';
@@ -54,6 +56,8 @@ export function startFrameMode(): void {
       // shared history (8.20): the shell picks the frame that made the step
       edit_undo: () => frameStep('undo'),
       edit_redo: () => frameStep('redo'),
+      element_rect: () => selectedRect(),
+      capture_hide: (on) => hideUi(on ? 'all' : null),
     },
     controller.signal,
   );
@@ -84,6 +88,23 @@ export function watchOverflow(ch: Channel<ShellApi>, signal: AbortSignal): void 
   ro.observe(document.documentElement);
   if (document.body) ro.observe(document.body);
   signal.addEventListener('abort', () => ro.disconnect(), { once: true });
+}
+
+/** Selected element's viewport rect for the parent's capture, scrolled into view first (Q6). */
+export async function selectedRect(): Promise<{
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+} | null> {
+  const el = state.selected;
+  if (!el?.isConnected) return null;
+  if (!isFullyVisible(el.getBoundingClientRect(), innerWidth, innerHeight)) {
+    el.scrollIntoView({ block: 'center', inline: 'center', behavior: 'instant' });
+    await new Promise<void>((r) => requestAnimationFrame(() => r()));
+  }
+  const { left, top, right, bottom } = el.getBoundingClientRect();
+  return { left, top, right, bottom };
 }
 
 /** `--ui-scale` (1/zoom of the shell) on the overlay host, so on-page labels stay readable (1.28). */

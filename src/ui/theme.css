@@ -45,6 +45,13 @@
 :host([data-capture='all']) {
   visibility: hidden !important;
 }
+/* Responsive (Q6): the frames are what gets captured; only the shell's chrome hides. */
+:host([data-capture='all']) [data-responsive-shell] {
+  visibility: visible !important;
+}
+:host([data-capture='all']) [data-responsive-shell] [data-responsive-chrome] {
+  visibility: hidden !important;
+}
 /* Full-page capture cover: sized in px (vh changes while the viewport is enlarged) and moved
    above the captured area by the page script through --bd-cover-top (fullpage.ts). */
 :host(bo-doi-cover) {

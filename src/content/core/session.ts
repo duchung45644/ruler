@@ -23,7 +23,14 @@ export function sessionCtx(): ContentScriptContext {
 }
 
 /** Hides the main UI while capturing (theme.css :host([data-capture='all'])). */
+let hideHook: ((mode: 'all' | null) => void) | null = null;
+/** Responsive shell: also hide the frames' own UI during a grab. */
+export function setHideUiHook(fn: ((mode: 'all' | null) => void) | null): void {
+  hideHook = fn;
+}
+
 export function hideUi(mode: 'all' | null): void {
+  hideHook?.(mode);
   if (!uiRef) return;
   if (mode) uiRef.host.dataset.capture = mode;
   else delete uiRef.host.dataset.capture;

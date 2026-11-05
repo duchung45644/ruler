@@ -9,6 +9,7 @@
   import ScrollText from '@lucide/svelte/icons/scroll-text';
   import X from '@lucide/svelte/icons/x';
   import { placeSelBar } from '../../../lib/capture';
+  import { state as app } from '../../core/state.svelte';
   import CapButton from './CapButton.svelte';
   import EditorView from './EditorView.svelte';
   import { startAreaSelect } from './area';
@@ -90,6 +91,8 @@
     <CapButton
       icon={ScrollText}
       label={i18n.t('capture.fullPage')}
+      disabled={app.responsiveOn}
+      title={app.responsiveOn ? i18n.t('capture.fullPageResponsive') : undefined}
       onclick={() => {
         const snap = cap.snap;
         closeCapture({ keepCapturing: true });

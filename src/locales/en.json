@@ -110,6 +110,7 @@
     "element": "Element",
     "visible": "Capture visible area",
     "fullPage": "Capture full page",
+    "fullPageResponsive": "Not available in responsive view",
     "close": "Close (Esc)",
     "dragHint": "Drag to select an area · Esc to cancel",
     "copy": "Copy",

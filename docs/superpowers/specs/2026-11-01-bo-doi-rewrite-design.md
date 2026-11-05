@@ -84,10 +84,13 @@ Ký hiệu: **giữ** (chuyển sang bản mới) · **bỏ**.
 - Sửa CSS trực tiếp (rule có sẵn, inline, thêm rule, đổi selector), theo dõi thay đổi, hoàn tác từng thay đổi / tất cả.
 - Sửa chữ; copy/cut/paste/nhân đôi/xoá phần tử; undo/redo (Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y).
 - Nhớ CSS đã sửa theo từng site, tự áp lại khi bật extension ở site đó (toast báo); xoá trong trang cài đặt.
+- **Đổi (2026-11-05):** không còn chế độ sửa riêng. Sửa luôn sẵn khi chọn phần tử; nút sửa (chữ, copy/cut/paste/nhân đôi/xoá, trạng thái :hover…, undo/redo) và mục CSS nằm ở tab Element của side panel; danh sách thay đổi ở tab Changes.
 
 ### 4.4 Side panel — tab Phần tử — giữ
 
 Document (cây phần tử, đi tới cha/con) · Text content · Box model · Computed · CSS rules gom theo file nguồn (stylesheet khác domain: xin quyền host rồi fetch qua background) · Effective styles (kế thừa, bị override) · Layout flex/grid · Typography · Màu · Background · Border · Gradient · Box shadow tách lớp · Animation/Transition + đường easing · Canvas (kích thước, context, bảng màu) · Asset (tải ảnh/SVG, tải tất cả) · Sinh class Tailwind · Lỗi contrast WCAG (AA/AAA, icon) — click lỗi để highlight phần tử.
+
+**Đổi (2026-11-05):** thứ tự tab Element: thanh sửa · tên phần tử kèm cha/con · Box Model (kiểu DevTools, luôn mở, rê lên vòng nào thì tô phần đó trên trang) · Issue · CSS (kiểu Styles của DevTools: lọc, `.cls`, `+`, `selector { … }`, tick bật/tắt thuộc tính, ô màu) · Layout · Typography · Màu · Gradient · Shadow · Motion · Text · Asset · Code. Các mục đóng sẵn và nhớ lựa chọn.
 
 ### 4.5 Side panel — tab Trang — giữ
 
@@ -125,6 +128,9 @@ giữ các khung đồng bộ khi trang SPA chuyển trang; trang chặn iframe 
 3. Giao diện mới (mục 7): hướng A "tối, kính mờ" + cách hiện số đo trên trang của hướng C.
 4. Chỉ tiếng Việt và tiếng Anh.
 5. Giữ MCP cho tương lai; bỏ toàn bộ gói/mua/đăng nhập.
+6. (2026-11-05) Bỏ chế độ sửa; sửa nằm trong tab Element của side panel (xem 4.3, 4.4).
+7. (2026-11-05) Phím tắt dock là chữ cái: I inspect, X X-Ray, G grid, R thước, B breakpoints, M đo, C hút màu, F tìm, O đè ảnh, A audit, S chụp, P side panel. Dock 5 nhóm: ↑ ↓ Inspect Tìm | X-Ray Grid Breakpoint | Thước Đo Hút màu | Đè ảnh Audit Chụp | Panel Pause Quit. Bỏ nút ẩn dock.
+8. (2026-11-05) Tắt inspector thì ẩn mọi thứ của inspector trên trang nhưng giữ phần tử chọn cho side panel.
 
 ## 6. Kiến trúc
 

@@ -648,6 +648,7 @@ export function teardownShell(): void {
   layer.style.display = state.paused ? 'none' : '';
   state.responsiveOn = false;
   setUndoRoute(null);
+  edits.reset([]); // drops the shared-history batch timer and per-frame state
   exitForward();
   void sendToSidePanel('responsive_state', { on: false }).catch(() => {});
 }

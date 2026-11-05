@@ -55,6 +55,10 @@ interface EditHooks {
 let editHooks: EditHooks | null = null;
 export const setEditHooks = (h: EditHooks | null) => (editHooks = h);
 
+// a responsive frame tells its shell, which drops the other frames' selections (8.19)
+let selectionHook: ((selected: boolean) => void) | null = null;
+export const setSelectionHook = (h: ((selected: boolean) => void) | null) => (selectionHook = h);
+
 /** Selection → panel, once per microtask so a burst of selects sends only the last (6.09). */
 export function sendElement(el: Element): void {
   const queued = pending;
@@ -146,6 +150,7 @@ export const sidePanelHandlers: Handlers<ContentApi> = {
   },
   /** Port of highlightIssueElement: frame and scroll to one instance (6.35, 2.20). */
   async highlight_issue_element(id) {
+    if (state.responsiveOn || state.inFrame) return; // ignored in responsive view (2.26)
     const el = elementById(id);
     if (!el?.isConnected) {
       await notFound();
@@ -168,14 +173,18 @@ export const sidePanelHandlers: Handlers<ContentApi> = {
   check_script_is_active: () => ({ scriptIsActive: state.active }),
   side_panel_loaded() {
     if (!state.active) return;
-    getPageData();
+    if (!state.inFrame) getPageData(); // page data / technologies / weight come from the top only
     if (state.selected) sendElement(state.selected);
   },
   refresh_page_data() {
-    if (state.active) refreshPageData();
+    if (state.active && !state.inFrame) refreshPageData();
   },
-  page_weight_subscribe: () => subscribeWeight(),
-  page_weight_unsubscribe: () => unsubscribeWeight(),
+  page_weight_subscribe() {
+    if (!state.inFrame) subscribeWeight();
+  },
+  page_weight_unsubscribe() {
+    if (!state.inFrame) unsubscribeWeight();
+  },
   get_matched_rules: () => getMatchedRules(state.selected),
   enable_cross_origin_styles: () => enableCrossOrigin(),
   keyboard_shortcut(key) {
@@ -191,12 +200,13 @@ export async function initSidePanelBridge(): Promise<void> {
     once: true,
   });
   window.addEventListener('scroll', repaintHighlights, { signal, passive: true, capture: true });
-  initPageData(elementId);
+  if (!state.inFrame) initPageData(elementId);
 
   const stopEffect = $effect.root(() => {
     $effect(() => {
       const el = state.selected;
       const open = bridge.panelOpen;
+      selectionHook?.(!!el);
       if (el && open) sendElement(el);
       else if (!el) {
         forgetSelection();

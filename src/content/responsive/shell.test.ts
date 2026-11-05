@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushSync } from 'svelte';
 import { browser } from '#imports';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
-import { sendToBackground } from '../../lib/messaging';
+import { sendToBackground, sendToSidePanel } from '../../lib/messaging';
 import type { Envelope } from '../../lib/responsive/channel';
 import { defaultViewports } from '../../lib/responsive/viewports';
 import { frameName } from '../../lib/responsive/frame-name';
@@ -207,6 +207,46 @@ it('a frame asking for state gets the page CSS edits', async () => {
       location.origin,
     ),
   );
+});
+
+it('enter / exit tell the side panel (6.51) and drop the page selection', async () => {
+  state.selected = document.body.appendChild(document.createElement('p'));
+  await enterResponsive();
+  expect(state.selected).toBeNull();
+  expect(sendToSidePanel).toHaveBeenCalledWith('responsive_state', { on: true });
+  teardownShell();
+  expect(sendToSidePanel).toHaveBeenCalledWith('responsive_state', { on: false });
+});
+
+it('a selection in frame A makes the shell clear it in frame B (8.19)', async () => {
+  const wins = new Map<HTMLIFrameElement, { postMessage: ReturnType<typeof vi.fn> }>();
+  vi.spyOn(HTMLIFrameElement.prototype, 'contentWindow', 'get').mockImplementation(function (
+    this: HTMLIFrameElement,
+  ) {
+    if (!wins.has(this)) wins.set(this, { postMessage: vi.fn() });
+    return wins.get(this) as unknown as Window;
+  });
+  await enterResponsive();
+  flushSync();
+  const [a, b] = frames();
+  const winA = a!.contentWindow!;
+  const winB = b!.contentWindow as unknown as { postMessage: ReturnType<typeof vi.fn> };
+  const types = (w: { postMessage: ReturnType<typeof vi.fn> }) =>
+    w.postMessage.mock.calls.map((c) => (c[0] as Envelope).type);
+  window.dispatchEvent(
+    new MessageEvent('message', {
+      data: {
+        __bd: browser.runtime.id,
+        dir: 'ruler-iframe',
+        type: 'selection_changed',
+        data: [{ selected: true }],
+      },
+      source: winA,
+      origin: location.origin,
+    }),
+  );
+  await vi.waitFor(() => expect(types(winB)).toContain('clear_selection'));
+  expect(types(winA as never)).not.toContain('clear_selection');
 });
 
 it('exit with the same URL applies the frame edits to the page without navigating', async () => {

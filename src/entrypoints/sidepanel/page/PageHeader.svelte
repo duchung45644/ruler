@@ -3,7 +3,7 @@
   import RefreshCw from '@lucide/svelte/icons/refresh-cw';
   import { onDestroy, untrack } from 'svelte';
   import type { PageData } from '../../../lib/page/types';
-  import { toPage } from '../store.svelte';
+  import { toTop } from '../store.svelte';
 
   let { page }: { page: PageData | null } = $props();
 
@@ -33,7 +33,7 @@
     spinning = true;
     started = Date.now();
     maxTimer = setTimeout(stop, 5000);
-    void toPage('refresh_page_data');
+    void toTop('refresh_page_data');
   }
 
   $effect(() => {

@@ -1,10 +1,10 @@
 import { flushSync, mount, unmount } from 'svelte';
-import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import App from './App.svelte';
 import { sampleElement } from './element/sample';
 import { edit } from './edit/edit-store.svelte';
-import { panel } from './store.svelte';
+import { panel, toPage } from './store.svelte';
 
 const ui = { app: null as ReturnType<typeof mount> | null };
 let send: { mock: { calls: unknown[][] } };
@@ -42,6 +42,8 @@ afterEach(() => {
     switching: false,
     shortcuts: {},
     mode: 'inspect',
+    frameId: 0,
+    responsive: false,
   });
   vi.useRealTimers();
   vi.restoreAllMocks();
@@ -85,6 +87,74 @@ it('only takes select_element from its own tab', async () => {
   await vi.waitFor(() => expect(panel.element).not.toBeNull());
   flushSync();
   expect(document.querySelector('[data-empty]')).toBeNull();
+});
+
+const fromFrame = (type: string, frameId: number, ...data: unknown[]) =>
+  fakeBrowser.runtime.onMessage.trigger(
+    { target: 'sidepanel', type, data },
+    { tab: { id: 5 }, frameId } as never,
+    () => {},
+  );
+
+describe('responsive frames (Task 12)', () => {
+  it('select_element from frame 7 while responsive: toPage goes to frame 7', async () => {
+    await open();
+    await fromFrame('responsive_state', 0, { on: true });
+    await fromFrame('select_element', 7, sampleElement());
+    await vi.waitFor(() => expect(panel.frameId).toBe(7));
+    await toPage('get_matched_rules');
+    expect(sent('get_matched_rules').at(-1)![2]).toEqual({ frameId: 7 });
+    // a stale clear from the page itself does not wipe the frame's selection
+    await fromFrame('clear', 0);
+    expect(panel.element).not.toBeNull();
+  });
+
+  it('ignores frame 7 when responsive is off, and responsive_state from a frame', async () => {
+    await open();
+    await fromFrame('select_element', 7, sampleElement());
+    await fromFrame('responsive_state', 7, { on: true });
+    await fromFrame('select_element', 7, sampleElement());
+    await new Promise((r) => setTimeout(r, 0));
+    expect(panel.element).toBeNull();
+    expect(panel.frameId).toBe(0);
+  });
+
+  it('responsive off resets frameId to 0 and drops the frame selection', async () => {
+    await open();
+    await fromFrame('responsive_state', 0, { on: true });
+    await fromFrame('select_element', 7, sampleElement());
+    await vi.waitFor(() => expect(panel.frameId).toBe(7));
+    await fromFrame('responsive_state', 0, { on: false });
+    await vi.waitFor(() => expect(panel.frameId).toBe(0));
+    expect(panel.element).toBeNull();
+    await toPage('get_matched_rules');
+    expect(sent('get_matched_rules').at(-1)![2]).toEqual({ frameId: 0 });
+  });
+
+  it('page weight always asks the top frame', async () => {
+    await open();
+    await fromFrame('responsive_state', 0, { on: true });
+    await fromFrame('select_element', 7, sampleElement());
+    await vi.waitFor(() => expect(panel.frameId).toBe(7));
+    button('panel_tabPage').click();
+    flushSync();
+    expect(sent('page_weight_subscribe').at(-1)![2]).toEqual({ frameId: 0 });
+  });
+
+  it('a handoff keeps the frame', async () => {
+    await fakeBrowser.storage.session.set({
+      'panelHandoff:5': {
+        selectedTab: 'element',
+        scrollTop: 0,
+        at: Date.now(),
+        frameId: 7,
+        responsive: true,
+      },
+    });
+    await open();
+    expect(panel.frameId).toBe(7);
+    expect(panel.responsive).toBe(true);
+  });
 });
 
 it('subscribes to page weight on the Page tab and unsubscribes when hidden', async () => {

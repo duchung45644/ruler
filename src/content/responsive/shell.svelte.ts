@@ -3,7 +3,7 @@ import { mount, unmount } from 'svelte';
 import { browser } from '#imports';
 import { i18n } from '#i18n';
 import { isSerializedEdit, type SerializedEdit } from '../../lib/edit/serialize';
-import { sendToBackground } from '../../lib/messaging';
+import { sendToBackground, sendToSidePanel } from '../../lib/messaging';
 import type { FrameApi } from '../../lib/responsive/channel';
 import { frameName } from '../../lib/responsive/frame-name';
 import {
@@ -436,6 +436,9 @@ export async function enterResponsive(): Promise<boolean> {
     controller = new AbortController();
     state.responsiveOn = true;
     enterForward();
+    // the page's own selection would linger on the panel: frames take over (Task 12)
+    state.selected = null;
+    void sendToSidePanel('responsive_state', { on: true }).catch(() => {});
     state.hovered = null;
     // the parent's overlay must not draw over the shell (tools run inside the frames)
     layer.style.display = 'none';
@@ -503,6 +506,10 @@ export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
         if (Array.isArray(edits)) lastEdits = edits.filter(isSerializedEdit);
       },
       shortcut: (key) => void runShortcut(String(key)),
+      selection_changed: (s) => {
+        if (!s?.selected) return;
+        for (const [other, c] of channels) if (other !== id) c.send('clear_selection');
+      },
       report_find_count: (n) => frameFindCount(id, n),
       scroll_sync: (r) => sync.scroll(id, r),
       scroll_sync_conflict: () => sync.conflict(),
@@ -589,6 +596,7 @@ export function teardownShell(): void {
   layer.style.display = state.paused ? 'none' : '';
   state.responsiveOn = false;
   exitForward();
+  void sendToSidePanel('responsive_state', { on: false }).catch(() => {});
 }
 
 /** Q8: take the first frame's edits and URL back to the page; navigate only when the URL moved. */

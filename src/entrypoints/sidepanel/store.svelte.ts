@@ -45,17 +45,56 @@ export const panel = $state({
   shortcuts: {} as Record<string, string | undefined>,
   /** A responsive frame is blocked (Q4): show the host-permission grant on top. */
   hostGrant: false,
+  /** Frame toPage talks to: a responsive frame once it sends a selection, else 0 (Task 12). */
+  frameId: 0,
+  /** Responsive view is on in the tab (6.51): only then do non-zero frames get through. */
+  responsive: false,
 });
+
+/** Back to the page itself: responsive off, tab navigating. */
+function leaveFrames(): void {
+  const wasFrame = panel.frameId !== 0;
+  panel.responsive = false;
+  panel.frameId = 0;
+  if (wasFrame) dropSelection();
+}
+
+function dropSelection(): void {
+  panel.element = null;
+  panel.issues = null;
+  panel.canvasFps = null;
+  clearEdit();
+}
+
+const frameOf = (s: Browser.runtime.MessageSender) => s.frameId ?? 0;
+/** Selection-bound messages only count from the frame the panel follows. */
+const fromSelected = (s: Browser.runtime.MessageSender) => frameOf(s) === panel.frameId;
 
 export const handoffKey = (tabId: number) => `session:panelHandoff:${tabId}` as const;
 
-/** Content script answers on frame 0 only; responsive frames come in phase 6. */
+/** To the frame holding the selection: 0, or a responsive frame (Task 12). */
 export function toPage<K extends keyof ContentApi>(
   type: K,
   ...data: Parameters<ContentApi[K]>
 ): Promise<ReturnType<ContentApi[K]> | undefined> {
+  return toFrame(panel.frameId, type, ...data);
+}
+
+/** Page-wide data (page data, technologies, weight) lives on the top frame only. */
+export function toTop<K extends keyof ContentApi>(
+  type: K,
+  ...data: Parameters<ContentApi[K]>
+): Promise<ReturnType<ContentApi[K]> | undefined> {
+  return toFrame(0, type, ...data);
+}
+
+function toFrame<K extends keyof ContentApi>(
+  frameId: number,
+  type: K,
+  ...data: Parameters<ContentApi[K]>
+): Promise<ReturnType<ContentApi[K]> | undefined> {
   if (panel.tabId === null) return Promise.resolve(undefined);
-  return sendToFrame(panel.tabId, 0, type, ...data).catch(() => undefined);
+  return sendToFrame(panel.tabId, frameId, type, ...data).catch(() => undefined);
 }
 
 let port: Browser.runtime.Port | null = null;
@@ -80,7 +119,11 @@ function applyTheme(pref: ThemePref, mql: MediaQueryList | null): void {
   document.documentElement.dataset.theme = dark ? 'dark' : 'light';
 }
 
-const announce = () => setTimeout(() => void toPage('side_panel_loaded'), 50);
+const announce = () =>
+  setTimeout(() => {
+    void toTop('side_panel_loaded');
+    if (panel.frameId !== 0) void toPage('side_panel_loaded'); // detached handoff: the frame resends
+  }, 50);
 
 /** Port of Ni / ki (sidepanel.js:12987): wires everything to `signal`, read on App destroy. */
 export async function startPanel(signal: AbortSignal, search = location.search): Promise<void> {
@@ -108,38 +151,55 @@ export async function startPanel(signal: AbortSignal, search = location.search):
       // no reply from a hidden panel: the page then opens one instead of closing this (legacy)
       tab_specific_ping: () =>
         document.visibilityState === 'visible' ? { isOpen: true } : (undefined as never),
-      content_script_loaded() {
+      content_script_loaded(sender) {
         connect();
-        void toPage('side_panel_loaded');
+        // a responsive frame loading must not re-ask the page for its data
+        if (frameOf(sender) === 0) void toTop('side_panel_loaded');
+        else if (fromSelected(sender)) void toPage('side_panel_loaded');
       },
       close: () => window.close(),
-      select_element(d) {
+      select_element(d, sender) {
+        panel.frameId = frameOf(sender);
         panel.element = d;
         panel.issues = d.issues ?? null;
         panel.canvasFps = null;
         takeEditDetails(d);
       },
-      update_canvas_fps: (fps) => void (panel.canvasFps = fps),
+      update_canvas_fps(fps, sender) {
+        if (fromSelected(sender)) panel.canvasFps = fps;
+      },
       page_data: (d) => void (panel.page = d),
       page_technologies: (t) => void (panel.technologies = t),
       page_weight_update(w) {
         if (panel.selectedTab === 'page') panel.weight = w;
       },
-      update_issues: (i) => void (panel.issues = i),
-      clear() {
-        panel.element = null;
-        panel.issues = null;
-        panel.canvasFps = null;
-        clearEdit();
+      update_issues(i, sender) {
+        if (fromSelected(sender)) panel.issues = i;
       },
-      edit_payload_extras: (seq, inherited) => takeExtras(seq, inherited),
-      media_activity(active) {
-        if (active && typeof active === 'object')
+      clear(sender) {
+        if (fromSelected(sender)) dropSelection();
+      },
+      edit_payload_extras(seq, inherited, sender) {
+        if (fromSelected(sender)) takeExtras(seq, inherited);
+      },
+      media_activity(active, sender) {
+        if (fromSelected(sender) && active && typeof active === 'object')
           edit.mediaActive = { ...edit.mediaActive, ...active };
       },
-      edit_state: (s) => takeState(s),
-      refresh_changes: () => changesInvalidated(),
-      page_updated: () => void (edit.changes = null),
+      edit_state(s, sender) {
+        if (fromSelected(sender)) takeState(s);
+      },
+      refresh_changes(sender) {
+        if (fromSelected(sender)) changesInvalidated();
+      },
+      page_updated(sender) {
+        if (fromSelected(sender)) edit.changes = null;
+      },
+      responsive_state(s, sender) {
+        if (frameOf(sender) !== 0) return; // the top frame's shell only (6.51)
+        if (s?.on) panel.responsive = true;
+        else leaveFrames();
+      },
       show_host_grant() {
         panel.selectedTab = 'element';
         panel.hostGrant = true;
@@ -149,17 +209,21 @@ export async function startPanel(signal: AbortSignal, search = location.search):
     signal,
     {
       accept: (s, tabId) =>
-        !panel.switching && panel.tabId !== null && (s.tab?.id ?? tabId) === panel.tabId,
+        !panel.switching &&
+        panel.tabId !== null &&
+        (s.tab?.id ?? tabId) === panel.tabId &&
+        (frameOf(s) === 0 || panel.responsive),
     },
   );
 
   // legacy Si (sidepanel.js:13180): a navigating tab drops its page data and asks again at once
   const onUpdated = (id: number, info: Browser.tabs.OnUpdatedInfo) => {
     if (id !== panel.tabId || info.status !== 'loading') return;
+    leaveFrames();
     panel.page = null;
     panel.technologies = null;
     panel.weight = null;
-    void toPage('refresh_page_data');
+    void toTop('refresh_page_data');
   };
   browser.tabs.onUpdated.addListener(onUpdated);
   signal.addEventListener('abort', () => browser.tabs.onUpdated.removeListener(onUpdated), {
@@ -194,6 +258,10 @@ export async function startPanel(signal: AbortSignal, search = location.search):
   if (h) {
     panel.selectedTab = h.selectedTab;
     pendingScroll = h.scrollTop;
+    if (h.responsive) {
+      panel.responsive = true;
+      panel.frameId = Number.isInteger(h.frameId) && h.frameId! > 0 ? h.frameId! : 0;
+    }
   }
   if (panel.tabId !== null && !signal.aborted) {
     const timer = announce();
@@ -217,6 +285,8 @@ export async function toggleDetach(scrollTop: number): Promise<void> {
     selectedTab: panel.selectedTab,
     scrollTop,
     at: Date.now(),
+    frameId: panel.frameId,
+    responsive: panel.responsive,
   };
   try {
     await storage.setItem(handoffKey(tabId), handoff);

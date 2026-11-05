@@ -10,6 +10,7 @@ import { setPaused } from '../core/registry.svelte';
 import { state } from '../core/state.svelte';
 import { isSerializedEdit } from '../../lib/edit/serialize';
 import { ruleTracker } from '../edit/mode.svelte';
+import { setSelectionHook } from '../sidepanel/bridge.svelte';
 import { createFrameSync } from './sync';
 import { applyReadyAck, applySetting, frameFind, frameFindGoto } from './forward';
 
@@ -48,11 +49,14 @@ export function startFrameMode(): void {
       apply_scroll_sync: (r) => sync.apply_scroll_sync(r),
       reset_scroll_conflict: () => sync.reset_scroll_conflict(),
       apply_spa_navigation: (url) => sync.apply_spa_navigation(url),
+      // another frame took the selection: only one frame holds one (8.19)
+      clear_selection: () => void (state.selected = null),
     },
     controller.signal,
   );
   const ch = channel;
   setForwardKey((key) => ch.send('shortcut', key));
+  setSelectionHook((selected) => ch.send('selection_changed', { selected }));
   ch.send('ready_for_state_sync');
   void ch.call('request_ui_scale').then(applyUiScale, () => {});
   watchOverflow(ch, controller.signal);
@@ -98,5 +102,6 @@ export function stopFrameMode(): void {
   controller = null;
   channel = null;
   setForwardKey(null);
+  setSelectionHook(null);
   state.inFrame = false;
 }

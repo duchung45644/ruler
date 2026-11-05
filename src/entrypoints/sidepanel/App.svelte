@@ -7,7 +7,7 @@
   import ElementTab from './element/ElementTab.svelte';
   import PageTab from './page/PageTab.svelte';
   import TabBar from './TabBar.svelte';
-  import { panel, startPanel, takePendingScroll, toPage } from './store.svelte';
+  import { panel, startPanel, takePendingScroll, toPage, toTop } from './store.svelte';
 
   const ac = new AbortController();
   onMount(() => {
@@ -26,8 +26,8 @@
   const weighing = $derived(panel.selectedTab === 'page' && panel.visible && panel.tabId !== null);
   $effect(() => {
     if (!weighing) return;
-    void toPage('page_weight_subscribe');
-    return () => void toPage('page_weight_unsubscribe');
+    void toTop('page_weight_subscribe');
+    return () => void toTop('page_weight_unsubscribe');
   });
 
   function onkeydown(e: KeyboardEvent) {

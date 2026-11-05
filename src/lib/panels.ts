@@ -32,6 +32,9 @@ export interface Handoff {
   selectedTab: 'element' | 'page' | 'changes';
   scrollTop: number;
   at: number;
+  /** Responsive view: the frame the panel talks to (Task 12). */
+  frameId?: number;
+  responsive?: boolean;
 }
 
 export const readHandoff = (h: Handoff | undefined | null, now: number): Handoff | null =>

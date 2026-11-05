@@ -43,6 +43,8 @@ export const panel = $state({
   prefs: DEFAULT_PANEL_PREFS,
   /** commands.getAll: name → shortcut ('' when unassigned). */
   shortcuts: {} as Record<string, string | undefined>,
+  /** A responsive frame is blocked (Q4): show the host-permission grant on top. */
+  hostGrant: false,
 });
 
 export const handoffKey = (tabId: number) => `session:panelHandoff:${tabId}` as const;
@@ -138,6 +140,11 @@ export async function startPanel(signal: AbortSignal, search = location.search):
       edit_state: (s) => takeState(s),
       refresh_changes: () => changesInvalidated(),
       page_updated: () => void (edit.changes = null),
+      show_host_grant() {
+        panel.selectedTab = 'element';
+        panel.hostGrant = true;
+        return true;
+      },
     },
     signal,
     {

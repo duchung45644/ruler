@@ -203,3 +203,18 @@ it('ignores refresh_changes and edit_state from another tab', async () => {
   });
   expect(edit.editState.editCount).toBe(3);
 });
+
+it('show_host_grant shows and focuses the grant; granting asks <all_urls>', async () => {
+  await open();
+  const request = vi.fn(async () => true);
+  fakeBrowser.permissions.request = request as never;
+  await toPanel('show_host_grant', 5);
+  flushSync();
+  const b = document.querySelector<HTMLButtonElement>('[data-host-grant] button')!;
+  expect(b).toBeTruthy();
+  expect(document.activeElement).toBe(b);
+  b.click();
+  expect(request).toHaveBeenCalledWith({ origins: ['<all_urls>'] });
+  await vi.waitFor(() => expect(document.querySelector('[data-host-grant]')).toBeNull());
+  panel.hostGrant = false;
+});

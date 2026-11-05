@@ -6,7 +6,7 @@ import { editHandlers } from '../../content/edit';
 import { sidePanelHandlers } from '../../content/sidepanel';
 import { initTools } from '../../content/tools';
 import { isResponsiveFrame, startFrameMode } from '../../content/responsive/frame-mode';
-import { exitResponsive } from '../../content/responsive';
+import { exitResponsive, onFramesUnblocked } from '../../content/responsive';
 import { openBar } from '../../content/tools/capture';
 import { handleMessages } from '../../lib/messaging';
 import { loadFonts } from '../../ui/fonts';
@@ -45,6 +45,7 @@ export default defineContentScript({
       start_frame_mode: () => {
         if (isResponsiveFrame()) startFrameMode();
       },
+      reload_frames: () => onFramesUnblocked(),
       toggle_script: async () => {
         if (state.active) {
           if (state.responsiveOn) await exitResponsive(); // quit / icon while responsive: exit first (9.40)

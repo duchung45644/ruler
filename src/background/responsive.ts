@@ -19,6 +19,27 @@ const markItem = (tabId: number) =>
 const removeRule = (tabId: number) =>
   browser.declarativeNetRequest.updateSessionRules({ removeRuleIds: [tabId] }).catch(() => {});
 
+/** Tabs whose shell asked for the header rule: they get it (and reload) once access is granted. */
+const tabsItem = storage.defineItem<number[]>('session:responsiveTabs', { fallback: [] });
+async function track(tabId: number, on: boolean): Promise<void> {
+  const tabs = (await tabsItem.getValue().catch(() => [])).filter((t) => t !== tabId);
+  if (on) tabs.push(tabId);
+  await tabsItem.setValue(tabs).catch(() => {});
+}
+/** Leaving responsive (exit, tab load, tab closed): no rule, no longer tracked. */
+async function forgetTab(tabId: number): Promise<void> {
+  await removeRule(tabId);
+  await track(tabId, false);
+}
+
+/** permissions.onAdded with <all_urls> (8.15): strip headers for every responsive tab, then reload its frames. */
+export async function onHostPermissionAdded(origins: string[] | undefined): Promise<void> {
+  if (!origins?.includes('<all_urls>')) return;
+  for (const tabId of await tabsItem.getValue().catch(() => [])) {
+    if (await enableFrameHeaderRule(tabId)) await sendToTab(tabId, 'reload_frames').catch(() => {});
+  }
+}
+
 /** Port of enable_frame_header_rule (background.js:3421): only with `<all_urls>`. */
 export async function enableFrameHeaderRule(tabId: number | undefined): Promise<boolean> {
   if (tabId === undefined || tabId < 1) return false;
@@ -46,7 +67,7 @@ export async function enableFrameHeaderRule(tabId: number | undefined): Promise<
 
 export async function disableFrameHeaderRule(tabId: number | undefined): Promise<void> {
   if (tabId === undefined || tabId < 1) return;
-  await removeRule(tabId);
+  await forgetTab(tabId);
 }
 
 /** SW start: drop rules whose tab is gone (legacy Ne/je). */
@@ -89,7 +110,7 @@ export async function exitResponsiveMode(
   tabId: number,
   ruleEdits: SerializedEdit[],
 ): Promise<void> {
-  await removeRule(tabId);
+  await forgetTab(tabId);
   await markItem(tabId).setValue({ at: Date.now(), ruleEdits });
 }
 
@@ -100,7 +121,7 @@ export async function onTabUpdated(
   activate: (tabId: number) => Promise<void>,
 ): Promise<void> {
   if (status === 'loading') {
-    await removeRule(tabId); // top-level load: the responsive shell is gone
+    await forgetTab(tabId); // top-level load: the responsive shell is gone
     return;
   }
   if (status !== 'complete') return;
@@ -116,13 +137,16 @@ export async function onTabUpdated(
 export function initResponsive(activate: (tabId: number) => Promise<void>): void {
   void cleanupOrphanRules().catch(() => {});
   browser.tabs.onRemoved.addListener((tabId) => {
-    void removeRule(tabId);
+    void forgetTab(tabId);
     void markItem(tabId)
       .removeValue()
       .catch(() => {});
   });
   browser.tabs.onUpdated.addListener(
     (tabId, info) => void onTabUpdated(tabId, info.status, activate).catch(() => {}),
+  );
+  browser.permissions.onAdded.addListener(
+    (p) => void onHostPermissionAdded(p.origins).catch(() => {}),
   );
 }
 
@@ -133,7 +157,11 @@ export const responsiveHandlers: Pick<
   | 'inject_responsive_frames'
   | 'exit_responsive_mode'
 > = {
-  enable_frame_header_rule: (sender) => enableFrameHeaderRule(sender.tab?.id),
+  async enable_frame_header_rule(sender) {
+    const tabId = sender.tab?.id;
+    if (tabId !== undefined && tabId > 0) await track(tabId, true);
+    return enableFrameHeaderRule(tabId);
+  },
   disable_frame_header_rule: (sender) => disableFrameHeaderRule(sender.tab?.id),
   inject_responsive_frames: (sender) =>
     sender.tab?.id === undefined ? [] : injectResponsiveFrames(sender.tab.id),

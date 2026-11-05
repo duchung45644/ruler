@@ -7,11 +7,15 @@ import { sendToBackground } from '../../lib/messaging';
 import { layer, requestPaint } from './overlay';
 import { state } from './state.svelte';
 
-/** Keys without substitutions (dock labels are called as i18n.t(key)). */
+/** Keys without substitutions, named ones included (dock labels are called as i18n.t(key)). */
 export type MessageKey = {
-  [K in keyof GeneratedI18nStructure]: GeneratedI18nStructure[K]['substitutions'] extends 0
-    ? K
-    : never;
+  [K in keyof GeneratedI18nStructure]: GeneratedI18nStructure[K] extends {
+    namedSubstitutions: unknown;
+  }
+    ? never
+    : GeneratedI18nStructure[K]['substitutions'] extends 0
+      ? K
+      : never;
 }[keyof GeneratedI18nStructure];
 /** Display order (inventory 1.16 + 1.45, legacy getControlBar :30105). Empty groups are not drawn. */
 export const DOCK_GROUPS = [

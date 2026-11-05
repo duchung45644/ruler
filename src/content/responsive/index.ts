@@ -3,9 +3,9 @@ import MonitorSmartphone from '@lucide/svelte/icons/monitor-smartphone';
 import { registerItem } from '../core/registry.svelte';
 import { onStop } from '../core/session';
 import { state } from '../core/state.svelte';
-import { exitResponsive, teardownShell, toggleResponsive } from './shell.svelte';
+import { exitResponsive, onFramesUnblocked, teardownShell, toggleResponsive } from './shell.svelte';
 
-export { exitResponsive };
+export { exitResponsive, onFramesUnblocked };
 
 export function initResponsive(): void {
   registerItem({

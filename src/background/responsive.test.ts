@@ -26,6 +26,7 @@ beforeEach(() => {
   });
   browser.permissions.contains = contains as never;
   browser.tabs.sendMessage = sendMessage as never;
+  browser.permissions.onAdded.addListener = vi.fn() as never; // not in fakeBrowser
 });
 afterEach(() => vi.useRealTimers());
 
@@ -127,5 +128,32 @@ describe('exit hand-off', () => {
   it('a top-level load removes the rule', async () => {
     await onTabUpdated(8, 'loading', async () => {});
     expect(updateSessionRules).toHaveBeenCalledWith({ removeRuleIds: [8] });
+  });
+});
+
+describe('host permission granted (8.15)', () => {
+  it('enables the rule and reloads frames for tabs that asked, only for <all_urls>', async () => {
+    const { onHostPermissionAdded, responsiveHandlers } = await import('./responsive');
+    await responsiveHandlers.enable_frame_header_rule!({ tab: { id: 9 } } as never);
+    updateSessionRules.mockClear();
+    await onHostPermissionAdded(['https://x.test/*']);
+    expect(updateSessionRules).not.toHaveBeenCalled();
+    await onHostPermissionAdded(['<all_urls>']);
+    expect(updateSessionRules).toHaveBeenCalledWith(
+      expect.objectContaining({ removeRuleIds: [9] }),
+    );
+    expect(sendMessage).toHaveBeenCalledWith(
+      9,
+      expect.objectContaining({ target: 'content', type: 'reload_frames' }),
+    );
+  });
+
+  it('a tab that left responsive is not reloaded', async () => {
+    const { onHostPermissionAdded, responsiveHandlers } = await import('./responsive');
+    await responsiveHandlers.enable_frame_header_rule!({ tab: { id: 9 } } as never);
+    await responsiveHandlers.disable_frame_header_rule!({ tab: { id: 9 } } as never);
+    sendMessage.mockClear();
+    await onHostPermissionAdded(['<all_urls>']);
+    expect(sendMessage).not.toHaveBeenCalled();
   });
 });

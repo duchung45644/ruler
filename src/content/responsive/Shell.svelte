@@ -1,6 +1,7 @@
 <script lang="ts">
   import LoaderCircle from '@lucide/svelte/icons/loader-circle';
   import { i18n } from '#i18n';
+  import { requestHostGrant } from './blocked';
   import { startResize, type Edge } from './frame';
   import FrameHeader from './FrameHeader.svelte';
   import Toolbar from './Toolbar.svelte';
@@ -21,6 +22,13 @@
       shell.zoom,
     );
   }
+
+  /** `{br}` → line break, `{grant}` → the link (strings kept verbatim from legacy). */
+  const lines = (key: 'responsive.frameBlockedBody' | 'responsive.frameBlockedStill') =>
+    i18n
+      .t(key, { br: '\u0001', grant: '\u0002' })
+      .split('\u0001')
+      .map((l) => l.split('\u0002'));
 
   /** Unscaled size of the frames row: the outer box is that × zoom so the canvas scrolls right. */
   let size = $state({ width: 0, height: 0 });
@@ -81,7 +89,22 @@
                 data-frame-loading
                 class="absolute inset-0 grid place-items-center bg-zinc-900/60 text-sm text-zinc-200"
               >
-                {#if f.timedOut}
+                {#if f.blocked}
+                  <p data-frame-blocked={f.blocked} class="max-w-[80%] text-center">
+                    {#each lines(f.blocked === 'still' ? 'responsive.frameBlockedStill' : 'responsive.frameBlockedBody') as parts, i (i)}
+                      {#if i}<br />{/if}
+                      {#each parts as part, j (j)}
+                        {#if j}<button
+                            type="button"
+                            data-action="grant-host"
+                            class="font-medium text-accent hover:underline"
+                            onclick={() => void requestHostGrant()}
+                            >{i18n.t('responsive.frameBlockedGrant')}</button
+                          >{/if}{part}
+                      {/each}
+                    {/each}
+                  </p>
+                {:else if f.timedOut}
                   <p data-frame-timeout class="max-w-[80%] text-center">
                     {i18n.t('responsive.frameTimeout')}
                   </p>

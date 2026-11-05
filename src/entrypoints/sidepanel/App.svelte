@@ -2,6 +2,7 @@
   import { onDestroy, onMount, tick } from 'svelte';
   import { forwardKey } from '../../lib/panel-keys';
   import EmptyElement from './EmptyElement.svelte';
+  import HostGrant from './HostGrant.svelte';
   import ChangesView from './edit/ChangesView.svelte';
   import ElementTab from './element/ElementTab.svelte';
   import PageTab from './page/PageTab.svelte';
@@ -41,6 +42,9 @@
 
 <TabBar />
 <main>
+  {#if panel.hostGrant}
+    <HostGrant />
+  {/if}
   {#if panel.selectedTab === 'changes'}
     <ChangesView />
   {:else if panel.selectedTab === 'element'}

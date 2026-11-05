@@ -130,6 +130,8 @@ export interface ContentApi {
   select_rule_target(selector: string, scopeAddress: string | null): boolean;
   /** Sent to a responsive frame after injection: boot without dock / panel / settings writes. */
   start_frame_mode(): void;
+  /** Host permission granted: the responsive shell reloads every frame (8.15). */
+  reload_frames(): void;
 }
 export interface SidePanelApi {
   ping(): { isOpen: true };
@@ -150,6 +152,8 @@ export interface SidePanelApi {
   page_updated(): void;
   edit_state(s: EditState): void;
   responsive_state(s: { on: boolean }): void;
+  /** Blocked responsive frame (Q4): show and focus the host-permission grant; true = shown. */
+  show_host_grant(): boolean;
 }
 
 export type Handlers<A extends object> = {

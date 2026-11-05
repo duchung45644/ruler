@@ -31,6 +31,7 @@ import { editor, ruleTracker, toggleTextEdit } from '../edit/mode.svelte';
 import { HANDOFF_FLAG, persistNow } from '../edit/persist';
 import { currentBreakpoints } from '../tools/breakpoints';
 import { connectToFrame, type Channel } from './bridge';
+import { BLOCK_CHECK_MS, blockedState, readDoc, type Blocked } from './blocked';
 import { loadTimer } from './frame';
 import Shell from './Shell.svelte';
 
@@ -39,8 +40,10 @@ export interface ShellFrame {
   name: string;
   /** Until the frame's `ready_for_state_sync`. */
   loading: boolean;
-  /** No ready within LOAD_TIMEOUT_MS (Task 9 tells blocked pages apart). */
+  /** No ready within LOAD_TIMEOUT_MS and the page is readable (not a blocked embed). */
   timedOut: boolean;
+  /** The page refuses embedding (8.15): grant link, or `still` when headers are already stripped. */
+  blocked: Blocked;
   /** Frame reported documentElement wider than its viewport. */
   overflow: boolean;
 }
@@ -59,6 +62,8 @@ export const shell = $state({
   framesWrap: false,
   /** Sync scrolling toggle (behavior in Task 10). */
   syncScrollEnabled: true,
+  /** enable_frame_header_rule answered true: frame-blocking headers are stripped for this tab. */
+  headerRule: false,
 });
 
 /** Saved settings are written this long after the last change (legacy debounce). */
@@ -79,6 +84,8 @@ const channels = new Map<number, Channel<FrameApi>>();
 const iframes = new Map<number, HTMLIFrameElement>();
 // eslint-disable-next-line svelte/prefer-svelte-reactivity -- bookkeeping, never rendered
 const timers = new Map<number, ReturnType<typeof loadTimer>>();
+// eslint-disable-next-line svelte/prefer-svelte-reactivity -- bookkeeping, never rendered
+const blockChecks = new Map<number, ReturnType<typeof setTimeout>>();
 /** Edits the shell last knew of: sent to frames on ready, fallback when the first frame does not answer. */
 let lastEdits: SerializedEdit[] = [];
 let savedOverflow = '';
@@ -144,6 +151,7 @@ const newFrame = (vp: Viewport): ShellFrame => ({
   name: frameName(browser.runtime.id, vp.id),
   loading: true,
   timedOut: false,
+  blocked: null,
   overflow: false,
 });
 
@@ -212,6 +220,13 @@ export async function resetFrames(): Promise<boolean> {
   return true;
 }
 
+/** Host permission granted (background `reload_frames`): headers are stripped now, reload all. */
+export function onFramesUnblocked(): void {
+  if (!state.responsiveOn) return;
+  shell.headerRule = true;
+  reloadAllFrames();
+}
+
 export function reloadAllFrames(): void {
   for (const f of shell.frames) reloadFrame(f.vp.id);
 }
@@ -248,16 +263,29 @@ export async function removeFrame(id: number): Promise<boolean> {
   return true;
 }
 
+/** Still loading: a blocked embed gets its overlay; otherwise `timeout` shows the timeout text. */
+function checkBlocked(id: number, timeout: boolean): void {
+  const f = frameOf(id);
+  const iframe = iframes.get(id);
+  if (!f?.loading || !iframe) return;
+  const blocked = blockedState(false, readDoc(iframe), shell.headerRule);
+  if (blocked) f.blocked = blocked;
+  else if (timeout) f.timedOut = true;
+}
+
+function clearBlockCheck(id: number): void {
+  clearTimeout(blockChecks.get(id));
+  blockChecks.delete(id);
+}
+
 function watchLoad(id: number): void {
   timers.get(id)?.cancel();
+  clearBlockCheck(id);
   const f = frameOf(id);
-  if (f) Object.assign(f, { loading: true, timedOut: false });
+  if (f) Object.assign(f, { loading: true, timedOut: false, blocked: null });
   timers.set(
     id,
-    loadTimer(() => {
-      const g = frameOf(id);
-      if (g?.loading) g.timedOut = true;
-    }),
+    loadTimer(() => checkBlocked(id, true)),
   );
 }
 
@@ -299,7 +327,11 @@ export async function enterResponsive(): Promise<boolean> {
     );
     for (const m of pausedMedia) m.pause();
     // false = no <all_urls>: frames of pages that block embedding stay blank (Task 9 overlay)
-    void sendToBackground('enable_frame_header_rule').catch(() => false);
+    shell.headerRule = false;
+    void sendToBackground('enable_frame_header_rule').then(
+      (on) => void (shell.headerRule = on === true),
+      () => {},
+    );
     shell.src = location.href;
     savedViewports = normalizeSaved(saved?.viewports);
     const { vps: list, fromBps } = viewports(savedViewports);
@@ -332,8 +364,9 @@ export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
     {
       ready_for_state_sync: () => {
         timers.get(id)?.ready();
+        clearBlockCheck(id);
         const f = frameOf(id);
-        if (f) Object.assign(f, { loading: false, timedOut: false });
+        if (f) Object.assign(f, { loading: false, timedOut: false, blocked: null });
         ch.send('apply_rule_edits', lastEdits);
         ch.send('update_ui_scale', 1 / shell.zoom);
       },
@@ -352,13 +385,24 @@ export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
   channels.set(id, ch);
   iframe.addEventListener(
     'load',
-    () => void sendToBackground('inject_responsive_frames').catch(() => []),
+    () => {
+      void sendToBackground('inject_responsive_frames').catch(() => []);
+      clearBlockCheck(id);
+      blockChecks.set(
+        id,
+        setTimeout(() => {
+          blockChecks.delete(id);
+          checkBlocked(id, false);
+        }, BLOCK_CHECK_MS),
+      );
+    },
     { signal: both },
   );
   return () => {
     local.abort();
     timers.get(id)?.cancel();
     timers.delete(id);
+    clearBlockCheck(id);
     if (iframes.get(id) === iframe) iframes.delete(id);
     if (channels.get(id) === ch) channels.delete(id);
   };
@@ -381,6 +425,8 @@ export function teardownShell(): void {
   channels.clear();
   for (const t of timers.values()) t.cancel();
   timers.clear();
+  for (const t of blockChecks.values()) clearTimeout(t);
+  blockChecks.clear();
   iframes.clear();
   shell.frames = [];
   shell.dragging = false;

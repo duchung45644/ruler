@@ -13,7 +13,14 @@ import { state } from '../core/state.svelte';
 import { editor, ruleTracker } from '../edit/mode.svelte';
 import { HANDOFF_FLAG } from '../edit/persist';
 import { initResponsive } from '.';
-import { enterResponsive, exitResponsive, setZoom, shell, teardownShell } from './shell.svelte';
+import {
+  enterResponsive,
+  exitResponsive,
+  onFramesUnblocked,
+  setZoom,
+  shell,
+  teardownShell,
+} from './shell.svelte';
 
 vi.mock('../../lib/messaging', async (orig) => ({
   ...(await orig<typeof import('../../lib/messaging')>()),
@@ -115,6 +122,11 @@ afterEach(() => {
 });
 
 const frames = () => [...shadow.querySelectorAll('iframe')];
+/** What the parent reads from the frames' document: null = cross-origin / blocked. */
+const readable = (href: string | null) =>
+  vi
+    .spyOn(HTMLIFrameElement.prototype, 'contentDocument', 'get')
+    .mockReturnValue(href === null ? null : ({ location: { href } } as unknown as Document));
 
 it('dock item sits right after breakpoints with key V', () => {
   const group = dockGroups().find((g) => g.some((i) => i.id === 'breakpoints'))!;
@@ -336,6 +348,7 @@ describe('frame header', () => {
   });
 
   it('shows the timeout message after 15s without ready', async () => {
+    readable('https://site.test/page');
     vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
     try {
       await enterResponsive();
@@ -344,6 +357,68 @@ describe('frame header', () => {
       vi.advanceTimersByTime(15_000);
       flushSync();
       expect(shadow.querySelectorAll('[data-frame-timeout]')).toHaveLength(3);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('load with no ready in 1.5s and an unreadable document shows the grant overlay', async () => {
+    readable(null);
+    vi.spyOn(fakeBrowser.i18n, 'getMessage').mockImplementation(((key: string) =>
+      key.endsWith('frameBlockedBody') ? 'Blocked.{br}{grant} to show it.' : key) as never);
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    try {
+      await enterResponsive();
+      flushSync();
+      for (const f of frames()) f.dispatchEvent(new Event('load'));
+      vi.advanceTimersByTime(1_499);
+      flushSync();
+      expect(shadow.querySelectorAll('[data-frame-blocked]')).toHaveLength(0);
+      vi.advanceTimersByTime(1);
+      flushSync();
+      expect(shadow.querySelectorAll('[data-frame-blocked="grant"]')).toHaveLength(3);
+      expect(shadow.querySelectorAll('[data-action="grant-host"]')).toHaveLength(3);
+      const p = shadow.querySelector('[data-frame-blocked]')!;
+      expect(p.querySelector('br')).toBeTruthy();
+      expect(p.textContent).toContain('responsive_frameBlockedGrant to show it.');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('header rule already active: blocked frames say it cannot be stripped', async () => {
+    readable(null);
+    vi.mocked(sendToBackground).mockImplementation((async (t: string) =>
+      t === 'enable_frame_header_rule' ? true : undefined) as never);
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    try {
+      await enterResponsive();
+      await Promise.resolve();
+      flushSync();
+      vi.advanceTimersByTime(15_000);
+      flushSync();
+      expect(shadow.querySelectorAll('[data-frame-blocked="still"]')).toHaveLength(3);
+      expect(shadow.querySelectorAll('[data-action="grant-host"]')).toHaveLength(0);
+    } finally {
+      vi.useRealTimers();
+      vi.mocked(sendToBackground).mockImplementation(async () => undefined);
+    }
+  });
+
+  it('reload_frames (access granted) reloads every frame and clears the overlays', async () => {
+    readable(null);
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    try {
+      await enterResponsive();
+      flushSync();
+      vi.advanceTimersByTime(15_000);
+      flushSync();
+      expect(shadow.querySelectorAll('[data-frame-blocked]')).toHaveLength(3);
+      onFramesUnblocked();
+      flushSync();
+      expect(shell.headerRule).toBe(true);
+      expect(shadow.querySelectorAll('[data-frame-blocked]')).toHaveLength(0);
+      expect(shadow.querySelectorAll('[data-frame-loading]')).toHaveLength(3);
     } finally {
       vi.useRealTimers();
     }

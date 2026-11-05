@@ -283,7 +283,7 @@
         onkeydown={(e) => onkeydown(e, row, 'value')}
         {onblur}
       /><span class="text-fg-muted" class:opacity-0={!row.property || !row.value}>;</span><span
-        class="flex-1"
+        class:flex-1={row.property || row.value}
       ></span>
       {#if open?.id === row.id && items.length}
         <div class="absolute top-full z-20 mt-0.5 {open.field === 'value' ? 'left-1/3' : 'left-3'}">

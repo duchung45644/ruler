@@ -389,4 +389,13 @@ interface ResponsiveSettings { viewports: Viewport[]; zoom: number; framesWrap: 
 
 ## Quyết định đã chốt
 
-(chờ chủ dự án)
+Chủ dự án duyệt toàn bộ đề xuất (2026-11-05):
+
+- **Q1:** nút `responsive` ở nhóm 2 sau `breakpoints`; phím `v`.
+- **Q2:** shell phủ toàn màn hình trên trang (shadow host), dừng media.
+- **Q3:** Phone 390×844 / Tablet 768×1024 / Desktop 1280×800.
+- **Q4:** link trong lớp phủ mở side panel tới nút cấp quyền có sẵn.
+- **Q5:** ở responsive, nút B chuyển sang chế độ khung; `breakpointsIsOn` lúc vào thì vào thẳng.
+- **Q6:** chụp bằng `captureVisibleTab` của cha rồi cắt; tạm tắt chụp cả trang khi responsive.
+- **Q7:** bỏ các mục đã liệt kê; giữ đồng bộ cuộn, SPA, lịch sử undo chung.
+- **Q8:** thoát gỡ shell không reload, áp sửa CSS trực tiếp; chỉ reload / hand-off khi URL khung đầu khác URL trang.

@@ -140,8 +140,20 @@ export class RuleTracker {
 
   // ---- page rules ----
 
+  /**
+   * A rule's text the first time we touched it. Records can be rebuilt while the rule is already
+   * edited (re-applying a list, a sheet re-found); `before` must still be the page's own text, or
+   * reverting would restore the edit.
+   */
+  private originals = new WeakMap<CSSStyleRule, { selector: string; declsText: string }>();
+
   private pageRecord(root: Root, hit: KnownRule, all: KnownRule[]): PageRecord {
     const scopeAddress = scopeAddressOf(root);
+    let original = this.originals.get(hit.rule);
+    if (!original) {
+      original = { selector: hit.rule.selectorText, declsText: tidy(hit.rule.style.cssText) };
+      this.originals.set(hit.rule, original);
+    }
     const rec: PageRecord = {
       kind: 'page',
       recordId: newId(),
@@ -149,7 +161,7 @@ export class RuleTracker {
       scopeAddress,
       origin: addressOf(hit, all, scopeAddress),
       rule: hit.rule,
-      before: { selector: hit.rule.selectorText, declsText: tidy(hit.rule.style.cssText) },
+      before: { ...original },
       current: { selector: hit.rule.selectorText, declsText: tidy(hit.rule.style.cssText) },
     };
     this.recs.set(rec.recordId, rec);

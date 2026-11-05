@@ -107,3 +107,13 @@ it('reapplyAll moves edits of a removed sheet to dormant and back', () => {
   expect(pageRules()[1]!.style.color).toBe('green');
   expect(t.flattened()).toHaveLength(1);
 });
+
+it('a record rebuilt while its rule is edited still reverts to the page text (responsive re-tick)', () => {
+  t.editRule(addr(0), 'color: green');
+  const saved = t.serialize();
+  // records can be rebuilt (a re-applied list, a re-found sheet) after the rule was changed
+  (t as unknown as { recs: Map<string, unknown> }).recs.clear();
+  t.applySerialized(saved);
+  t.revertAll();
+  expect(pageRules()[0]!.style.color).toBe('red');
+});

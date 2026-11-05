@@ -13,7 +13,7 @@ import { state } from '../core/state.svelte';
 import { editor, ruleTracker } from '../edit/mode.svelte';
 import { HANDOFF_FLAG } from '../edit/persist';
 import { initResponsive } from '.';
-import { enterResponsive, exitResponsive, shell, teardownShell } from './shell.svelte';
+import { enterResponsive, exitResponsive, setZoom, shell, teardownShell } from './shell.svelte';
 
 vi.mock('../../lib/messaging', async (orig) => ({
   ...(await orig<typeof import('../../lib/messaging')>()),
@@ -76,7 +76,8 @@ const fakeWin = {
   }),
 };
 
-beforeEach(() => {
+beforeEach(async () => {
+  await fakeBrowser.storage.local.clear();
   happy.setURL('https://site.test/page');
   vi.mocked(sendToBackground).mockClear();
   // happy-dom never loads iframes and logs that it did not
@@ -316,8 +317,9 @@ describe('frame header', () => {
     expect(header(0).querySelector('[data-action="remove"]')).toBeNull();
   });
 
-  it('a handle drag resizes, clamps, clears device and blocks iframe pointer events', async () => {
+  it('a handle drag resizes (deltas / zoom), clamps, clears device, blocks iframe pointer events', async () => {
     await enterResponsive();
+    setZoom(0.5);
     flushSync();
     const handle = shadow.querySelector<HTMLElement>('[data-frame="1"] [data-handle="corner"]')!;
     handle.dispatchEvent(
@@ -326,7 +328,7 @@ describe('frame header', () => {
     window.dispatchEvent(new PointerEvent('pointermove', { clientX: -1000, clientY: 10 }));
     flushSync();
     expect(iframeOf(1).style.pointerEvents).toBe('none');
-    expect(shell.frames[0]!.vp).toMatchObject({ width: 200, height: 854 });
+    expect(shell.frames[0]!.vp).toMatchObject({ width: 200, height: 864 });
     expect(shell.frames[0]!.vp.device).toBeUndefined();
     window.dispatchEvent(new PointerEvent('pointerup'));
     flushSync();

@@ -1,5 +1,7 @@
 import { storage } from '#imports';
 import type { ColorFormat } from './color';
+import { defaultViewports, type ResponsiveSettings } from './responsive/viewports';
+import { ZOOM_DEFAULT } from './responsive/zoom';
 
 export interface LayoutGrid {
   isOn: boolean;
@@ -17,6 +19,8 @@ export interface Settings {
   breakpointsIsOn: boolean;
   /** updateSettings merges shallowly: always write the whole object. */
   layoutGrid: LayoutGrid;
+  /** Responsive shell (8.16); validated on read (normalizeSaved, clampZoom). */
+  responsiveMode: ResponsiveSettings;
 }
 /** Legacy defaults (legacy-src/content.js:26936). */
 export const DEFAULT_SETTINGS: Settings = {
@@ -32,6 +36,12 @@ export const DEFAULT_SETTINGS: Settings = {
     margin: 40,
     color: '#FC48FF',
     opacity: 0.3,
+  },
+  responsiveMode: {
+    viewports: defaultViewports(),
+    zoom: ZOOM_DEFAULT,
+    framesWrap: false,
+    syncScrollEnabled: true,
   },
 };
 

@@ -110,3 +110,13 @@ it('reports horizontal overflow to the shell, only on change', () => {
   window.dispatchEvent(new Event('resize'));
   expect(overflow().at(-1)!.data).toEqual([{ overflowing: false, width: 390 }]);
 });
+
+it('update_ui_scale sets --ui-scale on the overlay host (1.28)', async () => {
+  startFrameMode();
+  await startSession(new ContentScriptContext('content'));
+  expect(sent().some((m) => m.type === 'request_ui_scale')).toBe(true);
+  fromParent('update_ui_scale', [2]);
+  await flush();
+  const host = document.querySelector<HTMLElement>('bo-doi-ui')!;
+  expect(host.style.getPropertyValue('--ui-scale')).toBe('2');
+});

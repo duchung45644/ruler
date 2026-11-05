@@ -6,24 +6,27 @@ import type { MessageKey } from './registry.svelte';
 import { onStop } from './session';
 import { state } from './state.svelte';
 
+type Field = { label: string; value: number; min: number; max: number };
+
 function open(
   title: string,
   message: string,
   buttons: { cancel: string; confirm: string } | null,
-): Promise<boolean> {
+  fields: Field[] | null = null,
+): Promise<{ ok: boolean; values?: number[] }> {
   const root = layer.getRootNode();
-  if (!(root instanceof ShadowRoot)) return Promise.resolve(false);
+  if (!(root instanceof ShadowRoot)) return Promise.resolve({ ok: false });
   return new Promise((resolve) => {
     let unmount: (() => void) | null = null;
-    const close = (ok = false) => {
+    const close = (ok = false, values?: number[]) => {
       if (!unmount) return;
       unmount();
       unmount = null;
       state.dialog = false;
-      resolve(ok);
+      resolve({ ok, values });
     };
     state.dialog = true;
-    unmount = mountInShadow(root, Dialog, { title, message, buttons, close });
+    unmount = mountInShadow(root, Dialog, { title, message, buttons, fields, close });
     onStop(close);
   });
 }
@@ -42,5 +45,34 @@ export function confirmDialog(
   return open(title, message, {
     cancel: i18n.t('dialog.cancel'),
     confirm: i18n.t(confirmKey),
-  });
+  }).then((r) => r.ok);
+}
+
+/** Width / height prompt (9.45, port of ou): integers within min–max, null when cancelled. */
+export async function sizeDialog(
+  title: string,
+  initial: { width: number; height: number },
+  range: { min: { width: number; height: number }; max: number },
+): Promise<{ width: number; height: number } | null> {
+  const r = await open(
+    title,
+    '',
+    { cancel: i18n.t('dialog.cancel'), confirm: i18n.t('dialog.ok') },
+    [
+      {
+        label: i18n.t('responsive.labelWidth'),
+        value: initial.width,
+        min: range.min.width,
+        max: range.max,
+      },
+      {
+        label: i18n.t('responsive.labelHeight'),
+        value: initial.height,
+        min: range.min.height,
+        max: range.max,
+      },
+    ],
+  );
+  const [width, height] = r.values ?? [];
+  return r.ok && width !== undefined && height !== undefined ? { width, height } : null;
 }

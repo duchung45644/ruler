@@ -31,6 +31,8 @@ export function startResize(
   vp: Pick<Viewport, 'width' | 'height'>,
   onSize: (s: { width: number; height: number }) => void,
   onBusy: (busy: boolean) => void,
+  /** Frames container zoom: pointer deltas are divided by it. */
+  scale = 1,
 ): void {
   if (e.button !== 0) return;
   const start = { width: vp.width, height: vp.height };
@@ -39,7 +41,7 @@ export function startResize(
     e,
     (m) => {
       onBusy(true); // on move, not here: startDrag may refuse (capture UI owns the pointer)
-      onSize(dragSize(start, edge, m.clientX - x0, m.clientY - y0));
+      onSize(dragSize(start, edge, (m.clientX - x0) / scale, (m.clientY - y0) / scale));
     },
     undefined,
     () => onBusy(false),

@@ -9,12 +9,21 @@ import { frameName } from '../../lib/responsive/frame-name';
 import {
   breakpointViewports,
   cycleScheme,
-  defaultViewports,
+  DRAG_MIN,
+  MAX_VIEWPORTS,
   move,
+  nextId,
+  normalizeSaved,
+  reset,
   rotate,
+  SIZE_MAX,
+  type ResponsiveSettings,
   type Viewport,
 } from '../../lib/responsive/viewports';
-import { confirmDialog } from '../core/dialog';
+import type { DevicePreset } from '../../lib/responsive/devices';
+import { clampZoom, stepZoom } from '../../lib/responsive/zoom';
+import { getSettings, updateSettings } from '../../lib/settings';
+import { confirmDialog, sizeDialog } from '../core/dialog';
 import { runShortcut } from '../core/keys';
 import { layer } from '../core/overlay';
 import { state } from '../core/state.svelte';
@@ -36,7 +45,7 @@ export interface ShellFrame {
   overflow: boolean;
 }
 
-/** `frames` is in display order; viewports live here until Task 8 persists them. */
+/** `frames` is in display order; viewports, zoom and the toggles are saved (8.16). */
 export const shell = $state({
   frames: [] as ShellFrame[],
   src: '',
@@ -44,7 +53,16 @@ export const shell = $state({
   breakpointMode: false,
   /** A handle drag is running: iframes stop taking pointer events. */
   dragging: false,
+  /** Frames container scale factor (1 = 100%). */
+  zoom: 1,
+  /** Frames wrap onto several rows instead of one row. */
+  framesWrap: false,
+  /** Sync scrolling toggle (behavior in Task 10). */
+  syncScrollEnabled: true,
 });
+
+/** Saved settings are written this long after the last change (legacy debounce). */
+export const SAVE_DELAY_MS = 400;
 
 /** Header label: `Name (W×H)`, or `W×H` with no name (legacy formatViewportLabel). */
 export function frameLabel(vp: Viewport): string {
@@ -70,11 +88,38 @@ let busy = false;
 /** HTML edits (markup, class, inline style via the engine) are not carried into the frames. */
 const hasUncarryable = (): boolean => (editor()?.htmlChanges().length ?? 0) > 0;
 
-function viewports(): { vps: Viewport[]; fromBps: boolean } {
-  const defaults = defaultViewports(); // Task 8 reads saved settings
+/** Viewports as last saved: breakpoint mode writes these back unchanged. */
+let savedViewports: Viewport[] = [];
+let saveTimer: ReturnType<typeof setTimeout> | undefined;
+
+function viewports(saved: Viewport[]): { vps: Viewport[]; fromBps: boolean } {
   const bps = state.breakpointsOn ? currentBreakpoints() : [];
-  const fromBps = bps.length ? breakpointViewports(bps, defaults) : [];
-  return fromBps.length ? { vps: fromBps, fromBps: true } : { vps: defaults, fromBps: false };
+  const fromBps = bps.length ? breakpointViewports(bps, saved) : [];
+  return fromBps.length ? { vps: fromBps, fromBps: true } : { vps: saved, fromBps: false };
+}
+
+function currentSettings(): ResponsiveSettings {
+  return {
+    viewports: shell.breakpointMode ? savedViewports : vps(),
+    zoom: shell.zoom,
+    framesWrap: shell.framesWrap,
+    syncScrollEnabled: shell.syncScrollEnabled,
+  };
+}
+
+/** Debounced save (port of saveResponsiveSettings / persistViewports). */
+function scheduleSave(): void {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    saveTimer = undefined;
+    flushSave();
+  }, SAVE_DELAY_MS);
+}
+
+function flushSave(): void {
+  const s = $state.snapshot(currentSettings()) as ResponsiveSettings;
+  if (!shell.breakpointMode) savedViewports = s.viewports;
+  void updateSettings({ responsiveMode: s }).catch(() => {});
 }
 
 const frameOf = (id: number) => shell.frames.find((f) => f.vp.id === id);
@@ -88,8 +133,88 @@ function applyViewports(next: Viewport[]): void {
     f.vp = vp;
     return [f];
   });
+  scheduleSave();
 }
-const vps = () => shell.frames.map((f) => f.vp);
+function vps(): Viewport[] {
+  return shell.frames.map((f) => f.vp);
+}
+
+const newFrame = (vp: Viewport): ShellFrame => ({
+  vp,
+  name: frameName(browser.runtime.id, vp.id),
+  loading: true,
+  timedOut: false,
+  overflow: false,
+});
+
+/** Send the overlay scale (1/zoom) so labels drawn inside frames stay readable (1.28). */
+function sendUiScale(): void {
+  for (const ch of channels.values()) ch.send('update_ui_scale', 1 / shell.zoom);
+}
+
+export function setZoom(z: unknown): void {
+  const next = clampZoom(z);
+  if (next === shell.zoom) return;
+  shell.zoom = next;
+  sendUiScale();
+  scheduleSave();
+}
+export const zoomStep = (dir: 1 | -1): void => setZoom(stepZoom(shell.zoom, dir));
+
+export function toggleFramesWrap(): void {
+  shell.framesWrap = !shell.framesWrap;
+  scheduleSave();
+}
+export function toggleSyncScroll(): void {
+  shell.syncScrollEnabled = !shell.syncScrollEnabled;
+  scheduleSave();
+}
+
+export const canAddFrame = (): boolean =>
+  !shell.breakpointMode && shell.frames.length < MAX_VIEWPORTS;
+
+/** Add a device frame at the end; `custom` asks for the size first (200×300 – 3840). */
+export async function addFrame(preset: DevicePreset): Promise<boolean> {
+  if (!canAddFrame()) return false;
+  let size: { width: number; height: number } = preset;
+  const custom = preset.key === 'custom';
+  if (custom) {
+    const picked = await sizeDialog(i18n.t('responsive.dialogTitleCustomViewport'), preset, {
+      min: DRAG_MIN,
+      max: SIZE_MAX,
+    });
+    if (!picked || !state.responsiveOn || !canAddFrame()) return false;
+    size = picked;
+  }
+  const vp: Viewport = {
+    id: nextId(vps()),
+    name: custom ? '' : preset.name,
+    width: size.width,
+    height: size.height,
+    scheme: 'system',
+  };
+  if (!custom) vp.device = preset.key;
+  shell.frames = [...shell.frames, newFrame(vp)];
+  scheduleSave();
+  return true;
+}
+
+/** Keep only the first viewport after asking (legacy resetViewports). */
+export async function resetFrames(): Promise<boolean> {
+  if (shell.breakpointMode) return false;
+  const ok = await confirmDialog(
+    i18n.t('responsive.dialogTitleResetViewports'),
+    i18n.t('responsive.bodyResetViewports'),
+    'responsive.buttonReset',
+  );
+  if (!ok || !state.responsiveOn) return false;
+  applyViewports(reset(vps()));
+  return true;
+}
+
+export function reloadAllFrames(): void {
+  for (const f of shell.frames) reloadFrame(f.vp.id);
+}
 
 export const rotateFrame = (id: number): void => applyViewports(rotate(vps(), id));
 export const moveFrame = (id: number, delta: number): void =>
@@ -119,6 +244,7 @@ export async function removeFrame(id: number): Promise<boolean> {
   );
   if (!ok || !state.responsiveOn) return false;
   shell.frames = shell.frames.filter((x) => x.vp.id !== id);
+  scheduleSave();
   return true;
 }
 
@@ -155,7 +281,8 @@ export async function enterResponsive(): Promise<boolean> {
       !(await confirmDialog(i18n.t('dock.responsive'), i18n.t('responsive.confirmPartialEdits')))
     )
       return false;
-    if (!state.active) return false; // session stopped while asking
+    const saved = (await getSettings().catch(() => null))?.responsiveMode;
+    if (!state.active || state.responsiveOn) return false; // session stopped while asking
     const root = layer.getRootNode();
     if (!(root instanceof ShadowRoot)) return false;
     lastEdits = ruleTracker().serialize();
@@ -174,16 +301,14 @@ export async function enterResponsive(): Promise<boolean> {
     // false = no <all_urls>: frames of pages that block embedding stay blank (Task 9 overlay)
     void sendToBackground('enable_frame_header_rule').catch(() => false);
     shell.src = location.href;
-    const { vps: list, fromBps } = viewports();
+    savedViewports = normalizeSaved(saved?.viewports);
+    const { vps: list, fromBps } = viewports(savedViewports);
     shell.breakpointMode = fromBps;
     shell.dragging = false;
-    shell.frames = list.map((vp) => ({
-      vp,
-      name: frameName(browser.runtime.id, vp.id),
-      loading: true,
-      timedOut: false,
-      overflow: false,
-    }));
+    shell.zoom = clampZoom(saved?.zoom);
+    shell.framesWrap = saved?.framesWrap === true;
+    shell.syncScrollEnabled = saved?.syncScrollEnabled !== false;
+    shell.frames = list.map(newFrame);
     // before the dock in the shadow tree, so the dock (and later dialogs) stay on top
     target = document.createElement('div');
     root.prepend(target);
@@ -210,7 +335,9 @@ export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
         const f = frameOf(id);
         if (f) Object.assign(f, { loading: false, timedOut: false });
         ch.send('apply_rule_edits', lastEdits);
+        ch.send('update_ui_scale', 1 / shell.zoom);
       },
+      request_ui_scale: () => 1 / shell.zoom,
       overflow_status: (s) => {
         const f = frameOf(id);
         if (f) f.overflow = !!s?.overflowing;
@@ -242,6 +369,11 @@ export function teardownShell(): void {
   if (!state.responsiveOn) return;
   controller?.abort();
   controller = null;
+  if (saveTimer !== undefined) {
+    clearTimeout(saveTimer);
+    saveTimer = undefined;
+    flushSave(); // a change made just before leaving is not lost
+  }
   if (app) void unmount(app);
   app = null;
   target?.remove();

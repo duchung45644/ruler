@@ -366,6 +366,19 @@
     "refresh": "Tải lại",
     "loading": "...",
     "frameTimeout": "Trang này chưa tải xong.",
-    "warnOverflow": "Nội dung tràn theo chiều ngang"
+    "warnOverflow": "Nội dung tràn theo chiều ngang",
+    "zoomOut": "Thu nhỏ",
+    "zoomIn": "Phóng to",
+    "zoom": "Thu phóng",
+    "titleResetViewports": "Đặt Lại Khung Nhìn",
+    "dialogTitleResetViewports": "Đặt Lại Khung Nhìn",
+    "bodyResetViewports": "Các khung nhìn của bạn sẽ được đặt lại về mặc định.",
+    "buttonReset": "Đặt Lại",
+    "titleSyncScrolling": "Đồng Bộ Cuộn",
+    "titleFrameLayout": "Bố Cục Khung",
+    "labelAddViewport": "Thêm Khung Nhìn",
+    "dialogTitleCustomViewport": "Khung Nhìn Tùy Chỉnh",
+    "labelWidth": "Chiều rộng",
+    "labelHeight": "Chiều cao"
   }
 }

@@ -5,6 +5,7 @@ import { connectToParent } from './bridge';
 import type { ShellApi } from '../../lib/responsive/channel';
 import { parseFrameName } from '../../lib/responsive/frame-name';
 import { runItem, setForwardKey } from '../core/keys';
+import { layer } from '../core/overlay';
 import { setPaused } from '../core/registry.svelte';
 import { state } from '../core/state.svelte';
 import { isSerializedEdit } from '../../lib/edit/serialize';
@@ -34,12 +35,14 @@ export function startFrameMode(): void {
       },
       collect_rule_edits: () => ruleTracker().serialize(),
       get_current_url: () => location.href,
+      update_ui_scale: (scale) => applyUiScale(scale),
     },
     controller.signal,
   );
   const ch = channel;
   setForwardKey((key) => ch.send('shortcut', key));
   ch.send('ready_for_state_sync');
+  void ch.call('request_ui_scale').then(applyUiScale, () => {});
   watchOverflow(ch, controller.signal);
 }
 
@@ -60,6 +63,15 @@ export function watchOverflow(ch: Channel<ShellApi>, signal: AbortSignal): void 
   ro.observe(document.documentElement);
   if (document.body) ro.observe(document.body);
   signal.addEventListener('abort', () => ro.disconnect(), { once: true });
+}
+
+/** `--ui-scale` (1/zoom of the shell) on the overlay host, so on-page labels stay readable (1.28). */
+export function applyUiScale(scale: unknown): void {
+  const n = Number(scale);
+  if (!Number.isFinite(n) || n <= 0) return;
+  const root = layer.getRootNode();
+  const host = root instanceof ShadowRoot ? (root.host as HTMLElement) : null;
+  host?.style.setProperty('--ui-scale', String(n));
 }
 
 /** Test / teardown hook. */

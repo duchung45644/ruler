@@ -366,6 +366,19 @@
     "refresh": "Refresh",
     "loading": "...",
     "frameTimeout": "This page did not finish loading.",
-    "warnOverflow": "Content overflows horizontally"
+    "warnOverflow": "Content overflows horizontally",
+    "zoomOut": "Zoom Out",
+    "zoomIn": "Zoom In",
+    "zoom": "Zoom",
+    "titleResetViewports": "Reset Viewports",
+    "dialogTitleResetViewports": "Reset Viewports",
+    "bodyResetViewports": "Your viewports will be reset to the defaults.",
+    "buttonReset": "Reset",
+    "titleSyncScrolling": "Sync Scrolling",
+    "titleFrameLayout": "Frame Layout",
+    "labelAddViewport": "Add Viewport",
+    "dialogTitleCustomViewport": "Custom Viewport",
+    "labelWidth": "Width",
+    "labelHeight": "Height"
   }
 }

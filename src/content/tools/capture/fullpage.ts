@@ -10,7 +10,9 @@ import {
   stitchHeight,
   useScroller,
 } from '../../../lib/fullpage';
+import { shadowRoots } from '../../../lib/dom';
 import { sendToBackground } from '../../../lib/messaging';
+import { pinViewportUnits } from '../../../lib/viewport-units';
 import { mountUi } from '../../../ui/mount';
 import { ownNodes } from '../../core/events';
 import { onStop, sessionCtx, sessionSignal } from '../../core/session';
@@ -92,6 +94,11 @@ async function fullPageViaDebugger(): Promise<HTMLCanvasElement> {
     s0 = el?.scrollTop ?? 0;
   el?.setAttribute('data-bo-doi-scroll', '');
   const ih = innerHeight;
+  // the viewport grows to the page height below: keep 100vh heroes at one screen
+  const unpin = pinViewportUnits([
+    document,
+    ...shadowRoots(document, (e) => e.localName.startsWith('bo-doi')),
+  ]);
   const plan = fullPagePlan({
     winTotal: winTotal(),
     ih,
@@ -110,6 +117,7 @@ async function fullPageViaDebugger(): Promise<HTMLCanvasElement> {
     if (!r?.ok) throw new Error(r?.error || 'debugger capture failed');
     return await stack(r.parts);
   } finally {
+    unpin();
     // backup in case the background could not restore it
     if (el) {
       el.scrollTop = s0;

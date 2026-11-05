@@ -160,11 +160,13 @@ describe('capture', () => {
     const p = call('full_capture', [fullOpts], page);
     expect(await p).toEqual({ ok: true, parts: ['data:image/png;base64,png'] });
     expect(cmds).toEqual([
+      'Emulation.setScrollbarsHidden',
       'Emulation.setDeviceMetricsOverride',
       'Runtime.evaluate(B)',
       'Page.captureScreenshot',
       'Runtime.evaluate(A)',
       'Emulation.clearDeviceMetricsOverride',
+      'Emulation.setScrollbarsHidden',
       'Runtime.evaluate(R)',
     ]);
     expect(detach).toHaveBeenCalled();

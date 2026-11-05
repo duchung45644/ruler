@@ -109,6 +109,8 @@ async function fullCapture(tabId: number, o: FullCaptureOpts): Promise<FullCaptu
   try {
     await browser.debugger.attach(target, '1.3');
     try {
+      // no scrollbars in the shot (the enlarged viewport can still show a horizontal one)
+      await send('Emulation.setScrollbarsHidden', { hidden: true }).catch(() => {});
       await send('Emulation.setDeviceMetricsOverride', {
         width: o.width,
         height: o.height + o.shift,
@@ -131,6 +133,7 @@ async function fullCapture(tabId: number, o: FullCaptureOpts): Promise<FullCaptu
     } finally {
       if (o.after) await send('Runtime.evaluate', { expression: o.after }).catch(() => {});
       await send('Emulation.clearDeviceMetricsOverride').catch(() => {});
+      await send('Emulation.setScrollbarsHidden', { hidden: false }).catch(() => {});
       if (o.restore) await send('Runtime.evaluate', { expression: o.restore }).catch(() => {});
       await browser.debugger.detach(target).catch(() => {});
     }

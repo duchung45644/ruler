@@ -222,7 +222,7 @@
         ? i18n.t('edit.invalidValue')
         : (m?.title ?? '')}
     <div
-      class="group relative flex items-center rounded-sm pl-5 hover:bg-line/50"
+      class="group relative flex min-h-5 cursor-text items-center rounded-sm pl-5 hover:bg-line/50"
       class:opacity-50={row.off || m?.kind === 'overridden' || m?.kind === 'not-inherited'}
       data-off={row.off || undefined}
       data-row={row.id}
@@ -247,6 +247,7 @@
       {/if}
       <input
         class="field min-w-[1ch] text-sky-300 light:text-sky-700"
+        class:flex-1={!row.property && !row.value}
         class:line-through={row.off || m?.kind === 'overridden'}
         class:decoration-wavy={bp}
         class:underline={bp}

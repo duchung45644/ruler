@@ -382,6 +382,8 @@
     "labelAddViewport": "Thêm Khung Nhìn",
     "dialogTitleCustomViewport": "Khung Nhìn Tùy Chỉnh",
     "labelWidth": "Chiều rộng",
-    "labelHeight": "Chiều cao"
+    "labelHeight": "Chiều cao",
+    "toastScrollSyncOff": "Đồng bộ cuộn đã tự tắt vì trang này liên tục cuộn ngược lại.",
+    "dismiss": "Đóng"
   }
 }

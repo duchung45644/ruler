@@ -29,7 +29,13 @@ import { layer } from '../core/overlay';
 import { state } from '../core/state.svelte';
 import { editor, ruleTracker, toggleTextEdit } from '../edit/mode.svelte';
 import { HANDOFF_FLAG, persistNow } from '../edit/persist';
-import { currentBreakpoints } from '../tools/breakpoints';
+import type { Breakpoint } from '../../lib/breakpoints';
+import {
+  currentBreakpoints,
+  pageHasBreakpoints,
+  setResponsiveBreakpoints,
+} from '../tools/breakpoints';
+import { createShellSync, ESCAPE_MS } from './sync';
 import { connectToFrame, type Channel } from './bridge';
 import { BLOCK_CHECK_MS, blockedState, readDoc, type Blocked } from './blocked';
 import { loadTimer } from './frame';
@@ -60,11 +66,22 @@ export const shell = $state({
   zoom: 1,
   /** Frames wrap onto several rows instead of one row. */
   framesWrap: false,
-  /** Sync scrolling toggle (behavior in Task 10). */
+  /** Sync scrolling toggle (8.17). */
   syncScrollEnabled: true,
   /** enable_frame_header_rule answered true: frame-blocking headers are stripped for this tab. */
   headerRule: false,
+  /** URL shown in the toolbar: follows SPA navigation in the frames (iframe `src` stays put). */
+  url: '',
+  /** TOAST_SCROLL_SYNC_OFF is showing (8.17). */
+  syncOffToast: false,
+  /** Breakpoint mode: kind per frame width, for the header label colors. */
+  bpKinds: {} as Record<number, Breakpoint['kind']>,
+  /** The page has breakpoints (scanned at entry): B is disabled otherwise (8.22). */
+  hasBreakpoints: false,
 });
+
+/** The scroll-sync toast stays this long (legacy 8s). */
+export const SYNC_TOAST_MS = 8000;
 
 /** Saved settings are written this long after the last change (legacy debounce). */
 export const SAVE_DELAY_MS = 400;
@@ -102,8 +119,51 @@ let saveTimer: ReturnType<typeof setTimeout> | undefined;
 function viewports(saved: Viewport[]): { vps: Viewport[]; fromBps: boolean } {
   const bps = state.breakpointsOn ? currentBreakpoints() : [];
   const fromBps = bps.length ? breakpointViewports(bps, saved) : [];
+  shell.bpKinds = Object.fromEntries(bps.map((b) => [b.width, b.kind]));
   return fromBps.length ? { vps: fromBps, fromBps: true } : { vps: saved, fromBps: false };
 }
+
+/** Swap the frame list, keeping frames (and their iframes) whose id survives. */
+function replaceFrames(next: Viewport[]): void {
+  const byId = new Map(shell.frames.map((f) => [f.vp.id, f]));
+  shell.frames = next.map((vp) => {
+    const f = byId.get(vp.id);
+    if (!f) return newFrame(vp);
+    f.vp = vp;
+    return f;
+  });
+}
+
+/**
+ * Q5 / 8.22: the breakpoints item toggles breakpoint-frames mode while responsive. Entering builds
+ * one frame per breakpoint; leaving puts the saved viewports back. Returns the mode now.
+ */
+export function setBreakpointMode(on: boolean): boolean {
+  if (!state.responsiveOn) return false;
+  if (on === shell.breakpointMode) return on;
+  if (on) {
+    if (saveTimer !== undefined) {
+      clearTimeout(saveTimer);
+      saveTimer = undefined;
+      flushSave();
+    }
+    savedViewports = $state.snapshot(vps()) as Viewport[];
+    const { vps: list, fromBps } = viewports(savedViewports);
+    if (!fromBps) return false;
+    shell.breakpointMode = true;
+    replaceFrames(list);
+    return true;
+  }
+  shell.breakpointMode = false;
+  replaceFrames(savedViewports);
+  return false;
+}
+
+setResponsiveBreakpoints({
+  active: () => state.responsiveOn && !state.inFrame,
+  available: () => shell.hasBreakpoints,
+  toggle: (on) => setBreakpointMode(on),
+});
 
 function currentSettings(): ResponsiveSettings {
   return {
@@ -175,7 +235,53 @@ export function toggleFramesWrap(): void {
 }
 export function toggleSyncScroll(): void {
   shell.syncScrollEnabled = !shell.syncScrollEnabled;
+  if (shell.syncScrollEnabled) {
+    hideSyncOffToast();
+    sync.enabled();
+  }
   scheduleSave();
+}
+
+let toastTimer: ReturnType<typeof setTimeout> | undefined;
+export function hideSyncOffToast(): void {
+  clearTimeout(toastTimer);
+  toastTimer = undefined;
+  shell.syncOffToast = false;
+}
+
+const sync = createShellSync({
+  ids: () => [...channels.keys()],
+  enabled: () => shell.syncScrollEnabled,
+  applyScroll: (id, r) => channels.get(id)?.send('apply_scroll_sync', r),
+  resetConflict: (id) => channels.get(id)?.send('reset_scroll_conflict'),
+  applySpa: (id, url) => channels.get(id)?.send('apply_spa_navigation', url),
+  turnedOff: () => {
+    shell.syncScrollEnabled = false;
+    scheduleSave();
+    hideSyncOffToast();
+    shell.syncOffToast = true;
+    toastTimer = setTimeout(hideSyncOffToast, SYNC_TOAST_MS);
+  },
+  urlChanged: (url) => void (shell.url = url),
+});
+
+// eslint-disable-next-line svelte/prefer-svelte-reactivity -- bookkeeping, never rendered
+const escapes = new Map<number, ReturnType<typeof setTimeout>>();
+/** Frames that said ready since their src was last set: only those can "wander off". */
+// eslint-disable-next-line svelte/prefer-svelte-reactivity -- bookkeeping, never rendered
+const wasReady = new Set<number>();
+function clearEscape(id: number): void {
+  clearTimeout(escapes.get(id));
+  escapes.delete(id);
+}
+/** Legacy onFrameEscaped: a load with no ready in 2.5s went off-site → back to the last good URL. */
+function recoverEscaped(id: number): void {
+  escapes.delete(id);
+  const iframe = iframes.get(id);
+  if (!iframe?.isConnected || !wasReady.has(id)) return;
+  wasReady.delete(id);
+  watchLoad(id);
+  iframe.src = shell.url || shell.src;
 }
 
 export const canAddFrame = (): boolean =>
@@ -333,7 +439,10 @@ export async function enterResponsive(): Promise<boolean> {
       () => {},
     );
     shell.src = location.href;
+    shell.url = location.href;
+    hideSyncOffToast();
     savedViewports = normalizeSaved(saved?.viewports);
+    shell.hasBreakpoints = pageHasBreakpoints();
     const { vps: list, fromBps } = viewports(savedViewports);
     shell.breakpointMode = fromBps;
     shell.dragging = false;
@@ -367,6 +476,8 @@ export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
         clearBlockCheck(id);
         const f = frameOf(id);
         if (f) Object.assign(f, { loading: false, timedOut: false, blocked: null });
+        clearEscape(id);
+        wasReady.add(id);
         ch.send('apply_rule_edits', lastEdits);
         ch.send('update_ui_scale', 1 / shell.zoom);
       },
@@ -379,6 +490,13 @@ export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
         if (Array.isArray(edits)) lastEdits = edits.filter(isSerializedEdit);
       },
       shortcut: (key) => void runShortcut(String(key)),
+      scroll_sync: (r) => sync.scroll(id, r),
+      scroll_sync_conflict: () => sync.conflict(),
+      spa_navigation: (url) => sync.spa(id, url),
+      open_external: (url) => {
+        if (typeof url === 'string' && /^https?:\/\//i.test(url))
+          void sendToBackground('open_external_tab', url).catch(() => {});
+      },
     },
     both,
   );
@@ -387,6 +505,12 @@ export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
     'load',
     () => {
       void sendToBackground('inject_responsive_frames').catch(() => []);
+      clearEscape(id);
+      if (wasReady.has(id))
+        escapes.set(
+          id,
+          setTimeout(() => recoverEscaped(id), ESCAPE_MS),
+        );
       clearBlockCheck(id);
       blockChecks.set(
         id,
@@ -398,8 +522,18 @@ export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
     },
     { signal: both },
   );
+  if (typeof IntersectionObserver !== 'undefined') {
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) sync.visible(id, e.isIntersecting);
+    });
+    io.observe(iframe);
+    both.addEventListener('abort', () => io.disconnect(), { once: true });
+  }
   return () => {
     local.abort();
+    clearEscape(id);
+    wasReady.delete(id);
+    sync.forget(id);
     timers.get(id)?.cancel();
     timers.delete(id);
     clearBlockCheck(id);
@@ -428,6 +562,11 @@ export function teardownShell(): void {
   for (const t of blockChecks.values()) clearTimeout(t);
   blockChecks.clear();
   iframes.clear();
+  for (const t of escapes.values()) clearTimeout(t);
+  escapes.clear();
+  wasReady.clear();
+  hideSyncOffToast();
+  shell.breakpointMode = false;
   shell.frames = [];
   shell.dragging = false;
   document.documentElement.style.overflow = savedOverflow;

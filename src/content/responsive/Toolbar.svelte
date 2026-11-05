@@ -81,7 +81,7 @@
   <span
     data-url
     class="max-w-[40vw] min-w-0 truncate px-2 font-mono text-[11px] text-fg-muted"
-    title={shell.src}>{shell.src}</span
+    title={shell.url || shell.src}>{shell.url || shell.src}</span
   >
   <button
     type="button"

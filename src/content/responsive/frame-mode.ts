@@ -10,6 +10,7 @@ import { setPaused } from '../core/registry.svelte';
 import { state } from '../core/state.svelte';
 import { isSerializedEdit } from '../../lib/edit/serialize';
 import { ruleTracker } from '../edit/mode.svelte';
+import { createFrameSync } from './sync';
 
 let controller: AbortController | null = null;
 let channel: Channel<ShellApi> | null = null;
@@ -24,6 +25,7 @@ export function startFrameMode(): void {
   if (controller) return;
   state.inFrame = true;
   controller = new AbortController();
+  const sync = createFrameSync();
   channel = connectToParent(
     {
       run_item: (id) => void runItem(id),
@@ -36,6 +38,9 @@ export function startFrameMode(): void {
       collect_rule_edits: () => ruleTracker().serialize(),
       get_current_url: () => location.href,
       update_ui_scale: (scale) => applyUiScale(scale),
+      apply_scroll_sync: (r) => sync.apply_scroll_sync(r),
+      reset_scroll_conflict: () => sync.reset_scroll_conflict(),
+      apply_spa_navigation: (url) => sync.apply_spa_navigation(url),
     },
     controller.signal,
   );
@@ -44,6 +49,7 @@ export function startFrameMode(): void {
   ch.send('ready_for_state_sync');
   void ch.call('request_ui_scale').then(applyUiScale, () => {});
   watchOverflow(ch, controller.signal);
+  sync.start(ch, controller.signal);
 }
 
 /** Horizontal overflow badge (8.12): report documentElement wider than the frame, on change. */

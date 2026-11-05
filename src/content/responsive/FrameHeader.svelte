@@ -9,6 +9,8 @@
   import TriangleAlert from '@lucide/svelte/icons/triangle-alert';
   import X from '@lucide/svelte/icons/x';
   import { i18n } from '#i18n';
+  import { breakpointLabel } from '../../lib/breakpoints';
+  import { COLORS } from '../tools/breakpoints';
   import {
     cycleFrameScheme,
     frameLabel,
@@ -24,6 +26,7 @@
   let menuOpen = $state(false);
 
   const id = $derived(f.vp.id);
+  const bpKind = $derived(shell.breakpointMode ? shell.bpKinds[f.vp.width] : undefined);
   const SchemeIcon = $derived(
     f.vp.scheme === 'light' ? Sun : f.vp.scheme === 'dark' ? Moon : SunMoon,
   );
@@ -66,6 +69,13 @@
     disabled={last}
     onclick={() => moveFrame(id, 1)}><ChevronRight size={14} /></button
   >
+  {#if bpKind}
+    <span
+      data-frame-breakpoint={bpKind}
+      class="shrink-0 rounded px-1.5 py-px font-semibold text-white tabular-nums"
+      style:background={COLORS[bpKind]}>{breakpointLabel({ width: f.vp.width, kind: bpKind })}</span
+    >
+  {/if}
   <span data-frame-label class="min-w-0 flex-1 truncate px-1 font-medium tabular-nums"
     >{frameLabel(f.vp)}</span
   >

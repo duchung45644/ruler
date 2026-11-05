@@ -13,19 +13,45 @@ import { registerItem } from '../../core/registry.svelte';
 import { onStop, sessionSignal } from '../../core/session';
 import { state } from '../../core/state.svelte';
 
-const COLORS = { min: '#008C21', max: '#0891B2', both: '#E8A23D' };
+/** Line / label colors by kind; the responsive frame headers use the same (3.22). */
+export const COLORS = { min: '#008C21', max: '#0891B2', both: '#E8A23D' };
 const isOwn = (el: Element) => el.localName === 'bo-doi-ui';
 let found: Breakpoint[] = [];
 
 /** Breakpoints shown right now (empty while the tool is off); responsive mode builds frames from them (Q5). */
 export const currentBreakpoints = (): Breakpoint[] => (state.breakpointsOn ? [...found] : []);
 
+function read(blocked: string[] = []): Breakpoint[] {
+  const roots = [document, ...shadowRoots(document, isOwn)];
+  return parseBreakpoints(mediaConditions(roots, fetchedCopy, blocked));
+}
+
 function scan(): string[] {
   const blocked: string[] = [];
-  const roots = [document, ...shadowRoots(document, isOwn)];
-  found = parseBreakpoints(mediaConditions(roots, fetchedCopy, blocked));
+  found = read(blocked);
   requestPaint();
   return blocked;
+}
+
+/** The page declares at least one width breakpoint (responsive gates the B item on it, 8.22). */
+export function pageHasBreakpoints(): boolean {
+  try {
+    return read().length > 0;
+  } catch {
+    return false;
+  }
+}
+
+/** Responsive shell hook (Q5): there B toggles breakpoint-frames mode instead of drawing lines. */
+export interface ResponsiveBreakpoints {
+  active(): boolean;
+  available(): boolean;
+  /** Returns whether breakpoint mode is on afterwards. */
+  toggle(on: boolean): boolean;
+}
+let responsive: ResponsiveBreakpoints | null = null;
+export function setResponsiveBreakpoints(hook: ResponsiveBreakpoints | null): void {
+  responsive = hook;
 }
 
 function apply(on: boolean): void {
@@ -51,9 +77,12 @@ export async function initBreakpoints(): Promise<void> {
     group: 'inspectTools',
     run: () => {
       apply(!state.breakpointsOn);
+      if (responsive?.active() && responsive.toggle(state.breakpointsOn) !== state.breakpointsOn)
+        apply(false); // nothing to build frames from
       void updateSettings({ breakpointsIsOn: state.breakpointsOn });
     },
     isActive: () => state.breakpointsOn,
+    isDisabled: () => !!responsive?.active() && !responsive.available(),
   });
   const signal = sessionSignal();
   window.addEventListener('scroll', requestPaint, { signal, passive: true });
@@ -67,6 +96,7 @@ export async function initBreakpoints(): Promise<void> {
   );
   onStop(() => apply(false));
   addPainter('breakpoints', (box) => {
+    if (state.responsiveOn) return; // the frames show the breakpoints (Q5)
     for (const b of found) {
       const left = b.width - scrollX;
       const c = COLORS[b.kind];

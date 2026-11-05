@@ -5,7 +5,13 @@
   import { startResize, type Edge } from './frame';
   import FrameHeader from './FrameHeader.svelte';
   import Toolbar from './Toolbar.svelte';
-  import { attachFrame, resizeFrame, shell, type ShellFrame } from './shell.svelte';
+  import {
+    attachFrame,
+    hideSyncOffToast,
+    resizeFrame,
+    shell,
+    type ShellFrame,
+  } from './shell.svelte';
 
   const frame = (node: HTMLIFrameElement, id: number) => ({ destroy: attachFrame(node, id) });
   /** Stable DOM order (by id): moving an iframe node reloads it, so display order is CSS `order`. */
@@ -142,4 +148,20 @@
       {/each}
     </div>
   </div>
+  {#if shell.syncOffToast}
+    <div
+      data-sync-off-toast
+      role="status"
+      aria-live="polite"
+      class="fixed top-16 left-1/2 flex max-w-110 -translate-x-1/2 items-center gap-3 rounded-xl bg-zinc-900/90 px-3.5 py-2 text-[13px] text-white shadow-xl backdrop-blur-surface"
+    >
+      <span>{i18n.t('responsive.toastScrollSyncOff')}</span>
+      <button
+        type="button"
+        data-action="dismiss-toast"
+        class="shrink-0 rounded-md px-2 py-0.5 font-medium text-accent hover:bg-white/10"
+        onclick={hideSyncOffToast}>{i18n.t('responsive.dismiss')}</button
+      >
+    </div>
+  {/if}
 </div>

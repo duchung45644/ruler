@@ -382,6 +382,8 @@
     "labelAddViewport": "Add Viewport",
     "dialogTitleCustomViewport": "Custom Viewport",
     "labelWidth": "Width",
-    "labelHeight": "Height"
+    "labelHeight": "Height",
+    "toastScrollSyncOff": "Scroll sync turned itself off because this page keeps scrolling against it.",
+    "dismiss": "Dismiss"
   }
 }

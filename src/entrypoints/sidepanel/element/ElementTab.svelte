@@ -5,7 +5,6 @@
   import BoxModel from './BoxModel.svelte';
   import CodeSection from './CodeSection.svelte';
   import ColorsSection from './ColorsSection.svelte';
-  import DocumentSection from './DocumentSection.svelte';
   import GradientsSection from './GradientsSection.svelte';
   import Header from './Header.svelte';
   import IssuesSection from './IssuesSection.svelte';
@@ -26,14 +25,13 @@
 <!-- 6.36: leaving the panel or scrolling it drops page highlights -->
 <svelte:window onscroll={clearHighlights} />
 
-<!-- Order: what it is and what is wrong, editing, geometry, look, content, then code. -->
+<!-- Order: tools, what it is (and where), its box, what is wrong, editing, look, content, code. -->
 <div data-element-tab role="presentation" onmouseleave={clearHighlights}>
-  <Header {el} />
   <EditToolbar />
-  <DocumentSection {el} />
+  <Header {el} />
+  <BoxModel {el} fps={panel.canvasFps} />
   {#if issues.length}<IssuesSection {issues} />{/if}
   <CssRulesSection {el} />
-  <BoxModel {el} fps={panel.canvasFps} />
   {#if el.layout}<LayoutSection layout={el.layout} />{/if}
   {#if el.typography.length}<TypographySection styles={el.typography} />{/if}
   {#if c.text.length + c.backgrounds.length + c.borders.length}<ColorsSection colors={c} />{/if}

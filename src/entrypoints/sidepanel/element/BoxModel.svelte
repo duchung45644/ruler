@@ -59,7 +59,7 @@
   {@render ring(i18n.t('panel.border'), 'border', b.border, 'bg-amber-400/15', padding)}
 {/snippet}
 
-<Section id="layout" title={i18n.t('panel.boxModel')}>
+<Section id="layout" title={i18n.t('panel.boxModel')} pinned>
   <div class="font-mono text-[11px]" data-box>
     {@render ring(i18n.t('panel.margin'), 'margin', b.margin, 'bg-orange-500/12', border)}
   </div>

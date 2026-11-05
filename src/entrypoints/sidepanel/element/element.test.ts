@@ -200,3 +200,13 @@ it('downloads inline SVG as a blob once granted', async () => {
     { url: expect.stringMatching(/^blob:/), filename: 'panel_defaultSvgFilename' },
   ]);
 });
+
+it('Box Model stays open and the toolbar comes first, then the element with its parent', () => {
+  panel.prefs.sectionVisibility.layout = { collapsed: true };
+  show();
+  expect($('[data-ring="margin"]')).not.toBeNull();
+  const tab = $('[data-element-tab]');
+  const first = tab.firstElementChild!;
+  expect(first.hasAttribute('data-edit-toolbar')).toBe(true);
+  expect(first.nextElementSibling!.querySelector('[data-parent]')).not.toBeNull();
+});

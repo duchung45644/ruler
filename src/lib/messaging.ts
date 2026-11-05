@@ -52,6 +52,13 @@ export interface BackgroundApi {
   ): { ok: true; text: string; finalUrl: string } | { ok: false; error: string };
   run_tech_detection():
     { success: true; technologies: Technology[] } | { success: false; error: string };
+  // Responsive mode (Đợt 6).
+  /** Strips frame-blocking headers for this tab's sub_frames; false without host permission. */
+  enable_frame_header_rule(): boolean;
+  disable_frame_header_rule(): void;
+  /** Injects the content script into the responsive frames; returns their frameIds. */
+  inject_responsive_frames(): number[];
+  exit_responsive_mode(p: { ruleEdits: SerializedEdit[]; url: string }): void;
 }
 export interface ContentApi {
   ping(): { active: boolean };
@@ -121,6 +128,8 @@ export interface ContentApi {
   toggle_text_edit(): boolean;
   select_edited_element(id: string): boolean;
   select_rule_target(selector: string, scopeAddress: string | null): boolean;
+  /** Sent to a responsive frame after injection: boot without dock / panel / settings writes. */
+  start_frame_mode(): void;
 }
 export interface SidePanelApi {
   ping(): { isOpen: true };
@@ -140,6 +149,7 @@ export interface SidePanelApi {
   refresh_changes(): void;
   page_updated(): void;
   edit_state(s: EditState): void;
+  responsive_state(s: { on: boolean }): void;
 }
 
 export type Handlers<A extends object> = {

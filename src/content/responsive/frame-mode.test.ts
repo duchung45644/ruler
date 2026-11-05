@@ -96,3 +96,17 @@ it('run_item and set_paused from the parent apply here', async () => {
   await flush();
   expect(state.paused).toBe(true);
 });
+
+it('reports horizontal overflow to the shell, only on change', () => {
+  const el = document.documentElement;
+  const sw = vi.spyOn(el, 'scrollWidth', 'get').mockReturnValue(500);
+  vi.spyOn(el, 'clientWidth', 'get').mockReturnValue(390);
+  startFrameMode();
+  const overflow = () => sent().filter((m) => m.type === 'overflow_status');
+  expect(overflow().map((m) => m.data)).toEqual([[{ overflowing: true, width: 500 }]]);
+  window.dispatchEvent(new Event('resize'));
+  expect(overflow()).toHaveLength(1);
+  sw.mockReturnValue(390);
+  window.dispatchEvent(new Event('resize'));
+  expect(overflow().at(-1)!.data).toEqual([{ overflowing: false, width: 390 }]);
+});

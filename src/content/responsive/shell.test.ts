@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushSync } from 'svelte';
 import { browser } from '#imports';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
@@ -13,7 +13,7 @@ import { state } from '../core/state.svelte';
 import { editor, ruleTracker } from '../edit/mode.svelte';
 import { HANDOFF_FLAG } from '../edit/persist';
 import { initResponsive } from '.';
-import { enterResponsive, exitResponsive, teardownShell } from './shell.svelte';
+import { enterResponsive, exitResponsive, shell, teardownShell } from './shell.svelte';
 
 vi.mock('../../lib/messaging', async (orig) => ({
   ...(await orig<typeof import('../../lib/messaging')>()),
@@ -231,4 +231,151 @@ it('exit with another URL hands the edits to the background and navigates', asyn
   });
   expect(assign).toHaveBeenCalledWith('https://site.test/other');
   expect(sessionStorage.getItem(HANDOFF_FLAG)).toBe('1');
+});
+
+describe('frame header', () => {
+  const header = (i: number) => shadow.querySelectorAll<HTMLElement>('[data-frame-header]')[i]!;
+  const action = (i: number, a: string) =>
+    header(i).querySelector<HTMLButtonElement>(`[data-action="${a}"]`)!;
+  const iframeOf = (id: number) =>
+    shadow.querySelector<HTMLIFrameElement>(`[data-frame="${id}"] iframe`)!;
+  const fromFrame = (type: string, data: unknown[] = []) =>
+    window.dispatchEvent(
+      new MessageEvent('message', {
+        data: { __bd: browser.runtime.id, dir: 'ruler-iframe', type, data },
+        source: fakeWin as unknown as Window,
+        origin: location.origin,
+      }),
+    );
+
+  it('shows Name (W×H), sandbox, and disables move at the ends', async () => {
+    await enterResponsive();
+    flushSync();
+    expect(header(0).querySelector('[data-frame-label]')!.textContent).toBe('Phone (390×844)');
+    expect(iframeOf(1).getAttribute('sandbox')).toBe(
+      'allow-same-origin allow-scripts allow-forms allow-popups allow-modals',
+    );
+    expect(action(0, 'move-left').disabled).toBe(true);
+    expect(action(0, 'move-right').disabled).toBe(false);
+    expect(action(2, 'move-right').disabled).toBe(true);
+  });
+
+  it('rotate swaps the iframe size; move reorders by CSS order without moving nodes', async () => {
+    await enterResponsive();
+    flushSync();
+    action(0, 'rotate').click();
+    flushSync();
+    expect(iframeOf(1).style.width).toBe('844px');
+    expect(iframeOf(1).style.height).toBe('390px');
+    expect(shell.frames[0]!.vp).toMatchObject({ id: 1, width: 844, height: 390 });
+    const node = iframeOf(1);
+    action(0, 'move-right').click();
+    flushSync();
+    expect(shell.frames.map((f) => f.vp.id)).toEqual([2, 1, 3]);
+    expect(iframeOf(1)).toBe(node);
+    expect(shadow.querySelector<HTMLElement>('[data-frame="1"]')!.style.order).toBe('1');
+  });
+
+  it('scheme cycles system → light → dark and sets color-scheme on the iframe', async () => {
+    await enterResponsive();
+    flushSync();
+    expect(iframeOf(1).style.colorScheme).toBe('');
+    action(0, 'scheme').click();
+    flushSync();
+    expect(shell.frames[0]!.vp.scheme).toBe('light');
+    expect(iframeOf(1).style.colorScheme).toBe('light');
+    expect(action(0, 'scheme').dataset.scheme).toBe('light');
+    action(0, 'scheme').click();
+    flushSync();
+    expect(iframeOf(1).style.colorScheme).toBe('dark');
+  });
+
+  it('remove asks first; Cancel keeps the frame, confirm removes it', async () => {
+    await enterResponsive();
+    flushSync();
+    action(1, 'remove').click();
+    await flush();
+    flushSync();
+    const dlg = () => shadow.querySelector<HTMLElement>('[role=alertdialog]')!;
+    expect(dlg().textContent).toContain('responsive_bodyRemoveViewport');
+    dlg().querySelector('button')!.click(); // Cancel
+    await flush();
+    flushSync();
+    expect(shell.frames).toHaveLength(3);
+    action(1, 'remove').click();
+    await flush();
+    flushSync();
+    [...dlg().querySelectorAll('button')].at(-1)!.click();
+    await vi.waitFor(() => expect(shell.frames.map((f) => f.vp.id)).toEqual([1, 3]));
+  });
+
+  it('breakpoint-frames mode hides remove', async () => {
+    await enterResponsive();
+    shell.breakpointMode = true;
+    flushSync();
+    expect(header(0).querySelector('[data-action="remove"]')).toBeNull();
+  });
+
+  it('a handle drag resizes, clamps, clears device and blocks iframe pointer events', async () => {
+    await enterResponsive();
+    flushSync();
+    const handle = shadow.querySelector<HTMLElement>('[data-frame="1"] [data-handle="corner"]')!;
+    handle.dispatchEvent(
+      new PointerEvent('pointerdown', { clientX: 0, clientY: 0, button: 0, bubbles: true }),
+    );
+    window.dispatchEvent(new PointerEvent('pointermove', { clientX: -1000, clientY: 10 }));
+    flushSync();
+    expect(iframeOf(1).style.pointerEvents).toBe('none');
+    expect(shell.frames[0]!.vp).toMatchObject({ width: 200, height: 854 });
+    expect(shell.frames[0]!.vp.device).toBeUndefined();
+    window.dispatchEvent(new PointerEvent('pointerup'));
+    flushSync();
+    expect(iframeOf(1).style.pointerEvents).toBe('');
+  });
+
+  it('shows the timeout message after 15s without ready', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    try {
+      await enterResponsive();
+      flushSync();
+      expect(shadow.querySelectorAll('[data-frame-loading]')).toHaveLength(3);
+      vi.advanceTimersByTime(15_000);
+      flushSync();
+      expect(shadow.querySelectorAll('[data-frame-timeout]')).toHaveLength(3);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('ready before 15s clears loading and no timeout follows', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    try {
+      await enterResponsive();
+      flushSync();
+      // every iframe shares fakeWin, so the message lands on all three frames
+      fromFrame('ready_for_state_sync');
+      await Promise.resolve();
+      await Promise.resolve();
+      vi.advanceTimersByTime(15_000);
+      flushSync();
+      expect(shadow.querySelectorAll('[data-frame-loading]')).toHaveLength(0);
+      expect(shadow.querySelectorAll('[data-frame-timeout]')).toHaveLength(0);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('overflow_status(true) shows the warning on the header', async () => {
+    await enterResponsive();
+    flushSync();
+    expect(shadow.querySelector('[data-overflow-warning]')).toBeNull();
+    fromFrame('overflow_status', [{ overflowing: true, width: 900 }]);
+    await flush();
+    flushSync();
+    expect(header(0).querySelector('[data-overflow-warning]')).not.toBeNull();
+    fromFrame('overflow_status', [{ overflowing: false, width: 390 }]);
+    await flush();
+    flushSync();
+    expect(shadow.querySelector('[data-overflow-warning]')).toBeNull();
+  });
 });

@@ -40,6 +40,26 @@ export function startFrameMode(): void {
   const ch = channel;
   setForwardKey((key) => ch.send('shortcut', key));
   ch.send('ready_for_state_sync');
+  watchOverflow(ch, controller.signal);
+}
+
+/** Horizontal overflow badge (8.12): report documentElement wider than the frame, on change. */
+export function watchOverflow(ch: Channel<ShellApi>, signal: AbortSignal): void {
+  let last: boolean | null = null;
+  const check = () => {
+    const el = document.documentElement;
+    const overflowing = el.scrollWidth > el.clientWidth;
+    if (overflowing === last) return;
+    last = overflowing;
+    ch.send('overflow_status', { overflowing, width: el.scrollWidth });
+  };
+  check();
+  window.addEventListener('resize', check, { signal });
+  if (typeof ResizeObserver === 'undefined') return;
+  const ro = new ResizeObserver(check);
+  ro.observe(document.documentElement);
+  if (document.body) ro.observe(document.body);
+  signal.addEventListener('abort', () => ro.disconnect(), { once: true });
 }
 
 /** Test / teardown hook. */

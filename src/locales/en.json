@@ -351,6 +351,21 @@
     "clearChanges": "Clear All Changes"
   },
   "responsive": {
-    "confirmPartialEdits": "Your CSS rule changes will be kept. Inline style, markup and class edits will be discarded."
+    "confirmPartialEdits": "Your CSS rule changes will be kept. Inline style, markup and class edits will be discarded.",
+    "moveLeft": "Move Left",
+    "moveRight": "Move Right",
+    "rotate": "Rotate",
+    "colorScheme": "Color Scheme",
+    "schemeSystem": "System",
+    "schemeLight": "Light",
+    "schemeDark": "Dark",
+    "titleRemove": "Remove Viewport",
+    "bodyRemoveViewport": "$1 will be removed.",
+    "buttonRemove": "Remove",
+    "moreActions": "More Actions",
+    "refresh": "Refresh",
+    "loading": "...",
+    "frameTimeout": "This page did not finish loading.",
+    "warnOverflow": "Content overflows horizontally"
   }
 }

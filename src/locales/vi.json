@@ -351,6 +351,21 @@
     "clearChanges": "Xóa Tất cả Thay đổi"
   },
   "responsive": {
-    "confirmPartialEdits": "Các thay đổi quy tắc CSS sẽ được giữ lại. Kiểu nội tuyến, chỉnh sửa mã và lớp sẽ bị loại bỏ."
+    "confirmPartialEdits": "Các thay đổi quy tắc CSS sẽ được giữ lại. Kiểu nội tuyến, chỉnh sửa mã và lớp sẽ bị loại bỏ.",
+    "moveLeft": "Di Chuyển Sang Trái",
+    "moveRight": "Di Chuyển Sang Phải",
+    "rotate": "Xoay",
+    "colorScheme": "Chế Độ Màu",
+    "schemeSystem": "Hệ thống",
+    "schemeLight": "Sáng",
+    "schemeDark": "Tối",
+    "titleRemove": "Gỡ Bỏ Khung Nhìn",
+    "bodyRemoveViewport": "$1 sẽ bị gỡ bỏ.",
+    "buttonRemove": "Gỡ bỏ",
+    "moreActions": "Thêm Tác Vụ",
+    "refresh": "Tải lại",
+    "loading": "...",
+    "frameTimeout": "Trang này chưa tải xong.",
+    "warnOverflow": "Nội dung tràn theo chiều ngang"
   }
 }

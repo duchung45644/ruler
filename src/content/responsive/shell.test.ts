@@ -290,6 +290,42 @@ it('exit with another URL hands the edits to the background and navigates', asyn
   expect(sessionStorage.getItem(HANDOFF_FLAG)).toBe('1');
 });
 
+const fromFrameWin = (type: string, data: unknown[] = []) =>
+  window.dispatchEvent(
+    new MessageEvent('message', {
+      data: { __bd: browser.runtime.id, dir: 'ruler-iframe', type, data },
+      source: fakeWin as unknown as Window,
+      origin: location.origin,
+    }),
+  );
+
+it('exit falls back to the newest synced edits when the first frame does not answer', async () => {
+  await enterResponsive();
+  flushSync();
+  fromFrameWin('ready_for_state_sync');
+  fromFrameWin('rule_edits_changed', [[own('r5', '.synced')]]);
+  await flush();
+  frameReply = { edits: undefined, url: 'https://site.test/page' };
+  await exitResponsive();
+  expect(ruleTracker().serialize()).toEqual([expect.objectContaining({ selector: '.synced' })]);
+});
+
+it('HTML edits in a frame ask before exit; Cancel stays responsive', async () => {
+  await enterResponsive();
+  flushSync();
+  fromFrameWin('frame_edit_state', [
+    { canUndo: true, canRedo: false, editCount: 1, hasClipboard: false, htmlEdits: 1 },
+  ]);
+  await flush();
+  const p = exitResponsive();
+  await flush();
+  flushSync();
+  expect(state.dialog).toBe(true);
+  shadow.querySelector<HTMLButtonElement>('[role=alertdialog] button')!.click();
+  await p;
+  expect(state.responsiveOn).toBe(true);
+});
+
 describe('frame header', () => {
   const header = (i: number) => shadow.querySelectorAll<HTMLElement>('[data-frame-header]')[i]!;
   const action = (i: number, a: string) =>

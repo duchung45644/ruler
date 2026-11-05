@@ -53,7 +53,10 @@ export interface ShellApi {
   report_find_count(n: number, cursor?: FindCursor['local']): void;
   selection_changed(s: { selected: boolean }): void;
   editor_op_recorded(): void;
-  frame_edit_state(s: EditState): void;
+  /** `htmlEdits`: markup / class / inline edits in this frame, which exit cannot carry (8.08). */
+  frame_edit_state(s: EditState & { htmlEdits: number }): void;
+  /** Ctrl+Z (false) / Ctrl+Shift+Z, Ctrl+Y (true) typed in the frame: the shared history steps (8.20). */
+  edit_history_key(redo: boolean): void;
   rule_edits_changed(edits: SerializedEdit[]): void;
   /** A shortcut key typed inside the frame, run by the shell. */
   shortcut(key: string): void;

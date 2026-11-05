@@ -8,9 +8,9 @@ import { runItem, setForwardKey } from '../core/keys';
 import { layer } from '../core/overlay';
 import { setPaused } from '../core/registry.svelte';
 import { state } from '../core/state.svelte';
-import { isSerializedEdit } from '../../lib/edit/serialize';
 import { ruleTracker } from '../edit/mode.svelte';
 import { setSelectionHook } from '../sidepanel/bridge.svelte';
+import { applyFrameRuleEdits, frameStep, startFrameEdits } from './edits';
 import { createFrameSync } from './sync';
 import { applyReadyAck, applySetting, frameFind, frameFindGoto } from './forward';
 
@@ -33,9 +33,9 @@ export function startFrameMode(): void {
       run_item: (id) => void runItem(id),
       set_paused: (paused) => setPaused(!!paused),
       // the shell pushes the page's CSS edits on ready and collects them back on exit (Q8)
-      apply_rule_edits: applyRuleEdits,
+      apply_rule_edits: applyFrameRuleEdits,
       ready_ack: (s) => {
-        applyRuleEdits(s?.ruleEdits);
+        applyFrameRuleEdits(s?.ruleEdits);
         applyUiScale(s?.uiScale);
         const n = applyReadyAck(s);
         if (n !== null) channel?.send('report_find_count', n);
@@ -51,6 +51,9 @@ export function startFrameMode(): void {
       apply_spa_navigation: (url) => sync.apply_spa_navigation(url),
       // another frame took the selection: only one frame holds one (8.19)
       clear_selection: () => void (state.selected = null),
+      // shared history (8.20): the shell picks the frame that made the step
+      edit_undo: () => frameStep('undo'),
+      edit_redo: () => frameStep('redo'),
     },
     controller.signal,
   );
@@ -61,11 +64,7 @@ export function startFrameMode(): void {
   void ch.call('request_ui_scale').then(applyUiScale, () => {});
   watchOverflow(ch, controller.signal);
   sync.start(ch, controller.signal);
-}
-
-function applyRuleEdits(edits: unknown): void {
-  const list = Array.isArray(edits) ? edits.filter(isSerializedEdit) : [];
-  ruleTracker().applySerialized(list);
+  startFrameEdits(ch, controller.signal);
 }
 
 /** Horizontal overflow badge (8.12): report documentElement wider than the frame, on change. */

@@ -19,6 +19,7 @@ import {
   onEditChange,
   ruleTracker,
   stateForcer,
+  stepHistory,
   toggleTextEdit,
 } from './mode.svelte';
 import {
@@ -111,8 +112,8 @@ export function initEditHandlers(): void {
 }
 
 export const editHandlers: Handlers<ContentApi> = {
-  edit_undo: () => resendSelection(withEngine((e) => e.undo())),
-  edit_redo: () => resendSelection(withEngine((e) => e.redo())),
+  edit_undo: () => resendSelection(withEngine(() => stepHistory('undo'))),
+  edit_redo: () => resendSelection(withEngine(() => stepHistory('redo'))),
   edit_copy: () => withEngine((e) => e.copy()),
   edit_cut: () => withEngine((e) => e.cut()),
   edit_paste: () => withEngine((e) => e.paste()),

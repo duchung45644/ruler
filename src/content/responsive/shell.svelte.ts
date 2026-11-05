@@ -2,7 +2,7 @@
 import { mount, unmount } from 'svelte';
 import { browser } from '#imports';
 import { i18n } from '#i18n';
-import { isSerializedEdit, type SerializedEdit } from '../../lib/edit/serialize';
+import { isSerializedEdit } from '../../lib/edit/serialize';
 import { sendToBackground, sendToSidePanel } from '../../lib/messaging';
 import type { FrameApi } from '../../lib/responsive/channel';
 import { frameName } from '../../lib/responsive/frame-name';
@@ -27,7 +27,7 @@ import { confirmDialog, sizeDialog } from '../core/dialog';
 import { runShortcut } from '../core/keys';
 import { layer } from '../core/overlay';
 import { state } from '../core/state.svelte';
-import { editor, ruleTracker, toggleTextEdit } from '../edit/mode.svelte';
+import { editor, ruleTracker, setUndoRoute, toggleTextEdit } from '../edit/mode.svelte';
 import { HANDOFF_FLAG, persistNow } from '../edit/persist';
 import type { Breakpoint } from '../../lib/breakpoints';
 import {
@@ -40,6 +40,7 @@ import { connectToFrame, type Channel } from './bridge';
 import { BLOCK_CHECK_MS, blockedState, readDoc, type Blocked } from './blocked';
 import { loadTimer } from './frame';
 import { enterForward, exitForward, frameFindCount, installForward, readyState } from './forward';
+import { createShellEdits } from './edits';
 import Shell from './Shell.svelte';
 
 export interface ShellFrame {
@@ -106,8 +107,13 @@ const iframes = new Map<number, HTMLIFrameElement>();
 const timers = new Map<number, ReturnType<typeof loadTimer>>();
 // eslint-disable-next-line svelte/prefer-svelte-reactivity -- bookkeeping, never rendered
 const blockChecks = new Map<number, ReturnType<typeof setTimeout>>();
-/** Edits the shell last knew of: sent to frames on ready, fallback when the first frame does not answer. */
-let lastEdits: SerializedEdit[] = [];
+/** Newest CSS edits (sent on ready, synced to every frame, fallback on exit) and the shared undo log. */
+const edits = createShellEdits(() =>
+  shell.frames.flatMap((f) => {
+    const ch = channels.get(f.vp.id);
+    return ch && wasReady.has(f.vp.id) ? [[f.vp.id, ch] as [number, Channel<FrameApi>]] : [];
+  }),
+);
 let savedOverflow = '';
 let pausedMedia: HTMLMediaElement[] = [];
 let busy = false;
@@ -431,7 +437,11 @@ export async function enterResponsive(): Promise<boolean> {
     if (!state.active || state.responsiveOn) return false; // session stopped while asking
     const root = layer.getRootNode();
     if (!(root instanceof ShadowRoot)) return false;
-    lastEdits = ruleTracker().serialize();
+    edits.reset(ruleTracker().serialize());
+    setUndoRoute((redo) => {
+      void edits.step(redo);
+      return true;
+    });
     if (state.textEditOn) toggleTextEdit(); // 8.09
     controller = new AbortController();
     state.responsiveOn = true;
@@ -495,16 +505,18 @@ export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
         clearEscape(id);
         wasReady.add(id);
         // late frames too: paused, forwarded tools, settings, find (1.32 / 1.47)
-        ch.send('ready_ack', { ...readyState(), uiScale: 1 / shell.zoom, ruleEdits: lastEdits });
+        ch.send('ready_ack', { ...readyState(), uiScale: 1 / shell.zoom, ruleEdits: edits.last });
       },
       request_ui_scale: () => 1 / shell.zoom,
       overflow_status: (s) => {
         const f = frameOf(id);
         if (f) f.overflow = !!s?.overflowing;
       },
-      rule_edits_changed: (edits) => {
-        if (Array.isArray(edits)) lastEdits = edits.filter(isSerializedEdit);
-      },
+      // replace-all to every other ready frame; the sender already has them (5.26)
+      rule_edits_changed: (list) => edits.ruleEditsChanged(id, list),
+      editor_op_recorded: () => edits.opRecorded(id),
+      frame_edit_state: (s) => edits.frameState(id, s),
+      edit_history_key: (redo) => void edits.step(!!redo),
       shortcut: (key) => void runShortcut(String(key)),
       selection_changed: (s) => {
         if (!s?.selected) return;
@@ -552,6 +564,7 @@ export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
   }
   return () => {
     local.abort();
+    edits.forget(id);
     clearEscape(id);
     wasReady.delete(id);
     sync.forget(id);
@@ -595,6 +608,7 @@ export function teardownShell(): void {
   pausedMedia = [];
   layer.style.display = state.paused ? 'none' : '';
   state.responsiveOn = false;
+  setUndoRoute(null);
   exitForward();
   void sendToSidePanel('responsive_state', { on: false }).catch(() => {});
 }
@@ -604,12 +618,20 @@ export async function exitResponsive(): Promise<void> {
   if (!state.responsiveOn || busy) return;
   busy = true;
   try {
+    // HTML edits made in a frame stay there (8.08): CSS rules come back, the rest is lost
+    if (
+      edits.hasUncarryable() &&
+      !(await confirmDialog(i18n.t('dock.responsive'), i18n.t('responsive.confirmPartialEdits')))
+    )
+      return;
+    if (!state.responsiveOn) return;
     const firstId = shell.frames[0]?.vp.id;
     const first = firstId === undefined ? undefined : channels.get(firstId);
-    const [edits, url] = first
+    const [collected, url] = first
       ? await Promise.all([first.call('collect_rule_edits'), first.call('get_current_url')])
       : [undefined, undefined];
-    const ruleEdits = Array.isArray(edits) ? edits.filter(isSerializedEdit) : lastEdits;
+    // the shell already holds the newest list; the first frame's answer is the check
+    const ruleEdits = Array.isArray(collected) ? collected.filter(isSerializedEdit) : edits.last;
     void sendToBackground('disable_frame_header_rule').catch(() => {});
     teardownShell();
     if (typeof url === 'string' && url && url !== location.href) {

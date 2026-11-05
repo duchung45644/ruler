@@ -1,6 +1,6 @@
 /** Page editing (after setEditMode :34709, updateEditModeUiOnly :34774, ensureEditorEngine :34806; 5.05). */
 import { browser } from '#imports';
-import { EMPTY_EDIT_STATE, type EditState } from '../../lib/edit/types';
+import { EMPTY_EDIT_STATE, type EditResult, type EditState } from '../../lib/edit/types';
 import { state } from '../core/state.svelte';
 import { elementIdMap, sendElement } from '../sidepanel/bridge.svelte';
 import { selectElement } from '../tools/inspector';
@@ -46,6 +46,31 @@ export function editState(): EditState {
   const s = engine?.historyState() ?? { ...EMPTY_EDIT_STATE };
   return { ...s, editCount: s.editCount + (tracker?.flattened().length ?? 0) };
 }
+
+let stepping = false;
+
+/** Undo / redo through the engine, flagged so listeners can tell a step from a new op (8.20). */
+export function stepHistory(dir: 'undo' | 'redo'): EditResult | null {
+  if (!engine) return null;
+  stepping = true;
+  try {
+    return dir === 'undo' ? engine.undo() : engine.redo();
+  } finally {
+    stepping = false;
+  }
+}
+
+/** True while stepHistory runs (change listeners fire synchronously inside it). */
+export const historyStepping = (): boolean => stepping;
+
+type UndoRoute = (redo: boolean) => boolean;
+let undoRoute: UndoRoute | null = null;
+
+/** Responsive (8.20): Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y go to the shared history instead of this engine. */
+export function setUndoRoute(fn: UndoRoute | null): void {
+  undoRoute = fn;
+}
+export const getUndoRoute = (): UndoRoute | null => undoRoute;
 
 function changed(): void {
   state.editState = editState();

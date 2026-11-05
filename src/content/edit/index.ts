@@ -5,10 +5,12 @@ import { state } from '../core/state.svelte';
 import type { HtmlEditor } from './engine';
 import {
   editor,
+  getUndoRoute,
   onEditChange,
   onEditExit,
   ruleTracker,
   setEditMode,
+  stepHistory,
   stopEditMode,
 } from './mode.svelte';
 import { editHandlers, initEditHandlers, resendSelection } from './handlers';
@@ -22,7 +24,7 @@ type Command = 'copy' | 'cut' | 'paste' | 'duplicate' | 'delete' | 'undo' | 'red
 export function runEditCommand(cmd: Command): EditResult | null {
   const e: HtmlEditor | null = editor();
   if (!e) return null;
-  const r = e[cmd]();
+  const r = cmd === 'undo' || cmd === 'redo' ? stepHistory(cmd)! : e[cmd]();
   return cmd === 'undo' || cmd === 'redo' ? resendSelection(r) : r;
 }
 
@@ -32,6 +34,12 @@ const mod = (e: KeyboardEvent) => (isMac ? e.metaKey && !e.ctrlKey : e.ctrlKey &
 
 /** Port of the edit branch of onDocumentKeydown (:47311; 5.03). routeKey already skips typing. */
 function onKey(e: KeyboardEvent): boolean {
+  const route = getUndoRoute();
+  if (route && mod(e) && !e.altKey) {
+    const k = e.key.toLowerCase();
+    if (k === 'z') return route(e.shiftKey);
+    if (k === 'y' && !e.shiftKey) return route(true);
+  }
   if (!state.editOn || !editor() || e.altKey) return false;
   const k = e.key.toLowerCase();
   if (mod(e)) {

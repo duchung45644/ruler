@@ -174,6 +174,9 @@ export const sidePanelHandlers: Handlers<ContentApi> = {
   side_panel_loaded() {
     if (!state.active) return;
     if (!state.inFrame) getPageData(); // page data / technologies / weight come from the top only
+    // a panel opened after entering responsive must learn it, or it drops the frames' messages
+    if (state.responsiveOn && !state.inFrame)
+      void sendToSidePanel('responsive_state', { on: true }).catch(() => {});
     if (state.selected) sendElement(state.selected);
   },
   refresh_page_data() {
@@ -195,6 +198,9 @@ export const sidePanelHandlers: Handlers<ContentApi> = {
 /** Per session: called from initTools (after startSession). */
 export async function initSidePanelBridge(): Promise<void> {
   const signal = sessionSignal();
+  // frames are created after the panel connected its port, so they never see onConnect: they
+  // always send (a closed panel just rejects, which is caught)
+  if (state.inFrame) bridge.panelOpen = true;
   browser.runtime.onConnect.addListener(onConnect);
   signal.addEventListener('abort', () => browser.runtime.onConnect.removeListener(onConnect), {
     once: true,

@@ -197,3 +197,23 @@ it('highlight_box_part lights a Box Model part and ignores junk', () => {
   sidePanelHandlers.highlight_box_part!('evil' as never, {} as never);
   expect(state.boxPart).toBeNull();
 });
+
+it('a panel opened during responsive mode is told so, or it would drop the frames (regression)', () => {
+  state.active = true;
+  state.responsiveOn = true;
+  sidePanelHandlers.side_panel_loaded!({} as never);
+  expect(toPanel).toHaveBeenCalledWith('responsive_state', { on: true });
+  state.responsiveOn = false;
+});
+
+it('a responsive frame sends its selection without waiting for the panel port (regression)', async () => {
+  stopSession();
+  state.inFrame = true;
+  try {
+    sessionSignal();
+    await initSidePanelBridge();
+    expect(bridge.panelOpen).toBe(true);
+  } finally {
+    state.inFrame = false;
+  }
+});

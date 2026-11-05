@@ -69,7 +69,7 @@
 
 <Section id="layout" title={i18n.t('panel.boxModel')} pinned>
   <div
-    class="mx-auto w-fit min-w-full font-sans text-[11px] text-[#222]"
+    class="mx-auto w-[260px] max-w-full font-sans text-[11px] text-[#222]"
     data-box
     role="presentation"
     onmouseleave={() => (hot = null)}

@@ -59,7 +59,7 @@ export const itemShown = (i: DockItem): boolean => i.group !== 'edit';
  * Items not listed fall back to their DOCK_GROUPS slot after these.
  */
 export const DOCK_LAYOUT = [
-  ['inspect', 'select_parent', 'select_child'],
+  ['select_parent', 'select_child', 'inspect'],
   ['xray', 'grid', 'breakpoints'],
   ['ruler', 'measure', 'eyedropper'],
   ['overlay', 'find', 'audit'],

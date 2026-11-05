@@ -43,17 +43,17 @@
   <Toolbar />
   <div
     data-frames-box
-    class="relative overflow-hidden"
+    class="relative mt-16 mb-20 ml-4 overflow-hidden"
     style:width={size.width ? `${size.width * shell.zoom}px` : null}
     style:height={size.height ? `${size.height * shell.zoom}px` : null}
   >
     <div
       data-frames
       use:measure
-      class="flex items-start gap-6 px-6 pt-16 pb-24"
+      class="flex items-start gap-6"
       class:w-max={!shell.framesWrap}
       class:flex-wrap={shell.framesWrap}
-      style:width={shell.framesWrap ? `${100 / shell.zoom}vw` : null}
+      style:width={shell.framesWrap ? `calc((100vw - 2rem) / ${shell.zoom})` : null}
       style:transform="scale({shell.zoom})"
       style:transform-origin="top left"
     >

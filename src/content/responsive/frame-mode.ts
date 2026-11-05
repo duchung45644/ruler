@@ -12,7 +12,7 @@ import { isFullyVisible } from '../../lib/capture';
 import { state } from '../core/state.svelte';
 import { ruleTracker } from '../edit/mode.svelte';
 import { setSelectionHook } from '../sidepanel/bridge.svelte';
-import { applyFrameRuleEdits, frameStep, startFrameEdits } from './edits';
+import { applyFrameInlineStyles, applyFrameRuleEdits, frameStep, startFrameEdits } from './edits';
 import { createFrameSync } from './sync';
 import { applyReadyAck, applySetting, frameFind, frameFindGoto } from './forward';
 
@@ -36,8 +36,10 @@ export function startFrameMode(): void {
       set_paused: (paused) => setPaused(!!paused),
       // the shell pushes the page's CSS edits on ready and collects them back on exit (Q8)
       apply_rule_edits: applyFrameRuleEdits,
+      apply_inline_styles: applyFrameInlineStyles,
       ready_ack: (s) => {
         applyFrameRuleEdits(s?.ruleEdits);
+        applyFrameInlineStyles(s?.inlineStyles);
         applyUiScale(s?.uiScale);
         const n = applyReadyAck(s);
         if (n !== null) channel?.send('report_find_count', n);

@@ -1,7 +1,13 @@
 /** CSS edits in responsive view: carry in, sync across frames, shared undo, carry back (5.25–5.27, 8.08, 8.20). */
 import { isSerializedEdit, type SerializedEdit } from '../../lib/edit/serialize';
 import type { EditState } from '../../lib/edit/types';
-import type { FrameApi, ShellApi } from '../../lib/responsive/channel';
+import type { FrameApi, InlineStyleEdit, ShellApi } from '../../lib/responsive/channel';
+import {
+  isElementLocator,
+  locateElement,
+  locatorKey,
+  resolveLocator,
+} from '../../lib/responsive/element-locator';
 import {
   EMPTY_HISTORY,
   forgetFrame,
@@ -29,6 +35,60 @@ export const OP_BATCH_MS = 120;
 
 let applying = false;
 let lastSentJson = '[]';
+/** Inline style text last reported (or applied) per element, to send only what changed. */
+let inlineSeen = new Map<HTMLElement, string>();
+
+const inlineNow = (): Map<HTMLElement, string> =>
+  new Map(
+    ruleTracker()
+      .inlineEdits()
+      .map((e) => [e.el, e.declsText]),
+  );
+
+const cleanInline = (list: unknown): InlineStyleEdit[] =>
+  Array.isArray(list)
+    ? list.filter(
+        (e: InlineStyleEdit | null): e is InlineStyleEdit =>
+          !!e && isElementLocator(e.locator) && typeof e.declsText === 'string',
+      )
+    : [];
+
+/** Apply inline edits (from another frame, or on exit to the page); unresolved locators are skipped. */
+export function applyInlineStyles(list: unknown, doc: Document = document): void {
+  const t = ruleTracker();
+  for (const e of cleanInline(list)) {
+    const el = resolveLocator(e.locator, doc);
+    if (!(el instanceof HTMLElement)) continue;
+    if ((el.getAttribute('style') ?? '') === e.declsText) continue;
+    t.editInlineStyle(el, e.declsText);
+  }
+}
+
+/** Frame side: apply the shell's inline edits without echoing them back. */
+export function applyFrameInlineStyles(list: unknown): void {
+  applying = true;
+  try {
+    applyInlineStyles(list);
+  } finally {
+    applying = false;
+  }
+  inlineSeen = inlineNow();
+}
+
+/** Inline edits that changed since the last report; a reverted one sends the restored style. */
+function inlineChanges(): InlineStyleEdit[] {
+  const now = inlineNow();
+  const out: InlineStyleEdit[] = [];
+  const push = (el: HTMLElement, declsText: string) => {
+    const locator = locateElement(el);
+    if (locator) out.push({ locator, declsText });
+  };
+  for (const [el, text] of now) if (inlineSeen.get(el) !== text) push(el, text);
+  for (const el of inlineSeen.keys())
+    if (!now.has(el) && el.isConnected) push(el, el.getAttribute('style') ?? '');
+  inlineSeen = now;
+  return out;
+}
 
 const clean = (edits: unknown): SerializedEdit[] =>
   Array.isArray(edits) ? edits.filter(isSerializedEdit) : [];
@@ -63,8 +123,10 @@ const frameState = () => ({ ...editState(), htmlEdits: editor()?.htmlChanges().l
 /** Report rule edits, ops and edit state to the shell; route undo keys to it. */
 export function startFrameEdits(ch: Channel<ShellApi>, signal: AbortSignal): void {
   lastSentJson = JSON.stringify(ruleTracker().serialize());
+  inlineSeen = inlineNow();
   const off = onEditChange(() => {
     if (applying) return;
+    for (const e of inlineChanges()) ch.send('inline_style_changed', e);
     const json = JSON.stringify(ruleTracker().serialize());
     const ruleChanged = json !== lastSentJson;
     if (ruleChanged) {
@@ -92,6 +154,9 @@ export function startFrameEdits(ch: Channel<ShellApi>, signal: AbortSignal): voi
 export interface ShellEdits {
   /** Newest CSS edits: sent on ready_ack, the fallback on exit. */
   readonly last: SerializedEdit[];
+  /** Inline style edits by element locator, last write wins: ready_ack and exit. */
+  readonly inline: InlineStyleEdit[];
+  inlineStyleChanged(from: FrameId, e: unknown): void;
   reset(edits: SerializedEdit[]): void;
   ruleEditsChanged(from: FrameId, edits: unknown): void;
   opRecorded(from: FrameId): void;
@@ -110,6 +175,7 @@ export function createShellEdits(ready: () => [FrameId, Channel<FrameApi>][]): S
   let pending = new Set<FrameId>();
   let timer: ReturnType<typeof setTimeout> | undefined;
   const html = new Map<FrameId, number>();
+  const inline = new Map<string, InlineStyleEdit>();
 
   const flush = () => {
     if (timer !== undefined) clearTimeout(timer);
@@ -125,6 +191,16 @@ export function createShellEdits(ready: () => [FrameId, Channel<FrameApi>][]): S
     get history() {
       return history;
     },
+    get inline() {
+      return [...inline.values()];
+    },
+    inlineStyleChanged(from, e) {
+      const [ok] = cleanInline([e]);
+      if (!ok) return;
+      const entry = { locator: ok.locator, declsText: ok.declsText };
+      inline.set(locatorKey(entry.locator), entry);
+      for (const [id, ch] of ready()) if (id !== from) ch.send('apply_inline_styles', [entry]);
+    },
     reset(edits) {
       last = edits;
       history = EMPTY_HISTORY;
@@ -132,6 +208,7 @@ export function createShellEdits(ready: () => [FrameId, Channel<FrameApi>][]): S
       if (timer !== undefined) clearTimeout(timer);
       timer = undefined;
       html.clear();
+      inline.clear();
     },
     ruleEditsChanged(from, edits) {
       if (!Array.isArray(edits)) return;

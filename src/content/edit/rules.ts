@@ -355,6 +355,14 @@ export class RuleTracker {
     return [...this.recs.values()].map((r) => this.change(r));
   }
 
+  /** Live inline-style edits: the element and its current `style` text. */
+  inlineEdits(): { el: HTMLElement; declsText: string }[] {
+    const out: { el: HTMLElement; declsText: string }[] = [];
+    for (const r of this.recs.values())
+      if (r.kind === 'inline') out.push({ el: r.el, declsText: r.current });
+    return out;
+  }
+
   hasChanges(): boolean {
     return this.recs.size > 0 || this.dormant.length > 0;
   }

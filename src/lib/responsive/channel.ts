@@ -1,7 +1,14 @@
 import type { Breakpoint } from '../breakpoints';
 import type { SerializedEdit } from '../edit/serialize';
 import type { EditState } from '../edit/types';
+import type { ElementLocator } from './element-locator';
 import type { FindCursor } from './find-agg';
+
+/** An inline `style` edit addressed structurally (element ids differ per frame). */
+export interface InlineStyleEdit {
+  locator: ElementLocator;
+  declsText: string;
+}
 
 /** Ratios (0..1) so frames of different sizes land on the same relative spot. */
 export interface ScrollRatio {
@@ -16,6 +23,8 @@ export interface FrameApi {
     paused: boolean;
     uiScale: number;
     ruleEdits: SerializedEdit[];
+    /** Inline style edits made so far in any frame. */
+    inlineStyles?: InlineStyleEdit[];
     /** Forward items that are on. */
     active: string[];
     /** Tool settings by key, as set_setting carries them. */
@@ -24,6 +33,7 @@ export interface FrameApi {
     findQuery: string;
   }): void;
   apply_rule_edits(edits: SerializedEdit[]): void;
+  apply_inline_styles(list: InlineStyleEdit[]): void;
   collect_rule_edits(): SerializedEdit[];
   get_current_url(): string;
   get_breakpoints(): Breakpoint[];
@@ -62,6 +72,7 @@ export interface ShellApi {
   /** Ctrl+Z (false) / Ctrl+Shift+Z, Ctrl+Y (true) typed in the frame: the shared history steps (8.20). */
   edit_history_key(redo: boolean): void;
   rule_edits_changed(edits: SerializedEdit[]): void;
+  inline_style_changed(e: InlineStyleEdit): void;
   /** A shortcut key typed inside the frame, run by the shell. */
   shortcut(key: string): void;
   request_ui_scale(): number;

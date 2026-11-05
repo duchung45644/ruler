@@ -19,7 +19,10 @@ import { clearFind, find, findChanged, gotoFind, runFind, setRemoteFind } from '
 import type { Channel } from './bridge';
 
 /** What forwarding adds to ready_ack. */
-export type ReadyState = Omit<Parameters<FrameApi['ready_ack']>[0], 'uiScale' | 'ruleEdits'>;
+export type ReadyState = Omit<
+  Parameters<FrameApi['ready_ack']>[0],
+  'uiScale' | 'ruleEdits' | 'inlineStyles'
+>;
 
 export interface ForwardHost {
   /** Channels of the frames that said ready, in display order. */

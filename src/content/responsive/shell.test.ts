@@ -4,6 +4,7 @@ import { browser } from '#imports';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { sendToBackground, sendToSidePanel } from '../../lib/messaging';
 import type { Envelope } from '../../lib/responsive/channel';
+import { locateElement } from '../../lib/responsive/element-locator';
 import { defaultViewports } from '../../lib/responsive/viewports';
 import { frameName } from '../../lib/responsive/frame-name';
 import { routeKey } from '../core/keys';
@@ -327,6 +328,41 @@ it('exit with the same URL applies the frame edits to the page without navigatin
   expect(sendToBackground).toHaveBeenCalledWith('disable_frame_header_rule');
   expect(sendToBackground).not.toHaveBeenCalledWith('exit_responsive_mode', expect.anything());
   expect(document.documentElement.style.overflow).toBe('');
+});
+
+it('inline edits from a frame reach late frames in ready_ack and the page on exit', async () => {
+  vi.spyOn(window, 'location', 'get').mockReturnValue({
+    ...location,
+    href: 'https://site.test/page',
+    origin: location.origin,
+    assign: vi.fn(),
+  } as never);
+  await enterResponsive();
+  flushSync();
+  const p = document.body.appendChild(document.createElement('p'));
+  const locator = locateElement(p)!;
+  const fromFrame = (type: string, data: unknown[]) =>
+    window.dispatchEvent(
+      new MessageEvent('message', {
+        data: { __bd: browser.runtime.id, dir: 'ruler-iframe', type, data },
+        source: fakeWin as unknown as Window,
+        origin: location.origin,
+      }),
+    );
+  fromFrame('inline_style_changed', [{ locator, declsText: 'color: blue;' }]);
+  fromFrame('ready_for_state_sync', []);
+  await vi.waitFor(() =>
+    expect(fakeWin.postMessage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: 'ready_ack',
+        data: [expect.objectContaining({ inlineStyles: [{ locator, declsText: 'color: blue;' }] })],
+      }),
+      location.origin,
+    ),
+  );
+  await exitResponsive();
+  expect(state.responsiveOn).toBe(false);
+  expect(p.getAttribute('style')).toBe('color: blue;');
 });
 
 it('exit with another URL hands the edits to the background and navigates', async () => {

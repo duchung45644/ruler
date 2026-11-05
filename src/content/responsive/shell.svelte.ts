@@ -42,7 +42,7 @@ import { connectToFrame, type Channel } from './bridge';
 import { BLOCK_CHECK_MS, blockedState, readDoc, type Blocked } from './blocked';
 import { loadTimer } from './frame';
 import { enterForward, exitForward, frameFindCount, installForward, readyState } from './forward';
-import { createShellEdits } from './edits';
+import { applyInlineStyles, createShellEdits } from './edits';
 import Shell from './Shell.svelte';
 
 export interface ShellFrame {
@@ -538,7 +538,12 @@ export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
         clearEscape(id);
         wasReady.add(id);
         // late frames too: paused, forwarded tools, settings, find (1.32 / 1.47)
-        ch.send('ready_ack', { ...readyState(), uiScale: 1 / shell.zoom, ruleEdits: edits.last });
+        ch.send('ready_ack', {
+          ...readyState(),
+          uiScale: 1 / shell.zoom,
+          ruleEdits: edits.last,
+          inlineStyles: edits.inline,
+        });
       },
       request_ui_scale: () => 1 / shell.zoom,
       overflow_status: (s) => {
@@ -547,6 +552,8 @@ export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
       },
       // replace-all to every other ready frame; the sender already has them (5.26)
       rule_edits_changed: (list) => edits.ruleEditsChanged(id, list),
+      // inline style edits by structural locator, last write wins (element ids differ per frame)
+      inline_style_changed: (e) => edits.inlineStyleChanged(id, e),
       editor_op_recorded: () => edits.opRecorded(id),
       frame_edit_state: (s) => edits.frameState(id, s),
       edit_history_key: (redo) => void edits.step(!!redo),
@@ -672,6 +679,7 @@ export async function exitResponsive(): Promise<void> {
       : [undefined, undefined];
     // the shell already holds the newest list; the first frame's answer is the check
     const ruleEdits = Array.isArray(collected) ? collected.filter(isSerializedEdit) : edits.last;
+    const inlineStyles = edits.inline; // teardown clears them
     void sendToBackground('disable_frame_header_rule').catch(() => {});
     teardownShell();
     if (typeof url === 'string' && url && url !== location.href) {
@@ -689,6 +697,8 @@ export async function exitResponsive(): Promise<void> {
       tracker.revertAll();
       tracker.applySerialized(ruleEdits);
     }
+    // inline edits reach the live page only (not persisted per site)
+    applyInlineStyles(inlineStyles);
     await persistNow();
   } finally {
     busy = false;

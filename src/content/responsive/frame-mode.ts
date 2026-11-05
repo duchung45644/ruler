@@ -1,0 +1,43 @@
+/** Content script inside a responsive-view iframe (legacy frame mode; 5.25, 1.25). */
+import { browser } from '#imports';
+import type { Channel } from './bridge';
+import { connectToParent } from './bridge';
+import type { ShellApi } from '../../lib/responsive/channel';
+import { parseFrameName } from '../../lib/responsive/frame-name';
+import { runItem, setForwardKey } from '../core/keys';
+import { setPaused } from '../core/registry.svelte';
+import { state } from '../core/state.svelte';
+
+let controller: AbortController | null = null;
+let channel: Channel<ShellApi> | null = null;
+
+/** This window is one of our named responsive iframes. */
+export function isResponsiveFrame(): boolean {
+  return window !== window.top && parseFrameName(browser.runtime.id, window.name) !== null;
+}
+
+/** Connects to the shell and asks for state; idempotent. */
+export function startFrameMode(): void {
+  if (controller) return;
+  state.inFrame = true;
+  controller = new AbortController();
+  channel = connectToParent(
+    {
+      run_item: (id) => void runItem(id),
+      set_paused: (paused) => setPaused(!!paused),
+    },
+    controller.signal,
+  );
+  const ch = channel;
+  setForwardKey((key) => ch.send('shortcut', key));
+  ch.send('ready_for_state_sync');
+}
+
+/** Test / teardown hook. */
+export function stopFrameMode(): void {
+  controller?.abort();
+  controller = null;
+  channel = null;
+  setForwardKey(null);
+  state.inFrame = false;
+}

@@ -1,9 +1,15 @@
-import { itemLocked, itemShown, items } from './registry.svelte';
+import { itemLocked, itemShown, items, type DockItem } from './registry.svelte';
 import { state } from './state.svelte';
 
 const hooks = new Map<string, (e: KeyboardEvent) => boolean>();
 const handlers: ((e: KeyboardEvent) => boolean)[] = [];
 let captureKey: ((e: KeyboardEvent) => boolean) | null = null;
+let forwardKey: ((key: string) => void) | null = null;
+
+/** Set by frame mode: item keys go to the parent shell instead of running here. */
+export function setForwardKey(fn: ((key: string) => void) | null): void {
+  forwardKey = fn;
+}
 
 /** Set by the capture session: while state.capturing it gets every key except Ctrl+Q. */
 export function setCaptureKeyHandler(fn: ((e: KeyboardEvent) => boolean) | null): void {
@@ -43,6 +49,18 @@ function hookName(e: KeyboardEvent): string | null {
   return null;
 }
 
+const runnable = (i: DockItem): boolean => itemShown(i) && !itemLocked(i) && !i.isDisabled?.();
+
+/** Runs dock item `id` like its key would (frame mode's run_item). Returns whether it ran. */
+export function runItem(id: string): boolean {
+  if (state.paused || state.capturing || state.dialog) return false;
+  const item = items.find((i) => i.id === id && runnable(i));
+  if (!item) return false;
+  if (item.runKey) item.runKey();
+  else item.run();
+  return true;
+}
+
 /**
  * Esc / dock item key, shared by real keys and the side panel's keyboard_shortcut (6.15).
  * Returns whether something ran.
@@ -56,9 +74,7 @@ export function runShortcut(key: string): boolean {
     else return false;
     return true;
   }
-  const item = items.find(
-    (i) => i.key === key.toLowerCase() && itemShown(i) && !itemLocked(i) && !i.isDisabled?.(),
-  );
+  const item = items.find((i) => i.key === key.toLowerCase() && runnable(i));
   if (!item) return false;
   if (item.runKey) item.runKey();
   else item.run();
@@ -79,6 +95,14 @@ export function routeKey(e: KeyboardEvent): void {
   if (state.dialog || shouldIgnoreKey(e, state)) return;
   if (handlers.some((fn) => fn(e))) return e.preventDefault();
   if (e.key === 'Escape' || (!e.ctrlKey && !e.metaKey && !e.altKey)) {
+    // responsive frame: the shell runs item keys so every frame and the dock stay in step
+    if (state.inFrame && forwardKey && e.key !== 'Escape') {
+      const k = e.key.toLowerCase();
+      if (items.some((i) => i.key === k && runnable(i))) {
+        forwardKey(e.key);
+        return e.preventDefault();
+      }
+    }
     if (runShortcut(e.key)) return e.preventDefault();
     if (e.key === 'Escape') return;
   }

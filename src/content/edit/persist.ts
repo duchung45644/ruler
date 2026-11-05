@@ -4,12 +4,10 @@ import { i18n } from '#i18n';
 import { persistKey } from '../../lib/edit/persist-key';
 import { isSerializedEdit } from '../../lib/edit/serialize';
 import { showToast } from '../core/toast';
+import { state } from '../core/state.svelte';
 import type { RuleTracker } from './rules';
 
 const DELAY = 800;
-/** Set by the responsive view (phase 6); its frame must not write the top page's key. */
-const inResponsiveFrame = false;
-
 let tracker: RuleTracker | null = null;
 let timer: ReturnType<typeof setTimeout> | null = null;
 /** Last value written, so an HTML-only change does not rewrite the same edits. */
@@ -18,7 +16,7 @@ let written: string | null = null;
 let reverting = false;
 
 export function eligible(): boolean {
-  return window === window.top && persistKey(location) !== null && !inResponsiveFrame;
+  return window === window.top && persistKey(location) !== null && !state.inFrame; // a responsive frame must not write the top page's key
 }
 
 export function schedulePersist(): void {

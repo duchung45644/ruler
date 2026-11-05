@@ -4,6 +4,8 @@ import { DEFAULT_SETTINGS } from '../../lib/settings';
 
 export const state = $state({
   active: false,
+  /** Running inside a responsive-view iframe: no dock, keys go to the parent shell. */
+  inFrame: false,
   paused: false,
   popover: null as string | null,
   inspectOn: false,

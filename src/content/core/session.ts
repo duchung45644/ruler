@@ -1,5 +1,6 @@
 import type { ContentScriptContext } from '#imports';
 import Dock from '../../ui/Dock.svelte';
+import FrameRoot from '../../ui/FrameRoot.svelte';
 import { mountUi } from '../../ui/mount';
 import { panelPrefsItem, themePref } from '../../lib/settings';
 import type { ColorFormat } from '../../lib/color';
@@ -52,7 +53,8 @@ async function start(ctx: ContentScriptContext): Promise<void> {
   ctxRef = ctx;
   installDragGuard(signal); // first: runs before every tool's window-capture listener
   onStop(resetDrag);
-  const ui = await mountUi(ctx, Dock);
+  // responsive frame: same host (overlay, panels) without the dock (1.25)
+  const ui = await mountUi(ctx, state.inFrame ? FrameRoot : Dock);
   if (signal.aborted) return ui.remove(); // stopped while mounting
   onStop(ui.remove);
   uiRef = ui;

@@ -5,6 +5,7 @@ import { initInspector } from '../../content/tools/inspector';
 import { editHandlers } from '../../content/edit';
 import { sidePanelHandlers } from '../../content/sidepanel';
 import { initTools } from '../../content/tools';
+import { isResponsiveFrame, startFrameMode } from '../../content/responsive/frame-mode';
 import { openBar } from '../../content/tools/capture';
 import { handleMessages } from '../../lib/messaging';
 import { loadFonts } from '../../ui/fonts';
@@ -20,7 +21,8 @@ export default defineContentScript({
   registration: 'runtime',
   cssInjectionMode: 'ui',
   async main(ctx) {
-    if (window.__BO_DOI__) return; // 9.20: injected twice; background talks to the first via toggle_script
+    const inFrame = isResponsiveFrame();
+    if (window.__BO_DOI__ && !inFrame) return; // 9.20: injected twice; background talks to the first via toggle_script
     window.__BO_DOI__ = true;
     // extension reload/update: old context dies, isolated world survives; let the re-injection take over
     ctx.onInvalidated(() => {
@@ -39,12 +41,17 @@ export default defineContentScript({
       ...editHandlers,
       ping: () => ({ active: state.active }),
       save_screenshot: () => (state.active ? openBar() : undefined),
+      start_frame_mode: () => {
+        if (isResponsiveFrame()) startFrameMode();
+      },
       toggle_script: async () => {
         if (state.active) stopSession();
         else await start();
         return { active: state.active };
       },
     });
+    if (inFrame) state.inFrame = true; // before start: no dock, no side panel bridge
     await start();
+    if (inFrame) startFrameMode();
   },
 });

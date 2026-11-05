@@ -67,6 +67,7 @@ export interface ContentApi {
   page_weight_unsubscribe(): void;
   highlight_hovered(id: string): void;
   remove_highlight_hovered(): void;
+  highlight_box_part(part: 'margin' | 'border' | 'padding' | 'content' | null): void;
   go_to_selected_element(id?: string): boolean;
   get_host_name(): string;
   get_url(): string;

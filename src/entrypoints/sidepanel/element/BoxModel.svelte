@@ -4,11 +4,20 @@
   import { formatDim, formatSize } from '../../../lib/format';
   import type { CanvasInfo, ElementDetails, Sides } from '../../../lib/element/types';
   import Section from '../Section.svelte';
+  import { toPage } from '../store.svelte';
 
   let { el, fps }: { el: ElementDetails; fps: number | null } = $props();
   const b = $derived(el.boxModel);
   /** Ring under the pointer: like DevTools, only it keeps its colour, the rest go white. */
   let hot = $state<string | null>(null);
+  // the same part lights up on the page, like DevTools (nothing is sent until a ring is hovered)
+  let lit = false;
+  $effect(() => {
+    if (!hot && !lit) return;
+    lit = !!hot;
+    void toPage('highlight_box_part', hot as 'margin' | null);
+  });
+  $effect(() => () => void (lit && toPage('highlight_box_part', null)));
   const paint = (kind: string, fill: string) => (hot && hot !== kind ? '#fff' : fill);
   const v = (n: number) => (n ? formatDim(n) : '0');
   const canvasRows = (c: CanvasInfo): [string, string][] => [
@@ -48,7 +57,7 @@
 {#snippet content()}
   <!-- svelte-ignore a11y_mouse_events_have_key_events (pointer-only colour hint) -->
   <div
-    class="mx-auto w-fit border border-black px-1.5 leading-4 tabular-nums"
+    class="border border-black px-1.5 leading-4 tabular-nums"
     style:background={paint('content', '#8cb6c0')}
     data-content
     role="presentation"

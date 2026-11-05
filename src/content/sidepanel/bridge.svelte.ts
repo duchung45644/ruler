@@ -11,6 +11,7 @@ import { ensureElementId, ID_ATTR, resolveElementById } from '../../lib/selector
 import { alertDialog } from '../core/dialog';
 import { runShortcut } from '../core/keys';
 import { onStop, sessionSignal } from '../core/session';
+import { requestPaint } from '../core/overlay';
 import { state } from '../core/state.svelte';
 import { selectChild, selectElement, selectParent } from '../tools/inspector';
 import { collectElementDetails, styleMap } from './details';
@@ -130,6 +131,12 @@ export const sidePanelHandlers: Handlers<ContentApi> = {
     if (el) highlight([el]);
   },
   remove_highlight_hovered: () => clearHighlights(),
+  highlight_box_part(part) {
+    state.boxPart = ['margin', 'border', 'padding', 'content'].includes(part as string)
+      ? part
+      : null;
+    requestPaint();
+  },
   clear_element_highlights: () => clearHighlights(),
   highlight_elements_for_color: (color) => highlightForColor(styleMap, color),
   highlight_elements_for_typography: (key) => highlightForTypography(styleMap, key),

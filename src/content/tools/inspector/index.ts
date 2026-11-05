@@ -162,6 +162,52 @@ function frame(box: HTMLElement, r: Rect, color: string): void {
   drawNumber(box, l.height.x, l.height.y, r.height, color, '-100%', '-50%');
 }
 
+/** One Box Model part of `el`, in DevTools colours (panel Box Model hover). */
+function paintBoxPart(
+  box: HTMLElement,
+  el: Element,
+  part: NonNullable<typeof state.boxPart>,
+): void {
+  const r = el.getBoundingClientRect();
+  const s = getComputedStyle(el);
+  const side = (p: string) =>
+    [`${p}Top`, `${p}Right`, `${p}Bottom`, `${p}Left`].map((k) => px(s[k as 'marginTop'])) as [
+      number,
+      number,
+      number,
+      number,
+    ];
+  const [mt, mr, mb, ml] = side('margin');
+  const [bt, br, bb, bl] = [
+    s.borderTopWidth,
+    s.borderRightWidth,
+    s.borderBottomWidth,
+    s.borderLeftWidth,
+  ].map(px) as [number, number, number, number];
+  const [pt, pr, pb, pl] = side('padding');
+  const inB = { x: r.x + bl, y: r.y + bt, width: r.width - bl - br, height: r.height - bt - bb };
+  if (part === 'margin')
+    ring(
+      box,
+      { x: r.x - ml, y: r.y - mt, width: r.width + ml + mr, height: r.height + mt + mb },
+      mt,
+      mr,
+      mb,
+      ml,
+      'rgba(246,178,107,.66)',
+    );
+  else if (part === 'border') ring(box, r, bt, br, bb, bl, 'rgba(255,229,153,.66)');
+  else if (part === 'padding') ring(box, inB, pt, pr, pb, pl, 'rgba(147,196,125,.55)');
+  else {
+    const c = { x: inB.x + pl, y: inB.y + pt, w: inB.width - pl - pr, h: inB.height - pt - pb };
+    if (c.w > 0 && c.h > 0)
+      draw(
+        box,
+        `left:${c.x}px;top:${c.y}px;width:${c.w}px;height:${c.h}px;background:rgba(111,168,220,.66)`,
+      );
+  }
+}
+
 /** Hover: margin/padding bands + frame + `tag#id.class` (port of highlightElement :43810, getElementTagOverlay :44937). */
 function paintHover(box: HTMLElement, el: Element, color: string): void {
   const r = el.getBoundingClientRect();
@@ -390,6 +436,7 @@ export async function initInspector(): Promise<void> {
       line(`top:0;bottom:0;left:${r.right - 1}px;width:1px`);
       frame(box, r, color);
     }
+    if (sel && state.boxPart) paintBoxPart(box, sel, state.boxPart);
     const h = state.hovered;
     if (h && h !== state.selected && h.isConnected && live()) paintHover(box, h, color);
     // 2.13 hovering a pin highlights its source element

@@ -190,3 +190,10 @@ it('keyboard_shortcut Escape deselects and clears the panel', () => {
   expect(state.selected).toBeNull();
   expect(sent('clear')).toHaveLength(1);
 });
+
+it('highlight_box_part lights a Box Model part and ignores junk', () => {
+  sidePanelHandlers.highlight_box_part!('padding', {} as never);
+  expect(state.boxPart).toBe('padding');
+  sidePanelHandlers.highlight_box_part!('evil' as never, {} as never);
+  expect(state.boxPart).toBeNull();
+});

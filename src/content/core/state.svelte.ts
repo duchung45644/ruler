@@ -8,6 +8,8 @@ export const state = $state({
   popover: null as string | null,
   inspectOn: false,
   hovered: null as Element | null,
+  /** Box Model ring hovered in the panel: that part of the selection is lit on the page. */
+  boxPart: null as 'margin' | 'border' | 'padding' | 'content' | null,
   selected: null as Element | null,
   theme: 'dark' as 'light' | 'dark',
   xrayOn: false,

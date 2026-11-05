@@ -3,6 +3,12 @@
     kind: 'overridden' | 'not-inherited' | 'hidden';
     title: string;
   }
+  /**
+   * Unticked declarations per rule (`memo`): the page drops them from the rule, so the panel keeps
+   * them to show again, unticked, when the rule is drawn anew (DevTools keeps them as comments).
+   */
+  // eslint-disable-next-line svelte/prefer-svelte-reactivity -- read once per mount, not reactive
+  const unticked = new Map<string, { property: string; value: string }[]>();
 </script>
 
 <script lang="ts">
@@ -22,6 +28,7 @@
     readonly = false,
     vars = [],
     mark,
+    memo,
     oncommit,
   }: {
     decls: Decl[];
@@ -29,6 +36,8 @@
     /** Custom properties in scope, offered as `var(--x)` values. */
     vars?: string[];
     mark?: (property: string) => Mark | null;
+    /** Rule identity for remembering unticked declarations; no ticks without it. */
+    memo?: string;
     oncommit?: (declsText: string) => void;
   } = $props();
 
@@ -37,6 +46,7 @@
     id: number;
     property: string;
     value: string;
+    off?: boolean;
   }
   let seq = 0;
   const toRow = (d: Decl): Row => ({
@@ -46,7 +56,35 @@
   });
   const blank = (): Row => ({ id: seq++, property: '', value: '' });
   // the parent remounts this per payload, so the rows only follow typing afterwards
-  let rows = $state(untrack(() => decls.map(toRow)));
+  let rows = $state(
+    untrack(() => {
+      const live = decls.map(toRow);
+      const off = (memo && unticked.get(memo)) || [];
+      // an unticked one that is back in the rule (undo, edited on the page) is simply on again
+      const back = off.filter((o) => !live.some((r) => r.property === o.property));
+      return [...live, ...back.map((o) => ({ id: seq++, ...o, off: true }))];
+    }),
+  );
+  function tick_(row: Row) {
+    row.off = !row.off;
+    if (memo)
+      unticked.set(
+        memo,
+        rows
+          .filter((r) => r.off && r.property)
+          .map((r) => ({ property: r.property, value: r.value })),
+      );
+    flush();
+  }
+  const colorOf = (r: Row) => {
+    const v = r.value.replace(/\s*!\s*important\s*$/i, '').trim();
+    return v &&
+      !v.includes('var(') &&
+      supports('color', v) &&
+      !/^(inherit|initial|unset|revert|currentcolor|transparent)$/i.test(v)
+      ? v
+      : null;
+  };
   $effect(() => {
     const last = rows[rows.length - 1];
     if (!readonly && (!last || last.property || last.value)) rows.push(blank());
@@ -54,7 +92,7 @@
 
   const text = () =>
     rows
-      .filter((r) => r.property.trim() && r.value.trim())
+      .filter((r) => !r.off && r.property.trim() && r.value.trim())
       .map((r) => `${r.property.trim()}: ${r.value.trim()};`)
       .join(' ');
   let sent = untrack(text);
@@ -184,8 +222,9 @@
         ? i18n.t('edit.invalidValue')
         : (m?.title ?? '')}
     <div
-      class="relative flex items-center rounded-sm pl-5 hover:bg-line/50"
-      class:opacity-50={m?.kind === 'overridden' || m?.kind === 'not-inherited'}
+      class="group relative flex items-center rounded-sm pl-5 hover:bg-line/50"
+      class:opacity-50={row.off || m?.kind === 'overridden' || m?.kind === 'not-inherited'}
+      data-off={row.off || undefined}
       data-row={row.id}
       data-mark={bp ? 'invalid-property' : bv ? 'invalid-value' : m?.kind}
       title={title || undefined}
@@ -195,9 +234,20 @@
           class="absolute left-2 size-1.5 rounded-full {bp || bv ? 'bg-red-500' : 'bg-amber-500'}"
         ></span>
       {/if}
+      {#if memo && !readonly && row.property && row.value}
+        <input
+          type="checkbox"
+          class="absolute left-0.5 size-3 cursor-pointer opacity-0 group-hover:opacity-100 checked:opacity-100"
+          class:!opacity-100={row.off}
+          checked={!row.off}
+          title={i18n.t('edit.toggleDecl')}
+          data-toggle
+          onchange={() => tick_(row)}
+        />
+      {/if}
       <input
         class="field min-w-[1ch] text-sky-300 light:text-sky-700"
-        class:line-through={m?.kind === 'overridden'}
+        class:line-through={row.off || m?.kind === 'overridden'}
         class:decoration-wavy={bp}
         class:underline={bp}
         class:decoration-red-500={bp}
@@ -210,9 +260,16 @@
         onkeydown={(e) => onkeydown(e, row, 'property')}
         {onblur}
       /><span class="text-fg-muted" class:opacity-0={!row.property && !row.value}>:</span>
+      {#if colorOf(row)}
+        <span
+          class="ml-1 inline-block size-2.5 shrink-0 rounded-[2px] border border-line-strong"
+          style:background={colorOf(row)}
+          data-swatch
+        ></span>
+      {/if}
       <input
         class="field ml-1 min-w-0"
-        class:line-through={m?.kind === 'overridden'}
+        class:line-through={row.off || m?.kind === 'overridden'}
         class:decoration-wavy={bv}
         class:underline={bv}
         class:decoration-red-500={bv}

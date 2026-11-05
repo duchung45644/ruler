@@ -337,7 +337,8 @@
     "crossOriginMissing": "Some styles may be missing.",
     "stateDefault": "Default",
     "filter": "Filter",
-    "showClasses": "Classes"
+    "showClasses": "Classes",
+    "toggleDecl": "Turn this declaration on or off"
   },
   "changes": {
     "elementsOne": "1 Element",

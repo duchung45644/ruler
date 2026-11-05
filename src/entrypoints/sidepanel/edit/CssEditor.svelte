@@ -169,6 +169,7 @@
         decls={payload.inline}
         {vars}
         mark={inlineMark}
+        memo={`inline|${el.id}`}
         oncommit={(text) => void command('inline_style_edit', el.id, text)}
       />
     {/key}

@@ -91,6 +91,7 @@
     readonly={!rule.editable}
     {vars}
     {mark}
+    memo={`${rule.source}|${rule.line}|${rule.selector}`}
     oncommit={(text) => void command('rule_edit', rule.address, text)}
   />
   <div class="pl-2">}</div>

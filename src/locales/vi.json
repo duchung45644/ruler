@@ -337,7 +337,8 @@
     "crossOriginMissing": "Một số kiểu có thể bị thiếu.",
     "stateDefault": "Mặc định",
     "filter": "Lọc",
-    "showClasses": "Class"
+    "showClasses": "Class",
+    "toggleDecl": "Bật/tắt thuộc tính này"
   },
   "changes": {
     "elementsOne": "1 phần tử",

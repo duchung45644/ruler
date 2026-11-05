@@ -181,3 +181,24 @@ it('reads like DevTools: wrappers in grey above `selector {`, and the filter hid
   expect(document.querySelector('[data-rule=".card"]')).toBeNull();
   expect(document.querySelector('[data-rule=".other"]')).not.toBeNull();
 });
+
+it('a tick turns a declaration off, keeps it on screen struck, and remembers it on redraw', async () => {
+  const send = vi.mocked(fakeBrowser.tabs.sendMessage);
+  editor(
+    payload([rule({ declarations: [{ property: 'color', value: 'red', important: false }] })]),
+  );
+  expect(document.querySelector('[data-swatch]')).not.toBeNull();
+  const box = document.querySelector<HTMLInputElement>('[data-rule=".card"] [data-toggle]')!;
+  box.click();
+  flushSync();
+  const edits = send.mock.calls
+    .map(([, m]) => m as { type: string; data: unknown[] })
+    .filter((m) => m.type === 'rule_edit');
+  expect(edits.at(-1)!.data[1]).toBe('');
+  expect(document.querySelector('[data-rule=".card"] [data-off]')).not.toBeNull();
+  unmount(ui!);
+  ui = null;
+  editor(payload([rule({ declarations: [] })]));
+  const off = document.querySelector('[data-rule=".card"] [data-off] [data-field="property"]');
+  expect((off as HTMLInputElement).value).toBe('color');
+});

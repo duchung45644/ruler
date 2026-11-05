@@ -51,7 +51,14 @@ const weight = (script: number): PageWeight => ({
   bufferFull: false,
 });
 
-beforeEach(() => {
+/** Every section open, so the tests see their contents (the shipped default is all closed). */
+const openPrefs = () => {
+  const p = structuredClone(DEFAULT_PANEL_PREFS);
+  for (const v of Object.values(p.sectionVisibility)) v.collapsed = false;
+  return p;
+};
+
+beforeEach(async () => {
   fakeBrowser.reset();
   fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
   vi.spyOn(fakeBrowser.commands, 'getAll').mockResolvedValue([] as never);
@@ -60,7 +67,9 @@ beforeEach(() => {
     onDisconnect: { addListener: vi.fn() },
   })) as never;
   send = vi.spyOn(fakeBrowser.tabs, 'sendMessage').mockResolvedValue(undefined as never);
-  Object.assign(panel, { prefs: structuredClone(DEFAULT_PANEL_PREFS) });
+  Object.assign(panel, { prefs: openPrefs() });
+  // the panel reads its prefs from storage when it starts
+  await fakeBrowser.storage.local.set({ sidePanelPreferences: openPrefs() });
 });
 afterEach(() => {
   if (app) unmount(app);

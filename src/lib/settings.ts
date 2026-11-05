@@ -98,7 +98,8 @@ export interface SidePanelPrefs {
 }
 export const DEFAULT_PANEL_PREFS: SidePanelPrefs = {
   sectionVisibility: Object.fromEntries(
-    SECTION_IDS.map((id) => [id, { collapsed: false }]),
+    // all closed until opened: each open/closed choice is then remembered
+    SECTION_IDS.map((id) => [id, { collapsed: true }]),
   ) as SidePanelPrefs['sectionVisibility'],
   colorFormat: 'HEX',
   codeViewMode: 'css',

@@ -58,7 +58,7 @@ describe('sidePanelPreferences', () => {
     const p = await getPanelPrefs();
     expect(p).toEqual(DEFAULT_PANEL_PREFS);
     expect(Object.keys(p.sectionVisibility)).toHaveLength(20);
-    expect(Object.values(p.sectionVisibility).every((v) => !v.collapsed)).toBe(true);
+    expect(Object.values(p.sectionVisibility).every((v) => v.collapsed)).toBe(true);
     expect([p.colorFormat, p.codeViewMode, p.socialPreviewType]).toEqual([
       'HEX',
       'css',
@@ -67,11 +67,14 @@ describe('sidePanelPreferences', () => {
   });
   it('merges stored sections deeply', async () => {
     await fakeBrowser.storage.local.set({
-      sidePanelPreferences: { sectionVisibility: { css: { collapsed: true } }, colorFormat: 'RGB' },
+      sidePanelPreferences: {
+        sectionVisibility: { css: { collapsed: false } },
+        colorFormat: 'RGB',
+      },
     });
     const p = await getPanelPrefs();
-    expect(p.sectionVisibility.css.collapsed).toBe(true);
-    expect(p.sectionVisibility.layout.collapsed).toBe(false);
+    expect(p.sectionVisibility.css.collapsed).toBe(false);
+    expect(p.sectionVisibility.layout.collapsed).toBe(true);
     expect(p.colorFormat).toBe('RGB');
     await updatePanelPrefs({ codeViewMode: 'tailwind' });
     expect((await getPanelPrefs()).colorFormat).toBe('RGB');

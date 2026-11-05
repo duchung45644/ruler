@@ -26,7 +26,7 @@
 <!-- 6.36: leaving the panel or scrolling it drops page highlights -->
 <svelte:window onscroll={clearHighlights} />
 
-<!-- Order: what the element is, what is wrong with it, its geometry, its look, then code. -->
+<!-- Order: what it is and what is wrong, editing, geometry, look, content, then code. -->
 <div data-element-tab role="presentation" onmouseleave={clearHighlights}>
   <Header {el} />
   <EditToolbar />
@@ -35,12 +35,12 @@
   <CssRulesSection {el} />
   <BoxModel {el} fps={panel.canvasFps} />
   {#if el.layout}<LayoutSection layout={el.layout} />{/if}
-  {#if el.textContent}<TextContent text={el.textContent} />{/if}
-  {#if c.text.length + c.backgrounds.length + c.borders.length}<ColorsSection colors={c} />{/if}
   {#if el.typography.length}<TypographySection styles={el.typography} />{/if}
+  {#if c.text.length + c.backgrounds.length + c.borders.length}<ColorsSection colors={c} />{/if}
   {#if el.gradients.length}<GradientsSection gradients={el.gradients} />{/if}
   {#if el.boxShadow.length}<ShadowSection shadows={el.boxShadow} />{/if}
   <MotionSection animations={el.animations} transitions={el.transitions} />
+  {#if el.textContent}<TextContent text={el.textContent} />{/if}
   {#if el.assets.length}<AssetsSection assets={el.assets} />{/if}
   <CodeSection {el} />
 </div>

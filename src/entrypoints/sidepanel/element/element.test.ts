@@ -13,6 +13,13 @@ let log: unknown[][];
 let bg: ReturnType<typeof vi.fn<(type: string, ...a: unknown[]) => unknown>>;
 let page: ReturnType<typeof vi.fn<(type: string, ...a: unknown[]) => unknown>>;
 
+/** Every section open, so the tests see their contents (the shipped default is all closed). */
+const openPrefs = () => {
+  const p = structuredClone(DEFAULT_PANEL_PREFS);
+  for (const v of Object.values(p.sectionVisibility)) v.collapsed = false;
+  return p;
+};
+
 beforeEach(() => {
   fakeBrowser.reset();
   fakeBrowser.i18n.getMessage = ((key: string, subs?: string[]) =>
@@ -32,7 +39,7 @@ beforeEach(() => {
     reply(bg(p.type, ...p.data));
     return true;
   });
-  Object.assign(panel, { tabId: 5, prefs: structuredClone(DEFAULT_PANEL_PREFS), issues: null });
+  Object.assign(panel, { tabId: 5, prefs: openPrefs(), issues: null });
 });
 afterEach(() => {
   if (app) unmount(app);

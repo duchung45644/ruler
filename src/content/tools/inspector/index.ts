@@ -254,7 +254,7 @@ function placePanel(
   mouse: { x: number; y: number } | null,
 ): void {
   const t = panelTarget();
-  if (!t || !box.firstElementChild || panelHidden || state.paused) {
+  if (!t || !box.firstElementChild || panelHidden || state.paused || !state.inspectOn) {
     box.style.visibility = 'hidden';
     return;
   }
@@ -426,7 +426,8 @@ export async function initInspector(): Promise<void> {
     const sel = state.selected;
     if (sel && !isRendered(sel)) {
       state.selected = null; // 2.15 drop a selection that stopped rendering
-    } else if (sel) {
+    } else if (sel && state.inspectOn) {
+      // inspector off: the selection stays (the side panel still uses it) but is not drawn
       const r = sel.getBoundingClientRect();
       // solid alignment guides (spec §7: no dashes), port of drawAlignmentLines :45110
       const line = (css: string) => draw(box, `${css};background:${color};opacity:.5`);

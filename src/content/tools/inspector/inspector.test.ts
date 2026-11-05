@@ -119,6 +119,18 @@ it('hides the floating panel of the selection when the pointer leaves the page',
   expect(panel.style.visibility).toBe('');
 });
 
+it('inspector off hides the selection on the page but keeps it for the side panel', async () => {
+  const { p, panel, settle } = await setup();
+  const { setInspect } = await import('.');
+  setInspect(false);
+  await settle();
+  expect(panel.style.visibility).toBe('hidden');
+  expect(state.selected).toBe(p);
+  setInspect(true);
+  await settle();
+  expect(panel.style.visibility).toBe('');
+});
+
 it('keeps the panel hidden after pinning until the next page mousemove', async () => {
   const { p, panel, settle, move } = await setup();
   routeKey(new KeyboardEvent('keydown', { key: ' ' }));

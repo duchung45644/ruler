@@ -55,16 +55,15 @@ const TEXT_EDIT_ITEMS = ['inspect', 'sidepanel', 'quit'];
 export const itemShown = (i: DockItem): boolean => i.group !== 'edit';
 
 /**
- * Dock layout by purpose: select, page overlays, measuring, design tools, output/panel, session.
+ * Dock layout by purpose: find/select, page overlays, measuring, check & capture, panel/session.
  * Items not listed fall back to their DOCK_GROUPS slot after these.
  */
 export const DOCK_LAYOUT = [
-  ['select_parent', 'select_child', 'inspect'],
+  ['select_parent', 'select_child', 'inspect', 'find'],
   ['xray', 'grid', 'breakpoints'],
   ['ruler', 'measure', 'eyedropper'],
-  ['overlay', 'find', 'audit'],
-  ['capture', 'sidepanel'],
-  ['pause', 'quit'],
+  ['overlay', 'audit', 'capture'],
+  ['sidepanel', 'pause', 'quit'],
 ];
 
 const LISTED = DOCK_LAYOUT.flat();

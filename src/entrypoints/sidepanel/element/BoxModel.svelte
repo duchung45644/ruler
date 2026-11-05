@@ -7,8 +7,10 @@
 
   let { el, fps }: { el: ElementDetails; fps: number | null } = $props();
   const b = $derived(el.boxModel);
-  const any = (s: Sides) => s.top || s.right || s.bottom || s.left;
-  const v = (n: number) => (n ? formatDim(n) : '-');
+  /** Ring under the pointer: like DevTools, only it keeps its colour, the rest go white. */
+  let hot = $state<string | null>(null);
+  const paint = (kind: string, fill: string) => (hot && hot !== kind ? '#fff' : fill);
+  const v = (n: number) => (n ? formatDim(n) : '0');
   const canvasRows = (c: CanvasInfo): [string, string][] => [
     [i18n.t('panel.contextType'), c.contextType ?? i18n.t('panel.unknown')],
     [i18n.t('panel.canvasDimensions'), formatSize(c.width, c.height)],
@@ -17,66 +19,61 @@
   ];
 </script>
 
-<!-- One ring of the box (borders alternate dashed / solid): label top-left, side values around, the next ring inside. Rings with
-     a non-zero side are tinted (legacy box-model.html), zero sides read "-". -->
-{#snippet ring(name: string, kind: string, s: Sides, tint: string, line: string, inner: Snippet)}
+<!-- One ring of the box, drawn like the browser's DevTools: fixed fill per ring, black borders
+     (margin and padding dashed, border solid), label top-left, side values around. -->
+{#snippet ring(name: string, kind: string, s: Sides, fill: string, line: string, inner: Snippet)}
+  <!-- svelte-ignore a11y_mouse_events_have_key_events (pointer-only colour hint) -->
   <div
-    class="grid grid-cols-[minmax(1.5rem,auto)_1fr_minmax(1.5rem,auto)] rounded-[4px] border {line} border-line-strong text-center tabular-nums {any(
-      s,
-    )
-      ? tint
-      : ''}"
+    class="grid grid-cols-[minmax(1.5rem,auto)_1fr_minmax(1.5rem,auto)] border border-black {line} text-center tabular-nums"
+    style:background={paint(kind, fill)}
     data-ring={kind}
+    role="presentation"
+    onmouseover={(e) => {
+      e.stopPropagation();
+      hot = kind;
+    }}
   >
     <div class="col-span-3 grid grid-cols-[1fr_auto_1fr] items-center px-1 leading-4">
-      <span class="text-left text-[9px] text-fg-muted">{name}</span>
-      <span class:text-fg-muted={!s.top} data-side="top">{v(s.top)}</span>
+      <span class="text-left lowercase">{name}</span>
+      <span data-side="top">{v(s.top)}</span>
       <span></span>
     </div>
-    <span class="self-center px-0.5" class:text-fg-muted={!s.left} data-side="left"
-      >{v(s.left)}</span
-    >
+    <span class="self-center px-0.5" data-side="left">{v(s.left)}</span>
     <div>{@render inner()}</div>
-    <span class="self-center px-0.5" class:text-fg-muted={!s.right} data-side="right"
-      >{v(s.right)}</span
-    >
-    <span class="col-span-3 leading-4" class:text-fg-muted={!s.bottom} data-side="bottom"
-      >{v(s.bottom)}</span
-    >
+    <span class="self-center px-0.5" data-side="right">{v(s.right)}</span>
+    <span class="col-span-3 leading-4" data-side="bottom">{v(s.bottom)}</span>
   </div>
 {/snippet}
 
 {#snippet content()}
+  <!-- svelte-ignore a11y_mouse_events_have_key_events (pointer-only colour hint) -->
   <div
-    class="mx-auto rounded-[3px] border border-sky-500/50 bg-sky-500/15 px-1.5 py-0.5 font-medium tabular-nums"
+    class="mx-auto w-fit border border-black px-1.5 leading-4 tabular-nums"
+    style:background={paint('content', '#8cb6c0')}
     data-content
+    role="presentation"
+    onmouseover={(e) => {
+      e.stopPropagation();
+      hot = 'content';
+    }}
   >
     {formatSize(b.contentWidth, b.contentHeight)}
   </div>
 {/snippet}
 {#snippet padding()}
-  {@render ring(
-    i18n.t('panel.padding'),
-    'padding',
-    b.padding,
-    'bg-emerald-500/12',
-    'border-dashed',
-    content,
-  )}
+  {@render ring(i18n.t('panel.padding'), 'padding', b.padding, '#c3d08b', 'border-dashed', content)}
 {/snippet}
 {#snippet border()}
-  {@render ring(
-    i18n.t('panel.border'),
-    'border',
-    b.border,
-    'bg-amber-400/15',
-    'border-solid',
-    padding,
-  )}
+  {@render ring(i18n.t('panel.border'), 'border', b.border, '#fddd9b', 'border-solid', padding)}
 {/snippet}
 
 <Section id="layout" title={i18n.t('panel.boxModel')} pinned>
-  <div class="font-mono text-[10px]" data-box>
+  <div
+    class="mx-auto w-fit min-w-full font-sans text-[11px] text-[#222]"
+    data-box
+    role="presentation"
+    onmouseleave={() => (hot = null)}
+  >
     {@render ring(
       i18n.t('panel.margin'),
       'margin',

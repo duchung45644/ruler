@@ -208,7 +208,6 @@ function placePanel(
   mouse: { x: number; y: number } | null,
 ): void {
   const t = panelTarget();
-  // edit mode keeps hover/select but drops the floating panel (legacy applyInspectVisuals(false))
   if (!t || !box.firstElementChild || panelHidden || state.paused) {
     box.style.visibility = 'hidden';
     return;
@@ -344,14 +343,19 @@ export async function initInspector(): Promise<void> {
     },
     opts,
   );
-  // 2.09 blur / mouseleave clear hover
-  window.addEventListener('blur', () => hover(null), opts);
+  // 2.09 blur / mouseleave clear hover; the floating panel goes too, even for a selection,
+  // until the pointer is back on the page
+  const away = () => {
+    panelHidden = true;
+    hover(null);
+  };
+  window.addEventListener('blur', away, opts);
   document.documentElement.addEventListener(
     'mouseleave',
     (e) => {
       if (e.relatedTarget && (e.relatedTarget as Node).nodeName !== 'HTML') return;
       mouse = null;
-      hover(null);
+      away();
     },
     opts,
   );

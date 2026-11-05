@@ -109,6 +109,16 @@ it('hides the floating panel while the pointer is over our UI, until it is back 
   expect(panel.style.visibility).toBe('');
 });
 
+it('hides the floating panel of the selection when the pointer leaves the page', async () => {
+  const { p, panel, settle, move } = await setup();
+  document.documentElement.dispatchEvent(new MouseEvent('mouseleave', { relatedTarget: null }));
+  await settle();
+  expect(panel.style.visibility).toBe('hidden');
+  move(p);
+  await settle();
+  expect(panel.style.visibility).toBe('');
+});
+
 it('keeps the panel hidden after pinning until the next page mousemove', async () => {
   const { p, panel, settle, move } = await setup();
   routeKey(new KeyboardEvent('keydown', { key: ' ' }));

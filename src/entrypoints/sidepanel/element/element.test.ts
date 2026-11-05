@@ -68,12 +68,12 @@ it('shows the header and goes to the tab before selecting the element', async ()
   ]);
 });
 
-it('shows non-zero box sides and dashes for the rest', () => {
+it('shows box sides, zero as 0 like DevTools', () => {
   show();
   const margin = $('[data-ring="margin"]');
   expect(margin.querySelector('[data-side="top"]')!.textContent).toBe('8');
   for (const side of ['right', 'bottom', 'left'])
-    expect(margin.querySelector(`:scope > [data-side="${side}"]`)!.textContent).toBe('-');
+    expect(margin.querySelector(`:scope > [data-side="${side}"]`)!.textContent).toBe('0');
 });
 
 it('asks for matched rules once per element and offers cross-origin access', async () => {

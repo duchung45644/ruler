@@ -59,3 +59,19 @@ it('reads a fetched copy of a cross-origin sheet and reports the rest as blocked
   expect(conds).toEqual(['(min-width: 768px)']);
   expect(blocked).toEqual(['https://cdn.example/b.css']);
 });
+
+it('reads the range syntax Tailwind v4 writes', () => {
+  expect(
+    parseBreakpoints([
+      '(width >= 40rem)',
+      '(width < 48rem)',
+      '(1024px <= width)',
+      '(min-width: 80rem)',
+    ]),
+  ).toEqual([
+    { width: 640, kind: 'min' },
+    { width: 768, kind: 'max' },
+    { width: 1024, kind: 'min' },
+    { width: 1280, kind: 'min' },
+  ]);
+});

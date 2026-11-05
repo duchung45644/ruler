@@ -17,28 +17,30 @@
   ];
 </script>
 
-<!-- One ring of the box: label top-left, side values around, the next ring inside. Rings with
+<!-- One ring of the box (borders alternate dashed / solid): label top-left, side values around, the next ring inside. Rings with
      a non-zero side are tinted (legacy box-model.html), zero sides read "-". -->
-{#snippet ring(name: string, kind: string, s: Sides, tint: string, inner: Snippet)}
+{#snippet ring(name: string, kind: string, s: Sides, tint: string, line: string, inner: Snippet)}
   <div
-    class="grid grid-cols-[minmax(2rem,auto)_1fr_minmax(2rem,auto)] rounded-[5px] border border-dashed border-line-strong text-center tabular-nums {any(
+    class="grid grid-cols-[minmax(1.5rem,auto)_1fr_minmax(1.5rem,auto)] rounded-[4px] border {line} border-line-strong text-center tabular-nums {any(
       s,
     )
       ? tint
       : ''}"
     data-ring={kind}
   >
-    <div class="col-span-3 grid grid-cols-[1fr_auto_1fr] items-center px-1.5 pt-0.5">
-      <span class="text-left text-[10px] text-fg-muted">{name}</span>
+    <div class="col-span-3 grid grid-cols-[1fr_auto_1fr] items-center px-1 leading-4">
+      <span class="text-left text-[9px] text-fg-muted">{name}</span>
       <span class:text-fg-muted={!s.top} data-side="top">{v(s.top)}</span>
       <span></span>
     </div>
-    <span class="self-center px-1" class:text-fg-muted={!s.left} data-side="left">{v(s.left)}</span>
-    <div class="py-0.5">{@render inner()}</div>
-    <span class="self-center px-1" class:text-fg-muted={!s.right} data-side="right"
+    <span class="self-center px-0.5" class:text-fg-muted={!s.left} data-side="left"
+      >{v(s.left)}</span
+    >
+    <div>{@render inner()}</div>
+    <span class="self-center px-0.5" class:text-fg-muted={!s.right} data-side="right"
       >{v(s.right)}</span
     >
-    <span class="col-span-3 pb-0.5" class:text-fg-muted={!s.bottom} data-side="bottom"
+    <span class="col-span-3 leading-4" class:text-fg-muted={!s.bottom} data-side="bottom"
       >{v(s.bottom)}</span
     >
   </div>
@@ -46,22 +48,43 @@
 
 {#snippet content()}
   <div
-    class="mx-auto rounded-[3px] border border-sky-500/50 bg-sky-500/15 px-2 py-1.5 font-medium tabular-nums"
+    class="mx-auto rounded-[3px] border border-sky-500/50 bg-sky-500/15 px-1.5 py-0.5 font-medium tabular-nums"
     data-content
   >
     {formatSize(b.contentWidth, b.contentHeight)}
   </div>
 {/snippet}
 {#snippet padding()}
-  {@render ring(i18n.t('panel.padding'), 'padding', b.padding, 'bg-emerald-500/12', content)}
+  {@render ring(
+    i18n.t('panel.padding'),
+    'padding',
+    b.padding,
+    'bg-emerald-500/12',
+    'border-dashed',
+    content,
+  )}
 {/snippet}
 {#snippet border()}
-  {@render ring(i18n.t('panel.border'), 'border', b.border, 'bg-amber-400/15', padding)}
+  {@render ring(
+    i18n.t('panel.border'),
+    'border',
+    b.border,
+    'bg-amber-400/15',
+    'border-solid',
+    padding,
+  )}
 {/snippet}
 
 <Section id="layout" title={i18n.t('panel.boxModel')} pinned>
-  <div class="font-mono text-[11px]" data-box>
-    {@render ring(i18n.t('panel.margin'), 'margin', b.margin, 'bg-orange-500/12', border)}
+  <div class="font-mono text-[10px]" data-box>
+    {@render ring(
+      i18n.t('panel.margin'),
+      'margin',
+      b.margin,
+      'bg-orange-500/12',
+      'border-dashed',
+      border,
+    )}
   </div>
   {#if el.canvas}
     <div class="mt-3" data-canvas>

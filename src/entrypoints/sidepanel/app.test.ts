@@ -131,6 +131,32 @@ describe('responsive frames (Task 12)', () => {
     expect(sent('get_matched_rules').at(-1)![2]).toEqual({ frameId: 0 });
   });
 
+  it('responsive in tab 9 does not reach the panel of tab 5 (Task 15: two tabs)', async () => {
+    await open();
+    const other = (type: string, frameId: number, ...data: unknown[]) =>
+      fakeBrowser.runtime.onMessage.trigger(
+        { target: 'sidepanel', type, data },
+        { tab: { id: 9 }, frameId } as never,
+        () => {},
+      );
+    await other('responsive_state', 0, { on: true });
+    await other('select_element', 7, sampleElement());
+    await new Promise((r) => setTimeout(r, 0));
+    expect(panel.responsive).toBe(false);
+    expect(panel.element).toBeNull();
+    expect(panel.frameId).toBe(0);
+    // tab 5 goes responsive; a frame of tab 9 with the same frameId still cannot select here
+    await fromFrame('responsive_state', 0, { on: true });
+    await other('select_element', 7, sampleElement());
+    await new Promise((r) => setTimeout(r, 0));
+    expect(panel.element).toBeNull();
+    expect(panel.frameId).toBe(0);
+    // tab 9 leaving responsive does not turn tab 5's off
+    await other('responsive_state', 0, { on: false });
+    await new Promise((r) => setTimeout(r, 0));
+    expect(panel.responsive).toBe(true);
+  });
+
   it('page weight always asks the top frame', async () => {
     await open();
     await fromFrame('responsive_state', 0, { on: true });

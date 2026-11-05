@@ -106,6 +106,7 @@ beforeEach(async () => {
     label: 'dock.breakpoints',
     key: 'b',
     group: 'inspectTools',
+    dock: false,
     run() {},
   } as never);
   initResponsive();
@@ -131,11 +132,14 @@ const readable = (href: string | null) =>
     .spyOn(HTMLIFrameElement.prototype, 'contentDocument', 'get')
     .mockReturnValue(href === null ? null : ({ location: { href } } as unknown as Document));
 
-it('dock item sits right after breakpoints with key V', () => {
-  const group = dockGroups().find((g) => g.some((i) => i.id === 'breakpoints'))!;
-  const ids = group.map((i) => i.id);
-  expect(ids[ids.indexOf('breakpoints') + 1]).toBe('responsive');
+it('one dock button: responsive (V) replaces the breakpoints button, which keeps key B', () => {
+  const all = dockGroups()
+    .flat()
+    .map((i) => i.id);
+  expect(all).toContain('responsive');
+  expect(all).not.toContain('breakpoints');
   expect(items.find((i) => i.id === 'responsive')?.key).toBe('v');
+  expect(items.find((i) => i.id === 'breakpoints')?.key).toBe('b');
 });
 
 it('V toggles responsive mode', async () => {

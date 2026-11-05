@@ -160,6 +160,7 @@ it('the dock is laid out by purpose with mnemonic keys', async () => {
   const groups = dockGroups().map((g) => g.map((i) => i.id));
   expect(groups.find((g) => g.includes('ruler'))).toEqual(['ruler', 'measure', 'eyedropper']);
   expect(groups.at(-1)).toEqual(['sidepanel', 'pause', 'quit']);
+  expect(groups.flat()).not.toContain('breakpoints'); // key B only; the responsive toolbar has it
   const keyOf = (id: string) => items.find((i) => i.id === id)?.key;
   expect(['xray', 'grid', 'ruler', 'breakpoints', 'eyedropper', 'capture'].map(keyOf)).toEqual([
     'x',

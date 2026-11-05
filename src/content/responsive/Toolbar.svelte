@@ -1,5 +1,6 @@
 <script lang="ts">
   import ArrowDownUp from '@lucide/svelte/icons/arrow-down-up';
+  import RulerDimensionLine from '@lucide/svelte/icons/ruler-dimension-line';
   import ListRestart from '@lucide/svelte/icons/list-restart';
   import Plus from '@lucide/svelte/icons/plus';
   import RefreshCw from '@lucide/svelte/icons/refresh-cw';
@@ -9,6 +10,7 @@
   import { i18n } from '#i18n';
   import { CUSTOM_PRESET, DEVICE_GROUPS, type DevicePreset } from '../../lib/responsive/devices';
   import { ZOOM_MAX, ZOOM_MIN, zoomOptions } from '../../lib/responsive/zoom';
+  import { items } from '../core/registry.svelte';
   import {
     addFrame,
     canAddFrame,
@@ -110,6 +112,18 @@
     aria-label={i18n.t('responsive.titleFrameLayout')}
     aria-pressed={shell.framesWrap}
     onclick={toggleFramesWrap}><Rows3 size={15} /></button
+  >
+  <!-- one frame per breakpoint; the same toggle as key B (no dock button any more) -->
+  <button
+    type="button"
+    class={btn}
+    data-action="breakpoint-frames"
+    title="{i18n.t('dock.breakpoints')} (B)"
+    aria-label={i18n.t('dock.breakpoints')}
+    aria-pressed={shell.breakpointMode}
+    disabled={!shell.hasBreakpoints}
+    onclick={() => items.find((i) => i.id === 'breakpoints')?.run()}
+    ><RulerDimensionLine size={15} /></button
   >
   <div class="relative">
     <button

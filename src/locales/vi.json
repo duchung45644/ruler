@@ -32,7 +32,7 @@
     "delete": "Xóa",
     "undo": "Hoàn tác",
     "redo": "Làm lại",
-    "responsive": "Chế độ Responsive"
+    "responsive": "Chế độ Responsive · B: breakpoint"
   },
   "inspect": {
     "layout": "Box Model",

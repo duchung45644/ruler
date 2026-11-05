@@ -32,7 +32,7 @@
     "delete": "Delete",
     "undo": "Undo",
     "redo": "Redo",
-    "responsive": "Responsive Mode"
+    "responsive": "Responsive Mode · B: breakpoints"
   },
   "inspect": {
     "layout": "Box Model",

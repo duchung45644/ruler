@@ -39,6 +39,8 @@ export interface DockItem {
   activeLabel?: MessageKey;
   key?: string;
   group: DockGroup;
+  /** Key only, no dock button (breakpoints: the responsive button and toolbar carry it). */
+  dock?: false;
   run(): void;
   isActive?(): boolean;
   isDisabled?(): boolean;
@@ -103,7 +105,7 @@ export const itemShown = (i: DockItem): boolean => i.group !== 'edit';
  */
 export const DOCK_LAYOUT = [
   ['select_parent', 'select_child', 'inspect', 'find'],
-  ['xray', 'grid', 'breakpoints', 'responsive'],
+  ['xray', 'grid', 'responsive'],
   ['ruler', 'measure', 'eyedropper'],
   ['overlay', 'audit', 'capture'],
   ['sidepanel', 'pause', 'quit'],
@@ -118,7 +120,7 @@ export function dockGroups(): DockItem[][] {
     ...DOCK_LAYOUT.map((ids) => ids.map(byId).filter((i): i is DockItem => !!i)),
     ...DOCK_GROUPS.map((g) => items.filter((i) => i.group === g && !LISTED.includes(i.id))),
   ]
-    .map((g) => g.filter(itemShown))
+    .map((g) => g.filter((i) => i.dock !== false && itemShown(i)))
     .filter((g) => g.length);
 }
 

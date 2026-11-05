@@ -184,7 +184,7 @@
         ? i18n.t('edit.invalidValue')
         : (m?.title ?? '')}
     <div
-      class="relative flex items-center rounded-sm pl-3 hover:bg-line/50"
+      class="relative flex items-center rounded-sm pl-5 hover:bg-line/50"
       class:opacity-50={m?.kind === 'overridden' || m?.kind === 'not-inherited'}
       data-row={row.id}
       data-mark={bp ? 'invalid-property' : bv ? 'invalid-value' : m?.kind}
@@ -192,7 +192,7 @@
     >
       {#if bp || bv || m?.kind === 'hidden'}
         <span
-          class="absolute left-0.5 size-1.5 rounded-full {bp || bv ? 'bg-red-500' : 'bg-amber-500'}"
+          class="absolute left-2 size-1.5 rounded-full {bp || bv ? 'bg-red-500' : 'bg-amber-500'}"
         ></span>
       {/if}
       <input
@@ -211,7 +211,7 @@
         {onblur}
       /><span class="text-fg-muted" class:opacity-0={!row.property && !row.value}>:</span>
       <input
-        class="field ml-1 min-w-0 flex-1"
+        class="field ml-1 min-w-0"
         class:line-through={m?.kind === 'overridden'}
         class:decoration-wavy={bv}
         class:underline={bv}
@@ -224,7 +224,9 @@
         oninput={(e) => oninput(row, 'value', e.currentTarget.value)}
         onkeydown={(e) => onkeydown(e, row, 'value')}
         {onblur}
-      />
+      /><span class="text-fg-muted" class:opacity-0={!row.property || !row.value}>;</span><span
+        class="flex-1"
+      ></span>
       {#if open?.id === row.id && items.length}
         <div class="absolute top-full z-20 mt-0.5 {open.field === 'value' ? 'left-1/3' : 'left-3'}">
           <Suggest {items} {active} onpick={(item) => accept(row, open!.field, item)} />

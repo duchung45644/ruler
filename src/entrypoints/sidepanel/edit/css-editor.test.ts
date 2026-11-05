@@ -163,3 +163,21 @@ it('forces the picked state', async () => {
   select.dispatchEvent(new Event('change', { bubbles: true }));
   await vi.waitFor(() => expect(sent('force_element_state')).toEqual([[':hover']]));
 });
+
+it('reads like DevTools: wrappers in grey above `selector {`, and the filter hides other rules', () => {
+  editor(
+    payload([
+      rule({ wrappers: ['@layer utilities'] }),
+      rule({ selector: '.other', declarations: [{ property: 'margin', value: '0' }] as never }),
+    ]),
+  );
+  const card = document.querySelector('[data-rule=".card"]')!;
+  expect(card.textContent).toContain('@layer utilities');
+  expect(card.textContent).toContain('{');
+  const f = document.querySelector<HTMLInputElement>('[data-filter]')!;
+  f.value = 'margin';
+  f.dispatchEvent(new Event('input'));
+  flushSync();
+  expect(document.querySelector('[data-rule=".card"]')).toBeNull();
+  expect(document.querySelector('[data-rule=".other"]')).not.toBeNull();
+});

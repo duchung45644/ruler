@@ -335,7 +335,9 @@
     "overriddenHidden": "Overridden by a stylesheet Bo doi can't see",
     "overriddenHiddenGrant": "Overridden by a stylesheet Bo doi can't see. Grant cross-origin access to reveal it.",
     "crossOriginMissing": "Some styles may be missing.",
-    "stateDefault": "Default"
+    "stateDefault": "Default",
+    "filter": "Filter",
+    "showClasses": "Classes"
   },
   "changes": {
     "elementsOne": "1 Element",

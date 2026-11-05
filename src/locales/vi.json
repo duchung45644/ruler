@@ -335,7 +335,9 @@
     "overriddenHidden": "Bị ghi đè bởi một stylesheet mà Bo doi không thể thấy",
     "overriddenHiddenGrant": "Bị ghi đè bởi một stylesheet mà Bo doi không thể thấy. Cấp quyền truy cập cross-origin để xem.",
     "crossOriginMissing": "Một số kiểu có thể bị thiếu.",
-    "stateDefault": "Mặc định"
+    "stateDefault": "Mặc định",
+    "filter": "Lọc",
+    "showClasses": "Class"
   },
   "changes": {
     "elementsOne": "1 phần tử",

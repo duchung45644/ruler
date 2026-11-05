@@ -94,19 +94,17 @@
     ),
   ]);
 
-  // rules keep their cascade order; each run of wrappers gets its own heading (6.40)
-  const groups = $derived.by(() => {
-    // eslint-disable-next-line svelte/prefer-svelte-reactivity -- built fresh inside the derived
-    const out = new Map<string, { wrappers: string[]; items: number[] }>([
-      ['', { wrappers: [], items: [] }],
-    ]);
-    rules.forEach((r, i) => {
-      const k = r.wrappers.join(' ');
-      if (!out.has(k)) out.set(k, { wrappers: r.wrappers, items: [] });
-      out.get(k)!.items.push(i);
-    });
-    return [...out.values()];
-  });
+  // DevTools-style filter: a rule stays when its selector or one of its properties matches
+  let filter = $state('');
+  let showClasses = $state(false);
+  const matches = (r: { selector: string; declarations: { property: string }[] }) => {
+    const q = filter.trim().toLowerCase();
+    return (
+      !q ||
+      r.selector.toLowerCase().includes(q) ||
+      r.declarations.some((d) => d.property.toLowerCase().includes(q))
+    );
+  };
   const mediaOn = (wrappers: string[]) =>
     wrappers.every((w) => !w.startsWith('@media ') || (edit.mediaActive[w] ?? true));
 
@@ -116,20 +114,38 @@
   }
 </script>
 
-{#snippet heading(label: string, title?: string, dim = false)}
-  <h3
-    class="mt-3 mb-1.5 flex items-center gap-1 truncate text-[10px] font-semibold tracking-wide text-fg-muted uppercase first:mt-0"
-    class:opacity-50={dim}
-    {title}
-  >
-    {label}
-  </h3>
-{/snippet}
+<div class="flex flex-col" data-css-editor>
+  <div class="flex items-center gap-1 border-b border-line px-2 py-1">
+    <input
+      class="h-6 min-w-0 flex-1 rounded-sm bg-transparent px-1.5 font-mono text-[11px] outline-none placeholder:text-fg-muted focus:bg-line"
+      placeholder={i18n.t('edit.filter')}
+      bind:value={filter}
+      spellcheck="false"
+      data-filter
+    />
+    <button
+      type="button"
+      class="h-6 rounded-sm px-1.5 font-mono text-[11px] text-fg-muted hover:bg-line hover:text-fg"
+      class:bg-line={showClasses}
+      class:text-fg={showClasses}
+      title={i18n.t('edit.showClasses')}
+      aria-pressed={showClasses}
+      data-action="toggle_classes"
+      onclick={() => (showClasses = !showClasses)}>.cls</button
+    >
+    <button
+      type="button"
+      class="grid size-6 place-items-center rounded-sm text-fg-muted hover:bg-line hover:text-fg"
+      title={i18n.t('edit.addRule')}
+      aria-label={i18n.t('edit.addRule')}
+      data-action="rule_add"
+      onclick={addRule}><Plus class="size-3.5" /></button
+    >
+  </div>
 
-<div class="flex flex-col gap-1.5 px-3 py-2.5" data-css-editor>
   {#if payload.crossOriginMissing > 0 && !hostPermission}
     <div
-      class="flex items-center gap-2 rounded-btn border border-amber-500/30 bg-amber-500/10 px-2 py-1.5"
+      class="flex items-center gap-2 border-b border-amber-500/30 bg-amber-500/10 px-2 py-1.5"
       data-cross-origin
     >
       <span class="flex-1">{i18n.t('edit.crossOriginMissing')}</span>
@@ -139,11 +155,15 @@
     </div>
   {/if}
 
-  {#key el.id}<ClassInput id={el.id} />{/key}
+  {#if showClasses}
+    <div class="border-b border-line px-2 py-1.5">
+      {#key el.id}<ClassInput id={el.id} />{/key}
+    </div>
+  {/if}
 
-  {@render heading(i18n.t('edit.effectiveStyles'))}
-  <div class="rounded-btn border border-dashed border-line-strong py-1.5 pr-2" data-inline>
-    <div class="mb-0.5 pl-3 font-mono text-[11px] text-fg-muted">element.style</div>
+  <!-- element.style first, then matched rules in cascade order, then inherited, like DevTools -->
+  <div class="border-b border-line py-1.5 pr-2" data-inline>
+    <div class="pl-2 font-mono text-[11px]">element.style {'{'}</div>
     {#key payload.paySeq}
       <DeclEditor
         decls={payload.inline}
@@ -152,31 +172,31 @@
         oncommit={(text) => void command('inline_style_edit', el.id, text)}
       />
     {/key}
+    <div class="pl-2 font-mono text-[11px]">}</div>
   </div>
 
-  {#each groups as g (g.wrappers.join(' '))}
-    {#if g.wrappers.length}
-      {@render heading(g.wrappers.join(' '), g.wrappers.join(' '), !mediaOn(g.wrappers))}
-    {:else}
-      <div class="mt-3 mb-1.5 flex items-center">
-        <h3 class="flex-1 text-[10px] font-semibold tracking-wide text-fg-muted uppercase">
-          {i18n.t('edit.rules')}
-        </h3>
-        <button
-          type="button"
-          class="flex items-center gap-1 rounded-btn px-1.5 py-0.5 text-fg-muted hover:bg-line hover:text-fg"
-          data-action="rule_add"
-          onclick={addRule}><Plus class="size-3.5" />{i18n.t('edit.addRule')}</button
-        >
-      </div>
+  {#each rules as r, i (`${payload.paySeq}:${i}`)}
+    {#if matches(r)}
+      <RuleBlock
+        rule={payload.rules[i]!}
+        {vars}
+        mark={ruleMark(i)}
+        dim={!r.mediaActive || !mediaOn(r.wrappers)}
+      />
     {/if}
-    {#each g.items as i (`${payload.paySeq}:${i}`)}
-      <RuleBlock rule={payload.rules[i]!} {vars} mark={ruleMark(i)} dim={!rules[i]!.mediaActive} />
-    {/each}
   {/each}
 
   {#each edit.inherited as r, i (`${payload.paySeq}:i${i}`)}
-    {@render heading(i18n.t('edit.inheritedFrom', [r.selector]), r.selector)}
-    <RuleBlock rule={r} {vars} mark={inheritedMark} />
+    {#if matches(r)}
+      {#if i === 0 || edit.inherited[i - 1]!.selector !== r.selector}
+        <div
+          class="truncate border-b border-line bg-line/40 px-2 py-1 text-[11px] text-fg-muted"
+          title={r.selector}
+        >
+          {i18n.t('edit.inheritedFrom', [''])}<span class="font-mono text-fg">{r.selector}</span>
+        </div>
+      {/if}
+      <RuleBlock rule={r} {vars} mark={inheritedMark} />
+    {/if}
   {/each}
 </div>

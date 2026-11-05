@@ -31,7 +31,8 @@
     "duplicate": "Nhân bản",
     "delete": "Xóa",
     "undo": "Hoàn tác",
-    "redo": "Làm lại"
+    "redo": "Làm lại",
+    "responsive": "Chế độ Responsive"
   },
   "inspect": {
     "layout": "Box Model",
@@ -348,5 +349,8 @@
     "whitespaceOnly": "Chỉ thay đổi khoảng trắng",
     "none": "Không tìm thấy thay đổi",
     "clearChanges": "Xóa Tất cả Thay đổi"
+  },
+  "responsive": {
+    "confirmPartialEdits": "Các thay đổi quy tắc CSS sẽ được giữ lại. Kiểu nội tuyến, chỉnh sửa mã và lớp sẽ bị loại bỏ."
   }
 }

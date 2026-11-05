@@ -60,7 +60,7 @@ export const itemShown = (i: DockItem): boolean => i.group !== 'edit';
  */
 export const DOCK_LAYOUT = [
   ['select_parent', 'select_child', 'inspect', 'find'],
-  ['xray', 'grid', 'breakpoints'],
+  ['xray', 'grid', 'breakpoints', 'responsive'],
   ['ruler', 'measure', 'eyedropper'],
   ['overlay', 'audit', 'capture'],
   ['sidepanel', 'pause', 'quit'],

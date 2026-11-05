@@ -1,5 +1,5 @@
 /** Escape and the dock's letter keys (lowercase; Shift is not forwarded). */
-const FORWARD = new Set(['Escape', ...'ixgrbcfspoma']);
+const FORWARD = new Set(['Escape', ...'ixgrbvcfspoma']);
 
 export interface KeyLike {
   key: string;

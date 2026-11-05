@@ -8,6 +8,18 @@ import { state } from '../core/state.svelte';
 import type { RuleTracker } from './rules';
 
 const DELAY = 800;
+/** sessionStorage flag set by the responsive exit hand-off: the reload that follows restores quietly (5.26). */
+export const HANDOFF_FLAG = 'bo-doi-responsive-handoff';
+
+function takeHandoffFlag(): boolean {
+  try {
+    const on = sessionStorage.getItem(HANDOFF_FLAG) !== null;
+    sessionStorage.removeItem(HANDOFF_FLAG);
+    return on;
+  } catch {
+    return false;
+  }
+}
 let tracker: RuleTracker | null = null;
 let timer: ReturnType<typeof setTimeout> | null = null;
 /** Last value written, so an HTML-only change does not rewrite the same edits. */
@@ -63,6 +75,7 @@ export async function restorePersisted(t: RuleTracker): Promise<() => void> {
     browser.storage.onChanged.removeListener(onStorage);
     tracker = null;
   };
+  const quiet = takeHandoffFlag();
   const key = persistKey(location);
   if (!key || !eligible()) return stop;
   // re-enabled in the same page: the tracker kept its edits applied, nothing to restore
@@ -75,7 +88,7 @@ export async function restorePersisted(t: RuleTracker): Promise<() => void> {
   if (!edits.length || tracker !== t) return stop;
   const { applied } = t.applySerialized(edits);
   written = JSON.stringify(t.serialize());
-  if (applied > 0)
+  if (applied > 0 && !quiet)
     showToast(
       applied === 1
         ? i18n.t('toast.editsRestoredOne')

@@ -16,6 +16,8 @@ export const state = $state({
   theme: 'dark' as 'light' | 'dark',
   xrayOn: false,
   breakpointsOn: false,
+  /** Responsive shell (frame per viewport) covers the page. */
+  responsiveOn: false,
   rulerOn: false,
   /** Find popover has a query matching at least one visible element (3.08). */
   findOn: false,

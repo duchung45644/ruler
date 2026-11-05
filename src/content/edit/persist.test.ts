@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { showToast } from '../core/toast';
-import { persistNow, restorePersisted, schedulePersist } from './persist';
+import { HANDOFF_FLAG, persistNow, restorePersisted, schedulePersist } from './persist';
 import { RuleTracker } from './rules';
 
 vi.mock('../core/toast', () => ({ showToast: vi.fn() }));
@@ -70,6 +70,15 @@ it('applies valid saved edits, skips junk and shows the restored toast', async (
   expect(tracker.flattened()).toHaveLength(2);
   expect(document.getElementById(tracker.styleId)?.textContent).toContain('.y');
   expect(showToast).toHaveBeenCalledWith('toast_editsRestoredMany:2', 5000);
+});
+
+it('responsive exit hand-off flag: applies the edits quietly and clears the flag (5.26)', async () => {
+  await fakeBrowser.storage.local.set({ [KEY]: { edits: [own('r1', '.x')], updatedAt: 1 } });
+  sessionStorage.setItem(HANDOFF_FLAG, '1');
+  stop = await restorePersisted(tracker);
+  expect(tracker.flattened()).toHaveLength(1);
+  expect(showToast).not.toHaveBeenCalled();
+  expect(sessionStorage.getItem(HANDOFF_FLAG)).toBeNull();
 });
 
 it('does not write from an iframe', async () => {

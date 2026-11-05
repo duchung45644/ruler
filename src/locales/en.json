@@ -31,7 +31,8 @@
     "duplicate": "Duplicate",
     "delete": "Delete",
     "undo": "Undo",
-    "redo": "Redo"
+    "redo": "Redo",
+    "responsive": "Responsive Mode"
   },
   "inspect": {
     "layout": "Box Model",
@@ -348,5 +349,8 @@
     "whitespaceOnly": "Whitespace-only changes",
     "none": "No changes found",
     "clearChanges": "Clear All Changes"
+  },
+  "responsive": {
+    "confirmPartialEdits": "Your CSS rule changes will be kept. Inline style, markup and class edits will be discarded."
   }
 }

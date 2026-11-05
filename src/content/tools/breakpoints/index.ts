@@ -17,6 +17,9 @@ const COLORS = { min: '#008C21', max: '#0891B2', both: '#E8A23D' };
 const isOwn = (el: Element) => el.localName === 'bo-doi-ui';
 let found: Breakpoint[] = [];
 
+/** Breakpoints shown right now (empty while the tool is off); responsive mode builds frames from them (Q5). */
+export const currentBreakpoints = (): Breakpoint[] => (state.breakpointsOn ? [...found] : []);
+
 function scan(): string[] {
   const blocked: string[] = [];
   const roots = [document, ...shadowRoots(document, isOwn)];

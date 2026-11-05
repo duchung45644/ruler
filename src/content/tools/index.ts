@@ -9,6 +9,7 @@ import { initOverlay } from './overlay';
 import { initRuler } from './ruler';
 import { initSidePanel } from '../sidepanel';
 import { initEdit } from '../edit';
+import { initResponsive } from '../responsive';
 import { initXray } from './xray';
 
 /**
@@ -22,6 +23,7 @@ export async function initTools(): Promise<void> {
   await initGrid();
   await initRuler();
   await initBreakpoints();
+  initResponsive(); // dock: right after breakpoints (Q1)
   initEyedropper();
   initFind(); // utilities: after eyedropper (legacy dock order)
   initCapture(); // utilities: after find

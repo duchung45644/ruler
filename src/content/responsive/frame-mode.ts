@@ -7,6 +7,8 @@ import { parseFrameName } from '../../lib/responsive/frame-name';
 import { runItem, setForwardKey } from '../core/keys';
 import { setPaused } from '../core/registry.svelte';
 import { state } from '../core/state.svelte';
+import { isSerializedEdit } from '../../lib/edit/serialize';
+import { ruleTracker } from '../edit/mode.svelte';
 
 let controller: AbortController | null = null;
 let channel: Channel<ShellApi> | null = null;
@@ -25,6 +27,13 @@ export function startFrameMode(): void {
     {
       run_item: (id) => void runItem(id),
       set_paused: (paused) => setPaused(!!paused),
+      // the shell pushes the page's CSS edits on ready and collects them back on exit (Q8)
+      apply_rule_edits: (edits) => {
+        const list = Array.isArray(edits) ? edits.filter(isSerializedEdit) : [];
+        ruleTracker().applySerialized(list);
+      },
+      collect_rule_edits: () => ruleTracker().serialize(),
+      get_current_url: () => location.href,
     },
     controller.signal,
   );

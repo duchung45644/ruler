@@ -24,7 +24,7 @@
 <!-- Full-screen canvas over the page (Q2); the toolbar comes in Task 8. -->
 <div
   data-responsive-shell
-  class="pointer-events-auto fixed inset-0 overflow-auto bg-zinc-800 [background-image:radial-gradient(rgba(255,255,255,.14)_1px,transparent_1px)] [background-size:16px_16px]"
+  class="pointer-events-auto fixed inset-0 overflow-auto bg-zinc-800 font-sans text-[12px] text-fg [background-image:radial-gradient(rgba(255,255,255,.14)_1px,transparent_1px)] [background-size:16px_16px]"
   class:select-none={shell.dragging}
 >
   <div class="flex w-max items-start gap-6 px-6 pt-6 pb-24">

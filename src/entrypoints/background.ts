@@ -21,6 +21,7 @@ import {
   panelHandlers,
   setupPanels,
 } from '../background/panels';
+import { initResponsive, responsiveHandlers } from '../background/responsive';
 
 const icon = (tabId: number, active: boolean) =>
   browser.action
@@ -164,6 +165,7 @@ async function setup() {
 
 export default defineBackground(() => {
   initPanels();
+  initResponsive(toggleTab);
   browser.runtime.onInstalled.addListener(() => void setup().catch(() => {}));
   browser.runtime.onStartup.addListener(() => void setup().catch(() => {}));
   browser.action.onClicked.addListener((tab) => void toggleIfAllowed(tab));
@@ -181,6 +183,7 @@ export default defineBackground(() => {
     'background',
     {
       ...panelHandlers,
+      ...responsiveHandlers,
       async close_extension(sender) {
         const tabId = sender.tab?.id;
         if (tabId === undefined) return;

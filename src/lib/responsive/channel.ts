@@ -1,6 +1,7 @@
 import type { Breakpoint } from '../breakpoints';
 import type { SerializedEdit } from '../edit/serialize';
 import type { EditState } from '../edit/types';
+import type { CallOutcome } from '../mcp/protocol';
 import type { ElementLocator } from './element-locator';
 import type { FindCursor } from './find-agg';
 
@@ -57,6 +58,8 @@ export interface FrameApi {
   element_rect(): { left: number; top: number; right: number; bottom: number } | null;
   /** Hide (true) / show this frame's own UI while the parent grabs the tab (Q6). */
   capture_hide(on: boolean): void;
+  /** An MCP element / edit command the shell routes to this frame (10.08, 10.16). */
+  mcp_call(type: string, payload: unknown): CallOutcome;
 }
 
 /** Frame → parent (shell). */

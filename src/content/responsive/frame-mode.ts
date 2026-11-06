@@ -20,6 +20,8 @@ import {
   takeSharedHistory,
 } from './edits';
 import { createFrameSync } from './sync';
+import type { McpPageType } from '../../lib/mcp/protocol';
+import { runMcp } from '../mcp';
 import { applyReadyAck, applySetting, frameFind, frameFindGoto } from './forward';
 
 let controller: AbortController | null = null;
@@ -67,6 +69,8 @@ export function startFrameMode(): void {
       shared_history_state: (s) => takeSharedHistory(s),
       element_rect: () => selectedRect(),
       capture_hide: (on) => hideUi(on ? 'all' : null),
+      // validated by the background; the frame refuses responsive / page-level commands itself
+      mcp_call: (type, payload) => runMcp(type as McpPageType, payload),
     },
     controller.signal,
   );

@@ -4,6 +4,7 @@ import { browser } from '#imports';
 import { i18n } from '#i18n';
 import { isSerializedEdit } from '../../lib/edit/serialize';
 import { sendToBackground, sendToSidePanel } from '../../lib/messaging';
+import type { CallOutcome } from '../../lib/mcp/protocol';
 import type { FrameApi } from '../../lib/responsive/channel';
 import { frameName } from '../../lib/responsive/frame-name';
 import {
@@ -722,6 +723,80 @@ export async function exitResponsive(): Promise<void> {
   } finally {
     busy = false;
   }
+}
+
+// ---------------------------------------------------------------- MCP (10.08, 10.13)
+
+/** Viewports as MCP reports them (legacy describeViewports). */
+export function describeViewports() {
+  return {
+    responsive: state.responsiveOn,
+    zoom: shell.zoom,
+    breakpointsMode: shell.breakpointMode,
+    selectedViewportId: selectedFrame,
+    viewports: shell.frames.map((f) => ({
+      id: f.vp.id,
+      name: f.vp.name || null,
+      width: f.vp.width,
+      height: f.vp.height,
+      label: frameLabel(f.vp),
+      loading: f.loading,
+    })),
+  };
+}
+
+/** Replace the viewport list without asking (MCP set / add / remove); kept frames stay loaded. */
+export function setViewportList(next: Viewport[]): void {
+  replaceFrames(next);
+  scheduleSave();
+}
+
+const readyChannel = (id: number) => (wasReady.has(id) ? channels.get(id) : undefined);
+
+/**
+ * Run an MCP command in one frame: `viewportId`, else the frame holding the selection, else the
+ * first ready one. The answer carries the viewport it came from.
+ */
+export async function frameMcpCall(
+  type: string,
+  payload: unknown,
+  viewportId: number | undefined,
+  ms: number,
+): Promise<CallOutcome> {
+  const id =
+    viewportId ??
+    (selectedFrame !== null && readyChannel(selectedFrame) ? selectedFrame : undefined) ??
+    shell.frames.find((f) => readyChannel(f.vp.id))?.vp.id;
+  if (id === undefined) return { ok: false, error: 'No responsive frame is ready yet; try again.' };
+  const ch = readyChannel(id);
+  if (!ch) return { ok: false, error: `No viewport with id ${id}.` };
+  const r = await ch.callFor(ms, 'mcp_call', type, payload);
+  if (!r) return { ok: false, error: `${type} timed out in viewport ${id}.` };
+  if (r.ok && r.data && typeof r.data === 'object' && !Array.isArray(r.data))
+    return { ok: true, data: { ...r.data, viewportId: id } };
+  return r;
+}
+
+/** The same command in every ready frame, with each frame's viewport id and label. */
+export async function allFramesMcpCall(
+  type: string,
+  payload: unknown,
+  ms: number,
+): Promise<{ viewportId: number; label: string; outcome: CallOutcome }[]> {
+  const list = shell.frames.flatMap((f) => {
+    const ch = readyChannel(f.vp.id);
+    return ch ? [{ f, ch }] : [];
+  });
+  return Promise.all(
+    list.map(async ({ f, ch }) => ({
+      viewportId: f.vp.id,
+      label: frameLabel(f.vp),
+      outcome: (await ch.callFor(ms, 'mcp_call', type, payload)) ?? {
+        ok: false as const,
+        error: 'timed out',
+      },
+    })),
+  );
 }
 
 export function toggleResponsive(): void {

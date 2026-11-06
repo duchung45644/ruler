@@ -30,6 +30,9 @@ export interface FullCaptureOpts {
   after?: string;
   restore?: string;
 }
+export type AiCapture =
+  | { ok: true; dataUrl: string; width: number; height: number }
+  | { ok: false; reason: 'capture_failed' | 'script_inactive' };
 export type FullCaptureResult = { ok: true; parts: string[] } | { ok: false; error: string };
 
 export interface BackgroundApi {
@@ -69,6 +72,8 @@ export interface BackgroundApi {
   mcp_disconnect(): McpStatus;
   /** Copy prompt with the pairing token; null unless asked by an extension page or a Bo doi tab. */
   mcp_prompt(): string | null;
+  /** get_screenshot: the sender's visible tab as PNG, longest side ≤ 2000 px (Q6 a). */
+  capture_for_ai(): AiCapture;
 }
 export interface ContentApi {
   ping(): { active: boolean };

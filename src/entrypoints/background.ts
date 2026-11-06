@@ -3,10 +3,12 @@ import {
   CAPTURE_GAP,
   chunkClips,
   cropBox,
+  fitSize,
   nextCaptureDelay,
   type DeviceRect,
 } from '../lib/capture-bg';
 import {
+  type AiCapture,
   handleMessages,
   sendToTab,
   type CaptureResult,
@@ -28,7 +30,7 @@ import {
   openOptions,
   optionsHandlers,
 } from '../background/options';
-import { initMcp, mcpHandlers } from '../background/mcp';
+import { initMcp, isBoDoiTab, mcpHandlers } from '../background/mcp';
 
 const icon = (tabId: number, active: boolean) =>
   browser.action
@@ -104,6 +106,38 @@ async function captureTab(
     return { success: true, dataUrl: rect ? await crop(dataUrl, rect) : dataUrl };
   } catch {
     return { success: false, error: 'CAPTURE_FAILED' };
+  }
+}
+
+const toDataUrl = (blob: Blob) =>
+  new Promise<string>((res, rej) => {
+    const fr = new FileReader();
+    fr.onload = () => res(String(fr.result));
+    fr.onerror = rej;
+    fr.readAsDataURL(blob);
+  });
+
+/** 10.05 / 10.14: the visible tab for an agent, PNG scaled down to ≤ 2000 px (Q6 a). */
+async function captureForAi(tab?: { id?: number; windowId?: number }): Promise<AiCapture> {
+  if (tab?.id === undefined || !(await isBoDoiTab(tab.id)))
+    return { ok: false, reason: 'script_inactive' };
+  try {
+    const dataUrl = await captureVisible(tab.windowId ?? browser.windows.WINDOW_ID_CURRENT);
+    const bmp = await createImageBitmap(await (await fetch(dataUrl)).blob());
+    const { width, height } = fitSize(bmp.width, bmp.height);
+    if (width === bmp.width && height === bmp.height) return { ok: true, dataUrl, width, height };
+    const c = new OffscreenCanvas(width, height);
+    const g = c.getContext('2d')!;
+    g.imageSmoothingQuality = 'high';
+    g.drawImage(bmp, 0, 0, width, height);
+    return {
+      ok: true,
+      dataUrl: await toDataUrl(await c.convertToBlob({ type: 'image/png' })),
+      width,
+      height,
+    };
+  } catch {
+    return { ok: false, reason: 'capture_failed' };
   }
 }
 
@@ -213,6 +247,7 @@ export default defineBackground(() => {
       request_clipboard_permission: () =>
         browser.permissions.request({ permissions: ['clipboardWrite'] }),
       capture_tab: (rect, sender) => captureTab(rect, sender.tab),
+      capture_for_ai: (sender) => captureForAi(sender.tab),
       full_capture: (opts, sender) =>
         sender.tab?.id === undefined
           ? { ok: false, error: 'no tab' }

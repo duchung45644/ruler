@@ -20,3 +20,10 @@ it('chunkClips', () => {
   expect(c).toHaveLength(3);
   expect(c[2]).toMatchObject({ y: 16900, height: 4000, width: 1280 });
 });
+
+it('fits AI screenshots to 2000px on the longest side, never upscaling', async () => {
+  const { fitSize } = await import('./capture-bg');
+  expect(fitSize(4000, 1000)).toEqual({ width: 2000, height: 500 });
+  expect(fitSize(1000, 3000)).toEqual({ width: 667, height: 2000 });
+  expect(fitSize(800, 600)).toEqual({ width: 800, height: 600 });
+});

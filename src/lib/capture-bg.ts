@@ -21,3 +21,16 @@ export function chunkClips(height: number, chunk: number, shift: number, width: 
     clips.push({ x: 0, y: y + shift, width, height: Math.min(chunk, height - y), scale: 1 });
   return clips;
 }
+
+/** Longest side of an image sent to an AI agent (Q6 a). */
+export const AI_MAX_SIDE = 2000;
+
+/** Size that fits `max` on the longest side, aspect kept; never upscaled. */
+export function fitSize(
+  w: number,
+  h: number,
+  max = AI_MAX_SIDE,
+): { width: number; height: number } {
+  const k = Math.min(1, max / Math.max(w, h, 1));
+  return { width: Math.max(1, Math.round(w * k)), height: Math.max(1, Math.round(h * k)) };
+}

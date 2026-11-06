@@ -15,6 +15,12 @@ export interface Channel<Out extends object> {
     type: K,
     ...data: Out[K] extends (...a: infer P) => unknown ? P : never
   ): Promise<(Out[K] extends (...a: never[]) => infer R ? Awaited<R> : never) | undefined>;
+  /** Like call, with its own timeout (MCP commands forwarded to a frame can take seconds). */
+  callFor<K extends keyof Out & string>(
+    ms: number,
+    type: K,
+    ...data: Out[K] extends (...a: infer P) => unknown ? P : never
+  ): Promise<(Out[K] extends (...a: never[]) => infer R ? Awaited<R> : never) | undefined>;
   send<K extends keyof Out & string>(
     type: K,
     ...data: Out[K] extends (...a: infer P) => unknown ? P : never
@@ -77,22 +83,25 @@ function connect<In extends object, Out extends object>(
     { once: true },
   );
 
-  return {
-    call(type, ...data) {
-      if (signal.aborted) return Promise.resolve(undefined);
-      const id = ++seq;
-      return new Promise((resolve) => {
-        const timer = setTimeout(() => {
-          pending.delete(id);
-          resolve(undefined);
-        }, CALL_TIMEOUT_MS);
-        pending.set(id, (v) => {
-          clearTimeout(timer);
-          resolve(v as never);
-        });
-        post({ type, data, id });
+  const callFor = (ms: number, type: string, data: unknown[]) => {
+    if (signal.aborted) return Promise.resolve(undefined);
+    const id = ++seq;
+    return new Promise<never>((resolve) => {
+      const timer = setTimeout(() => {
+        pending.delete(id);
+        resolve(undefined as never);
+      }, ms);
+      pending.set(id, (v) => {
+        clearTimeout(timer);
+        resolve(v as never);
       });
-    },
+      post({ type, data, id });
+    });
+  };
+
+  return {
+    call: (type, ...data) => callFor(CALL_TIMEOUT_MS, type, data),
+    callFor: (ms, type, ...data) => callFor(ms, type, data),
     send(type, ...data) {
       post({ type, data });
     },

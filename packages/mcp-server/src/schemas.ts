@@ -1,0 +1,268 @@
+/**
+ * MCP tool definitions: one tool per protocol command. The JSON Schemas describe what
+ * `validateCall` (protocol.gen.ts, copied from the extension) accepts; the server still runs
+ * `validateCall` before sending, so the validator stays the authority.
+ */
+import { INSERT_POSITIONS, LIMITS, MCP_STATES, MCP_TYPES, type McpType } from './protocol.gen.ts';
+
+type Schema = Record<string, unknown>;
+export interface ToolDef {
+  name: string;
+  description: string;
+  inputSchema: { type: 'object'; properties: Record<string, Schema>; required?: string[] };
+}
+
+const int = (description: string): Schema => ({ type: 'integer', description });
+const str = (maxLength: number, description: string, minLength = 0): Schema => ({
+  type: 'string',
+  maxLength,
+  ...(minLength ? { minLength } : {}),
+  description,
+});
+const ELEMENT_ID_PATTERN = '^v-[a-z0-9]{1,16}$';
+const elementIdS = (description = 'Element id like "v-abc123", from a previous result.') => ({
+  type: 'string',
+  pattern: ELEMENT_ID_PATTERN,
+  description,
+});
+const tabId = int('Tab id from list_tabs (only tabs where Bo doi is on).');
+const viewportId = int(
+  'Responsive mode: run in this viewport frame instead of the one holding the selection.',
+);
+const limit: Schema = {
+  type: 'integer',
+  minimum: LIMITS.limitMin,
+  maximum: LIMITS.limitMax,
+  default: LIMITS.limitDefault,
+  description: `Max results (clamped ${LIMITS.limitMin}-${LIMITS.limitMax}).`,
+};
+const styles: Schema = {
+  type: 'object',
+  maxProperties: LIMITS.styles,
+  additionalProperties: { type: ['string', 'number'], maxLength: LIMITS.styleValue },
+  description: 'CSS property → value, e.g. {"color": "red", "--gap": "8px"}.',
+};
+const ruleRef: Schema = {
+  type: 'object',
+  description: 'ruleRef exactly as returned by get_element_matched_rules; pass it back unchanged.',
+  properties: {
+    stylesheet: { type: 'string', maxLength: LIMITS.url },
+    selector: { type: 'string', maxLength: LIMITS.selector },
+    wrappers: {
+      type: 'array',
+      maxItems: LIMITS.wrappers,
+      items: { type: 'string', maxLength: LIMITS.selector },
+    },
+    occ: { type: 'integer', minimum: 0 },
+    scopeAddress: { type: ['string', 'null'], maxLength: 4 * LIMITS.selector },
+  },
+  required: ['stylesheet', 'selector', 'wrappers', 'occ', 'scopeAddress'],
+};
+const selector = str(LIMITS.selector, 'CSS selector.', 1);
+const wrappers: Schema = {
+  type: 'array',
+  maxItems: LIMITS.wrappers,
+  items: { type: 'string', maxLength: LIMITS.selector },
+  description: 'At-rule preludes, outermost first, e.g. ["@media (min-width: 768px)"].',
+};
+
+/** [description, extra properties, extra required] per command; tabId is added below. */
+type Spec = [string, Record<string, Schema>?, string[]?];
+const EL: Spec[1] = { elementId: elementIdS(), viewportId };
+const SPECS: Record<McpType, Spec> = {
+  list_tabs: [
+    'List the tabs where the user turned Bo doi on: {tabs: [{tabId, title, url, active}]}.',
+  ],
+  focus_tab: ['Bring a Bo doi tab to the front.'],
+  get_page_info: [
+    'Page summary: url, title, lang, meta, h1, viewport, page size, scroll, devicePixelRatio.',
+  ],
+  get_selected_element: [
+    "Summary of the element the user selected in Bo doi's inspector.",
+    { viewportId },
+  ],
+  get_element_details: ['Full details of one element.', EL, ['elementId']],
+  get_elements_details: [
+    'Details of several elements: {results, notFound}.',
+    {
+      elementIds: {
+        type: 'array',
+        minItems: 1,
+        maxItems: LIMITS.elementIds,
+        items: { type: 'string', pattern: ELEMENT_ID_PATTERN },
+      },
+      viewportId,
+    },
+    ['elementIds'],
+  ],
+  get_element_outline: [
+    'DOM outline below an element (default: body).',
+    {
+      elementId: elementIdS('Root element id (optional).'),
+      maxDepth: { type: 'integer', minimum: 1, maximum: LIMITS.outlineDepth },
+      maxChildren: { type: 'integer', minimum: 1, maximum: LIMITS.outlineChildren },
+      viewportId,
+    },
+  ],
+  query_selector: [
+    'Find elements by CSS selector; returns element ids.',
+    { selector, limit, rootId: elementIdS('Search inside this element (optional).'), viewportId },
+    ['selector'],
+  ],
+  get_element_matched_rules: [
+    'CSS rules matching an element (≤ 60 by score), with ruleRef for editing, and its inline style.',
+    EL,
+    ['elementId'],
+  ],
+  get_breakpoints: ["The page's media-query breakpoints."],
+  get_seo_issues: ['SEO issues of the page.'],
+  get_meta_tags: ['Meta tags of the page.'],
+  get_page_weight: ['Resource sizes of the page.'],
+  get_css_custom_properties: ['CSS custom properties (variables) defined by the page.'],
+  get_typography: ['Typography of an element.', EL, ['elementId']],
+  calculate_specificity: ['Specificity of a CSS selector.', { selector }, ['selector']],
+  get_colors: ['Colors used in an element.', EL, ['elementId']],
+  get_assets: ['Images and other assets inside an element.', EL, ['elementId']],
+  get_layout: ['Box model / flex / grid layout of an element.', EL, ['elementId']],
+  force_element_state: [
+    'Force a pseudo-class state on an element (null clears it).',
+    {
+      ...EL,
+      state: { type: ['string', 'null'], enum: [...MCP_STATES, null] },
+    },
+    ['elementId'],
+  ],
+  detect_technologies: ['Frameworks and libraries detected on the page.'],
+  get_a11y_issues: ['Accessibility issues, warnings first, lowest contrast first.', { limit }],
+  get_tailwind: ['Tailwind classes for an element.', EL, ['elementId']],
+  fetch_stylesheet: [
+    'Fetch a public http(s) stylesheet (needs the optional all-sites grant in Bo doi).',
+    { url: str(LIMITS.url, 'Stylesheet URL.', 1) },
+    ['url'],
+  ],
+  enter_responsive_mode: ['Enter responsive mode (several viewports side by side).'],
+  exit_responsive_mode: ['Exit responsive mode.'],
+  set_viewport: [
+    'Resize a viewport (clamped to at least 200×300).',
+    {
+      width: { type: 'number', exclusiveMinimum: 0 },
+      height: { type: 'number', exclusiveMinimum: 0 },
+      viewportId,
+    },
+    ['width', 'height'],
+  ],
+  get_viewport: ['Current viewport(s).'],
+  set_viewports: [
+    'Replace the responsive viewport set.',
+    {
+      viewports: {
+        type: 'array',
+        minItems: 1,
+        maxItems: LIMITS.viewports,
+        items: {
+          type: 'object',
+          properties: {
+            width: { type: 'number', exclusiveMinimum: 0 },
+            height: { type: 'number', exclusiveMinimum: 0 },
+            name: { type: 'string', maxLength: LIMITS.name },
+          },
+          required: ['width', 'height'],
+        },
+      },
+    },
+    ['viewports'],
+  ],
+  add_viewport: [
+    'Add a responsive viewport.',
+    {
+      width: { type: 'number', exclusiveMinimum: 0 },
+      height: { type: 'number', exclusiveMinimum: 0 },
+      name: { type: 'string', maxLength: LIMITS.name },
+    },
+  ],
+  remove_viewport: ['Remove a responsive viewport.', { viewportId }, ['viewportId']],
+  set_zoom: ['Zoom of responsive mode (clamped 0.25–2).', { zoom: { type: 'number' } }, ['zoom']],
+  set_breakpoints_mode: [
+    "Show the page's own breakpoints as viewports.",
+    { enabled: { type: 'boolean' } },
+    ['enabled'],
+  ],
+  get_my_edits: ['Edits made so far: {edits, ruleChanges, htmlChanges}.'],
+  set_text_content: [
+    'Replace the text of an element.',
+    { ...EL, text: str(LIMITS.text, 'New text.') },
+    ['elementId', 'text'],
+  ],
+  set_inner_html: [
+    'Replace the inner HTML of an element (sanitized in the page).',
+    { ...EL, html: str(LIMITS.html, 'HTML.') },
+    ['elementId', 'html'],
+  ],
+  insert_html: [
+    'Insert HTML next to / inside an element (sanitized).',
+    {
+      ...EL,
+      html: str(LIMITS.html, 'HTML.', 1),
+      position: { type: 'string', enum: [...INSERT_POSITIONS] },
+    },
+    ['elementId', 'html', 'position'],
+  ],
+  select_element: ["Select an element in Bo doi's inspector.", EL, ['elementId']],
+  get_screenshot: ['Screenshot of the visible tab (PNG, longest side ≤ 2000 px).'],
+  apply_styles: [
+    'Set CSS: with ruleRef edits that rule, else the inline style of elementId. Joins undo and is saved per site.',
+    {
+      elementId: elementIdS(),
+      ruleRef,
+      styles,
+      state: { type: 'string', maxLength: 100, description: 'e.g. ":hover"' },
+      media: { type: 'string', maxLength: LIMITS.selector, description: 'Media query prelude.' },
+      pseudo: { type: 'string', maxLength: 100, description: 'e.g. "::before"' },
+      viewportId,
+    },
+    ['styles'],
+  ],
+  add_rule: [
+    'Add a new CSS rule.',
+    { selector, wrappers, styles, elementId: elementIdS(), viewportId },
+    ['selector'],
+  ],
+  set_rule_selector: [
+    'Change the selector of a rule.',
+    { ruleRef, selector, viewportId },
+    ['ruleRef', 'selector'],
+  ],
+  revert_css_change: [
+    'Revert one change (a recordId from get_my_edits).',
+    { changeId: str(200, 'recordId from get_my_edits.', 1) },
+    ['changeId'],
+  ],
+  revert_all_edits: ['Revert every edit; also clears the edits saved for the site.'],
+  set_element_classes: [
+    'Replace the class attribute of an element.',
+    { ...EL, classes: str(LIMITS.classes, 'Space-separated classes.') },
+    ['elementId', 'classes'],
+  ],
+  delete_element: ['Delete an element.', EL, ['elementId']],
+  duplicate_element: ['Duplicate an element.', EL, ['elementId']],
+};
+
+const NO_TAB: readonly string[] = ['list_tabs', 'fetch_stylesheet'];
+
+export const COMMAND_TOOLS: ToolDef[] = MCP_TYPES.map((name) => {
+  const [description, props = {}, req = []] = SPECS[name];
+  const needsTab = !NO_TAB.includes(name);
+  const properties: Record<string, Schema> = needsTab ? { tabId, ...props } : { ...props };
+  const required = needsTab ? ['tabId', ...req] : req;
+  return {
+    name,
+    description,
+    inputSchema: { type: 'object', properties, ...(required.length ? { required } : {}) },
+  };
+});
+
+export const PING_TOOL: ToolDef = {
+  name: 'ping',
+  description: 'Check the link to the Bo doi extension: whether it is connected and its version.',
+  inputSchema: { type: 'object', properties: {} },
+};

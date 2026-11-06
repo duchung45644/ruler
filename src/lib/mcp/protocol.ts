@@ -63,8 +63,8 @@ export function generateToken(): string {
   for (const b of bytes) bin += String.fromCharCode(b);
   return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
-/** npm package named in the copy prompt; renamed when the new server ships (Q8). */
-export const MCP_PACKAGE = '@screen-ruler/mcp';
+/** npm package of the server in packages/mcp-server, named in the copy prompt (Q8 b). */
+export const MCP_PACKAGE = '@bo-doi/mcp-server';
 
 // ---------------------------------------------------------------- frames
 

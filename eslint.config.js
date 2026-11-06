@@ -5,7 +5,17 @@ import globals from 'globals';
 import ts from 'typescript-eslint';
 
 export default defineConfig(
-  { ignores: ['.output/', '.wxt/', 'legacy-src/', 'unpacked/', '.superpowers/'] },
+  {
+    ignores: [
+      '.output/',
+      '.wxt/',
+      'legacy-src/',
+      'unpacked/',
+      '.superpowers/',
+      'packages/*/dist/',
+      'packages/*/src/*.gen.ts',
+    ],
+  },
   js.configs.recommended,
   ts.configs.recommended,
   svelte.configs.recommended,

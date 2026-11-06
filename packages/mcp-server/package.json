@@ -1,0 +1,36 @@
+{
+  "name": "@bo-doi/mcp-server",
+  "version": "1.0.0",
+  "description": "Local MCP server for the Bo doi browser extension (stdio MCP <-> WebSocket on 127.0.0.1).",
+  "license": "UNLICENSED",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "bin": {
+    "bo-doi-mcp": "dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "sync-protocol": "node scripts/copy-protocol.mjs",
+    "build": "node scripts/copy-protocol.mjs && tsc -p tsconfig.build.json",
+    "typecheck": "node scripts/copy-protocol.mjs && tsc -p tsconfig.json --noEmit",
+    "test": "node scripts/copy-protocol.mjs && vitest run",
+    "prepack": "pnpm build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "ws": "8.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "@types/ws": "8.18.1",
+    "typescript": "6.0.3",
+    "vitest": "5.0.5"
+  }
+}

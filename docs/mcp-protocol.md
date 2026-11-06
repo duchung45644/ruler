@@ -136,10 +136,46 @@ the side panel's change list and are saved per site.
 `connectPrompt(token, extensionId)` builds the text the user pastes into the agent, for example:
 
 ```
-Add the Bo doi MCP server to this agent. Command: npx -y @screen-ruler/mcp --extension-id <id>
+Add the Bo doi MCP server to this agent. Command: npx -y @bo-doi/mcp-server --extension-id <id>
 with environment variable BODOI_MCP_TOKEN=<token> (stdio transport, requires Node 18 or newer).
 After adding it, call its ping tool to verify the connection.
 ```
 
-The server reads `BODOI_MCP_TOKEN` and `--extension-id` (and an optional `--port`). The package
-name changes once the new server ships (`MCP_PACKAGE`).
+The server reads `BODOI_MCP_TOKEN` and `--extension-id` (and an optional `--port`).
+
+## Server (`packages/mcp-server`)
+
+The reference server lives in this repo as its own pnpm workspace package, with its own
+dependencies (`@modelcontextprotocol/sdk`, `ws`); the extension bundle does not include it. Its
+build copies `src/lib/mcp/protocol.ts` to `src/protocol.gen.ts`, so frames, limits and
+`validateCall` are the extension's own code.
+
+- One MCP tool per command (same name, JSON Schema mirroring `validateCall`), plus `ping`.
+  The server runs `validateCall` before sending, so a bad call never reaches the extension.
+- Results are JSON text; `get_screenshot` comes back as an MCP image block.
+- When the agent initializes, the server sends `client` (or puts it in `welcome`).
+- A newer authenticated extension socket replaces the old one; pending calls fail with
+  `ERR.disconnected`. The server waits the extension timeout + 5 s before failing a call itself.
+- It exits when stdin closes (the agent quit) and when the port is taken.
+
+Run from a checkout (before the package is published):
+
+```sh
+corepack pnpm install
+corepack pnpm --filter @bo-doi/mcp-server build
+corepack pnpm --filter @bo-doi/mcp-server test
+```
+
+Agent config for a local build (e.g. `.mcp.json` / Claude Desktop):
+
+```json
+{
+  "mcpServers": {
+    "bo-doi": {
+      "command": "node",
+      "args": ["/path/to/ruler/packages/mcp-server/dist/cli.js", "--extension-id", "<id>"],
+      "env": { "BODOI_MCP_TOKEN": "<token>" }
+    }
+  }
+}
+```

@@ -1,4 +1,4 @@
 {
   "extends": "./.wxt/tsconfig.json",
-  "exclude": [".output", "legacy-src", "unpacked"]
+  "exclude": [".output", "legacy-src", "unpacked", "packages"]
 }

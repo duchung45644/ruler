@@ -234,6 +234,6 @@ describe('validateCall', () => {
 
 it('puts the token and extension id in the prompt', () => {
   const p = connectPrompt('T'.repeat(43), 'abcdef');
-  expect(p).toContain('npx -y @screen-ruler/mcp --extension-id abcdef');
+  expect(p).toContain('npx -y @bo-doi/mcp-server --extension-id abcdef');
   expect(p).toContain(`BODOI_MCP_TOKEN=${'T'.repeat(43)}`);
 });

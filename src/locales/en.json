@@ -386,5 +386,23 @@
     "labelHeight": "Height",
     "toastScrollSyncOff": "Scroll sync turned itself off because this page keeps scrolling against it.",
     "dismiss": "Dismiss"
+  },
+  "theme": {
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "options": {
+    "pageTitle": "Settings",
+    "sectionAppearance": "Appearance",
+    "sectionExtension": "Extension",
+    "rowTheme": "Theme",
+    "rowColorFormat": "Color Format",
+    "colorFormatSecondary": "Used by the inspector and color picker",
+    "savedEditsTitle": "Saved edits",
+    "savedEditsSecondary": "CSS edits are remembered per site and restored when you activate Bo doi there.",
+    "savedEditsClear": "Clear",
+    "savedEditsConfirmTitle": "Clear saved edits?",
+    "savedEditsConfirmBody": "This removes remembered CSS edits for every site."
   }
 }

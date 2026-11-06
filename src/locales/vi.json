@@ -386,5 +386,23 @@
     "labelHeight": "Chiều cao",
     "toastScrollSyncOff": "Đồng bộ cuộn đã tự tắt vì trang này liên tục cuộn ngược lại.",
     "dismiss": "Đóng"
+  },
+  "theme": {
+    "system": "Hệ thống",
+    "light": "Sáng",
+    "dark": "Tối"
+  },
+  "options": {
+    "pageTitle": "Cài đặt",
+    "sectionAppearance": "Giao diện",
+    "sectionExtension": "Tiện ích",
+    "rowTheme": "Chủ đề",
+    "rowColorFormat": "Định dạng màu",
+    "colorFormatSecondary": "Được dùng bởi trình kiểm tra và bộ chọn màu",
+    "savedEditsTitle": "Chỉnh sửa đã lưu",
+    "savedEditsSecondary": "Các chỉnh sửa CSS được ghi nhớ theo từng trang và khôi phục khi bạn kích hoạt Bo doi ở đó.",
+    "savedEditsClear": "Xóa",
+    "savedEditsConfirmTitle": "Xóa các chỉnh sửa đã lưu?",
+    "savedEditsConfirmBody": "Thao tác này xóa các chỉnh sửa CSS đã ghi nhớ của mọi trang."
   }
 }

@@ -403,6 +403,25 @@
     "savedEditsSecondary": "Các chỉnh sửa CSS được ghi nhớ theo từng trang và khôi phục khi bạn kích hoạt Bo doi ở đó.",
     "savedEditsClear": "Xóa",
     "savedEditsConfirmTitle": "Xóa các chỉnh sửa đã lưu?",
-    "savedEditsConfirmBody": "Thao tác này xóa các chỉnh sửa CSS đã ghi nhớ của mọi trang."
+    "savedEditsConfirmBody": "Thao tác này xóa các chỉnh sửa CSS đã ghi nhớ của mọi trang.",
+    "sectionTerminalAi": "AI Terminal",
+    "rowMcpServer": "Máy chủ MCP",
+    "mcpServerSecondary": "Cho phép tác nhân AI kiểm tra hoặc chỉnh sửa.",
+    "mcpConnect": "Kết nối",
+    "mcpDisconnect": "Ngắt kết nối",
+    "mcpOutdatedTooltip": "Máy chủ MCP đã lỗi thời. Cập nhật qua ứng dụng AI của bạn.",
+    "mcpOutdatedTitle": "Máy chủ MCP đã lỗi thời",
+    "mcpOutdatedBody": "Máy chủ MCP của bạn là phiên bản $1, nhưng tiện ích này yêu cầu $2 hoặc mới hơn. Cập nhật gói npm hoặc khởi động lại ứng dụng AI.",
+    "mcpVersionUnknown": "không xác định"
+  },
+  "mcp": {
+    "dockTitle": "MCP",
+    "connected": "Đã kết nối MCP",
+    "connectAgent": "Kết nối agent",
+    "outdated": "MCP đã lỗi thời",
+    "waiting": "Đang chờ agent",
+    "connectHint": "Sao chép lời nhắc này và dán vào AI agent của bạn:",
+    "unknownAgent": "AI agent",
+    "waitingForAgent": "Đang chờ agent kết nối..."
   }
 }

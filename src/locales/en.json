@@ -403,6 +403,25 @@
     "savedEditsSecondary": "CSS edits are remembered per site and restored when you activate Bo doi there.",
     "savedEditsClear": "Clear",
     "savedEditsConfirmTitle": "Clear saved edits?",
-    "savedEditsConfirmBody": "This removes remembered CSS edits for every site."
+    "savedEditsConfirmBody": "This removes remembered CSS edits for every site.",
+    "sectionTerminalAi": "Terminal AI",
+    "rowMcpServer": "MCP Server",
+    "mcpServerSecondary": "Allow AI agents to inspect or make edits.",
+    "mcpConnect": "Connect",
+    "mcpDisconnect": "Disconnect",
+    "mcpOutdatedTooltip": "MCP server outdated. Update via your AI client.",
+    "mcpOutdatedTitle": "MCP Server Outdated",
+    "mcpOutdatedBody": "Your MCP server is version $1, but this extension expects $2 or newer. Update the npm package or restart your AI client to refetch.",
+    "mcpVersionUnknown": "unknown"
+  },
+  "mcp": {
+    "dockTitle": "MCP",
+    "connected": "MCP connected",
+    "connectAgent": "Connect Agent",
+    "outdated": "MCP out of date",
+    "waiting": "Waiting for agent",
+    "connectHint": "Copy this prompt and paste it to your AI agent:",
+    "unknownAgent": "AI agent",
+    "waitingForAgent": "Waiting for your agent to connect..."
   }
 }

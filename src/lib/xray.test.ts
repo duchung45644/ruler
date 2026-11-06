@@ -14,7 +14,7 @@ describe('xray', () => {
     const s = xraySheet('body', 0);
     expect(s).toContain('body > *{outline:1px solid #FF3F25!important;}');
     expect(s).toContain('body *{outline:1px solid #0D4F8F!important;}');
-    expect(s).toContain('bo-doi-ui');
+    expect(s).toContain('iodob-ui');
     expect(xraySheet(':host', 3)).toContain(':host > *{outline:1px solid #999999!important;}');
   });
 
@@ -32,8 +32,8 @@ describe('xray', () => {
     await initXray();
     items.find((i) => i.id === 'xray')!.run();
     const count = () =>
-      document.querySelectorAll('style[data-bo-doi]').length +
-      root.querySelectorAll('style[data-bo-doi]').length;
+      document.querySelectorAll('style[data-iodob]').length +
+      root.querySelectorAll('style[data-iodob]').length;
     expect(count()).toBe(2);
     stopSession();
     expect(count()).toBe(0);

@@ -9,8 +9,8 @@
   --radius-panel: 13px;
   --radius-btn: 8px;
   --blur-surface: 8px;
-  --font-sans: 'Bo doi Geist', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'Bo doi Geist Mono', ui-monospace, monospace;
+  --font-sans: 'iodob Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'iodob Geist Mono', ui-monospace, monospace;
 }
 
 :host([data-theme='light']),
@@ -54,7 +54,7 @@
 }
 /* Full-page capture cover: sized in px (vh changes while the viewport is enlarged) and moved
    above the captured area by the page script through --bd-cover-top (fullpage.ts). */
-:host(bo-doi-cover) {
+:host(iodob-cover) {
   top: var(--bd-cover-top, 0px) !important;
   width: var(--bd-cover-w, 0px) !important;
   height: var(--bd-cover-h, 0px) !important;

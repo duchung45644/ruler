@@ -36,11 +36,11 @@ export function toContent(data: unknown): CallToolResult {
 
 export function createMcpServer(bridge: Bridge, version: string): Server {
   const server = new Server(
-    { name: 'bo-doi', version },
+    { name: 'iodob', version },
     {
       capabilities: { tools: {} },
       instructions:
-        'Inspect and edit pages open in the Bo doi browser extension. Start with list_tabs to get a tabId; ' +
+        'Inspect and edit pages open in the iodob browser extension. Start with list_tabs to get a tabId; ' +
         'element ids (v-…) come from results such as query_selector or get_selected_element.',
     },
   );
@@ -57,7 +57,7 @@ export function createMcpServer(bridge: Bridge, version: string): Server {
     const { name, arguments: args } = req.params;
     if (name === PING_TOOL.name) {
       const ext = bridge.connected;
-      return ext ? text(`pong: Bo doi ${ext.extVersion} is connected.`) : text(NOT_CONNECTED, true);
+      return ext ? text(`pong: iodob ${ext.extVersion} is connected.`) : text(NOT_CONNECTED, true);
     }
     if (!isMcpType(name)) return text(ERR.unknown, true);
     const v = validateCall(name, args ?? {});

@@ -1,4 +1,4 @@
-# Bo doi — Đợt 1: Lõi + Inspector — Kế hoạch triển khai
+# iodob — Đợt 1: Lõi + Inspector — Kế hoạch triển khai
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -21,7 +21,7 @@
 - Thêm `happy-dom` 21.0.3 làm môi trường DOM cho test.
 - Dùng `storage` của WXT (`@wxt-dev/storage`, đã có sẵn qua `wxt`) và `fakeBrowser`/`WxtVitest` từ `wxt/testing`.
 
-**Spec:** `docs/superpowers/specs/2026-11-01-bo-doi-rewrite-design.md`. Các mục liên quan:
+**Spec:** `docs/superpowers/specs/2026-11-01-iodob-rewrite-design.md`. Các mục liên quan:
 - §3 Ràng buộc
 - §6.3 DRY
 - §6.4 Đường chạy liên tục
@@ -83,7 +83,7 @@ Bản kiểm kê gắn `đợt 1` cho một số dòng phụ thuộc phần chư
   - không gióng nét đứt;
   - màu số đo: trang sáng `#4f46e5`, trang tối `#a5b4fc`.
 - **Font:**
-  - family `Bo doi Geist` / `Bo doi Geist Mono` (tên riêng, tránh trùng font của trang);
+  - family `iodob Geist` / `iodob Geist Mono` (tên riêng, tránh trùng font của trang);
   - nhúng woff2 dạng data URL qua `?inline`, không cần `web_accessible_resources`;
   - unicode-range theo `legacy-src/content.js:11134` (`Hc`).
 - **DRY (spec §6.3):**
@@ -107,7 +107,7 @@ Bản kiểm kê gắn `đợt 1` cho một số dòng phụ thuộc phần chư
    - Mong đợi: tự bỏ chọn ở lần cập nhật kế tiếp, không vẽ khung ở toạ độ 0,0.
    - Kiểm bằng: `isRendered` trong `dom.test.ts` (Task 6).
 4. **Bật/tắt liên tục, hoặc reload trang khi đang bật.**
-   - Mong đợi: luôn chỉ một `<bo-doi-ui>`; tắt thì không còn listener nào; icon về trạng thái tắt sau khi trang tải lại.
+   - Mong đợi: luôn chỉ một `<iodob-ui>`; tắt thì không còn listener nào; icon về trạng thái tắt sau khi trang tải lại.
    - Kiểm bằng: `session.test.ts` (Task 3); `tabs.onUpdated` trong `background.test.ts` (Task 2).
 5. **Trang nền tối, hoặc trang đặt `html { font-size: 10px }`.**
    - Mong đợi: số đo đổi sang `#a5b4fc` trên nền tối; theme "Hệ thống" của UI ngược với nền; kích thước UI không co.
@@ -232,7 +232,7 @@ Bản kiểm kê gắn `đợt 1` cho một số dòng phụ thuộc phần chư
 
 - Produces:
   - `mountUi(ctx: ContentScriptContext, component: Component, props?: Record<string, unknown>): Promise<{ host: HTMLElement; shadow: ShadowRoot; remove(): void }>`
-    - Bọc `createShadowRootUi` với `name: 'bo-doi-ui'`, `position: 'inline'`, `anchor: 'html'`, `isolateEvents: true`.
+    - Bọc `createShadowRootUi` với `name: 'iodob-ui'`, `position: 'inline'`, `anchor: 'html'`, `isolateEvents: true`.
     - `remove()` gọi `ui.remove()`, nên `onRemove` sẽ `unmount` (sửa carry-over Đợt 0).
   - `state` (`$state`) trong `state.svelte.ts`: `{ active: boolean; paused: boolean; dockCollapsed: boolean; inspectOn: boolean; hovered: Element | null; selected: Element | null; theme: 'light' | 'dark' }`.
   - `src/content/core/session.ts`:
@@ -252,13 +252,13 @@ Bản kiểm kê gắn `đợt 1` cho một số dòng phụ thuộc phần chư
     - `measureColor(true) === '#a5b4fc'`, `measureColor(false) === '#4f46e5'`.
     - `detectPageIsDark` với `body` nền `rgb(10,10,10)` → `true`; nền trắng → `false`; nền trong suốt toàn bộ → `null`.
   - `session.test.ts` (happy-dom, `ContentScriptContext` từ `wxt/utils/content-script-context`, nếu không tạo được thì mock `mountUi`):
-    - gọi `startSession` hai lần thì chỉ một `bo-doi-ui` trong document;
-    - `stopSession()` thì không còn `bo-doi-ui`, và listener `keydown` gắn qua `sessionSignal()` không chạy nữa;
+    - gọi `startSession` hai lần thì chỉ một `iodob-ui` trong document;
+    - `stopSession()` thì không còn `iodob-ui`, và listener `keydown` gắn qua `sessionSignal()` không chạy nữa;
     - hàm đăng ký qua `onStop` chạy đúng một lần.
   - Run: `pnpm vitest run src/lib/theme.test.ts src/content`. Expected: FAIL.
 - [ ] **Step 2: Viết code.**
   - **`content/index.ts`:**
-    - chặn chạy trùng bằng `window.__BO_DOI__` (9.20);
+    - chặn chạy trùng bằng `window.__IODOB__` (9.20);
     - nạp lần đầu thì `startSession`;
     - `handleMessages('content', { ping, toggle_script }, …)`: `toggle_script` bật/tắt phiên, trả `{ active }`.
   - **Theme:**
@@ -438,7 +438,7 @@ Bản kiểm kê gắn `đợt 1` cho một số dòng phụ thuộc phần chư
 - [ ] **Step 1: Viết test fail.**
   - `dom.test.ts`:
     - `<div><script></script><style></style><p id=a></p></div>`: `firstChildOf(div)` là `#a`.
-    - Anh/em: `<p id=a></p><template></template><bo-doi-ui></bo-doi-ui><p id=b></p>`, với `isOwn = n => n.tagName === 'BO-DOI-UI'`: `siblingOf(a, 1)` là `#b`, `siblingOf(b, -1)` là `#a`.
+    - Anh/em: `<p id=a></p><template></template><iodob-ui></iodob-ui><p id=b></p>`, với `isOwn = n => n.tagName === 'IODOB-UI'`: `siblingOf(a, 1)` là `#b`, `siblingOf(b, -1)` là `#a`.
     - `parentOf(con trực tiếp của body)` là `null`.
     - `isRendered` sau `el.remove()` là `false`; với `display:none` (stub `getBoundingClientRect` trả 0×0 nếu happy-dom không tính layout) cũng là `false`.
   - `events.test.ts`:
@@ -576,7 +576,7 @@ Bản kiểm kê gắn `đợt 1` cho một số dòng phụ thuộc phần chư
 - [ ] **Step 2: Build và nhờ chủ dự án thử tay** (controller chuyển danh sách này):
   1. `pnpm build`, rồi reload `.output/chrome-mv3` trong `edge://extensions`, không lỗi đỏ.
      - Trang vẫn có style. Nếu UI mất style vì `use_dynamic_url`, ghi lại; Task 3 bỏ `use_dynamic_url` và ghi lý do.
-  2. Trên một trang thường: bấm icon thì dock hiện, icon đổi sang active. Bấm lại thì dock mất, icon về thường. Lặp 5 lần: DevTools chỉ có một `<bo-doi-ui>`.
+  2. Trên một trang thường: bấm icon thì dock hiện, icon đổi sang active. Bấm lại thì dock mất, icon về thường. Lặp 5 lần: DevTools chỉ có một `<iodob-ui>`.
   3. Phím `1` bật inspector. Rê chuột thấy khung viền liền, nền nhấn nhạt, số rộng phía trên, số cao trong cạnh phải, font mono.
   4. Click chọn phần tử, rồi rê sang phần tử khác: thấy đường đo khoảng cách có số.
   5. Alt+Shift+↑/↓ chọn cha/con; Alt+Shift+←/→ chọn anh/em; Esc bỏ chọn.

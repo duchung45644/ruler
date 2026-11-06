@@ -20,10 +20,10 @@ export function parseConfig(argv: string[], env: NodeJS.ProcessEnv): CliConfig {
   };
   const extensionId = arg('--extension-id') ?? '';
   if (!EXTENSION_ID_RE.test(extensionId))
-    throw new Error('--extension-id <32 letters a-p> is required (copy it from Bo doi).');
-  const token = env.BODOI_MCP_TOKEN ?? '';
+    throw new Error('--extension-id <32 letters a-p> is required (copy it from iodob).');
+  const token = env.IODOB_MCP_TOKEN ?? '';
   if (!TOKEN_RE.test(token))
-    throw new Error('Environment variable BODOI_MCP_TOKEN must hold the token copied from Bo doi.');
+    throw new Error('Environment variable IODOB_MCP_TOKEN must hold the token copied from iodob.');
   const portRaw = arg('--port');
   const port = portRaw === undefined ? MCP_PORT : Number(portRaw);
   if (!Number.isInteger(port) || port < 1 || port > 65535)

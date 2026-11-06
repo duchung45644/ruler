@@ -1,6 +1,6 @@
-# Bo doi MCP channel — protocol 1
+# iodob MCP channel — protocol 1
 
-How the Bo doi extension talks to a local MCP server. The code is the source of truth:
+How the iodob extension talks to a local MCP server. The code is the source of truth:
 `src/lib/mcp/protocol.ts` holds the constants, the frame types, `parseFrame`, `validateCall`
 (the exact payload of every command) and `connectPrompt`. This page explains it for whoever
 builds the server.
@@ -15,7 +15,7 @@ agent ⇄ (stdio, MCP) ⇄ server ⇄ (WebSocket, this protocol) ⇄ extension b
 | --- | --- |
 | Server role | WebSocket **server**, bound to `127.0.0.1` only (never `0.0.0.0` / `::`) |
 | Extension role | WebSocket **client** in the background service worker |
-| URL | `ws://127.0.0.1:47347/bodoi` (`MCP_PORT`, `MCP_PATH`). The extension never dials `localhost`. |
+| URL | `ws://127.0.0.1:47347/iodob` (`MCP_PORT`, `MCP_PATH`). The extension never dials `localhost`. |
 | Frames | UTF-8 JSON text, one object per message, ≤ 1 MB (`MAX_FRAME_BYTES`). Bigger, binary, non-JSON or unknown frames are dropped with no reply. |
 | Keep-alive | Server sends `{"type":"ping"}` about every 20 s; extension replies `{"type":"pong"}`. Chrome ≥ 116 keeps the worker alive while the socket has traffic. |
 
@@ -26,11 +26,11 @@ If the port is taken the server must exit with a clear error. There is no port r
 1. **Origin check at upgrade.** Chrome sends `Origin: chrome-extension://<extension id>` on the
    WebSocket handshake and a web page cannot forge it. The server must answer anything else with
    HTTP 403 and no upgrade. The extension id comes from the copied prompt (`--extension-id`).
-   This is what stops a web page from opening `ws://127.0.0.1:47347/bodoi`.
+   This is what stops a web page from opening `ws://127.0.0.1:47347/iodob`.
 2. **Pairing token.** The extension creates the token once, the first time the user presses
    Connect: 32 bytes from `crypto.getRandomValues`, unpadded base64url (43 chars, `TOKEN_RE`),
    stored in `chrome.storage.local` (`mcpToken`). It only reaches the user inside the copy prompt,
-   which passes it as the env var `BODOI_MCP_TOKEN`. The server compares it in constant time
+   which passes it as the env var `IODOB_MCP_TOKEN`. The server compares it in constant time
    (`crypto.timingSafeEqual` on equal-length buffers). Wrong token or wrong `protocol` → send
    `reject` and close. The token stops another local process that grabs the port first from
    posing as the server, and the Origin stops web pages.
@@ -39,7 +39,7 @@ If the port is taken the server must exit with a clear error. There is no port r
 4. **Neither side logs the token.**
 5. **Opt-in.** The extension opens no socket and runs no timer until the user presses Connect
    (dock popover or settings page). Disconnect closes the socket right away.
-6. **Tab scope.** Tab commands only reach tabs where the user turned Bo doi on; `list_tabs` lists
+6. **Tab scope.** Tab commands only reach tabs where the user turned iodob on; `list_tabs` lists
    only those. The extension never injects itself into other tabs for MCP.
 
 ## Frames
@@ -50,7 +50,7 @@ Extension → server
 { "type": "hello", "protocol": 1, "token": "<43 chars>", "extVersion": "2.0.0" } // first frame
 { "type": "pong" }
 { "type": "result", "id": 7, "ok": true, "data": { /* command result */ } }
-{ "type": "result", "id": 7, "ok": false, "error": "Bo doi is not active on this tab." }
+{ "type": "result", "id": 7, "ok": false, "error": "iodob is not active on this tab." }
 ```
 
 Server → extension
@@ -78,7 +78,7 @@ Server → extension
 `MCP_TYPES` lists the 47 command names; `validateCall(command, payload)` is the schema. Every
 command except `list_tabs` and `fetch_stylesheet` needs `tabId` (an integer from `list_tabs`);
 without it the error is "`<command>` requires a numeric tabId.". Unknown fields are dropped.
-An unknown command gives "Unknown action. Update the Bo doi extension to the latest version.".
+An unknown command gives "Unknown action. Update the iodob extension to the latest version.".
 
 Common fields:
 
@@ -92,8 +92,8 @@ Common fields:
 
 | Command | Payload (besides `tabId`) | Notes |
 | --- | --- | --- |
-| `list_tabs` | — (no tabId) | `{tabs: [{tabId, title, url, active}]}`, Bo doi tabs only |
-| `focus_tab` | — | Bo doi tabs only |
+| `list_tabs` | — (no tabId) | `{tabs: [{tabId, title, url, active}]}`, iodob tabs only |
+| `focus_tab` | — | iodob tabs only |
 | `fetch_stylesheet` | `url` (no tabId) | http(s), public hosts only; needs the optional `<all_urls>` grant |
 | `get_page_info` | — | url, title, lang, meta, h1, viewport, page size, scroll, DPR |
 | `get_selected_element` | `viewportId?` | summary of the user's selection |
@@ -136,12 +136,12 @@ the side panel's change list and are saved per site.
 `connectPrompt(token, extensionId)` builds the text the user pastes into the agent, for example:
 
 ```
-Add the Bo doi MCP server to this agent. Command: npx -y @bo-doi/mcp-server --extension-id <id>
-with environment variable BODOI_MCP_TOKEN=<token> (stdio transport, requires Node 18 or newer).
+Add the iodob MCP server to this agent. Command: npx -y @iodob/mcp-server --extension-id <id>
+with environment variable IODOB_MCP_TOKEN=<token> (stdio transport, requires Node 18 or newer).
 After adding it, call its ping tool to verify the connection.
 ```
 
-The server reads `BODOI_MCP_TOKEN` and `--extension-id` (and an optional `--port`).
+The server reads `IODOB_MCP_TOKEN` and `--extension-id` (and an optional `--port`).
 
 ## Server (`packages/mcp-server`)
 
@@ -162,8 +162,8 @@ Run from a checkout (before the package is published):
 
 ```sh
 corepack pnpm install
-corepack pnpm --filter @bo-doi/mcp-server build
-corepack pnpm --filter @bo-doi/mcp-server test
+corepack pnpm --filter @iodob/mcp-server build
+corepack pnpm --filter @iodob/mcp-server test
 ```
 
 Agent config for a local build (e.g. `.mcp.json` / Claude Desktop):
@@ -171,10 +171,10 @@ Agent config for a local build (e.g. `.mcp.json` / Claude Desktop):
 ```json
 {
   "mcpServers": {
-    "bo-doi": {
+    "iodob": {
       "command": "node",
       "args": ["/path/to/ruler/packages/mcp-server/dist/cli.js", "--extension-id", "<id>"],
-      "env": { "BODOI_MCP_TOKEN": "<token>" }
+      "env": { "IODOB_MCP_TOKEN": "<token>" }
     }
   }
 }

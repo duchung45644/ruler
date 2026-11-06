@@ -32,22 +32,22 @@ const onCall: McpSocketOptions['onCall'] = (c, reply) =>
 
 export const mcpStatus = (): McpStatus => status;
 
-/** Is Bo doi on in this tab's top frame? Only those tabs see MCP at all (Q4 a). */
-export async function isBoDoiTab(tabId: number): Promise<boolean> {
+/** Is iodob on in this tab's top frame? Only those tabs see MCP at all (Q4 a). */
+export async function isIodobTab(tabId: number): Promise<boolean> {
   const r = await sendToFrame(tabId, 0, 'ping').catch(() => undefined);
   return r?.active === true;
 }
 
-/** Tabs with Bo doi on, in tab order. */
-export async function boDoiTabs(): Promise<Browser.tabs.Tab[]> {
+/** Tabs with iodob on, in tab order. */
+export async function iodobTabs(): Promise<Browser.tabs.Tab[]> {
   const tabs = (await browser.tabs.query({})).filter(
     (t) => t.id !== undefined && !t.discarded && isInjectable(t.url),
   );
-  const on = await Promise.all(tabs.map((t) => isBoDoiTab(t.id!)));
+  const on = await Promise.all(tabs.map((t) => isIodobTab(t.id!)));
   return tabs.filter((_, i) => on[i]);
 }
 
-/** Status → every Bo doi tab and the settings page (10.03). The token is never in it. */
+/** Status → every iodob tab and the settings page (10.03). The token is never in it. */
 async function broadcast(s: McpStatus): Promise<void> {
   void sendToOptions('mcp_status', s).catch(() => {});
   const tabs = await browser.tabs.query({}).catch(() => []);
@@ -101,14 +101,14 @@ export async function disconnect(): Promise<McpStatus> {
 
 /**
  * Prompt with the token (Q3 a), only for our own pages: the settings page (no tab) or the top
- * frame of a tab where Bo doi is on (the dock popover).
+ * frame of a tab where iodob is on (the dock popover).
  */
 export async function prompt(sender: Browser.runtime.MessageSender): Promise<string | null> {
   if (sender.id !== browser.runtime.id) return null;
   const tabId = sender.tab?.id;
   if (tabId === undefined) {
     if (!sender.url?.startsWith(browser.runtime.getURL('/'))) return null;
-  } else if (sender.frameId !== 0 || !(await isBoDoiTab(tabId))) return null;
+  } else if (sender.frameId !== 0 || !(await isIodobTab(tabId))) return null;
   const token = (await mcpToken.getValue()) ?? (await ensureToken());
   return connectPrompt(token, browser.runtime.id);
 }
@@ -146,7 +146,7 @@ const reloading = new Map<number, number>();
 
 const fail = (error: string): CallOutcome => ({ ok: false, error });
 
-/** Wait for Bo doi to come back in a tab that is reloading after exit_responsive_mode. */
+/** Wait for iodob to come back in a tab that is reloading after exit_responsive_mode. */
 async function waitForReload(tabId: number): Promise<boolean> {
   const at = reloading.get(tabId);
   if (at === undefined || Date.now() - at > RELOAD_WINDOW_MS) {
@@ -156,7 +156,7 @@ async function waitForReload(tabId: number): Promise<boolean> {
   const end = Date.now() + RELOAD_WAIT_MS;
   while (Date.now() < end) {
     await new Promise((r) => setTimeout(r, POLL_MS));
-    if (await isBoDoiTab(tabId)) return true;
+    if (await isIodobTab(tabId)) return true;
   }
   return false;
 }
@@ -169,7 +169,7 @@ export async function forwardToTab(
   const { tabId } = payload;
   const tab = await browser.tabs.get(tabId).catch(() => undefined);
   if (!tab) return fail(`No tab with id ${tabId}.`);
-  if (!(await isBoDoiTab(tabId)) && !(await waitForReload(tabId))) return fail(ERR.tabInactiveHint);
+  if (!(await isIodobTab(tabId)) && !(await waitForReload(tabId))) return fail(ERR.tabInactiveHint);
   if (type === 'exit_responsive_mode') reloading.set(tabId, Date.now());
   const ms = SLOW_TYPES.includes(type) ? SLOW_TIMEOUT_MS : CALL_TIMEOUT_MS;
   let timer: ReturnType<typeof setTimeout> | undefined;
@@ -191,7 +191,7 @@ export async function forwardToTab(
 }
 
 async function listTabs(): Promise<CallOutcome> {
-  const tabs = await boDoiTabs();
+  const tabs = await iodobTabs();
   return {
     ok: true,
     data: {
@@ -206,7 +206,7 @@ async function listTabs(): Promise<CallOutcome> {
 }
 
 async function focusTab({ tabId }: McpPayloads['focus_tab']): Promise<CallOutcome> {
-  if (!(await isBoDoiTab(tabId))) return fail(ERR.tabInactive);
+  if (!(await isIodobTab(tabId))) return fail(ERR.tabInactive);
   try {
     const tab = await browser.tabs.update(tabId, { active: true });
     if (tab?.windowId !== undefined) await browser.windows.update(tab.windowId, { focused: true });

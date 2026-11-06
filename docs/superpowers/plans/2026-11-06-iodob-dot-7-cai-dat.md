@@ -1,4 +1,4 @@
-# Bo doi — Đợt 7: Trang cài đặt — Kế hoạch triển khai
+# iodob — Đợt 7: Trang cài đặt — Kế hoạch triển khai
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -90,7 +90,7 @@
    - đổi ở trang cài đặt → side panel và content đang mở áp ngay (theme, colorFormat đã có watch ở `session.ts:75–86` và `store.svelte.ts:270`);
    - đổi ở side panel → trang cài đặt cập nhật.
 3. **Không nháy theme** khi mở trang.
-4. **Không quyền mới, không link ngoài** (§4.8 bỏ `www.bodoi.com/*`).
+4. **Không quyền mới, không link ngoài** (§4.8 bỏ `www.iodob.com/*`).
 
 ---
 
@@ -207,7 +207,7 @@
   - a) Ẩn hẳn tới đợt 8;
   - b) Hiện hàng bị vô hiệu "sắp có".
   - **Đề xuất:** a.
-- **Q4 — Link "Setup guide" trong `OPTIONS_MCP_SERVER_SECONDARY`** (trỏ `www.bodoi.com`, §4.8 bỏ).
+- **Q4 — Link "Setup guide" trong `OPTIONS_MCP_SERVER_SECONDARY`** (trỏ `www.iodob.com`, §4.8 bỏ).
   - a) Bỏ phần `<a>`, chỉ giữ câu đầu;
   - b) Giữ nguyên văn.
   - **Đề xuất:** a, ở đợt 8.

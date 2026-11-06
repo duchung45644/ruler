@@ -8,7 +8,7 @@ import { LIMITS } from '../../lib/mcp/protocol';
 
 export type IdOf = (el: Element) => string;
 
-const isOwn = (el: Element) => el.localName === 'bo-doi-ui';
+const isOwn = (el: Element) => el.localName === 'iodob-ui';
 const SKIP_OUTLINE = new Set(['script', 'style', 'link', 'meta', 'noscript', 'br']);
 const SKIP_QUERY = new Set(['script', 'style', 'link', 'meta', 'noscript']);
 const ATTRS = [

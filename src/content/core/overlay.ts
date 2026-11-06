@@ -58,7 +58,7 @@ export function drawNumber(
 ): void {
   draw(
     parent,
-    `left:${x}px;top:${y}px;transform:translate(${tx},${ty});font:700 10px/1 'Bo doi Geist Mono',ui-monospace,monospace;color:${color};white-space:nowrap`,
+    `left:${x}px;top:${y}px;transform:translate(${tx},${ty});font:700 10px/1 'iodob Geist Mono',ui-monospace,monospace;color:${color};white-space:nowrap`,
     String(Math.round(value)),
   );
 }

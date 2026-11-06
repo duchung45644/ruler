@@ -30,7 +30,7 @@ it.each([
   ['resolves', () => Promise.resolve({ sRGBHex: '#ff0000' })],
   ['is cancelled', () => Promise.reject(new DOMException('cancel', 'AbortError'))],
 ])('eyedropper shows the UI again when the picker %s', async (_, open) => {
-  const host = document.createElement('bo-doi-ui');
+  const host = document.createElement('iodob-ui');
   document.body.append(host);
   host.attachShadow({ mode: 'open' }).append(layer);
   const spy = vi.fn(open);

@@ -222,7 +222,7 @@
     buttons={{ cancel: i18n.t('dialog.cancel'), confirm: i18n.t('dialog.confirm') }}
     close={(ok) => {
       confirming = false;
-      // storage only: a tab with Bo doi on keeps its edits in memory (Q7, as legacy)
+      // storage only: a tab with iodob on keeps its edits in memory (Q7, as legacy)
       if (ok) void clearAllPersistedEdits();
     }}
   />

@@ -30,7 +30,7 @@ import {
   openOptions,
   optionsHandlers,
 } from '../background/options';
-import { initMcp, isBoDoiTab, mcpHandlers } from '../background/mcp';
+import { initMcp, isIodobTab, mcpHandlers } from '../background/mcp';
 
 const icon = (tabId: number, active: boolean) =>
   browser.action
@@ -119,7 +119,7 @@ const toDataUrl = (blob: Blob) =>
 
 /** 10.05 / 10.14: the visible tab for an agent, PNG scaled down to ≤ 2000 px (Q6 a). */
 async function captureForAi(tab?: { id?: number; windowId?: number }): Promise<AiCapture> {
-  if (tab?.id === undefined || !(await isBoDoiTab(tab.id)))
+  if (tab?.id === undefined || !(await isIodobTab(tab.id)))
     return { ok: false, reason: 'script_inactive' };
   try {
     const dataUrl = await captureVisible(tab.windowId ?? browser.windows.WINDOW_ID_CURRENT);

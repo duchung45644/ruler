@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { firstChildOf, isRendered, parentOf, shadowRoots, siblingOf } from './dom';
 
-const isOwn = (n: Element) => n.tagName === 'BO-DOI-UI';
+const isOwn = (n: Element) => n.tagName === 'IODOB-UI';
 
 describe('dom traversal', () => {
   it('firstChildOf skips non-visual tags', () => {
@@ -10,8 +10,7 @@ describe('dom traversal', () => {
   });
 
   it('siblingOf skips templates and own nodes', () => {
-    document.body.innerHTML =
-      '<p id=a></p><template></template><bo-doi-ui></bo-doi-ui><p id=b></p>';
+    document.body.innerHTML = '<p id=a></p><template></template><iodob-ui></iodob-ui><p id=b></p>';
     const a = document.getElementById('a')!;
     const b = document.getElementById('b')!;
     expect(siblingOf(a, 1, isOwn)).toBe(b);
@@ -52,8 +51,8 @@ describe('dom traversal', () => {
   });
 
   it('shadowRoots skips our own host and everything inside it', () => {
-    document.body.innerHTML = '<bo-doi-ui></bo-doi-ui><p id=p></p>';
-    const own = document.querySelector('bo-doi-ui')!.attachShadow({ mode: 'open' });
+    document.body.innerHTML = '<iodob-ui></iodob-ui><p id=p></p>';
+    const own = document.querySelector('iodob-ui')!.attachShadow({ mode: 'open' });
     own.innerHTML = '<i></i>';
     own.querySelector('i')!.attachShadow({ mode: 'open' });
     const page = document.getElementById('p')!.attachShadow({ mode: 'open' });

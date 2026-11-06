@@ -20,7 +20,7 @@ afterEach(() => {
 document.elementsFromPoint ??= () => [];
 
 it('blocks page mousedown only while inspecting', async () => {
-  const host = document.createElement('bo-doi-ui');
+  const host = document.createElement('iodob-ui');
   document.body.append(host);
   host.attachShadow({ mode: 'open' }).append(layer);
   const p = document.createElement('p');
@@ -41,7 +41,7 @@ it('blocks page mousedown only while inspecting', async () => {
 });
 
 it('mounts the panel in the shadow root and shows the selection', async () => {
-  const host = document.createElement('bo-doi-ui');
+  const host = document.createElement('iodob-ui');
   document.body.append(host);
   const shadow = host.attachShadow({ mode: 'open' });
   shadow.append(layer);
@@ -58,7 +58,7 @@ it('mounts the panel in the shadow root and shows the selection', async () => {
 });
 
 it('shows colours in state.colorFormat (2.22)', async () => {
-  const host = document.createElement('bo-doi-ui');
+  const host = document.createElement('iodob-ui');
   document.body.append(host);
   const shadow = host.attachShadow({ mode: 'open' });
   shadow.append(layer);
@@ -77,7 +77,7 @@ it('shows colours in state.colorFormat (2.22)', async () => {
 });
 
 async function setup() {
-  const host = document.createElement('bo-doi-ui');
+  const host = document.createElement('iodob-ui');
   document.body.append(host);
   const shadow = host.attachShadow({ mode: 'open' });
   shadow.append(layer);
@@ -164,7 +164,7 @@ it('pause hides the floating panel and pins', async () => {
 });
 
 it('a click right after a drag does not select (regression)', async () => {
-  const host = document.createElement('bo-doi-ui');
+  const host = document.createElement('iodob-ui');
   document.body.append(host);
   host.attachShadow({ mode: 'open' }).append(layer);
   const p = document.createElement('p');
@@ -185,7 +185,7 @@ it('a click right after a drag does not select (regression)', async () => {
 });
 
 it('ignores hover and click while capturing', async () => {
-  const host = document.createElement('bo-doi-ui');
+  const host = document.createElement('iodob-ui');
   document.body.append(host);
   host.attachShadow({ mode: 'open' }).append(layer);
   const p = document.createElement('p');
@@ -204,7 +204,7 @@ it('ignores hover and click while capturing', async () => {
 });
 
 it('pickElement resolves the clicked element, restores inspect state, Esc cancels', async () => {
-  const host = document.createElement('bo-doi-ui');
+  const host = document.createElement('iodob-ui');
   document.body.append(host);
   host.attachShadow({ mode: 'open' }).append(layer);
   const p = document.createElement('p');

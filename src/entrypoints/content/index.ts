@@ -16,7 +16,7 @@ import './style.css';
 
 declare global {
   interface Window {
-    __BO_DOI__?: boolean;
+    __IODOB__?: boolean;
   }
 }
 
@@ -25,12 +25,12 @@ export default defineContentScript({
   cssInjectionMode: 'ui',
   async main(ctx) {
     const inFrame = isResponsiveFrame();
-    if (window.__BO_DOI__ && !inFrame) return; // 9.20: injected twice; background talks to the first via toggle_script
-    window.__BO_DOI__ = true;
+    if (window.__IODOB__ && !inFrame) return; // 9.20: injected twice; background talks to the first via toggle_script
+    window.__IODOB__ = true;
     // extension reload/update: old context dies, isolated world survives; let the re-injection take over
     ctx.onInvalidated(() => {
       stopSession();
-      delete window.__BO_DOI__;
+      delete window.__IODOB__;
     });
     const start = async () => {
       await startSession(ctx);

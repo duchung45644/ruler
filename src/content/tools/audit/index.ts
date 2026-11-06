@@ -17,7 +17,7 @@ export const audit = {
 };
 let unmountPanel: (() => void) | null = null;
 
-const isOwn = (el: Element) => el.localName === 'bo-doi-ui' || ownNodes.has(el);
+const isOwn = (el: Element) => el.localName === 'iodob-ui' || ownNodes.has(el);
 
 export function rescan(): void {
   audit.rows = scanStyles(document.documentElement, isOwn);

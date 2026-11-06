@@ -15,7 +15,7 @@ import { state } from '../../core/state.svelte';
 
 /** Line / label colors by kind; the responsive frame headers use the same (3.22). */
 export const COLORS = { min: '#008C21', max: '#0891B2', both: '#E8A23D' };
-const isOwn = (el: Element) => el.localName === 'bo-doi-ui';
+const isOwn = (el: Element) => el.localName === 'iodob-ui';
 let found: Breakpoint[] = [];
 
 /** Breakpoints shown right now (empty while the tool is off); responsive mode builds frames from them (Q5). */

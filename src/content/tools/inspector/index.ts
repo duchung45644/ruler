@@ -245,7 +245,7 @@ function paintHover(box: HTMLElement, el: Element, color: string): void {
   const below = r.bottom + 22 < innerHeight;
   draw(
     box,
-    `left:${Math.max(4, Math.min(r.x, innerWidth - 304))}px;top:${below ? r.bottom + 4 : r.y - 22}px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:2px 6px;border-radius:6px;background:rgba(24,24,27,.9);color:#e4e4e7;font:500 11px/14px 'Bo doi Geist',ui-sans-serif,system-ui,sans-serif`,
+    `left:${Math.max(4, Math.min(r.x, innerWidth - 304))}px;top:${below ? r.bottom + 4 : r.y - 22}px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:2px 6px;border-radius:6px;background:rgba(24,24,27,.9);color:#e4e4e7;font:500 11px/14px 'iodob Geist',ui-sans-serif,system-ui,sans-serif`,
     tag,
   );
 }

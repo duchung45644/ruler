@@ -34,7 +34,7 @@ describe('commands', () => {
     expect([...MCP_STATES]).toEqual([...FORCEABLE_STATES]);
   });
   it('dials 127.0.0.1 only', () => {
-    expect(mcpUrl()).toBe('ws://127.0.0.1:47347/bodoi');
+    expect(mcpUrl()).toBe('ws://127.0.0.1:47347/iodob');
   });
 });
 
@@ -234,6 +234,6 @@ describe('validateCall', () => {
 
 it('puts the token and extension id in the prompt', () => {
   const p = connectPrompt('T'.repeat(43), 'abcdef');
-  expect(p).toContain('npx -y @bo-doi/mcp-server --extension-id abcdef');
-  expect(p).toContain(`BODOI_MCP_TOKEN=${'T'.repeat(43)}`);
+  expect(p).toContain('npx -y @iodob/mcp-server --extension-id abcdef');
+  expect(p).toContain(`IODOB_MCP_TOKEN=${'T'.repeat(43)}`);
 });

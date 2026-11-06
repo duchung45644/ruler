@@ -52,7 +52,7 @@ it('scripts', () => {
   expect(afterScript()).toContain('s.setProperty("transform", t[0], t[1])');
   expect(beforeScript(900)).toContain('translateY(900px)');
   expect(beforeScript(900)).toContain('--bd-cover-top');
-  expect(restoreScript({ scrollTop: 40 })).toContain('[data-bo-doi-scroll]');
+  expect(restoreScript({ scrollTop: 40 })).toContain('[data-iodob-scroll]');
 });
 
 it('stitchDone', () => {

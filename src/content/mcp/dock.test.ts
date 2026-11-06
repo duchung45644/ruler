@@ -12,7 +12,7 @@ import McpPopover from './McpPopover.svelte';
 vi.mock('../../lib/messaging', async (orig) => ({
   ...(await orig<typeof import('../../lib/messaging')>()),
   sendToBackground: vi.fn(async (type: string) =>
-    type === 'mcp_prompt' ? 'PROMPT BODOI_MCP_TOKEN=x' : undefined,
+    type === 'mcp_prompt' ? 'PROMPT IODOB_MCP_TOKEN=x' : undefined,
   ),
 }));
 vi.mock('../../lib/clipboard', () => ({ copyText: vi.fn(async () => true) }));
@@ -56,7 +56,7 @@ it('tooltip follows the state', () => {
 it('idle: prompt with copy and a connect button', async () => {
   await open();
   document.querySelector<HTMLButtonElement>('[data-action="mcp-copy"]')!.click();
-  expect(copyText).toHaveBeenCalledWith('PROMPT BODOI_MCP_TOKEN=x');
+  expect(copyText).toHaveBeenCalledWith('PROMPT IODOB_MCP_TOKEN=x');
   document.querySelector<HTMLButtonElement>('[data-action="mcp-connect"]')!.click();
   expect(sendToBackground).toHaveBeenCalledWith('mcp_connect');
 });

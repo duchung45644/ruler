@@ -6,12 +6,12 @@ import { registerItem } from '../../core/registry.svelte';
 import { onStop, sessionSignal } from '../../core/session';
 import { state } from '../../core/state.svelte';
 
-const isOwn = (el: Element) => el.localName === 'bo-doi-ui';
+const isOwn = (el: Element) => el.localName === 'iodob-ui';
 let sheets: HTMLStyleElement[] = [];
 
 function addSheet(parent: Node, css: string): void {
   const s = document.createElement('style');
-  s.dataset.boDoi = '';
+  s.dataset.iodob = '';
   s.textContent = css;
   parent.appendChild(s);
   sheets.push(s);

@@ -1,6 +1,6 @@
 /**
  * Page side of MCP (10.10, 10.16): the one `mcp_call` entry, answered by the top frame with
- * Bo doi on. Port of the MCP branches of Wg (content.js:21404) and its Ag / Cg / Ig routing sets:
+ * iodob on. Port of the MCP branches of Wg (content.js:21404) and its Ag / Cg / Ig routing sets:
  * page commands run in the top page; element and edit commands run in the responsive frame
  * holding the selection (or `viewportId`) while responsive mode is on; responsive commands and
  * the screenshot never run inside a frame.
@@ -47,7 +47,7 @@ async function runHere(type: McpPageType, payload: unknown): Promise<CallOutcome
     return { ok: true, data: (await run(payload)) ?? null };
   } catch (e) {
     if (e instanceof McpFail) return { ok: false, error: e.message };
-    console.error(`[bo-doi] mcp "${type}" failed`, e);
+    console.error(`[iodob] mcp "${type}" failed`, e);
     return { ok: false, error: String((e as Error)?.message ?? e) };
   }
 }

@@ -25,7 +25,7 @@ import { collectIssues } from './issues';
 import { skippedCrossOriginCount } from './rules';
 
 const MAX_DEPTH = 100;
-const isOwn = (el: Element) => el.tagName.toLowerCase() === 'bo-doi-ui';
+const isOwn = (el: Element) => el.tagName.toLowerCase() === 'iodob-ui';
 
 /**
  * What each element under the selection contributed, for the panel's hover highlights

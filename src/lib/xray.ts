@@ -14,7 +14,7 @@ export const XRAY_COLORS = [
 
 /** Not outlined: svg internals, hidden things, head, and our own nodes. */
 const EXCLUDE =
-  'bo-doi-ui,[data-bo-doi],[data-bo-doi] *,svg *,path,circle,rect,line,polygon,polyline,ellipse,g,defs,clipPath,mask,pattern,symbol,use,text,tspan,br,hr,slot,*[style*="width: 0"],*[style*="height: 0"],*[style*="width:0"],*[style*="height:0"],*[style*="display: none"],*[style*="display:none"],*[style*="visibility: hidden"],*[style*="visibility:hidden"],*[style*="opacity: 0"],*[style*="opacity:0"],head,head *,meta,link,script,style,title,base{outline:none!important;}';
+  'iodob-ui,[data-iodob],[data-iodob] *,svg *,path,circle,rect,line,polygon,polyline,ellipse,g,defs,clipPath,mask,pattern,symbol,use,text,tspan,br,hr,slot,*[style*="width: 0"],*[style*="height: 0"],*[style*="width:0"],*[style*="height:0"],*[style*="display: none"],*[style*="display:none"],*[style*="visibility: hidden"],*[style*="visibility:hidden"],*[style*="opacity: 0"],*[style*="opacity:0"],head,head *,meta,link,script,style,title,base{outline:none!important;}';
 
 /** Port of buildXraySheet (legacy-src/content.js:41863): one outline colour per nesting level. */
 export function xraySheet(scope: 'body' | ':host', depth: number): string {

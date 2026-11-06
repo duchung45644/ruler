@@ -19,7 +19,7 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-const root = () => document.querySelector('bo-doi-capture')!.shadowRoot!;
+const root = () => document.querySelector('iodob-capture')!.shadowRoot!;
 const undoBtn = () => root().querySelector('[aria-label="capture_undo"]') as HTMLButtonElement;
 const tool = (id: string) => root().querySelector(`[data-tool="${id}"]`)!;
 const key = (init: KeyboardEventInit) => routeKey(new KeyboardEvent('keydown', init));

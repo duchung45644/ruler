@@ -47,7 +47,7 @@ export function backgroundOf(el: Element, at?: { x: number; y: number }): Rgba |
   else for (let n = el.parentElement; n; n = n.parentElement) under.push(n);
   const layers = layersOf(el);
   for (const n of under) {
-    if (n === el || el.contains(n) || n.tagName.toLowerCase() === 'bo-doi-ui') continue;
+    if (n === el || el.contains(n) || n.tagName.toLowerCase() === 'iodob-ui') continue;
     const s = getComputedStyle(n);
     if (s.display === 'none' || s.visibility === 'hidden' || parseFloat(s.opacity) < 0.05) continue;
     layers.push(...layersOf(n));

@@ -1,4 +1,4 @@
-# Bo doi — Đợt 3: Chụp — Kế hoạch triển khai
+# iodob — Đợt 3: Chụp — Kế hoạch triển khai
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -10,7 +10,7 @@
   - `full_capture(opts)`: port `bdFullCapture` của `bd-background.js`.
   - Mọi lệnh `captureVisibleTab` đi qua **một hàng đợi giãn cách** (≥550ms giữa hai lần, spec §3 "~2 lần/giây").
 - **Một module chụp** ở `src/content/tools/capture/`: mục registry `capture` (phím 8), phiên chụp (`openCaptureBar`, `openCaptureEditor`, `closeCapture`), chụp cả trang, chụp phần tử.
-- **UI chụp nằm ở host shadow riêng** (`bo-doi-capture`, và `bo-doi-cover` cho lớp che khi chụp cả trang). Dựng bằng `mountUi` (thêm tham số `name`). Lý do: host chính (`bo-doi-ui`) phải ẩn hẳn lúc chụp (dock, panel, popover, layer). UI chụp nằm chung host thì sẽ ẩn theo. Bản cũ cũng tách `capHost` / cover như vậy.
+- **UI chụp nằm ở host shadow riêng** (`iodob-capture`, và `iodob-cover` cho lớp che khi chụp cả trang). Dựng bằng `mountUi` (thêm tham số `name`). Lý do: host chính (`iodob-ui`) phải ẩn hẳn lúc chụp (dock, panel, popover, layer). UI chụp nằm chung host thì sẽ ẩn theo. Bản cũ cũng tách `capHost` / cover như vậy.
 - **Cờ `state.capturing`** thay `globalThis.__bdViewerOpen`.
   - `routeKey`: khi cờ bật, chỉ chuyển phím cho handler của phiên chụp. Phím số, phím chữ và `addKeyHandler` của công cụ không chạy.
   - `startDrag` và các handler của inspector bỏ qua khi cờ bật.
@@ -24,7 +24,7 @@
 
 **Tech Stack:** Giữ nguyên stack Đợt 1–2: WXT 0.21.5, Svelte 5, Tailwind 4, `@lucide/svelte`, `@wxt-dev/i18n`, Vitest + happy-dom 21.0.3. **Không thêm dependency.** Canvas 2D không có trong happy-dom, nên test vẽ dùng context giả ghi lại các lệnh gọi. Không thêm `canvas` / `jsdom`.
 
-**Spec:** `docs/superpowers/specs/2026-11-01-bo-doi-rewrite-design.md`. Các mục liên quan:
+**Spec:** `docs/superpowers/specs/2026-11-01-iodob-rewrite-design.md`. Các mục liên quan:
 - §3 Ràng buộc: `debugger`; `downloads` và `clipboardWrite` là optional; `captureVisibleTab` ~2 lần/giây; canvas ~32 767px; clipboard ảnh cần secure context
 - §4.1 (phím 8), §4.7 Chụp màn hình
 - §6.3 DRY (một helper gắn UI Svelte vào shadow root), §6.4 Đường chạy liên tục
@@ -104,7 +104,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 8 tách các phần
   - Bút chỉ vẽ đoạn mới.
   - Hình được preview trên canvas cỡ màn hình và chỉ vẽ vào ảnh khi thả (spec §9).
 - **Canvas đi thẳng vào trình sửa ảnh,** không vòng qua PNG (spec §9). `openCaptureEditor(src: string | HTMLCanvasElement, …)`.
-- **Listener:** mọi listener gắn `{ signal }` của phiên chụp, và signal đó gộp với `sessionSignal()` qua `AbortSignal.any`. Host chụp / lớp che, `transform` trên `<html>`, `data-bo-doi-scroll`, `visibility` của phần tử fixed/sticky đều phải gỡ trong `finally` và trong `onStop`.
+- **Listener:** mọi listener gắn `{ signal }` của phiên chụp, và signal đó gộp với `sessionSignal()` qua `AbortSignal.any`. Host chụp / lớp che, `transform` trên `<html>`, `data-iodob-scroll`, `visibility` của phần tử fixed/sticky đều phải gỡ trong `finally` và trong `onStop`.
 - **Khoá storage giữ đúng tên bản cũ:** `screenshotPreferences` = `{ includePadding: boolean; includeHighlights: boolean }` trong `storage.local`, mặc định `null` (nghĩa là cả hai `true`).
 - **Thông điệp background giữ tên bản cũ:** `capture_tab`, `full_capture`; mã lỗi `INVALID_URL`, `CAPTURE_FAILED`. Riêng kênh nội bộ đi qua `sendToBackground` có kiểu (`target: 'background'`). Không giữ `target: "bd"`.
 - **`pnpm check` và `pnpm build`** phải qua ở cuối mỗi task.
@@ -115,13 +115,13 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 8 tách các phần
    - Mong đợi: nút Copy hiện "Lỗi" 1,5s rồi trở lại; Lưu vẫn tải được PNG; không lỗi chưa bắt trong console.
    - Kiểm bằng: `clipboard.test.ts` (Task 3: `copyImage` trả `false` khi `isSecureContext === false`, gọi `request_clipboard_permission` đúng một lần khi `write` ném); `capture.test.ts` (Task 4: `capAction` lỗi thì nhãn "Failed").
 2. **Chụp cả trang khi DevTools đang mở ở tab** (`debugger.attach` ném lỗi), **và trang cuộn trong container.**
-   - Mong đợi: chuyển sang cuộn-ghép; ghi chú lý do có `e.message`; vị trí cuộn (window hoặc container) trả về chỗ cũ; `<html>` không còn `transform`; không còn `[data-bo-doi-scroll]`; phần tử fixed/sticky hiện lại.
+   - Mong đợi: chuyển sang cuộn-ghép; ghi chú lý do có `e.message`; vị trí cuộn (window hoặc container) trả về chỗ cũ; `<html>` không còn `transform`; không còn `[data-iodob-scroll]`; phần tử fixed/sticky hiện lại.
    - Kiểm bằng: `background.test.ts` (Task 2: `finally` luôn gọi `clearDeviceMetricsOverride`, `restore`, `detach` kể cả khi `captureScreenshot` ném); `fullpage.test.ts` (Task 6: script `after` trả `transform` cũ kèm priority; `pickScroller`).
 3. **Gõ trong ô chữ của công cụ Text, và phím khi UI chụp mở.**
    - Mong đợi: gõ `p`/`a`/`r` không đổi công cụ; Esc chỉ huỷ ô chữ, không đóng trình sửa; số `2`…`7`, `O`/`M`/`A`, mũi tên không chạm công cụ trang (ảnh đè không dịch); Ctrl+Z hoàn tác; Ctrl+Q thoát sạch.
    - Kiểm bằng: `keys.test.ts` (Task 3: `state.capturing` chặn item và `addKeyHandler`, vẫn cho quit); `editor.test.ts` (Task 5: phím từ `<input>` trong shadow chụp không đổi công cụ).
 4. **Thoát (Ctrl+Q / bấm icon) giữa lúc đang chụp cả trang hoặc đang mở trình sửa ảnh.**
-   - Mong đợi: không còn host `bo-doi-capture` / `bo-doi-cover`; `state.capturing === false`; trang không kẹt `transform`, không kẹt ẩn fixed; background vẫn detach debugger (nhờ `finally`). Bật lại thì chụp được ngay.
+   - Mong đợi: không còn host `iodob-capture` / `iodob-cover`; `state.capturing === false`; trang không kẹt `transform`, không kẹt ẩn fixed; background vẫn detach debugger (nhờ `finally`). Bật lại thì chụp được ngay.
    - Kiểm bằng: test `onStop` trong `session.test.ts` của capture (Task 4) và `fullpage` (Task 6).
 5. **Bấm phím 8 liên tục, và cuộn-ghép trang dài** (giới hạn ~2 lần/giây của `captureVisibleTab`).
    - Mong đợi: không lỗi `MAX_CAPTURE_VISIBLE_TAB_CALLS_PER_SECOND`; phím 8 khi phiên chụp đang mở thì bị bỏ qua (không mở hai phiên).
@@ -276,8 +276,8 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 8 tách các phần
     - **vẫn** bỏ qua khi phím đến từ `<input>` (ô chữ của công cụ Text), giống `onCapKeydown` cũ (`capture.js:80`);
     - không kiểm `state.paused`: phiên chụp chỉ mở khi không pause.
   - `startDrag`: `if (state.capturing) return`. Handler `mousemove` / `block` / `click` của inspector: thêm `state.capturing` vào điều kiện bỏ qua.
-  - `mountUi(ctx, component, props?, opts?: { name?: string })`: mặc định `'bo-doi-ui'`. Host mới:
-    - thêm `data-bo-doi` (để X-Ray không vẽ viền lên nó: `xray.ts` đã loại `[data-bo-doi]`);
+  - `mountUi(ctx, component, props?, opts?: { name?: string })`: mặc định `'iodob-ui'`. Host mới:
+    - thêm `data-iodob` (để X-Ray không vẽ viền lên nó: `xray.ts` đã loại `[data-iodob]`);
     - có `data-theme = state.theme`;
     - được `ownNodes.add` / `delete` bởi người gọi.
   - `sessionCtx(): ContentScriptContext` (lưu ở `start`).
@@ -308,7 +308,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 8 tách các phần
   - `clipboard.test.ts`:
     - `isSecureContext = false` → `copyImage` trả `false`, không gọi `write`;
     - `write` ném lần đầu, `sendToBackground` trả `true`, lần hai thành công → `true`, `request_clipboard_permission` gọi đúng 1 lần.
-  - `mount.test.ts`: `mountUi(ctx, C, {}, { name: 'bo-doi-capture' })` → host `localName === 'bo-doi-capture'`, có `data-bo-doi`.
+  - `mount.test.ts`: `mountUi(ctx, C, {}, { name: 'iodob-capture' })` → host `localName === 'iodob-capture'`, có `data-iodob`.
   - Run: `pnpm vitest run src/content/core src/content/tools/inspector src/lib/settings.test.ts src/lib/clipboard.test.ts src/ui`. Expected: FAIL.
 - [ ] **Step 2: Viết code** theo Interfaces.
 - [ ] **Step 3: Chạy test.** Expected: PASS. `pnpm check && pnpm build` PASS.
@@ -335,7 +335,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 8 tách các phần
     - đang `capturing` thì return;
     - `state.capturing = true`; `hideUi('all')`; chờ 2 rAF; `grabVisible()`;
     - lỗi thì `hideUi(null)`, `capturing = false`, thôi;
-    - được ảnh thì dựng host `bo-doi-capture` (fixed, inset 0, `pointer-events:none`; thanh/shade `auto`), view `bar`, chế độ vùng bật ngay.
+    - được ảnh thì dựng host `iodob-capture` (fixed, inset 0, `pointer-events:none`; thanh/shade `auto`), view `bar`, chế độ vùng bật ngay.
   - `closeCapture(): void`: gỡ host, `setCaptureKeyHandler(null)`, `hideUi(null)`, `capturing = false`. Đăng ký vào `onStop`.
   - `grabVisible(): Promise<string>`: `sendToBackground('capture_tab', null)`, không `success` thì ném `new Error('capture failed')`.
   - `withHiddenUi<T>(fn: () => Promise<T>): Promise<T>` (port `capture.js:132`): ẩn host chụp (`display:none`), `hideUi('all')`, 2 rAF, `fn`; `finally` trả lại đúng trạng thái trước.
@@ -406,7 +406,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 8 tách các phần
 | `capture.copyNeedsHttps` | Copy needs HTTPS — use Save | Copy cần HTTPS — hãy dùng Lưu |
 
 - [ ] **Step 1: Viết test fail** (`capture.test.ts`; stub `sendToBackground` và `loadImg`):
-  - `openCaptureBar()` khi `capture_tab` trả `{success:false}` → không có host `bo-doi-capture`, `state.capturing === false`, host chính không còn `data-capture`;
+  - `openCaptureBar()` khi `capture_tab` trả `{success:false}` → không có host `iodob-capture`, `state.capturing === false`, host chính không còn `data-capture`;
   - thành công → có host, `state.capturing === true`, host chính có `data-capture='all'`, thanh có 4 nút + đóng (không có "Phần tử đang chọn"); có `element` thì 5;
   - gọi `openCaptureBar()` lần hai khi đang mở → `capture_tab` chỉ gọi 1 lần (Review Focus 5);
   - keydown Escape (qua `routeKey`) → host bị gỡ, `capturing === false`;
@@ -509,7 +509,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 8 tách các phần
 
 **Interfaces:**
 
-- Consumes: `full_capture`, `capture_tab` (Task 2), `withHiddenUi`, `grabVisible`, `openCaptureEditor` (Task 4–5), `mountUi` + `name: 'bo-doi-cover'`.
+- Consumes: `full_capture`, `capture_tab` (Task 2), `withHiddenUi`, `grabVisible`, `openCaptureEditor` (Task 4–5), `mountUi` + `name: 'iodob-cover'`.
 - Produces:
   - `src/lib/fullpage.ts`:
     - `MAX_CANVAS = 32000`, `CHUNK = 8000`, `STITCH_MAX = 60`.
@@ -518,19 +518,19 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 8 tách các phần
       - `height = round(scroller ? ih + scrollH - clientH : winTotal)`, rồi `min(height, floor(32000 / dpr))`;
       - `chunk = floor(8000 / dpr)`; `shift = ih`;
       - chỉ dùng scroller khi `winTotal - ih < 50` (`fullpage.js:63`).
-    - `beforeScript(ih)`, `afterScript()`, `restoreScript(o: { x: number; y: number } | { scrollTop: number })`: chép nguyên văn biểu thức của `fullpage.js:78–85`, đổi `[data-bd-cover]` → `bo-doi-cover`, `[data-bd-scroll]` → `[data-bo-doi-scroll]`. Lớp che dời bằng biến CSS (xem dưới), không bằng `style.top`.
+    - `beforeScript(ih)`, `afterScript()`, `restoreScript(o: { x: number; y: number } | { scrollTop: number })`: chép nguyên văn biểu thức của `fullpage.js:78–85`, đổi `[data-bd-cover]` → `iodob-cover`, `[data-bd-scroll]` → `[data-iodob-scroll]`. Lớp che dời bằng biến CSS (xem dưới), không bằng `style.top`.
     - `stitchHeight(ih, VH, total, k): number`: `min(round((ih - VH + total) * k), 32000)`.
     - `stitchDone(top, VH, total, Tp, k): boolean`: `top + VH >= total - 1 || (Tp + top + VH) * k >= 32000`.
-  - **Lớp che dời bằng biến:** `theme.css` có rule `:host(bo-doi-cover) { top: var(--bd-cover-top, 0px) !important; width: …; height: … }`. Lý do: rule `:host { top: 0 !important }` thắng `style.top` inline. Script đặt `c.style.setProperty('--bd-cover-top', '-${ih}px')` và `after` đặt lại `0px`. Thuộc tính custom không bị `all: initial` reset.
+  - **Lớp che dời bằng biến:** `theme.css` có rule `:host(iodob-cover) { top: var(--bd-cover-top, 0px) !important; width: …; height: … }`. Lý do: rule `:host { top: 0 !important }` thắng `style.top` inline. Script đặt `c.style.setProperty('--bd-cover-top', '-${ih}px')` và `after` đặt lại `0px`. Thuộc tính custom không bị `all: initial` reset.
   - `captureFullPage(snap: string): Promise<void>` (4.10; port `fullpage.js:102`):
     - giữ `state.capturing`;
-    - `showCover(snap)`: host `bo-doi-cover`, rộng/cao bằng px; ảnh `brightness(.55)`; thẻ 260px có `capture.fullPageBusy` và thanh chạy `bd-load` 1s;
+    - `showCover(snap)`: host `iodob-cover`, rộng/cao bằng px; ảnh `brightness(.55)`; thẻ 260px có `capture.fullPageBusy` và thanh chạy `bd-load` 1s;
     - `withHiddenUi(fullPageViaDebugger)`:
       - lỗi thì `note = i18n.t('capture.fastFailed', [e.message])`;
       - thành công thì `openCaptureEditor(canvas, false, note)` **trước**, rồi mới gỡ lớp che (spec §9);
       - thất bại thì gỡ lớp che trước, `stitchFullPage()`, rồi mở editor kèm note.
   - `fullPageViaDebugger()` (`fullpage.js:60`):
-    - đánh dấu scroller `data-bo-doi-scroll`; gửi `full_capture` với `fullPagePlan` + 3 script;
+    - đánh dấu scroller `data-iodob-scroll`; gửi `full_capture` với `fullPagePlan` + 3 script;
     - ghép các phần theo chiều dọc vào một canvas;
     - `finally`: trả cuộn, gỡ attr.
   - `stitchFullPage()` (`fullpage.js:127`): port từng dòng:
@@ -555,7 +555,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 8 tách các phần
     - `stitchDone(4100, 900, 5000, 0, 1) === true`.
   - `fullpage.test.ts` (content):
     - `full_capture` trả `{ok:false, error:'Another debugger is already attached'}` → `grabVisible` được gọi (cuộn-ghép), editor mở với note chứa `Another debugger is already attached`;
-    - sau đó: không còn host `bo-doi-cover`; không phần tử nào giữ `visibility: hidden` do mình đặt; `scrollY` về giá trị cũ (Review Focus 2);
+    - sau đó: không còn host `iodob-cover`; không phần tử nào giữ `visibility: hidden` do mình đặt; `scrollY` về giá trị cũ (Review Focus 2);
     - `stopSession()` giữa lúc chờ `full_capture` → host cover bị gỡ, `capturing === false` (Review Focus 4).
   - Run: `pnpm vitest run src/lib/fullpage.test.ts src/content/tools/capture`. Expected: FAIL.
 - [ ] **Step 2: Viết code.** Nút "Chụp cả trang" gọi `closeCapture()` rồi `captureFullPage(snap)`. Để giữ `capturing` liên tục, `closeCapture({ keepCapturing: true })` không bật lại UI chính (bản cũ `withHiddenUi` lại ẩn ngay; bản mới tránh nháy).
@@ -655,7 +655,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 8 tách các phần
       - có ảnh đè thì mũi tên không dời ảnh;
       - Esc đóng; đóng xong dock và công cụ trở lại đúng trạng thái.
   14. Ctrl+Q khi đang mở trình sửa, và khi đang chụp cả trang:
-      - DevTools không còn `bo-doi-capture` / `bo-doi-cover`;
+      - DevTools không còn `iodob-capture` / `iodob-cover`;
       - `<html>` không còn `transform`;
       - bật lại thì chụp được ngay.
   15. Bấm `8` / Esc liên tục 5–6 lần: không có lỗi quota `captureVisibleTab` trong console SW.

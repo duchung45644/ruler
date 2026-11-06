@@ -60,7 +60,7 @@ function hideFixed(): [HTMLElement, string, string][] {
 
 /** Cover kept up so the page jumping underneath is never seen. Pixel size: vh changes while enlarged. */
 async function showCover(snap: string): Promise<() => void> {
-  const ui = await mountUi(sessionCtx(), Cover as never, { snap }, { name: 'bo-doi-cover' });
+  const ui = await mountUi(sessionCtx(), Cover as never, { snap }, { name: 'iodob-cover' });
   ui.host.dataset.theme = state.theme;
   ui.host.style.setProperty('--bd-cover-w', `${innerWidth}px`);
   ui.host.style.setProperty('--bd-cover-h', `${innerHeight}px`);
@@ -92,12 +92,12 @@ async function fullPageViaDebugger(): Promise<HTMLCanvasElement> {
   const x0 = scrollX,
     y0 = scrollY,
     s0 = el?.scrollTop ?? 0;
-  el?.setAttribute('data-bo-doi-scroll', '');
+  el?.setAttribute('data-iodob-scroll', '');
   const ih = innerHeight;
   // the viewport grows to the page height below: keep 100vh heroes at one screen
   const unpin = pinViewportUnits([
     document,
-    ...shadowRoots(document, (e) => e.localName.startsWith('bo-doi')),
+    ...shadowRoots(document, (e) => e.localName.startsWith('iodob')),
   ]);
   const plan = fullPagePlan({
     winTotal: winTotal(),
@@ -121,7 +121,7 @@ async function fullPageViaDebugger(): Promise<HTMLCanvasElement> {
     // backup in case the background could not restore it
     if (el) {
       el.scrollTop = s0;
-      el.removeAttribute('data-bo-doi-scroll');
+      el.removeAttribute('data-iodob-scroll');
     } else scrollTo({ left: x0, top: y0, behavior: 'instant' });
   }
 }

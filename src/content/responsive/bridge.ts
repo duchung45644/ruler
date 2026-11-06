@@ -66,7 +66,7 @@ function connect<In extends object, Out extends object>(
           if (typeof id === 'number') post({ type: m.type, data: [r], id, reply: true });
         },
         (err) => {
-          console.error(`[bo-doi] frame handler "${m.type}" failed`, err);
+          console.error(`[iodob] frame handler "${m.type}" failed`, err);
           if (typeof id === 'number') post({ type: m.type, data: [undefined], id, reply: true });
         },
       );

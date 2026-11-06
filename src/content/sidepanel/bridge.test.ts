@@ -28,7 +28,7 @@ const sent = (type: string) => toPanel.mock.calls.filter((c) => c[0] === type);
 let shadow: ShadowRoot;
 
 beforeEach(async () => {
-  const host = document.body.appendChild(document.createElement('bo-doi-ui'));
+  const host = document.body.appendChild(document.createElement('iodob-ui'));
   shadow = host.attachShadow({ mode: 'open' });
   shadow.append(layer);
   state.active = true;

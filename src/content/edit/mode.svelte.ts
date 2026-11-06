@@ -10,7 +10,7 @@ import { RuleTracker } from './rules';
 import { StateForcer } from './states';
 import { setTextEdit } from './text';
 
-export const isOwn = (el: Element): boolean => el.localName === 'bo-doi-ui';
+export const isOwn = (el: Element): boolean => el.localName === 'iodob-ui';
 
 let engine: HtmlEditor | null = null;
 let tracker: RuleTracker | null = null;

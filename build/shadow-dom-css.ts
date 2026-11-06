@@ -3,7 +3,7 @@ import { AtRule, Rule, type Plugin } from 'postcss';
 // Tailwind trong shadow DOM: rem → px (trang có thể đổi font-size của html),
 // @property → giá trị mặc định ở layer thấp nhất (WXT đưa @property lên <head> của trang).
 export const shadowDomCss = (): Plugin => ({
-  postcssPlugin: 'bo-doi-shadow-dom-css',
+  postcssPlugin: 'iodob-shadow-dom-css',
   prepare() {
     const defaults: [string, string][] = [];
     return {

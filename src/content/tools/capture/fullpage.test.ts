@@ -40,7 +40,7 @@ it('falls back to scroll & stitch with a note, and leaves the page clean (Review
   expect(messaging.sendToBackground).toHaveBeenCalledWith('capture_tab', null);
   expect(open).toHaveBeenCalledOnce();
   expect(String(open.mock.calls[0]![2])).toContain('Another debugger is already attached');
-  expect(document.querySelector('bo-doi-cover')).toBeNull();
+  expect(document.querySelector('iodob-cover')).toBeNull();
   expect(fixed.style.visibility).toBe('');
   expect(scrollY).toBe(y0);
   fixed.remove();
@@ -53,10 +53,10 @@ it('stopSession while waiting for the debugger removes the cover (Review Focus 4
   );
   const p = captureFullPage('data:snap');
   await vi.waitFor(() => expect(reply).toBeTypeOf('function'));
-  expect(document.querySelector('bo-doi-cover')).not.toBeNull();
+  expect(document.querySelector('iodob-cover')).not.toBeNull();
   stopSession();
   reply({ ok: false, error: 'x' });
   await p;
-  expect(document.querySelector('bo-doi-cover')).toBeNull();
+  expect(document.querySelector('iodob-cover')).toBeNull();
   expect(state.capturing).toBe(false);
 });

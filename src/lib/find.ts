@@ -1,7 +1,7 @@
 import type { i18n } from '#i18n';
 import { isRendered, shadowRoots } from './dom';
 
-const isOwn = (el: Element) => el.localName === 'bo-doi-ui';
+const isOwn = (el: Element) => el.localName === 'iodob-ui';
 
 /** Port of findElement (legacy-src/content.js:38503): document, then each open shadow root. */
 export function findAll(

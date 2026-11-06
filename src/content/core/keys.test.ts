@@ -186,7 +186,7 @@ describe('routeKey while capturing', () => {
     expect(tool).not.toHaveBeenCalled();
     expect(cap).toHaveBeenCalledTimes(2);
 
-    const host = document.body.appendChild(document.createElement('bo-doi-capture'));
+    const host = document.body.appendChild(document.createElement('iodob-capture'));
     const input = host.attachShadow({ mode: 'open' }).appendChild(document.createElement('input'));
     let ev!: KeyboardEvent;
     host.addEventListener('keydown', (e) => (ev = e as KeyboardEvent), { once: true });

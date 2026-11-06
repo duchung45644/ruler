@@ -1,4 +1,4 @@
-# Bo doi — Đợt 4: Side panel — Kế hoạch triển khai
+# iodob — Đợt 4: Side panel — Kế hoạch triển khai
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -35,7 +35,7 @@
 - Sinh class Tailwind: port từ `content.js`. Không dùng gói `tailwindcss` lúc chạy.
 - Canvas 2D / `getImageData` không có trong happy-dom, nên test bảng màu canvas chạy trên `Uint8ClampedArray` giả.
 
-**Spec:** `docs/superpowers/specs/2026-11-01-bo-doi-rewrite-design.md`. Các mục liên quan:
+**Spec:** `docs/superpowers/specs/2026-11-01-iodob-rewrite-design.md`. Các mục liên quan:
 - §3 Ràng buộc: không có `host_permissions` cố định; `<all_urls>` và `downloads` là optional; MV3 cấm code từ xa (logo và font đóng gói sẵn)
 - §4.1 (phím 0), §4.4 Side panel — tab Phần tử, §4.5 Side panel — tab Trang
 - §6.2 (lib: css, page, tech), §6.3 DRY (kênh có kiểu duy nhất, một lớp settings, i18n, token)
@@ -176,7 +176,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 14 tách các phầ
    - Mong đợi: bấm lần đầu thì panel mở, không có lỗi `sidePanel.open() may only be called in response to a user gesture` trong console SW. Bấm lại khi panel đang hiện thì panel đóng. Có cửa sổ rời thì cửa sổ đó được focus, không mở panel thứ hai.
    - Kiểm bằng: `background.test.ts` (Task 3: `open_side_panel` gọi `sidePanel.open` đồng bộ, trước `await` đầu tiên, dùng một spy ghi thứ tự; có `detachedPanels[tab]` thì gọi `windows.update(focused)`); thử tay mục 3–4.
 2. **Đổi tab, đóng tab, tắt extension khi panel đang mở.**
-   - Mong đợi: sang tab chưa bật Bo doi thì panel tắt cho tab đó và nhận `clear`. Đóng tab thì cửa sổ rời đóng theo, `detachedPanels` không còn tab đó. Ctrl+Q / bấm icon thì panel tắt, cửa sổ rời đóng.
+   - Mong đợi: sang tab chưa bật iodob thì panel tắt cho tab đó và nhận `clear`. Đóng tab thì cửa sổ rời đóng theo, `detachedPanels` không còn tab đó. Ctrl+Q / bấm icon thì panel tắt, cửa sổ rời đóng.
    - Kiểm bằng: `background.test.ts` (Task 3: `onActivated` không có trả lời `side_panel_loaded` → `setOptions({ enabled:false })`; `tabs.onRemoved` → `windows.remove`; `close_extension` → `setOptions enabled:false` + `windows.remove`).
 3. **Hai panel cùng lúc** (panel của tab A trong cửa sổ 1, cửa sổ rời của tab B).
    - Mong đợi: chọn phần tử ở tab B chỉ cập nhật panel B. `tab_specific_ping` từ A chỉ được panel A trả lời.
@@ -949,8 +949,8 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 14 tách các phầ
   - Run: `pnpm vitest run docs/inventory.test.ts`. Expected: PASS (không mất tên nào).
 - [ ] **Step 2: Build và đưa checklist cho chủ dự án.** Controller **trình bày danh sách dưới đây rồi đi tiếp, không chờ kết quả**. Chủ dự án tự đánh `[x]` sau khi thử.
   1. `pnpm build`, reload `.output/chrome-mv3` trong `edge://extensions`, không có lỗi đỏ (cả service worker và trang side panel: chuột phải panel → Inspect).
-  2. Chưa bật Bo doi ở tab: biểu tượng side panel của Edge không mở panel Bo doi (đã tắt toàn cục).
-  3. Bật Bo doi, bấm nút Side panel trên dock:
+  2. Chưa bật iodob ở tab: biểu tượng side panel của Edge không mở panel iodob (đã tắt toàn cục).
+  3. Bật iodob, bấm nút Side panel trên dock:
      - panel mở bên phải, hiện "Nhấp vào một phần tử để chọn" + bảng phím đúng phím thật;
      - không lỗi "user gesture" trong console SW;
      - bấm lại thì panel đóng; phím `0` làm giống hệt.
@@ -988,7 +988,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 14 tách các phầ
       - kéo / co cửa sổ, đóng, tách lại → cửa sổ ở vị trí và kích thước cũ.
   14. Gắn lại: bấm "Chuyển về bảng bên" → panel mở trong tab, cửa sổ rời đóng, giữ tab đang xem.
   15. Đóng cửa sổ rời bằng nút X của Windows → nút dock / phím `0` lại mở panel trong tab.
-  16. Hai tab cùng bật Bo doi, panel mở ở cả hai: chọn phần tử ở tab B không đổi panel tab A. Sang một tab chưa bật Bo doi → panel tắt. Quay lại → panel bật lại.
+  16. Hai tab cùng bật iodob, panel mở ở cả hai: chọn phần tử ở tab B không đổi panel tab A. Sang một tab chưa bật iodob → panel tắt. Quay lại → panel bật lại.
   17. Ctrl+Q / bấm icon khi panel đang mở (cả khi có cửa sổ rời): panel tắt, cửa sổ rời đóng, không còn viền tô trên trang.
   18. Trong panel (không trong ô nhập) nhấn `2` → X-Ray bật trên trang; Esc → bỏ chọn. Gõ `2` trong ô chọn của panel → không có gì.
   19. Theme: đổi `chrome.storage.local.set({theme:'light'})` trong console SW → panel đổi sáng ngay. `system` theo theme Windows.

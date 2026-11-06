@@ -1,6 +1,6 @@
 {
-  "extName": "Bo doi - Measure and Inspect the Web",
-  "extNameShort": "Bo doi",
+  "extName": "iodob - Measure and Inspect the Web",
+  "extNameShort": "iodob",
   "extDescription": "Web inspector for designers & developers. Measure elements, extract CSS & colors, capture screenshots & more.",
   "cmdSelectParent": "Move selection to parent element.",
   "cmdSelectChild": "Move selection to child element.",
@@ -203,7 +203,7 @@
     "clearAll": "Are you sure you want to clear all changes on this page?",
     "noSelectedElement": "Couldn't find the target element.",
     "tabUnavailableTitle": "Tab Unavailable",
-    "tabUnavailable": "Couldn't communicate with the tab. Make sure Bo doi is active on the current tab."
+    "tabUnavailable": "Couldn't communicate with the tab. Make sure iodob is active on the current tab."
   },
   "issue": {
     "contrastAaMessage": "Text has insufficient contrast ratio of $1:1 (requires $2:1 for $3 text)",
@@ -334,8 +334,8 @@
     "invalidValue": "Invalid value",
     "overriddenBy": "Overridden by $1",
     "notInherited": "Not inherited by this element",
-    "overriddenHidden": "Overridden by a stylesheet Bo doi can't see",
-    "overriddenHiddenGrant": "Overridden by a stylesheet Bo doi can't see. Grant cross-origin access to reveal it.",
+    "overriddenHidden": "Overridden by a stylesheet iodob can't see",
+    "overriddenHiddenGrant": "Overridden by a stylesheet iodob can't see. Grant cross-origin access to reveal it.",
     "crossOriginMissing": "Some styles may be missing.",
     "stateDefault": "Default",
     "filter": "Filter",
@@ -400,7 +400,7 @@
     "rowColorFormat": "Color Format",
     "colorFormatSecondary": "Used by the inspector and color picker",
     "savedEditsTitle": "Saved edits",
-    "savedEditsSecondary": "CSS edits are remembered per site and restored when you activate Bo doi there.",
+    "savedEditsSecondary": "CSS edits are remembered per site and restored when you activate iodob there.",
     "savedEditsClear": "Clear",
     "savedEditsConfirmTitle": "Clear saved edits?",
     "savedEditsConfirmBody": "This removes remembered CSS edits for every site.",

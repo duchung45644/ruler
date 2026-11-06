@@ -127,7 +127,7 @@ describe('MCP row (9.05)', () => {
     toBg.mockImplementation((type) => {
       if (type === 'mcp_connect') status = { ...status, intent: true, waiting: true };
       if (type === 'mcp_disconnect') status = { ...idle };
-      if (type === 'mcp_prompt') return 'PROMPT with BODOI_MCP_TOKEN=x';
+      if (type === 'mcp_prompt') return 'PROMPT with IODOB_MCP_TOKEN=x';
       return status;
     });
     fakeBrowser.runtime.sendMessage = (async (m: { target: string; type: string }) =>
@@ -154,7 +154,7 @@ describe('MCP row (9.05)', () => {
       flushSync();
       expect(toBg).toHaveBeenCalledWith('mcp_connect');
       expect(button('mcp-toggle')!.textContent).toBe('options_mcpDisconnect');
-      expect(document.querySelector('[data-mcp-prompt]')?.textContent).toContain('BODOI_MCP_TOKEN');
+      expect(document.querySelector('[data-mcp-prompt]')?.textContent).toContain('IODOB_MCP_TOKEN');
     });
     button('mcp-toggle')!.click();
     await vi.waitFor(() => {

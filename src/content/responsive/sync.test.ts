@@ -147,7 +147,7 @@ describe('shell integration', () => {
       return w as unknown as Window;
     });
     shadow = document.body
-      .appendChild(document.createElement('bo-doi-ui'))
+      .appendChild(document.createElement('iodob-ui'))
       .attachShadow({ mode: 'open' });
     detach = mountLayer(shadow);
     state.active = true;

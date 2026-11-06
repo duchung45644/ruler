@@ -30,7 +30,7 @@ beforeEach(async () => {
   ];
   browser.tabs.query = vi.fn(async () => tabs) as never;
   browser.tabs.get = vi.fn(async (id: number) => tabs.find((t) => t.id === id)) as never;
-  // tab 1 is this happy-dom page with Bo doi on; tab 2 has it off
+  // tab 1 is this happy-dom page with iodob on; tab 2 has it off
   browser.tabs.sendMessage = vi.fn(async (tabId: number, m: { type: string; data: unknown[] }) => {
     if (tabId !== 1) throw new Error('Receiving end does not exist');
     if (m.type === 'ping') return { active: state.active };
@@ -78,7 +78,7 @@ it('drops calls before welcome', async () => {
   ).toEqual([]);
 });
 
-it('refuses tabs where Bo doi is off and bad payloads', async () => {
+it('refuses tabs where iodob is off and bad payloads', async () => {
   welcome();
   server().receive({ type: 'call', id: 'a', command: 'get_page_info', payload: { tabId: 2 } });
   expect(await server().result('a')).toEqual({

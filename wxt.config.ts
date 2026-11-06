@@ -55,7 +55,7 @@ export default defineConfig({
     'build:manifestGenerated': (_wxt, manifest) => {
       if (manifest.host_permissions?.length || manifest.content_scripts?.length) {
         throw new Error(
-          'Bo doi: manifest không được có host_permissions/content_scripts — inject bằng scripting.executeScript (spec §3)',
+          'iodob: manifest không được có host_permissions/content_scripts — inject bằng scripting.executeScript (spec §3)',
         );
       }
     },

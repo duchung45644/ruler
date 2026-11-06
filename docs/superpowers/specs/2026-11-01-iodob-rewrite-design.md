@@ -1,10 +1,10 @@
-# Bo doi — viết lại extension (thiết kế)
+# iodob — viết lại extension (thiết kế)
 
 Ngày: 2026-11-01 · Trạng thái: chờ duyệt
 
 ## 1. Mục đích
 
-Bo doi là extension Chromium (MV3) để đo, soi và chỉnh giao diện web, dùng cá nhân trên Edge (và Chrome).
+iodob là extension Chromium (MV3) để đo, soi và chỉnh giao diện web, dùng cá nhân trên Edge (và Chrome).
 Đây là bản dùng riêng của **Screen Ruler** — extension của chính chủ dự án (axoliz), đã xác nhận quyền tái dùng code gốc.
 Bản hiện tại trong `unpacked/` chạy tương đối ổn định nhưng chỉ còn **bản build** (source gốc không còn):
 `scripts/content.js` 48k dòng, `sidepanel/main.js` 11k, `background.js` 3,7k, `options/main.js` 1,8k,
@@ -119,7 +119,7 @@ giữ các khung đồng bộ khi trang SPA chuyển trang; trang chặn iframe 
 - Ngôn ngữ: **chỉ vi + en**; bỏ 20 ngôn ngữ còn lại.
 - **Bỏ**: gói Pro/Studio/Inspect, dùng thử (`screen-ruler-trial-end-*`), kiểm tra license, link mua (`axoliz.*/l/screen-ruler?variant=…`),
   đăng nhập kiểu cũ / khôi phục mua hàng, menu "enter_license", các màn hình giới thiệu/bán hàng (hero, so sánh gói, đánh giá,
-  "trusted by", video, "unlock Pro"), link `www.bodoi.com/*`, listener `onMessageExternal` (`install_timestamp`), các hàm stub còn sót.
+  "trusted by", video, "unlock Pro"), link `www.iodob.com/*`, listener `onMessageExternal` (`install_timestamp`), các hàm stub còn sót.
 
 ## 5. Quyết định đã chốt (của chủ dự án)
 
@@ -304,7 +304,7 @@ Bản cũ vẫn dùng song song; bản mới load từ thư mục build riêng.
 - Phạm vi: mọi hành vi bản cũ giữ trừ mục "Bỏ"; danh sách đầy đủ lập ở đợt 0.
 - Màu & font của trang (phím A) giữ là panel nổi trên trang, làm ở đợt 2.
 - Màn hình giới thiệu/bán hàng trong side panel bỏ cùng các gói.
-- Giữ tên Bo doi.
+- Giữ tên iodob.
 - WXT làm khung; pnpm.
 - Font Geist / Geist Mono tái dùng từ `unpacked/fonts`.
 - Không chuyển dữ liệu đã lưu; extension mới có ID khác bản cũ.

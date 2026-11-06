@@ -2,7 +2,7 @@ export type Rgba = { r: number; g: number; b: number; a: number };
 
 /**
  * Parses computed-style colours: `rgb()/rgba()`, `transparent`, `#hex` (port of legacy parseColor),
- * plus `oklch()`, `oklab()`, `color(srgb …)` that modern pages (Tailwind 4) compute to.
+ * plus `oklch()`, `oklab()`, `lab()`, `lch()`, `color(srgb …)` that modern pages (Tailwind 4) compute to.
  */
 export function parseColor(css: string): Rgba | null {
   const s = css.trim().toLowerCase();
@@ -13,7 +13,7 @@ export function parseColor(css: string): Rgba | null {
     const n = (i: number) => parseInt(full.slice(i, i + 2), 16);
     return { r: n(0), g: n(2), b: n(4), a: full.length === 8 ? n(6) / 255 : 1 };
   }
-  const m = /^(rgba?|oklch|oklab|color)\(\s*(srgb\s)?([^)]+)\)$/.exec(s);
+  const m = /^(rgba?|oklch|oklab|lab|lch|color)\(\s*(srgb\s)?([^)]+)\)$/.exec(s);
   if (!m || (m[1] === 'color' && !m[2])) return null;
   const p = m[3]!.split(/[\s,/]+/).filter(Boolean);
   if (p.length < 3) return null;
@@ -23,7 +23,13 @@ export function parseColor(css: string): Rgba | null {
   let rgb: number[];
   if (m[1]!.startsWith('rgb')) rgb = p.slice(0, 3).map(Number);
   else if (m[1] === 'color') rgb = p.slice(0, 3).map((v) => n(v) * 255);
-  else {
+  else if (m[1] === 'lab' || m[1] === 'lch') {
+    // CIE L is 0–100 (a percentage maps onto it); a / b / C are plain numbers
+    const L = p[0]!.endsWith('%') ? parseFloat(p[0]!) : n(p[0]!);
+    const [x, y] = p.slice(1, 3).map(n) as [number, number];
+    const h = (y * Math.PI) / 180;
+    rgb = m[1] === 'lch' ? labToRgb(L, x * Math.cos(h), x * Math.sin(h)) : labToRgb(L, x, y);
+  } else {
     const [L, x, y] = p.slice(0, 3).map(n) as [number, number, number];
     const h = (y * Math.PI) / 180;
     rgb = m[1] === 'oklch' ? oklabToRgb(L, x * Math.cos(h), x * Math.sin(h)) : oklabToRgb(L, x, y);
@@ -32,19 +38,43 @@ export function parseColor(css: string): Rgba | null {
   return [r, g, b, a].some(Number.isNaN) ? null : { r, g, b, a };
 }
 
+/** CIE Lab (D50) → sRGB 0–255 via XYZ and the Bradford D50→D65 adaptation (CSS Color 4). */
+function labToRgb(L: number, a: number, b: number): number[] {
+  const fy = (L + 16) / 116;
+  const fx = fy + a / 500;
+  const fz = fy - b / 200;
+  const inv = (t: number) => (t ** 3 > 216 / 24389 ? t ** 3 : (116 * t - 16) / (24389 / 27));
+  const X = (0.3457 / 0.3585) * inv(fx);
+  const Y = L > 8 ? fy ** 3 : L / (24389 / 27);
+  const Z = ((1 - 0.3457 - 0.3585) / 0.3585) * inv(fz);
+  const x = 0.9554734527 * X - 0.0230985368 * Y + 0.0632593086 * Z;
+  const y = -0.0283697093 * X + 1.009995458 * Y + 0.021041399 * Z;
+  const z = 0.0123140017 * X - 0.0205076964 * Y + 1.3303659366 * Z;
+  return linearToSrgb([
+    3.2409699419 * x - 1.5373831776 * y - 0.4986107603 * z,
+    -0.9692436363 * x + 1.8759675015 * y + 0.0415550574 * z,
+    0.0556300797 * x - 0.2039769589 * y + 1.0569715142 * z,
+  ]);
+}
+
+/** Linear-light channels → sRGB 0–255, out-of-gamut clamped. */
+function linearToSrgb(c: number[]): number[] {
+  return c.map((v) => {
+    v = Math.min(1, Math.max(0, v));
+    return 255 * (v <= 0.0031308 ? 12.92 * v : 1.055 * v ** (1 / 2.4) - 0.055);
+  });
+}
+
 /** OKLab → sRGB 0–255, out-of-gamut channels clamped (Björn Ottosson's reference matrices). */
 function oklabToRgb(L: number, a: number, b: number): number[] {
   const l = (L + 0.3963377774 * a + 0.2158037573 * b) ** 3;
   const m = (L - 0.1055613458 * a - 0.0638541728 * b) ** 3;
   const s = (L - 0.0894841775 * a - 1.291485548 * b) ** 3;
-  return [
+  return linearToSrgb([
     4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
     -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
     -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s,
-  ].map((v) => {
-    v = Math.min(1, Math.max(0, v));
-    return 255 * (v <= 0.0031308 ? 12.92 * v : 1.055 * v ** (1 / 2.4) - 0.055);
-  });
+  ]);
 }
 
 export function toHex(c: Rgba): string {

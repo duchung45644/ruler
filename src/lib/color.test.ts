@@ -16,6 +16,14 @@ describe('color', () => {
     expect(parseColor('transparent')!.a).toBe(0);
     expect(parseColor('nope')).toBeNull();
   });
+  it('converts lab/lch (D50) to sRGB hex', () => {
+    const hex = (css: string) => toHex(parseColor(css)!);
+    expect(hex('lab(54.2905 80.8049 69.891)')).toBe('#ff0000');
+    expect(hex('lab(100 0 0)')).toBe('#ffffff');
+    expect(hex('lab(0 0 0)')).toBe('#000000');
+    expect(hex('lch(54.2905 106.837 40.8526)')).toBe('#ff0000');
+  });
+
   it('converts oklch/oklab/color(srgb) to sRGB hex', () => {
     const hex = (css: string) => toHex(parseColor(css)!);
     expect(hex('oklch(1 0 0)')).toBe('#ffffff');
@@ -25,7 +33,6 @@ describe('color', () => {
     expect(hex('oklch(62.7955% 0.257683 29.2339 / 0.5)')).toBe('#ff000080');
     expect(hex('oklch(0.9 0.4 150)')).toMatch(/^#[\da-f]{6}$/); // out of gamut: clamped
     expect(hex('color(srgb 1 0.5 0)')).toBe('#ff8000');
-    expect(parseColor('lab(50 20 30)')).toBeNull();
   });
   it('formats hex', () => {
     expect(toHex({ r: 99, g: 102, b: 241, a: 1 })).toBe('#6366f1');

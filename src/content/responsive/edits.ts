@@ -23,9 +23,12 @@ import {
   historyStepping,
   onEditChange,
   ruleTracker,
+  setSharedHistoryState,
   setUndoRoute,
   stepHistory,
+  type SharedHistoryState,
 } from '../edit/mode.svelte';
+import { sendToSidePanel } from '../../lib/messaging';
 import type { Channel } from './bridge';
 
 /** Ops arriving this close together form one shared step (legacy batch window). */
@@ -112,6 +115,13 @@ export function applyFrameRuleEdits(edits: unknown): void {
   lastSentJson = JSON.stringify(t.serialize());
 }
 
+/** Frame side: the shell's shared history drives canUndo / canRedo; the panel hears it at once. */
+export function takeSharedHistory(s: unknown): void {
+  const v = s as Partial<SharedHistoryState> | null;
+  setSharedHistoryState({ canUndo: !!v?.canUndo, canRedo: !!v?.canRedo });
+  void sendToSidePanel('edit_state', editState()).catch(() => {});
+}
+
 /** Undo / redo asked by the shell (shared history); returns the new state. */
 export function frameStep(dir: 'undo' | 'redo'): EditState {
   stepHistory(dir);
@@ -169,7 +179,19 @@ export interface ShellEdits {
   readonly history: SharedHistory;
 }
 
-export function createShellEdits(ready: () => [FrameId, Channel<FrameApi>][]): ShellEdits {
+export const historyFlags = (h: SharedHistory): SharedHistoryState => ({
+  canUndo: h.undo.length > 0,
+  canRedo: h.redo.length > 0,
+});
+
+/**
+ * `onHistory` hears every change of the shared history's flags (the shell pushes them to the
+ * frames, so the panel's undo / redo buttons match Ctrl+Z wherever it is pointed).
+ */
+export function createShellEdits(
+  ready: () => [FrameId, Channel<FrameApi>][],
+  onHistory: (s: SharedHistoryState) => void = () => {},
+): ShellEdits {
   let last: SerializedEdit[] = [];
   let history: SharedHistory = EMPTY_HISTORY;
   let pending = new Set<FrameId>();
@@ -177,10 +199,20 @@ export function createShellEdits(ready: () => [FrameId, Channel<FrameApi>][]): S
   const html = new Map<FrameId, number>();
   const inline = new Map<string, InlineStyleEdit>();
 
+  let lastFlags = '';
+  const setHistory = (h: SharedHistory) => {
+    history = h;
+    const flags = historyFlags(h);
+    const key = JSON.stringify(flags);
+    if (key === lastFlags) return;
+    lastFlags = key;
+    onHistory(flags);
+  };
+
   const flush = () => {
     if (timer !== undefined) clearTimeout(timer);
     timer = undefined;
-    history = recordStep(history, pending);
+    setHistory(recordStep(history, pending));
     pending = new Set();
   };
 
@@ -203,7 +235,8 @@ export function createShellEdits(ready: () => [FrameId, Channel<FrameApi>][]): S
     },
     reset(edits) {
       last = edits;
-      history = EMPTY_HISTORY;
+      lastFlags = '';
+      setHistory(EMPTY_HISTORY);
       pending = new Set();
       if (timer !== undefined) clearTimeout(timer);
       timer = undefined;
@@ -228,7 +261,7 @@ export function createShellEdits(ready: () => [FrameId, Channel<FrameApi>][]): S
       if (pending.size) flush();
       const chans = new Map(ready());
       const r = (redo ? redoTarget : undoTarget)(history, [...chans.keys()]);
-      history = r.history;
+      setHistory(r.history);
       await Promise.all(
         r.frames.map((id) =>
           chans
@@ -241,7 +274,7 @@ export function createShellEdits(ready: () => [FrameId, Channel<FrameApi>][]): S
     forget(id) {
       pending.delete(id);
       html.delete(id);
-      history = forgetFrame(history, id);
+      setHistory(forgetFrame(history, id));
     },
     hasUncarryable: () => [...html.values()].some((n) => n > 0),
   };

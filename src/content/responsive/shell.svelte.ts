@@ -29,7 +29,14 @@ import { runShortcut } from '../core/keys';
 import { setHideUiHook } from '../core/session';
 import { layer } from '../core/overlay';
 import { state } from '../core/state.svelte';
-import { editor, ruleTracker, setUndoRoute, toggleTextEdit } from '../edit/mode.svelte';
+import {
+  editState,
+  editor,
+  ruleTracker,
+  setSharedHistoryState,
+  setUndoRoute,
+  toggleTextEdit,
+} from '../edit/mode.svelte';
 import { HANDOFF_FLAG, persistNow } from '../edit/persist';
 import type { Breakpoint } from '../../lib/breakpoints';
 import {
@@ -42,7 +49,7 @@ import { connectToFrame, type Channel } from './bridge';
 import { BLOCK_CHECK_MS, blockedState, readDoc, type Blocked } from './blocked';
 import { loadTimer } from './frame';
 import { enterForward, exitForward, frameFindCount, installForward, readyState } from './forward';
-import { applyInlineStyles, createShellEdits } from './edits';
+import { applyInlineStyles, createShellEdits, historyFlags } from './edits';
 import Shell from './Shell.svelte';
 
 export interface ShellFrame {
@@ -110,11 +117,20 @@ const timers = new Map<number, ReturnType<typeof loadTimer>>();
 // eslint-disable-next-line svelte/prefer-svelte-reactivity -- bookkeeping, never rendered
 const blockChecks = new Map<number, ReturnType<typeof setTimeout>>();
 /** Newest CSS edits (sent on ready, synced to every frame, fallback on exit) and the shared undo log. */
-const edits = createShellEdits(() =>
-  shell.frames.flatMap((f) => {
-    const ch = channels.get(f.vp.id);
-    return ch && wasReady.has(f.vp.id) ? [[f.vp.id, ch] as [number, Channel<FrameApi>]] : [];
-  }),
+const edits = createShellEdits(
+  () =>
+    shell.frames.flatMap((f) => {
+      const ch = channels.get(f.vp.id);
+      return ch && wasReady.has(f.vp.id) ? [[f.vp.id, ch] as [number, Channel<FrameApi>]] : [];
+    }),
+  (flags) => {
+    // the shell's own panel state and every frame's follow the shared log (8.20)
+    if (state.responsiveOn) {
+      setSharedHistoryState(flags);
+      void sendToSidePanel('edit_state', editState()).catch(() => {});
+    }
+    for (const [id, ch] of channels) if (wasReady.has(id)) ch.send('shared_history_state', flags);
+  },
 );
 /** Frame holding the selection (selection_changed), for "selected element" capture. */
 let selectedFrame: number | null = null;
@@ -442,6 +458,7 @@ export async function enterResponsive(): Promise<boolean> {
     const root = layer.getRootNode();
     if (!(root instanceof ShadowRoot)) return false;
     edits.reset(ruleTracker().serialize());
+    setSharedHistoryState(historyFlags(edits.history));
     setUndoRoute((redo) => {
       void edits.step(redo);
       return true;
@@ -544,6 +561,7 @@ export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
           ruleEdits: edits.last,
           inlineStyles: edits.inline,
         });
+        ch.send('shared_history_state', historyFlags(edits.history));
       },
       request_ui_scale: () => 1 / shell.zoom,
       overflow_status: (s) => {
@@ -656,6 +674,7 @@ export function teardownShell(): void {
   state.responsiveOn = false;
   setUndoRoute(null);
   edits.reset([]); // drops the shared-history batch timer and per-frame state
+  setSharedHistoryState(null);
   exitForward();
   void sendToSidePanel('responsive_state', { on: false }).catch(() => {});
 }

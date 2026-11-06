@@ -10,6 +10,7 @@ import { sessionSignal, stopSession } from '../core/session';
 import { state } from '../core/state.svelte';
 import { bridge, initSidePanelBridge } from '../sidepanel/bridge.svelte';
 import { initEdit, setEditMode } from '.';
+import { editState, setSharedHistoryState, setUndoRoute } from './mode.svelte';
 import { editHandlers as h, notifyChanged } from './handlers';
 
 vi.mock('../../lib/messaging', async (orig) => ({
@@ -159,4 +160,31 @@ it('select_rule_target selects the first match, or reports none', async () => {
   expect(state.selected).toBe(document.querySelector('i.k'));
   expect(await h.select_rule_target!('.none', null, sender)).toBe(false);
   expect(await h.select_rule_target!('..', null, sender)).toBe(false);
+});
+
+it('responsive: panel undo / redo step the shared history, and its flags win (8.20)', async () => {
+  const p = document.body.appendChild(document.createElement('p'));
+  bridge.panelOpen = true;
+  state.selected = p;
+  flushSync();
+  await tick();
+  const id = (sent('select_element').at(-1)![1] as ElementDetails).id;
+  await h.set_element_classes!(id, 'x', sender);
+  const route = vi.fn(() => true);
+  setUndoRoute(route);
+  setSharedHistoryState({ canUndo: false, canRedo: true });
+  try {
+    const r = (await h.edit_undo!(sender)) as EditResult;
+    expect(route).toHaveBeenLastCalledWith(false);
+    // the local engine was not stepped: the class edit is still there
+    expect(p.className).toBe('x');
+    expect(r).toMatchObject({ ok: true, canUndo: false, canRedo: true });
+    await h.edit_redo!(sender);
+    expect(route).toHaveBeenLastCalledWith(true);
+    expect(state.editState).toMatchObject({ canUndo: false, canRedo: true });
+  } finally {
+    setUndoRoute(null);
+    setSharedHistoryState(null);
+  }
+  expect(editState().canUndo).toBe(true);
 });

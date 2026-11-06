@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { FrameApi, ShellApi } from '../../lib/responsive/channel';
 import { state } from '../core/state.svelte';
 import { eligible, schedulePersist } from '../edit/persist';
-import { getUndoRoute, ruleTracker } from '../edit/mode.svelte';
+import { editState, getUndoRoute, ruleTracker, setSharedHistoryState } from '../edit/mode.svelte';
 import type { Channel } from './bridge';
 import {
   applyFrameInlineStyles,
@@ -11,6 +11,7 @@ import {
   createShellEdits,
   OP_BATCH_MS,
   startFrameEdits,
+  takeSharedHistory,
 } from './edits';
 
 const own = (recordId: string, selector: string) => ({
@@ -139,6 +140,15 @@ describe('frame side', () => {
     ctl.abort();
     expect(getUndoRoute()).toBeNull();
   });
+
+  it("the shell's shared history flags drive this frame's edit state, not its own engine", () => {
+    takeSharedHistory({ canUndo: true, canRedo: false });
+    expect(editState()).toMatchObject({ canUndo: true, canRedo: false });
+    // flags arriving are not a new op
+    expect(types()).not.toContain('editor_op_recorded');
+    setSharedHistoryState(null);
+    expect(editState().canUndo).toBe(false);
+  });
 });
 
 describe('shell side', () => {
@@ -204,6 +214,35 @@ describe('shell side', () => {
     e.opRecorded(1);
     await e.step(false);
     expect(a.call).toHaveBeenCalledWith('edit_undo');
+  });
+
+  it('history flags are pushed on change only: record, undo, redo, forget, reset', async () => {
+    vi.useFakeTimers();
+    const flags = vi.fn();
+    const e = createShellEdits(
+      () => [
+        [1, a.ch],
+        [2, b.ch],
+      ],
+      flags,
+    );
+    e.opRecorded(1);
+    vi.advanceTimersByTime(OP_BATCH_MS + 1);
+    expect(flags).toHaveBeenLastCalledWith({ canUndo: true, canRedo: false });
+    e.opRecorded(1);
+    vi.advanceTimersByTime(OP_BATCH_MS + 1);
+    expect(flags).toHaveBeenCalledTimes(1);
+    expect(flags).toHaveBeenCalledTimes(1); // same flags: not pushed again
+    await e.step(false);
+    expect(flags).toHaveBeenLastCalledWith({ canUndo: true, canRedo: true });
+    await e.step(false);
+    expect(flags).toHaveBeenLastCalledWith({ canUndo: false, canRedo: true });
+    await e.step(true);
+    expect(flags).toHaveBeenLastCalledWith({ canUndo: true, canRedo: true });
+    e.forget(1);
+    expect(flags).toHaveBeenLastCalledWith({ canUndo: false, canRedo: false });
+    e.reset([]);
+    expect(flags).toHaveBeenLastCalledWith({ canUndo: false, canRedo: false });
   });
 
   it('HTML edits reported by a frame are uncarryable until it is forgotten', () => {

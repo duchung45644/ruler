@@ -15,6 +15,7 @@ import type { HtmlEditor } from './engine';
 import {
   editor,
   editState,
+  getUndoRoute,
   isOwn,
   onEditChange,
   ruleTracker,
@@ -76,6 +77,19 @@ function onElement(id: string, run: (e: HtmlEditor, el: Element) => EditResult):
 
 const fromRule = (r: RuleChange | RuleError): EditResult => ('error' in r ? fail(r.error) : ok());
 
+/**
+ * Panel undo / redo: in responsive mode the shared history steps (as Ctrl+Z does), never only
+ * this frame's engine; the new state follows through edit_state once the shell has stepped.
+ */
+function panelStep(dir: 'undo' | 'redo'): EditResult {
+  const route = getUndoRoute();
+  if (route) {
+    route(dir === 'redo');
+    return ok();
+  }
+  return resendSelection(withEngine(() => stepHistory(dir)));
+}
+
 /** Every class name used on the page, sorted, capped (5.17 class autocomplete). */
 export function pageClasses(): string[] {
   const out = new Set<string>();
@@ -112,8 +126,8 @@ export function initEditHandlers(): void {
 }
 
 export const editHandlers: Handlers<ContentApi> = {
-  edit_undo: () => resendSelection(withEngine(() => stepHistory('undo'))),
-  edit_redo: () => resendSelection(withEngine(() => stepHistory('redo'))),
+  edit_undo: () => panelStep('undo'),
+  edit_redo: () => panelStep('redo'),
   edit_copy: () => withEngine((e) => e.copy()),
   edit_cut: () => withEngine((e) => e.cut()),
   edit_paste: () => withEngine((e) => e.paste()),

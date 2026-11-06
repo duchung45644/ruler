@@ -10,9 +10,15 @@ import { setPaused } from '../core/registry.svelte';
 import { hideUi } from '../core/session';
 import { isFullyVisible } from '../../lib/capture';
 import { state } from '../core/state.svelte';
-import { ruleTracker } from '../edit/mode.svelte';
+import { ruleTracker, setSharedHistoryState } from '../edit/mode.svelte';
 import { setSelectionHook } from '../sidepanel/bridge.svelte';
-import { applyFrameInlineStyles, applyFrameRuleEdits, frameStep, startFrameEdits } from './edits';
+import {
+  applyFrameInlineStyles,
+  applyFrameRuleEdits,
+  frameStep,
+  startFrameEdits,
+  takeSharedHistory,
+} from './edits';
 import { createFrameSync } from './sync';
 import { applyReadyAck, applySetting, frameFind, frameFindGoto } from './forward';
 
@@ -58,6 +64,7 @@ export function startFrameMode(): void {
       // shared history (8.20): the shell picks the frame that made the step
       edit_undo: () => frameStep('undo'),
       edit_redo: () => frameStep('redo'),
+      shared_history_state: (s) => takeSharedHistory(s),
       element_rect: () => selectedRect(),
       capture_hide: (on) => hideUi(on ? 'all' : null),
     },
@@ -125,5 +132,6 @@ export function stopFrameMode(): void {
   channel = null;
   setForwardKey(null);
   setSelectionHook(null);
+  setSharedHistoryState(null);
   state.inFrame = false;
 }

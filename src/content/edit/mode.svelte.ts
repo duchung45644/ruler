@@ -42,9 +42,25 @@ export function onEditExit(fn: () => void): () => void {
   return () => void exitListeners.splice(exitListeners.indexOf(fn) >>> 0, 1);
 }
 
+export interface SharedHistoryState {
+  canUndo: boolean;
+  canRedo: boolean;
+}
+let shared: SharedHistoryState | null = null;
+
+/**
+ * Responsive (8.20): the shell's shared history decides canUndo / canRedo, so the panel buttons
+ * agree with Ctrl+Z in any frame. null goes back to this engine's own history.
+ */
+export function setSharedHistoryState(s: SharedHistoryState | null): void {
+  shared = s ? { canUndo: !!s.canUndo, canRedo: !!s.canRedo } : null;
+  state.editState = editState();
+}
+
 export function editState(): EditState {
   const s = engine?.historyState() ?? { ...EMPTY_EDIT_STATE };
-  return { ...s, editCount: s.editCount + (tracker?.flattened().length ?? 0) };
+  const out = { ...s, editCount: s.editCount + (tracker?.flattened().length ?? 0) };
+  return shared ? { ...out, ...shared } : out;
 }
 
 let stepping = false;

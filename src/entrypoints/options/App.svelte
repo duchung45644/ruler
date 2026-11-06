@@ -1,11 +1,17 @@
 <script lang="ts">
   import { i18n } from '#i18n';
   import { onMount, type Snippet } from 'svelte';
+  import TriangleAlert from '@lucide/svelte/icons/triangle-alert';
   import Dialog from '../../ui/Dialog.svelte';
+  import McpPrompt from '../../ui/McpPrompt.svelte';
+  import { MIN_MCP_SERVER_VERSION } from '../../lib/mcp/protocol';
+  import { IDLE_STATUS, type McpStatus } from '../../lib/mcp/status';
+  import { handleMessages, sendToBackground } from '../../lib/messaging';
   import type { ColorFormat } from '../../lib/color';
   import { clearAllPersistedEdits } from '../../lib/edit/persist-key';
   import {
     getPanelPrefs,
+    mcpIntent,
     mergePanelPrefs,
     panelPrefsItem,
     themePref,
@@ -19,6 +25,27 @@
   let colorFormat = $state<ColorFormat>('HEX');
   let loaded = $state(false);
   let confirming = $state(false);
+  let mcp = $state<McpStatus>(IDLE_STATUS);
+  let prompt = $state<string | null>(null);
+  let outdatedOpen = $state(false);
+  /** The prompt is shown while waiting for the agent (or after a reject): it carries the token. */
+  const showPrompt = $derived(mcp.intent && !mcp.connected);
+
+  const setMcp = (s: McpStatus | undefined) => {
+    if (s) mcp = s;
+  };
+  $effect(() => {
+    if (!showPrompt || prompt) return;
+    void sendToBackground('mcp_prompt').then(
+      (p) => (prompt = p ?? null),
+      () => {},
+    );
+  });
+  async function toggleMcp() {
+    setMcp(
+      await sendToBackground(mcp.intent ? 'mcp_disconnect' : 'mcp_connect').catch(() => undefined),
+    );
+  }
   const mql = typeof matchMedia === 'function' ? matchMedia('(prefers-color-scheme: dark)') : null;
 
   $effect(() => applyDocTheme(document, theme, mql));
@@ -38,8 +65,12 @@
       loaded = true;
       onready?.();
     });
+    void sendToBackground('mcp_status').then(setMcp, () => {});
+    // the background pushes connection changes; it is the only one that knows them (9.07, 10.03)
+    handleMessages('options', { mcp_status: (s) => setMcp(s) }, ac.signal);
     // changes made elsewhere (side panel, another tab) show up here (9.07)
     const unwatch = [
+      mcpIntent.watch(() => void sendToBackground('mcp_status').then(setMcp, () => {})),
       themePref.watch((t) => (theme = t ?? 'system')),
       panelPrefsItem.watch((p) => (colorFormat = mergePanelPrefs(p).colorFormat)),
     ];
@@ -134,7 +165,55 @@
       )}
     </div>
   </section>
+
+  <section class="flex flex-col gap-2">
+    <h2 class="px-1 text-[12px] font-semibold text-fg-muted uppercase">
+      {i18n.t('options.sectionTerminalAi')}
+    </h2>
+    <div class="divide-y divide-line rounded-panel border border-line">
+      {#snippet mcpControl()}
+        <div class="flex items-center gap-2">
+          {#if mcp.versionMismatch}
+            <button
+              type="button"
+              data-action="mcp-outdated"
+              class="grid size-7 place-items-center rounded-btn text-amber-500 hover:bg-line"
+              aria-label={i18n.t('options.mcpOutdatedTooltip')}
+              title={i18n.t('options.mcpOutdatedTooltip')}
+              onclick={() => (outdatedOpen = true)}><TriangleAlert size={16} /></button
+            >
+          {/if}
+          <button
+            type="button"
+            data-action="mcp-toggle"
+            class="rounded-btn border border-line px-3 py-1 font-medium hover:bg-line"
+            onclick={() => void toggleMcp()}
+            >{mcp.intent ? i18n.t('options.mcpDisconnect') : i18n.t('options.mcpConnect')}</button
+          >
+        </div>
+      {/snippet}
+      {@render row(
+        i18n.t('options.rowMcpServer'),
+        i18n.t('options.mcpServerSecondary'),
+        mcpControl,
+      )}
+      {#if showPrompt && prompt}
+        <div class="px-4 py-3"><McpPrompt {prompt} /></div>
+      {/if}
+    </div>
+  </section>
 </main>
+
+{#if outdatedOpen}
+  <Dialog
+    title={i18n.t('options.mcpOutdatedTitle')}
+    message={i18n.t('options.mcpOutdatedBody', [
+      mcp.serverVersion ?? i18n.t('options.mcpVersionUnknown'),
+      MIN_MCP_SERVER_VERSION,
+    ])}
+    close={() => (outdatedOpen = false)}
+  />
+{/if}
 
 {#if confirming}
   <Dialog

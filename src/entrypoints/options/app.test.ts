@@ -1,5 +1,5 @@
 import { flushSync, mount, unmount } from 'svelte';
-import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import App from './App.svelte';
 
@@ -105,4 +105,77 @@ it('follows changes made elsewhere', async () => {
     expect(select('colorFormat').value).toBe('HSL');
   });
   expect(document.documentElement.dataset.theme).toBe('light');
+});
+
+describe('MCP row (9.05)', () => {
+  const idle = {
+    intent: false,
+    connected: false,
+    waiting: false,
+    rejected: false,
+    versionMismatch: false,
+    serverVersion: null,
+    client: null,
+  };
+  let status: Record<string, unknown>;
+  const toBg = vi.fn<(type: string) => unknown>();
+  let listener: ((m: unknown, s: unknown, r: (v?: unknown) => void) => unknown) | null = null;
+
+  beforeEach(() => {
+    status = { ...idle };
+    toBg.mockReset();
+    toBg.mockImplementation((type) => {
+      if (type === 'mcp_connect') status = { ...status, intent: true, waiting: true };
+      if (type === 'mcp_disconnect') status = { ...idle };
+      if (type === 'mcp_prompt') return 'PROMPT with BODOI_MCP_TOKEN=x';
+      return status;
+    });
+    fakeBrowser.runtime.sendMessage = (async (m: { target: string; type: string }) =>
+      m.target === 'background' ? toBg(m.type) : undefined) as never;
+    const add = fakeBrowser.runtime.onMessage.addListener.bind(fakeBrowser.runtime.onMessage);
+    fakeBrowser.runtime.onMessage.addListener = ((l: never) => {
+      listener = l;
+      add(l);
+    }) as never;
+  });
+  const button = (action: string) =>
+    document.querySelector<HTMLButtonElement>(`[data-action="${action}"]`);
+  const push = (s: object) => {
+    listener!({ target: 'options', type: 'mcp_status', data: [s] }, {}, () => {});
+  };
+
+  it('connects, shows the prompt while waiting, then disconnects', async () => {
+    await open();
+    await vi.waitFor(() => expect(toBg).toHaveBeenCalledWith('mcp_status'));
+    expect(document.body.textContent).toContain('options_rowMcpServer');
+    expect(button('mcp-toggle')!.textContent).toBe('options_mcpConnect');
+    button('mcp-toggle')!.click();
+    await vi.waitFor(() => {
+      flushSync();
+      expect(toBg).toHaveBeenCalledWith('mcp_connect');
+      expect(button('mcp-toggle')!.textContent).toBe('options_mcpDisconnect');
+      expect(document.querySelector('[data-mcp-prompt]')?.textContent).toContain('BODOI_MCP_TOKEN');
+    });
+    button('mcp-toggle')!.click();
+    await vi.waitFor(() => {
+      flushSync();
+      expect(button('mcp-toggle')!.textContent).toBe('options_mcpConnect');
+    });
+    expect(document.querySelector('[data-mcp-prompt]')).toBeNull();
+  });
+
+  it('follows status pushed by the background and explains an outdated server', async () => {
+    await open();
+    await vi.waitFor(() => expect(listener).not.toBeNull());
+    push({ ...idle, intent: true, connected: true, versionMismatch: true, serverVersion: '0.4.0' });
+    await vi.waitFor(() => {
+      flushSync();
+      expect(button('mcp-toggle')!.textContent).toBe('options_mcpDisconnect');
+    });
+    button('mcp-outdated')!.click();
+    flushSync();
+    expect(document.querySelector('[role="alertdialog"]')!.textContent).toContain(
+      'options_mcpOutdatedTitle',
+    );
+  });
 });

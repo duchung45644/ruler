@@ -1,0 +1,70 @@
+<script lang="ts">
+  import { i18n } from '#i18n';
+  import { onMount, type Snippet } from 'svelte';
+  import { themePref } from '../../lib/settings';
+  import { applyDocTheme, type ThemePref } from '../../lib/theme';
+
+  let { onready }: { onready?: () => void } = $props();
+
+  let theme = $state<ThemePref>('system');
+  let loaded = $state(false);
+  const mql = typeof matchMedia === 'function' ? matchMedia('(prefers-color-scheme: dark)') : null;
+
+  $effect(() => applyDocTheme(document, theme, mql));
+
+  onMount(() => {
+    const ac = new AbortController();
+    mql?.addEventListener('change', () => applyDocTheme(document, theme, mql), {
+      signal: ac.signal,
+    });
+    void themePref
+      .getValue()
+      .catch(() => 'system' as const)
+      .then((t) => {
+        if (ac.signal.aborted) return;
+        theme = t ?? 'system';
+        loaded = true;
+        onready?.();
+      });
+    return () => ac.abort();
+  });
+
+  const themes: [ThemePref, string][] = [
+    ['system', i18n.t('theme.system')],
+    ['light', i18n.t('theme.light')],
+    ['dark', i18n.t('theme.dark')],
+  ];
+  const selectCls =
+    'rounded-btn border border-line bg-transparent px-2 py-1 text-fg outline-none focus-visible:border-accent';
+</script>
+
+{#snippet row(title: string, secondary: string | null, control: Snippet)}
+  <div class="flex items-center justify-between gap-4 px-4 py-3">
+    <div class="flex min-w-0 flex-col gap-0.5">
+      <span class="font-medium">{title}</span>
+      {#if secondary}<span class="text-[12px] text-fg-muted">{secondary}</span>{/if}
+    </div>
+    <div class="shrink-0">{@render control()}</div>
+  </div>
+{/snippet}
+
+<main class="mx-auto flex max-w-[640px] flex-col gap-5 p-4" aria-busy={!loaded}>
+  <section class="flex flex-col gap-2">
+    <h2 class="px-1 text-[12px] font-semibold text-fg-muted uppercase">
+      {i18n.t('options.sectionAppearance')}
+    </h2>
+    <div class="divide-y divide-line rounded-panel border border-line">
+      {#snippet themeSelect()}
+        <select
+          class={selectCls}
+          data-setting="theme"
+          value={theme}
+          onchange={(e) => void themePref.setValue((theme = e.currentTarget.value as ThemePref))}
+        >
+          {#each themes as [id, label] (id)}<option value={id}>{label}</option>{/each}
+        </select>
+      {/snippet}
+      {@render row(i18n.t('options.rowTheme'), null, themeSelect)}
+    </div>
+  </section>
+</main>

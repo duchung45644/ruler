@@ -1,0 +1,25 @@
+@import 'tailwindcss';
+@import '../../ui/theme.css';
+
+/* Embedded in chrome://extensions: solid surface, the page follows data-theme on <html>. */
+:root {
+  --color-surface: var(--color-zinc-900);
+  color-scheme: dark;
+}
+:root[data-theme='light'] {
+  --color-surface: #fff;
+  color-scheme: light;
+}
+body {
+  margin: 0;
+  background: var(--color-surface);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  accent-color: var(--color-accent);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+body.ready {
+  opacity: 1;
+}

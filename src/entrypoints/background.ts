@@ -22,6 +22,12 @@ import {
   setupPanels,
 } from '../background/panels';
 import { initResponsive, responsiveHandlers } from '../background/responsive';
+import {
+  createOptionsMenu,
+  OPTIONS_MENU_ID,
+  openOptions,
+  optionsHandlers,
+} from '../background/options';
 
 const icon = (tabId: number, active: boolean) =>
   browser.action
@@ -151,6 +157,7 @@ async function setup() {
     title: i18n.t('extNameShort'),
     contexts: ['page', 'frame', 'selection', 'link', 'editable', 'image', 'video', 'audio'],
   });
+  createOptionsMenu();
   const dc = browser.declarativeContent;
   if (!dc) return;
   await browser.action.enable();
@@ -172,7 +179,11 @@ export default defineBackground(() => {
   browser.runtime.onInstalled.addListener(() => void setup().catch(() => {}));
   browser.runtime.onStartup.addListener(() => void setup().catch(() => {}));
   browser.action.onClicked.addListener((tab) => void toggleIfAllowed(tab));
-  browser.contextMenus.onClicked.addListener((_i, tab) => void toggleIfAllowed(tab));
+  browser.contextMenus.onClicked.addListener((info, tab) =>
+    info.menuItemId === OPTIONS_MENU_ID
+      ? void openOptions().catch(() => {})
+      : void toggleIfAllowed(tab),
+  );
   browser.commands.onCommand.addListener(async (cmd) => {
     if (cmd !== 'select_parent' && cmd !== 'select_child') return;
     const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
@@ -187,6 +198,7 @@ export default defineBackground(() => {
     {
       ...panelHandlers,
       ...responsiveHandlers,
+      ...optionsHandlers,
       async close_extension(sender) {
         const tabId = sender.tab?.id;
         if (tabId === undefined) return;

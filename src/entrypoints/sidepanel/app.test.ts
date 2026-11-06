@@ -337,3 +337,9 @@ it('show_host_grant shows and focuses the grant; granting asks <all_urls>', asyn
   await vi.waitFor(() => expect(document.querySelector('[data-host-grant]')).toBeNull());
   panel.hostGrant = false;
 });
+
+it('the gear asks the background to open the options page', async () => {
+  await open();
+  document.querySelector<HTMLButtonElement>('[data-action="options"]')!.click();
+  await vi.waitFor(() => expect(bg).toHaveBeenCalledWith('open_options_page'));
+});

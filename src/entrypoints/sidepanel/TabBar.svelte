@@ -2,6 +2,8 @@
   import { i18n } from '#i18n';
   import AppWindow from '@lucide/svelte/icons/app-window';
   import PanelRight from '@lucide/svelte/icons/panel-right';
+  import Settings from '@lucide/svelte/icons/settings';
+  import { sendToBackground } from '../../lib/messaging';
   import { edit } from './edit/edit-store.svelte';
   import { panel, toggleDetach, type PanelTab } from './store.svelte';
 
@@ -10,6 +12,7 @@
     ['page', i18n.t('panel.tabPage')],
     ['changes', i18n.t('edit.changes')],
   ];
+  const settingsLabel = i18n.t('options.pageTitle');
   const dockLabel = $derived(i18n.t(panel.detached ? 'panel.dock' : 'panel.undock'));
   const scroller = () => (document.scrollingElement ?? document.documentElement).scrollTop;
 </script>
@@ -35,6 +38,16 @@
     >
   {/each}
   <span class="flex-1"></span>
+  <button
+    type="button"
+    class="grid size-7 place-items-center rounded-btn text-fg-muted hover:bg-line hover:text-fg"
+    title={settingsLabel}
+    aria-label={settingsLabel}
+    data-action="options"
+    onclick={() => void sendToBackground('open_options_page').catch(() => {})}
+  >
+    <Settings class="size-4" />
+  </button>
   {#if panel.tabId !== null && !panel.switching}
     <button
       type="button"

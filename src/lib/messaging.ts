@@ -41,6 +41,7 @@ export interface BackgroundApi {
   open_side_panel(): { success: boolean; error?: string };
   close_side_panel(): { success: boolean };
   check_panel_api(): boolean;
+  open_options_page(): void;
   has_host_permission(): boolean;
   detach_panel(
     tabId: number,

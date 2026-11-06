@@ -9,8 +9,6 @@ export default defineConfig(
     ignores: [
       '.output/',
       '.wxt/',
-      'legacy-src/',
-      'unpacked/',
       '.superpowers/',
       'packages/*/dist/',
       'packages/*/src/*.gen.ts',

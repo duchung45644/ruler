@@ -4,7 +4,7 @@
 - **Định dạng dòng:** `- [ ] <mục>.<nn> · đợt <1–8|bỏ> · <hành vi người dùng thấy, hoặc quy tắc ngầm> — <file:dòng> (<hàm/case>) · <tên liên quan>`.
 - **Quy tắc:** đánh `[x]` khi bản mới đạt mục đó lúc thử tay, trong đợt tương ứng.
 - **Dòng gộp:** mệnh đề nhắc tới công cụ/chế độ của đợt sau (X-Ray, grid, thước, responsive, sửa, chụp, side panel, MCP…) trong một dòng đợt 1 được kiểm ở đợt của công cụ đó; dòng đợt 1 đánh [x] khi phần thuộc đợt 1 đạt.
-- Độ đủ được giữ bằng `docs/inventory.test.ts`.
+- Bản cũ (`unpacked/`, `legacy-src/`) đã xoá ở đợt 9 (2026-11-06); tag git `legacy-final` giữ nguyên bản. Vị trí `file:dòng` trong các dòng tính theo tag đó.
 - **Thay đổi so với bản cũ đã chốt (2026-11-05)**, ghi ở cuối từng dòng liên quan:
   - Bỏ chế độ sửa; sửa luôn sẵn khi chọn phần tử. Nút sửa và mục CSS nằm trong tab Element của side panel.
   - Phím tắt chữ thay số: I, X, G, R, B, M, C, F, O, A, S, P. Dock chia 5 nhóm theo mục đích.

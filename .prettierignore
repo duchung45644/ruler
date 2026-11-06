@@ -1,7 +1,5 @@
 .output/
 .wxt/
-legacy-src/
-unpacked/
 .superpowers/
 docs/**/*.md
 pnpm-lock.yaml

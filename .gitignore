@@ -1,4 +1,4 @@
-# packaged builds; the source is unpacked/
+# packaged builds
 *.crx
 *.pem
 .superpowers/

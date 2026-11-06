@@ -56,7 +56,20 @@ function leaveFrames(): void {
   const wasFrame = panel.frameId !== 0;
   panel.responsive = false;
   panel.frameId = 0;
-  if (wasFrame) dropSelection();
+  if (wasFrame) {
+    dropSelection();
+    reloadPageData();
+  }
+}
+
+/** Frame whose page data (meta, SEO audit, technologies) the Page tab shows. */
+const pageFrame = () => (panel.responsive ? panel.frameId : 0);
+
+/** Drop the shown page data and ask the frame it now comes from. */
+function reloadPageData(): void {
+  panel.page = null;
+  panel.technologies = null;
+  void toPageData('refresh_page_data');
 }
 
 function dropSelection(): void {
@@ -80,7 +93,18 @@ export function toPage<K extends keyof ContentApi>(
   return toFrame(panel.frameId, type, ...data);
 }
 
-/** Page-wide data (page data, technologies, weight) lives on the top frame only. */
+/**
+ * Page data (meta, SEO audit, technologies): the responsive frame the panel follows, else the top
+ * frame, routed like toPage so a frame's audit never shows the shell's results.
+ */
+export function toPageData<K extends keyof ContentApi>(
+  type: K,
+  ...data: Parameters<ContentApi[K]>
+): Promise<ReturnType<ContentApi[K]> | undefined> {
+  return toFrame(pageFrame(), type, ...data);
+}
+
+/** Top-frame data (page weight, the session's own handshake). */
 export function toTop<K extends keyof ContentApi>(
   type: K,
   ...data: Parameters<ContentApi[K]>
@@ -159,7 +183,9 @@ export async function startPanel(signal: AbortSignal, search = location.search):
       },
       close: () => window.close(),
       select_element(d, sender) {
+        const moved = frameOf(sender) !== panel.frameId;
         panel.frameId = frameOf(sender);
+        if (moved && panel.responsive) reloadPageData();
         panel.element = d;
         panel.issues = d.issues ?? null;
         panel.canvasFps = null;
@@ -168,8 +194,12 @@ export async function startPanel(signal: AbortSignal, search = location.search):
       update_canvas_fps(fps, sender) {
         if (fromSelected(sender)) panel.canvasFps = fps;
       },
-      page_data: (d) => void (panel.page = d),
-      page_technologies: (t) => void (panel.technologies = t),
+      page_data(d, sender) {
+        if (frameOf(sender) === pageFrame()) panel.page = d;
+      },
+      page_technologies(t, sender) {
+        if (frameOf(sender) === pageFrame()) panel.technologies = t;
+      },
       page_weight_update(w) {
         if (panel.selectedTab === 'page') panel.weight = w;
       },

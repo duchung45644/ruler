@@ -173,14 +173,15 @@ export const sidePanelHandlers: Handlers<ContentApi> = {
   check_script_is_active: () => ({ scriptIsActive: state.active }),
   side_panel_loaded() {
     if (!state.active) return;
-    if (!state.inFrame) getPageData(); // page data / technologies / weight come from the top only
+    // the panel only asks a responsive frame when it follows that frame: its own page data (gap 3)
+    getPageData();
     // a panel opened after entering responsive must learn it, or it drops the frames' messages
     if (state.responsiveOn && !state.inFrame)
       void sendToSidePanel('responsive_state', { on: true }).catch(() => {});
     if (state.selected) sendElement(state.selected);
   },
   refresh_page_data() {
-    if (state.active && !state.inFrame) refreshPageData();
+    if (state.active) refreshPageData(); // a responsive frame too, when the panel follows it
   },
   page_weight_subscribe() {
     if (!state.inFrame) subscribeWeight();
@@ -206,7 +207,7 @@ export async function initSidePanelBridge(): Promise<void> {
     once: true,
   });
   window.addEventListener('scroll', repaintHighlights, { signal, passive: true, capture: true });
-  if (!state.inFrame) initPageData(elementId);
+  initPageData(elementId);
 
   const stopEffect = $effect.root(() => {
     $effect(() => {

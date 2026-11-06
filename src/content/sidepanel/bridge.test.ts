@@ -217,3 +217,18 @@ it('a responsive frame sends its selection without waiting for the panel port (r
     state.inFrame = false;
   }
 });
+
+it('a responsive frame the panel follows answers with its own page data and SEO audit (gap 3)', () => {
+  state.active = true;
+  state.inFrame = true;
+  try {
+    toPanel.mockClear();
+    sidePanelHandlers.refresh_page_data!({} as never);
+    expect(toPanel).toHaveBeenCalledWith(
+      'page_data',
+      expect.objectContaining({ seoIssues: expect.any(Array) }),
+    );
+  } finally {
+    state.inFrame = false;
+  }
+});

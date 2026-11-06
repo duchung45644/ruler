@@ -4,7 +4,7 @@ import { fakeBrowser } from 'wxt/testing/fake-browser';
 import App from './App.svelte';
 import { sampleElement } from './element/sample';
 import { edit } from './edit/edit-store.svelte';
-import { panel, toPage } from './store.svelte';
+import { panel, toPage, toPageData } from './store.svelte';
 
 const ui = { app: null as ReturnType<typeof mount> | null };
 let send: { mock: { calls: unknown[][] } };
@@ -165,6 +165,29 @@ describe('responsive frames (Task 12)', () => {
     button('panel_tabPage').click();
     flushSync();
     expect(sent('page_weight_subscribe').at(-1)![2]).toEqual({ frameId: 0 });
+  });
+
+  it('page data and its SEO audit come from the frame the panel follows (gap 3)', async () => {
+    await open();
+    await fromFrame('responsive_state', 0, { on: true });
+    await fromFrame('select_element', 7, sampleElement());
+    await vi.waitFor(() => expect(panel.frameId).toBe(7));
+    expect(sent('refresh_page_data').at(-1)![2]).toEqual({ frameId: 7 });
+    const top = { url: 'top' } as never;
+    const frame = { url: 'frame' } as never;
+    await fromFrame('page_data', 0, top);
+    expect(panel.page).toBeNull();
+    await fromFrame('page_data', 7, frame);
+    expect(panel.page).toEqual(frame);
+    await toPageData('refresh_page_data');
+    expect(sent('refresh_page_data').at(-1)![2]).toEqual({ frameId: 7 });
+    // back to the page: the top frame is asked again and its data counts
+    await fromFrame('responsive_state', 0, { on: false });
+    await vi.waitFor(() => expect(panel.frameId).toBe(0));
+    expect(sent('refresh_page_data').at(-1)![2]).toEqual({ frameId: 0 });
+    await fromFrame('page_data', 0, top);
+    expect(panel.page).toEqual(top);
+    panel.page = null; // a stub, not a real PageData: later tests render the Page tab
   });
 
   it('a handoff keeps the frame', async () => {

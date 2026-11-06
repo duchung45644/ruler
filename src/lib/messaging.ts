@@ -13,6 +13,7 @@ import type {
   RuleChange,
   RulePayload,
 } from './edit/types';
+import type { CallOutcome, McpPageType } from './mcp/protocol';
 import type { McpStatus } from './mcp/status';
 import type { PageData, PageWeight, Technology } from './page/types';
 
@@ -143,6 +144,11 @@ export interface ContentApi {
   reload_frames(): void;
   /** Background → tabs with Bo doi on: MCP connection changed (legacy mcp_status_changed). */
   mcp_status(s: McpStatus): void;
+  /**
+   * One MCP command for this tab, already validated by the background (lib/mcp/protocol.ts).
+   * The only MCP entry into a page; answered by the top frame.
+   */
+  mcp_call(type: McpPageType, payload: unknown): CallOutcome;
 }
 export interface SidePanelApi {
   ping(): { isOpen: true };

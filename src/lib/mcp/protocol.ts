@@ -81,6 +81,8 @@ export interface PongFrame {
 export type ResultFrame =
   | { type: 'result'; id: CallId; ok: true; data: unknown }
   | { type: 'result'; id: CallId; ok: false; error: string };
+/** Outcome of one command: the body of a result frame. */
+export type CallOutcome = { ok: true; data: unknown } | { ok: false; error: string };
 export type ExtensionFrame = HelloFrame | PongFrame | ResultFrame;
 
 export interface AgentInfo {

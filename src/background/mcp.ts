@@ -3,23 +3,32 @@
  * command router. Legacy: background.js:2322 (F), :2810 (V), :2919 (`target: 'mcp'`, removed).
  */
 import { browser, type Browser } from '#imports';
-import { connectPrompt } from '../lib/mcp/protocol';
+import {
+  CALL_TIMEOUT_MS,
+  connectPrompt,
+  ERR,
+  SLOW_TIMEOUT_MS,
+  SLOW_TYPES,
+  timeoutError,
+  validateCall,
+  type CallOutcome,
+  type McpPageType,
+  type McpPayloads,
+} from '../lib/mcp/protocol';
 import { IDLE_STATUS, toStatus, type McpStatus } from '../lib/mcp/status';
 import { sendToFrame, sendToOptions, type BackgroundApi, type Handlers } from '../lib/messaging';
 import { ensureToken, mcpIntent, mcpToken } from '../lib/settings';
+import { fetchStylesheet, isAllowedStylesheetUrl } from '../lib/stylesheet-fetch';
 import { isInjectable } from '../lib/tabs';
 import { McpSocket, type McpSocketOptions } from './mcp-socket';
 
 let socket: McpSocket | null = null;
 let intent = false;
 let status: McpStatus = IDLE_STATUS;
-let onCall: McpSocketOptions['onCall'] = (_c, reply) =>
-  reply({ ok: false, error: 'Unknown action. Update the Bo doi extension to the latest version.' });
-
-/** The command router plugs in here (kept apart so the socket can be tested alone). */
-export function setCallHandler(h: McpSocketOptions['onCall']): void {
-  onCall = h;
-}
+const onCall: McpSocketOptions['onCall'] = (c, reply) =>
+  void handleCall(c.command, c.payload).then(reply, (e: unknown) =>
+    reply({ ok: false, error: String((e as Error)?.message ?? e) }),
+  );
 
 export const mcpStatus = (): McpStatus => status;
 
@@ -61,7 +70,7 @@ function ensureSocket(): McpSocket {
   socket ??= new McpSocket({
     token: ensureToken,
     extVersion: browser.runtime.getManifest().version,
-    onCall: (c, reply, signal) => onCall(c, reply, signal),
+    onCall,
     onChange: update,
   });
   return socket;
@@ -127,8 +136,115 @@ export const mcpHandlers: Pick<
   mcp_prompt: (sender) => prompt(sender),
 };
 
+// ---------------------------------------------------------------- router
+
+/** Legacy N / j: a tab that left responsive mode reloads; calls wait for it (10.02). */
+const RELOAD_WINDOW_MS = 15_000;
+const RELOAD_WAIT_MS = 10_000;
+const POLL_MS = 250;
+const reloading = new Map<number, number>();
+
+const fail = (error: string): CallOutcome => ({ ok: false, error });
+
+/** Wait for Bo doi to come back in a tab that is reloading after exit_responsive_mode. */
+async function waitForReload(tabId: number): Promise<boolean> {
+  const at = reloading.get(tabId);
+  if (at === undefined || Date.now() - at > RELOAD_WINDOW_MS) {
+    reloading.delete(tabId);
+    return false;
+  }
+  const end = Date.now() + RELOAD_WAIT_MS;
+  while (Date.now() < end) {
+    await new Promise((r) => setTimeout(r, POLL_MS));
+    if (await isBoDoiTab(tabId)) return true;
+  }
+  return false;
+}
+
+/** Port of q / V (background.js:2810): one command into the tab's top frame, with a timeout. */
+export async function forwardToTab(
+  type: McpPageType,
+  payload: { tabId: number },
+): Promise<CallOutcome> {
+  const { tabId } = payload;
+  const tab = await browser.tabs.get(tabId).catch(() => undefined);
+  if (!tab) return fail(`No tab with id ${tabId}.`);
+  if (!(await isBoDoiTab(tabId)) && !(await waitForReload(tabId))) return fail(ERR.tabInactiveHint);
+  if (type === 'exit_responsive_mode') reloading.set(tabId, Date.now());
+  const ms = SLOW_TYPES.includes(type) ? SLOW_TIMEOUT_MS : CALL_TIMEOUT_MS;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<CallOutcome>(
+    (res) => (timer = setTimeout(() => res(fail(timeoutError(type))), ms)),
+  );
+  try {
+    const r = await Promise.race([
+      sendToFrame(tabId, 0, 'mcp_call', type, payload).then(
+        (v) => v ?? fail('Empty response from content script.'),
+        () => fail(ERR.tabInactiveHint), // tab closed or navigated mid-call
+      ),
+      timeout,
+    ]);
+    return r;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function listTabs(): Promise<CallOutcome> {
+  const tabs = await boDoiTabs();
+  return {
+    ok: true,
+    data: {
+      tabs: tabs.map((t) => ({
+        tabId: t.id!,
+        title: t.title ?? null,
+        url: t.url ?? null,
+        active: !!t.active,
+      })),
+    },
+  };
+}
+
+async function focusTab({ tabId }: McpPayloads['focus_tab']): Promise<CallOutcome> {
+  if (!(await isBoDoiTab(tabId))) return fail(ERR.tabInactive);
+  try {
+    const tab = await browser.tabs.update(tabId, { active: true });
+    if (tab?.windowId !== undefined) await browser.windows.update(tab.windowId, { focused: true });
+    return { ok: true, data: { success: true } };
+  } catch (e) {
+    return fail(String((e as Error)?.message ?? e));
+  }
+}
+
+async function stylesheet({ url }: McpPayloads['fetch_stylesheet']): Promise<CallOutcome> {
+  if (!isAllowedStylesheetUrl(url)) return fail(ERR.stylesheetBlocked);
+  const r = await fetchStylesheet(url);
+  return r.ok ? { ok: true, data: { text: r.text, finalUrl: r.finalUrl } } : fail(r.error);
+}
+
+/**
+ * Port of F (background.js:2322) for an authenticated call: validate, then answer here or in the
+ * tab. There is no other way in (the legacy `runtime.onMessage` `target: 'mcp'` path is gone).
+ */
+export async function handleCall(type: string, payload: unknown): Promise<CallOutcome> {
+  const v = validateCall(type, payload);
+  if (!v.ok) return fail(v.error);
+  const p = v.payload;
+  switch (type) {
+    case 'list_tabs':
+      return listTabs();
+    case 'focus_tab':
+      return focusTab(p as McpPayloads['focus_tab']);
+    case 'fetch_stylesheet':
+      return stylesheet(p as McpPayloads['fetch_stylesheet']);
+    default:
+      return forwardToTab(type as McpPageType, p as { tabId: number });
+  }
+}
+
 /** Tests only. */
 export function resetMcp(): void {
+  reloading.clear();
   socket?.stop();
   socket = null;
   intent = false;

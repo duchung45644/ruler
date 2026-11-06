@@ -3,8 +3,8 @@ import { DEVICE_PRESETS, findPreset } from './devices';
 
 describe('devices', () => {
   it('lists 8.10 presets with unique keys, custom last', () => {
-    expect(DEVICE_PRESETS).toHaveLength(24);
-    expect(new Set(DEVICE_PRESETS.map((p) => p.key)).size).toBe(24);
+    expect(DEVICE_PRESETS).toHaveLength(37);
+    expect(new Set(DEVICE_PRESETS.map((p) => p.key)).size).toBe(37);
     expect(DEVICE_PRESETS.at(-1)!.key).toBe('custom');
   });
 

@@ -5,18 +5,32 @@ export const DEVICE_GROUPS: DevicePreset[][] = [
   [
     { key: 'iphone-17-pro', name: 'iPhone 17 Pro', width: 402, height: 874 },
     { key: 'iphone-17-pro-max', name: 'iPhone 17 Pro Max', width: 440, height: 956 },
+    { key: 'iphone-17', name: 'iPhone 17', width: 402, height: 874 },
+    { key: 'iphone-air', name: 'iPhone Air', width: 420, height: 912 },
+    { key: 'iphone-16-pro-max', name: 'iPhone 16 Pro Max', width: 440, height: 956 },
+    { key: 'iphone-15-pro-max', name: 'iPhone 15 Pro Max', width: 430, height: 932 },
     { key: 'iphone-16', name: 'iPhone 16', width: 393, height: 852 },
     { key: 'iphone-16-plus', name: 'iPhone 16 Plus', width: 430, height: 932 },
     { key: 'iphone-12-15', name: 'iPhone 12-15', width: 390, height: 844 },
+    { key: 'iphone-13-mini', name: 'iPhone 13 mini', width: 375, height: 812 },
+    { key: 'iphone-11-xr', name: 'iPhone 11/XR', width: 414, height: 896 },
     { key: 'iphone-se', name: 'iPhone SE', width: 375, height: 667 },
   ],
   [
     { key: 'galaxy-s24-s25', name: 'Galaxy S24/S25', width: 360, height: 780 },
     { key: 'galaxy-s25-ultra', name: 'Galaxy S25 Ultra', width: 412, height: 883 },
+    { key: 'galaxy-a-series', name: 'Galaxy A5x/A7x', width: 412, height: 915 },
+    { key: 'galaxy-z-fold', name: 'Galaxy Z Fold (folded)', width: 344, height: 882 },
+    { key: 'galaxy-z-flip', name: 'Galaxy Z Flip', width: 412, height: 1004 },
   ],
   [
     { key: 'pixel-9', name: 'Pixel 9', width: 412, height: 915 },
     { key: 'pixel-9-pro-xl', name: 'Pixel 9 Pro XL', width: 448, height: 997 },
+    { key: 'pixel-7', name: 'Pixel 7', width: 412, height: 915 },
+  ],
+  [
+    { key: 'xiaomi-redmi-note', name: 'Xiaomi / Redmi Note', width: 393, height: 873 },
+    { key: 'oppo-vivo', name: 'OPPO / vivo', width: 360, height: 800 },
   ],
   [
     { key: 'android-compact', name: 'Android Compact', width: 360, height: 800 },

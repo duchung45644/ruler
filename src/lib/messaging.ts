@@ -13,6 +13,7 @@ import type {
   RuleChange,
   RulePayload,
 } from './edit/types';
+import type { McpStatus } from './mcp/status';
 import type { PageData, PageWeight, Technology } from './page/types';
 
 export type CaptureResult =
@@ -60,6 +61,13 @@ export interface BackgroundApi {
   /** Injects the content script into the responsive frames; returns their frameIds. */
   inject_responsive_frames(): number[];
   exit_responsive_mode(p: { ruleEdits: SerializedEdit[]; url: string }): void;
+  // MCP (Đợt 8). Commands never come this way: only through the authenticated socket.
+  mcp_status(): McpStatus;
+  /** Turns the stored intent on and dials the local server now (also after a reject). */
+  mcp_connect(): McpStatus;
+  mcp_disconnect(): McpStatus;
+  /** Copy prompt with the pairing token; null unless asked by an extension page or a Bo doi tab. */
+  mcp_prompt(): string | null;
 }
 export interface ContentApi {
   ping(): { active: boolean };
@@ -133,6 +141,8 @@ export interface ContentApi {
   start_frame_mode(): void;
   /** Host permission granted: the responsive shell reloads every frame (8.15). */
   reload_frames(): void;
+  /** Background → tabs with Bo doi on: MCP connection changed (legacy mcp_status_changed). */
+  mcp_status(s: McpStatus): void;
 }
 export interface SidePanelApi {
   ping(): { isOpen: true };
@@ -163,12 +173,19 @@ export type Handlers<A extends object> = {
     : never;
 };
 
-type Target = 'background' | 'content' | 'sidepanel';
+/** The settings page (Đợt 7) follows background state it cannot read from storage. */
+export interface OptionsApi {
+  mcp_status(s: McpStatus): void;
+}
+
+type Target = 'background' | 'content' | 'sidepanel' | 'options';
 type ApiOf<T extends Target> = T extends 'background'
   ? BackgroundApi
   : T extends 'content'
     ? ContentApi
-    : SidePanelApi;
+    : T extends 'options'
+      ? OptionsApi
+      : SidePanelApi;
 interface Packet {
   target: Target;
   type: string;
@@ -220,6 +237,14 @@ export function sendToTabPanel<K extends keyof SidePanelApi>(
   ...data: Parameters<SidePanelApi[K]>
 ): Promise<ReturnType<SidePanelApi[K]> | undefined> {
   return postToPanel({ target: 'sidepanel', type, data, tabId });
+}
+
+/** Background → open settings pages; none open is normal. */
+export function sendToOptions<K extends keyof OptionsApi>(
+  type: K,
+  ...data: Parameters<OptionsApi[K]>
+): Promise<ReturnType<OptionsApi[K]> | undefined> {
+  return postToPanel({ target: 'options', type, data });
 }
 
 async function postToPanel<R>(packet: Packet): Promise<R | undefined> {

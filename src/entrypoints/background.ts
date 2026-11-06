@@ -28,6 +28,7 @@ import {
   openOptions,
   optionsHandlers,
 } from '../background/options';
+import { initMcp, mcpHandlers } from '../background/mcp';
 
 const icon = (tabId: number, active: boolean) =>
   browser.action
@@ -176,6 +177,7 @@ async function setup() {
 export default defineBackground(() => {
   initPanels();
   initResponsive(toggleTab);
+  initMcp(); // dials only when the user left MCP on (10.04)
   browser.runtime.onInstalled.addListener(() => void setup().catch(() => {}));
   browser.runtime.onStartup.addListener(() => void setup().catch(() => {}));
   browser.action.onClicked.addListener((tab) => void toggleIfAllowed(tab));
@@ -199,6 +201,7 @@ export default defineBackground(() => {
       ...panelHandlers,
       ...responsiveHandlers,
       ...optionsHandlers,
+      ...mcpHandlers,
       async close_extension(sender) {
         const tabId = sender.tab?.id;
         if (tabId === undefined) return;

@@ -15,7 +15,7 @@ import {
   mergePanelPrefs,
   themePref,
 } from '../../lib/settings';
-import type { ThemePref } from '../../lib/theme';
+import { applyDocTheme, type ThemePref } from '../../lib/theme';
 import {
   changesInvalidated,
   clearEdit,
@@ -138,10 +138,8 @@ function connect(): void {
   }
 }
 
-function applyTheme(pref: ThemePref, mql: MediaQueryList | null): void {
-  const dark = pref === 'system' ? (mql?.matches ?? true) : pref === 'dark';
-  document.documentElement.dataset.theme = dark ? 'dark' : 'light';
-}
+const applyTheme = (pref: ThemePref, mql: MediaQueryList | null) =>
+  applyDocTheme(document, pref, mql);
 
 const announce = () =>
   setTimeout(() => {

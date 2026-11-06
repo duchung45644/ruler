@@ -20,3 +20,12 @@ export async function listPersistedEdits(): Promise<{ key: string; value: Persis
 export async function clearPersistedEdits(key: string): Promise<void> {
   if (key.startsWith(PERSIST_PREFIX)) await browser.storage.local.remove(key);
 }
+
+/** Every saved site, broken entries included (legacy options.js:2879); returns how many went. */
+export async function clearAllPersistedEdits(): Promise<number> {
+  const keys = Object.keys(await browser.storage.local.get(null)).filter((k) =>
+    k.startsWith(PERSIST_PREFIX),
+  );
+  if (keys.length) await browser.storage.local.remove(keys);
+  return keys.length;
+}

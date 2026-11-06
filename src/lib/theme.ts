@@ -32,3 +32,9 @@ export function resolveTheme(
 export function measureColor(pageIsDark: boolean | null): '#4f46e5' | '#a5b4fc' {
   return pageIsDark ? '#a5b4fc' : '#4f46e5';
 }
+
+/** Extension pages (side panel, options): `data-theme` on <html>; no media list means dark. */
+export function applyDocTheme(doc: Document, pref: ThemePref, mql: MediaQueryList | null): void {
+  const dark = pref === 'system' ? (mql?.matches ?? true) : pref === 'dark';
+  doc.documentElement.dataset.theme = dark ? 'dark' : 'light';
+}

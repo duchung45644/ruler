@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { detectPageIsDark, measureColor, resolveTheme } from './theme';
+import { applyDocTheme, detectPageIsDark, measureColor, resolveTheme } from './theme';
 
 describe('resolveTheme', () => {
   it('system is opposite of page, unreadable page assumed to match prefersDark', () => {
@@ -34,5 +34,17 @@ describe('detectPageIsDark', () => {
   it('all transparent', () => {
     set('transparent', 'rgba(0, 0, 0, 0)');
     expect(detectPageIsDark(document)).toBe(null);
+  });
+});
+
+describe('applyDocTheme', () => {
+  it('sets data-theme; system follows the media query, dark without one', () => {
+    const mql = (matches: boolean) => ({ matches }) as MediaQueryList;
+    applyDocTheme(document, 'system', mql(false));
+    expect(document.documentElement.dataset.theme).toBe('light');
+    applyDocTheme(document, 'system', null);
+    expect(document.documentElement.dataset.theme).toBe('dark');
+    applyDocTheme(document, 'light', mql(true));
+    expect(document.documentElement.dataset.theme).toBe('light');
   });
 });

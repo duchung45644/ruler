@@ -33,6 +33,9 @@ function scan(): string[] {
   return blocked;
 }
 
+/** The page's breakpoints now, whether or not the tool is on (MCP get_breakpoints). */
+export const pageBreakpoints = (): Breakpoint[] => read();
+
 /** The page declares at least one width breakpoint (responsive gates the B item on it, 8.22). */
 export function pageHasBreakpoints(): boolean {
   try {

@@ -508,6 +508,20 @@ describe('frame header', () => {
     expect(header(0).querySelector('[data-action="remove"]')).toBeNull();
   });
 
+  it('counter-scales the header so its text stays readable while matching the frame width', async () => {
+    await enterResponsive();
+    setZoom(0.5);
+    flushSync();
+    const width = shell.frames[0]!.vp.width;
+    expect(header(0).style.transform).toBe('scale(2)');
+    expect(header(0).style.width).toBe(`${width * 0.5}px`);
+    expect(header(0).parentElement!.style.height).toBe('64px');
+    setZoom(1);
+    flushSync();
+    expect(header(0).style.transform).toBe('');
+    expect(header(0).style.width).toBe(`${width}px`);
+  });
+
   it('a handle drag resizes (deltas / zoom), clamps, clears device, blocks iframe pointer events', async () => {
     await enterResponsive();
     setZoom(0.5);

@@ -47,127 +47,135 @@
   }
 </script>
 
-<div
-  data-frame-header={id}
-  class="flex h-8 items-center gap-1 rounded-t-panel border border-b-0 border-line bg-surface px-1 text-xs text-fg backdrop-blur-surface"
->
-  <button
-    type="button"
-    class={btn}
-    data-action="move-left"
-    title={i18n.t('responsive.moveLeft')}
-    aria-label={i18n.t('responsive.moveLeft')}
-    disabled={first}
-    onclick={() => moveFrame(id, -1)}><ChevronLeft size={14} /></button
+<!-- The frames row is scaled by the zoom; the header counter-scales so its text keeps a
+     readable size while its outer width still matches the frame (gap 1). -->
+<div data-frame-header-slot class="relative" style:height="{32 / shell.zoom}px">
+  <div
+    data-frame-header={id}
+    style:width="{f.vp.width * shell.zoom}px"
+    style:transform={shell.zoom === 1 ? null : `scale(${1 / shell.zoom})`}
+    style:transform-origin="top left"
+    class="absolute top-0 left-0 flex h-8 items-center gap-1 rounded-t-panel border border-b-0 border-line bg-surface px-1 text-xs text-fg backdrop-blur-surface"
   >
-  <button
-    type="button"
-    class={btn}
-    data-action="move-right"
-    title={i18n.t('responsive.moveRight')}
-    aria-label={i18n.t('responsive.moveRight')}
-    disabled={last}
-    onclick={() => moveFrame(id, 1)}><ChevronRight size={14} /></button
-  >
-  {#if bpKind}
-    <span
-      data-frame-breakpoint={bpKind}
-      class="shrink-0 rounded px-1.5 py-px font-semibold text-white tabular-nums"
-      style:background={COLORS[bpKind]}>{breakpointLabel({ width: f.vp.width, kind: bpKind })}</span
-    >
-  {/if}
-  <span data-frame-label class="min-w-0 flex-1 truncate px-1 font-medium tabular-nums"
-    >{frameLabel(f.vp)}</span
-  >
-  {#if f.overflow}
-    <span
-      data-overflow-warning
-      class="grid size-6 place-items-center text-amber-400"
-      title={i18n.t('responsive.warnOverflow')}
-      aria-label={i18n.t('responsive.warnOverflow')}
-      role="img"><TriangleAlert size={14} /></span
-    >
-  {/if}
-  <button
-    type="button"
-    class={btn}
-    data-action="rotate"
-    title={i18n.t('responsive.rotate')}
-    aria-label={i18n.t('responsive.rotate')}
-    onclick={() => rotateFrame(id)}><RotateCw size={14} /></button
-  >
-  <button
-    type="button"
-    class={btn}
-    data-action="scheme"
-    data-scheme={f.vp.scheme}
-    title="{i18n.t('responsive.colorScheme')}: {schemeName}"
-    aria-label="{i18n.t('responsive.colorScheme')}: {schemeName}"
-    onclick={() => cycleFrameScheme(id)}><SchemeIcon size={14} /></button
-  >
-  {#if !shell.breakpointMode}
     <button
       type="button"
       class={btn}
-      data-action="remove"
-      title={i18n.t('responsive.titleRemove')}
-      aria-label={i18n.t('responsive.titleRemove')}
-      onclick={() => void removeFrame(id)}><X size={14} /></button
+      data-action="move-left"
+      title={i18n.t('responsive.moveLeft')}
+      aria-label={i18n.t('responsive.moveLeft')}
+      disabled={first}
+      onclick={() => moveFrame(id, -1)}><ChevronLeft size={14} /></button
     >
-  {/if}
-  <div class="relative">
     <button
       type="button"
       class={btn}
-      data-action="more"
-      title={i18n.t('responsive.moreActions')}
-      aria-label={i18n.t('responsive.moreActions')}
-      aria-haspopup="menu"
-      aria-expanded={menuOpen}
-      onclick={() => (menuOpen = !menuOpen)}><Ellipsis size={14} /></button
+      data-action="move-right"
+      title={i18n.t('responsive.moveRight')}
+      aria-label={i18n.t('responsive.moveRight')}
+      disabled={last}
+      onclick={() => moveFrame(id, 1)}><ChevronRight size={14} /></button
     >
-    {#if menuOpen}
-      <div
-        role="menu"
-        tabindex="-1"
-        class="absolute top-[calc(100%+4px)] right-0 z-10 min-w-32 rounded-panel border border-line bg-surface p-1 text-fg shadow-[0_10px_28px_rgba(0,0,0,.35)] backdrop-blur-surface"
-        onfocusout={(e) => {
-          if (!e.currentTarget.contains(e.relatedTarget as Node | null)) menuOpen = false;
-        }}
+    {#if bpKind}
+      <span
+        data-frame-breakpoint={bpKind}
+        class="shrink-0 rounded px-1.5 py-px font-semibold text-white tabular-nums"
+        style:background={COLORS[bpKind]}
+        >{breakpointLabel({ width: f.vp.width, kind: bpKind })}</span
       >
-        <button
-          type="button"
-          role="menuitem"
-          class={item}
-          data-menu="refresh"
-          onclick={() => pick(() => reloadFrame(id))}>{i18n.t('responsive.refresh')}</button
+    {/if}
+    <span data-frame-label class="min-w-0 flex-1 truncate px-1 font-medium tabular-nums"
+      >{frameLabel(f.vp)}</span
+    >
+    {#if f.overflow}
+      <span
+        data-overflow-warning
+        class="grid size-6 place-items-center text-amber-400"
+        title={i18n.t('responsive.warnOverflow')}
+        aria-label={i18n.t('responsive.warnOverflow')}
+        role="img"><TriangleAlert size={14} /></span
+      >
+    {/if}
+    <button
+      type="button"
+      class={btn}
+      data-action="rotate"
+      title={i18n.t('responsive.rotate')}
+      aria-label={i18n.t('responsive.rotate')}
+      onclick={() => rotateFrame(id)}><RotateCw size={14} /></button
+    >
+    <button
+      type="button"
+      class={btn}
+      data-action="scheme"
+      data-scheme={f.vp.scheme}
+      title="{i18n.t('responsive.colorScheme')}: {schemeName}"
+      aria-label="{i18n.t('responsive.colorScheme')}: {schemeName}"
+      onclick={() => cycleFrameScheme(id)}><SchemeIcon size={14} /></button
+    >
+    {#if !shell.breakpointMode}
+      <button
+        type="button"
+        class={btn}
+        data-action="remove"
+        title={i18n.t('responsive.titleRemove')}
+        aria-label={i18n.t('responsive.titleRemove')}
+        onclick={() => void removeFrame(id)}><X size={14} /></button
+      >
+    {/if}
+    <div class="relative">
+      <button
+        type="button"
+        class={btn}
+        data-action="more"
+        title={i18n.t('responsive.moreActions')}
+        aria-label={i18n.t('responsive.moreActions')}
+        aria-haspopup="menu"
+        aria-expanded={menuOpen}
+        onclick={() => (menuOpen = !menuOpen)}><Ellipsis size={14} /></button
+      >
+      {#if menuOpen}
+        <div
+          role="menu"
+          tabindex="-1"
+          class="absolute top-[calc(100%+4px)] right-0 z-10 min-w-32 rounded-panel border border-line bg-surface p-1 text-fg shadow-[0_10px_28px_rgba(0,0,0,.35)] backdrop-blur-surface"
+          onfocusout={(e) => {
+            if (!e.currentTarget.contains(e.relatedTarget as Node | null)) menuOpen = false;
+          }}
         >
-        <button
-          type="button"
-          role="menuitem"
-          class={item}
-          data-menu="rotate"
-          onclick={() => pick(() => rotateFrame(id))}>{i18n.t('responsive.rotate')}</button
-        >
-        <button
-          type="button"
-          role="menuitem"
-          class={item}
-          data-menu="scheme"
-          onclick={() => pick(() => cycleFrameScheme(id))}
-          >{i18n.t('responsive.colorScheme')}</button
-        >
-        {#if !shell.breakpointMode}
           <button
             type="button"
             role="menuitem"
             class={item}
-            data-menu="remove"
-            onclick={() => pick(() => void removeFrame(id))}
-            >{i18n.t('responsive.titleRemove')}</button
+            data-menu="refresh"
+            onclick={() => pick(() => reloadFrame(id))}>{i18n.t('responsive.refresh')}</button
           >
-        {/if}
-      </div>
-    {/if}
+          <button
+            type="button"
+            role="menuitem"
+            class={item}
+            data-menu="rotate"
+            onclick={() => pick(() => rotateFrame(id))}>{i18n.t('responsive.rotate')}</button
+          >
+          <button
+            type="button"
+            role="menuitem"
+            class={item}
+            data-menu="scheme"
+            onclick={() => pick(() => cycleFrameScheme(id))}
+            >{i18n.t('responsive.colorScheme')}</button
+          >
+          {#if !shell.breakpointMode}
+            <button
+              type="button"
+              role="menuitem"
+              class={item}
+              data-menu="remove"
+              onclick={() => pick(() => void removeFrame(id))}
+              >{i18n.t('responsive.titleRemove')}</button
+            >
+          {/if}
+        </div>
+      {/if}
+    </div>
   </div>
 </div>

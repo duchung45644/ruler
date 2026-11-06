@@ -1,5 +1,7 @@
-import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
+import { locateElement } from '../../lib/responsive/element-locator';
+import { state } from '../core/state.svelte';
 import { showToast } from '../core/toast';
 import { HANDOFF_FLAG, persistNow, restorePersisted, schedulePersist } from './persist';
 import { RuleTracker } from './rules';
@@ -117,4 +119,85 @@ it('re-enabled in the same page: keeps the applied edits and shows no second toa
   document.head.replaceChildren();
   stop = await restorePersisted(new RuleTracker('ext', schedulePersist));
   expect(showToast).toHaveBeenCalledWith('toast_editsRestoredOne', 5000);
+});
+
+describe('inline style edits (by element locator)', () => {
+  afterEach(() => {
+    document.body.replaceChildren();
+  });
+  const markup = () => {
+    document.body.innerHTML = '<main><p>a</p><p id="t">b</p></main>';
+    return document.getElementById('t')!;
+  };
+
+  it('are saved by locator next to the rules and restored on reload', async () => {
+    const p = markup();
+    stop = await restorePersisted(tracker);
+    tracker.editInlineStyle(p, 'color: red;');
+    await persistNow();
+    const saved = (await fakeBrowser.storage.local.get(KEY))[KEY] as {
+      edits: unknown[];
+      inline: { locator: unknown; declsText: string }[];
+    };
+    expect(saved.edits).toEqual([]);
+    expect(saved.inline).toEqual([
+      { locator: locateElement(p), declsText: expect.stringContaining('color: red') },
+    ]);
+
+    // reload: a fresh page and tracker
+    stop();
+    const fresh = markup();
+    expect(fresh.getAttribute('style')).toBeNull();
+    const t2 = new RuleTracker('ext', schedulePersist);
+    stop = await restorePersisted(t2);
+    expect(fresh.getAttribute('style')).toContain('color: red');
+    expect(t2.inlineEdits()).toHaveLength(1);
+    expect(showToast).toHaveBeenCalledWith('toast_editsRestoredOne', 5000);
+  });
+
+  it('skip junk and locators that no longer match', async () => {
+    const p = markup();
+    await fakeBrowser.storage.local.set({
+      [KEY]: {
+        edits: [],
+        inline: [
+          { locator: { hops: [[{ i: 0, tag: 'nope' }]] }, declsText: 'color: blue;' },
+          { locator: 'junk', declsText: 'x' },
+          { locator: locateElement(p), declsText: 'color: green;' },
+        ],
+        updatedAt: 1,
+      },
+    });
+    stop = await restorePersisted(tracker);
+    expect(p.getAttribute('style')).toContain('green');
+    expect(tracker.inlineEdits()).toHaveLength(1);
+  });
+
+  it('reverting the last inline edit removes the key', async () => {
+    const p = markup();
+    stop = await restorePersisted(tracker);
+    tracker.editInlineStyle(p, 'color: red;');
+    await persistNow();
+    tracker.revertAll();
+    await persistNow();
+    expect(await fakeBrowser.storage.local.get(KEY)).toEqual({});
+  });
+
+  it('a responsive frame neither restores nor writes them (5.25)', async () => {
+    const p = markup();
+    await fakeBrowser.storage.local.set({
+      [KEY]: { edits: [], inline: [{ locator: locateElement(p), declsText: 'color: green;' }] },
+    });
+    state.inFrame = true;
+    try {
+      stop = await restorePersisted(tracker);
+      expect(p.getAttribute('style')).toBeNull();
+      tracker.editInlineStyle(p, 'color: red;');
+      await persistNow();
+      const saved = (await fakeBrowser.storage.local.get(KEY))[KEY] as { inline: unknown[] };
+      expect(saved.inline).toEqual([{ locator: locateElement(p), declsText: 'color: green;' }]);
+    } finally {
+      state.inFrame = false;
+    }
+  });
 });

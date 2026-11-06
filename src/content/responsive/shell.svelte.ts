@@ -716,7 +716,7 @@ export async function exitResponsive(): Promise<void> {
       tracker.revertAll();
       tracker.applySerialized(ruleEdits);
     }
-    // inline edits reach the live page only (not persisted per site)
+    // inline edits reach the page, then persist with the rules (by locator, top frame only)
     applyInlineStyles(inlineStyles);
     await persistNow();
   } finally {

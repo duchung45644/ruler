@@ -7,9 +7,10 @@ import { ERR, type CallOutcome, type McpPageType } from '../../lib/mcp/protocol'
 import type { ContentApi, Handlers } from '../../lib/messaging';
 import { state } from '../core/state.svelte';
 import { McpFail, type Commands } from './command';
+import { elementCommands } from './elements';
 import { pageCommands } from './page';
 
-const COMMANDS: Commands = { ...pageCommands };
+const COMMANDS: Commands = { ...pageCommands, ...elementCommands };
 
 /** Run one validated command here; every outcome is an answer, never a throw. */
 export async function runMcp(type: McpPageType, payload: unknown): Promise<CallOutcome> {

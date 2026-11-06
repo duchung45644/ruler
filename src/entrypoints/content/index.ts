@@ -5,6 +5,7 @@ import { initInspector } from '../../content/tools/inspector';
 import { editHandlers } from '../../content/edit';
 import { sidePanelHandlers } from '../../content/sidepanel';
 import { mcpHandlers } from '../../content/mcp';
+import { mcpDockHandlers } from '../../content/mcp/dock.svelte';
 import { initTools } from '../../content/tools';
 import { isResponsiveFrame, startFrameMode } from '../../content/responsive/frame-mode';
 import { exitResponsive, onFramesUnblocked } from '../../content/responsive';
@@ -42,6 +43,7 @@ export default defineContentScript({
       ...sidePanelHandlers,
       ...editHandlers,
       ...mcpHandlers,
+      ...mcpDockHandlers,
       ping: () => ({ active: state.active }),
       save_screenshot: () => (state.active ? openBar() : undefined),
       start_frame_mode: () => {

@@ -11,6 +11,7 @@ import { initSidePanel } from '../sidepanel';
 import { initEdit } from '../edit';
 import { initResponsive } from '../responsive';
 import { initXray } from './xray';
+import { initMcpDock } from '../mcp/dock.svelte';
 
 /**
  * Phase 2 tools, in legacy dock order (getControlBar, legacy-src/content.js:30105):
@@ -32,4 +33,5 @@ export async function initTools(): Promise<void> {
   initAudit(); // designTools: after measure (legacy dock order)
   await initSidePanel();
   initEdit(); // after the bridge: edit mode reuses its element ids
+  initMcpDock(); // last group, before Quit (1.46)
 }

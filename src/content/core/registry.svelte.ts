@@ -108,7 +108,7 @@ export const DOCK_LAYOUT = [
   ['xray', 'grid', 'responsive'],
   ['ruler', 'measure', 'eyedropper'],
   ['overlay', 'audit', 'capture'],
-  ['sidepanel', 'pause', 'quit'],
+  ['sidepanel', 'pause', 'mcp', 'quit'], // MCP last before Quit (1.46)
 ];
 
 const LISTED = DOCK_LAYOUT.flat();

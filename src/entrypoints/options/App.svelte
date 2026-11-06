@@ -1,12 +1,14 @@
 <script lang="ts">
   import { i18n } from '#i18n';
   import { onMount, type Snippet } from 'svelte';
-  import { themePref } from '../../lib/settings';
+  import type { ColorFormat } from '../../lib/color';
+  import { getPanelPrefs, themePref, updatePanelPrefs } from '../../lib/settings';
   import { applyDocTheme, type ThemePref } from '../../lib/theme';
 
   let { onready }: { onready?: () => void } = $props();
 
   let theme = $state<ThemePref>('system');
+  let colorFormat = $state<ColorFormat>('HEX');
   let loaded = $state(false);
   const mql = typeof matchMedia === 'function' ? matchMedia('(prefers-color-scheme: dark)') : null;
 
@@ -17,15 +19,16 @@
     mql?.addEventListener('change', () => applyDocTheme(document, theme, mql), {
       signal: ac.signal,
     });
-    void themePref
-      .getValue()
-      .catch(() => 'system' as const)
-      .then((t) => {
-        if (ac.signal.aborted) return;
-        theme = t ?? 'system';
-        loaded = true;
-        onready?.();
-      });
+    void Promise.all([
+      themePref.getValue().catch(() => 'system' as const),
+      getPanelPrefs().catch(() => null),
+    ]).then(([t, prefs]) => {
+      if (ac.signal.aborted) return;
+      theme = t ?? 'system';
+      if (prefs) colorFormat = prefs.colorFormat;
+      loaded = true;
+      onready?.();
+    });
     return () => ac.abort();
   });
 
@@ -33,6 +36,13 @@
     ['system', i18n.t('theme.system')],
     ['light', i18n.t('theme.light')],
     ['dark', i18n.t('theme.dark')],
+  ];
+  // labels stay verbatim, as in legacy options/index.html
+  const formats: [ColorFormat, string][] = [
+    ['HEX', 'HEX/HEXA'],
+    ['RGB', 'RGB/RGBA'],
+    ['HSL', 'HSL/HSLA'],
+    ['HSB', 'HSB/HSBA'],
   ];
   const selectCls =
     'rounded-btn border border-line bg-transparent px-2 py-1 text-fg outline-none focus-visible:border-accent';
@@ -65,6 +75,33 @@
         </select>
       {/snippet}
       {@render row(i18n.t('options.rowTheme'), null, themeSelect)}
+    </div>
+  </section>
+
+  <section class="flex flex-col gap-2">
+    <h2 class="px-1 text-[12px] font-semibold text-fg-muted uppercase">
+      {i18n.t('options.sectionExtension')}
+    </h2>
+    <div class="divide-y divide-line rounded-panel border border-line">
+      {#snippet formatSelect()}
+        <select
+          class={selectCls}
+          data-setting="colorFormat"
+          value={colorFormat}
+          onchange={(e) =>
+            // updatePanelPrefs keeps sectionVisibility, codeViewMode… (9.02)
+            void updatePanelPrefs({
+              colorFormat: (colorFormat = e.currentTarget.value as ColorFormat),
+            })}
+        >
+          {#each formats as [id, label] (id)}<option value={id}>{label}</option>{/each}
+        </select>
+      {/snippet}
+      {@render row(
+        i18n.t('options.rowColorFormat'),
+        i18n.t('options.colorFormatSecondary'),
+        formatSelect,
+      )}
     </div>
   </section>
 </main>

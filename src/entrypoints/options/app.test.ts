@@ -47,3 +47,20 @@ it('writes the chosen theme', async () => {
   await vi.waitFor(async () => expect(await stored('theme')).toBe('dark'));
   expect(document.documentElement.dataset.theme).toBe('dark');
 });
+
+it('writes the color format and keeps the other panel preferences', async () => {
+  const sectionVisibility = { css: { collapsed: false } };
+  await fakeBrowser.storage.local.set({
+    sidePanelPreferences: { colorFormat: 'RGB', sectionVisibility, codeViewMode: 'source' },
+  });
+  await open();
+  expect(select('colorFormat').value).toBe('RGB');
+  choose('colorFormat', 'HSB');
+  await vi.waitFor(async () =>
+    expect(await stored('sidePanelPreferences')).toEqual({
+      colorFormat: 'HSB',
+      sectionVisibility,
+      codeViewMode: 'source',
+    }),
+  );
+});

@@ -1,7 +1,9 @@
 <script lang="ts">
   import { i18n } from '#i18n';
   import { onMount, type Snippet } from 'svelte';
+  import Dialog from '../../ui/Dialog.svelte';
   import type { ColorFormat } from '../../lib/color';
+  import { clearAllPersistedEdits } from '../../lib/edit/persist-key';
   import { getPanelPrefs, themePref, updatePanelPrefs } from '../../lib/settings';
   import { applyDocTheme, type ThemePref } from '../../lib/theme';
 
@@ -10,6 +12,7 @@
   let theme = $state<ThemePref>('system');
   let colorFormat = $state<ColorFormat>('HEX');
   let loaded = $state(false);
+  let confirming = $state(false);
   const mql = typeof matchMedia === 'function' ? matchMedia('(prefers-color-scheme: dark)') : null;
 
   $effect(() => applyDocTheme(document, theme, mql));
@@ -97,11 +100,37 @@
           {#each formats as [id, label] (id)}<option value={id}>{label}</option>{/each}
         </select>
       {/snippet}
+      {#snippet clearButton()}
+        <button
+          type="button"
+          class="rounded-btn border border-line px-3 py-1 font-medium hover:bg-line"
+          data-action="clear-saved-edits"
+          onclick={() => (confirming = true)}>{i18n.t('options.savedEditsClear')}</button
+        >
+      {/snippet}
       {@render row(
         i18n.t('options.rowColorFormat'),
         i18n.t('options.colorFormatSecondary'),
         formatSelect,
       )}
+      {@render row(
+        i18n.t('options.savedEditsTitle'),
+        i18n.t('options.savedEditsSecondary'),
+        clearButton,
+      )}
     </div>
   </section>
 </main>
+
+{#if confirming}
+  <Dialog
+    title={i18n.t('options.savedEditsConfirmTitle')}
+    message={i18n.t('options.savedEditsConfirmBody')}
+    buttons={{ cancel: i18n.t('dialog.cancel'), confirm: i18n.t('dialog.confirm') }}
+    close={(ok) => {
+      confirming = false;
+      // storage only: a tab with Bo doi on keeps its edits in memory (Q7, as legacy)
+      if (ok) void clearAllPersistedEdits();
+    }}
+  />
+{/if}

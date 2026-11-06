@@ -64,3 +64,31 @@ it('writes the color format and keeps the other panel preferences', async () => 
     }),
   );
 });
+
+it('clears saved edits only after confirming', async () => {
+  const saved = { 'persistedRuleEdits:https://a.b': { edits: [], updatedAt: 1 }, other: 1 };
+  await fakeBrowser.storage.local.set(saved);
+  await open();
+  const clear = () => {
+    document.querySelector<HTMLButtonElement>('[data-action="clear-saved-edits"]')!.click();
+    flushSync();
+  };
+  const dialogButton = (label: string) =>
+    [...document.querySelectorAll<HTMLButtonElement>('[role="alertdialog"] button')].find(
+      (b) => b.textContent === label,
+    )!;
+
+  clear();
+  expect(document.body.textContent).toContain('options_savedEditsConfirmTitle');
+  dialogButton('dialog_cancel').click();
+  flushSync();
+  expect(document.querySelector('[role="alertdialog"]')).toBeNull();
+  expect(await fakeBrowser.storage.local.get(null)).toEqual(saved);
+
+  clear();
+  dialogButton('dialog_confirm').click();
+  flushSync();
+  await vi.waitFor(async () =>
+    expect(await fakeBrowser.storage.local.get(null)).toEqual({ other: 1 }),
+  );
+});

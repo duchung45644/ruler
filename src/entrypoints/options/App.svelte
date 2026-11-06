@@ -4,7 +4,13 @@
   import Dialog from '../../ui/Dialog.svelte';
   import type { ColorFormat } from '../../lib/color';
   import { clearAllPersistedEdits } from '../../lib/edit/persist-key';
-  import { getPanelPrefs, themePref, updatePanelPrefs } from '../../lib/settings';
+  import {
+    getPanelPrefs,
+    mergePanelPrefs,
+    panelPrefsItem,
+    themePref,
+    updatePanelPrefs,
+  } from '../../lib/settings';
   import { applyDocTheme, type ThemePref } from '../../lib/theme';
 
   let { onready }: { onready?: () => void } = $props();
@@ -32,7 +38,15 @@
       loaded = true;
       onready?.();
     });
-    return () => ac.abort();
+    // changes made elsewhere (side panel, another tab) show up here (9.07)
+    const unwatch = [
+      themePref.watch((t) => (theme = t ?? 'system')),
+      panelPrefsItem.watch((p) => (colorFormat = mergePanelPrefs(p).colorFormat)),
+    ];
+    return () => {
+      ac.abort();
+      unwatch.forEach((u) => u());
+    };
   });
 
   const themes: [ThemePref, string][] = [

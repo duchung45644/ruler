@@ -92,3 +92,17 @@ it('clears saved edits only after confirming', async () => {
     expect(await fakeBrowser.storage.local.get(null)).toEqual({ other: 1 }),
   );
 });
+
+it('follows changes made elsewhere', async () => {
+  await open();
+  await fakeBrowser.storage.local.set({
+    theme: 'light',
+    sidePanelPreferences: { colorFormat: 'HSL' },
+  });
+  await vi.waitFor(() => {
+    flushSync();
+    expect(select('theme').value).toBe('light');
+    expect(select('colorFormat').value).toBe('HSL');
+  });
+  expect(document.documentElement.dataset.theme).toBe('light');
+});

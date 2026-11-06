@@ -2,6 +2,7 @@ import { storage } from '#imports';
 import type { ColorFormat } from './color';
 import { defaultViewports, type ResponsiveSettings } from './responsive/viewports';
 import { ZOOM_DEFAULT } from './responsive/zoom';
+import { generateToken, TOKEN_RE } from './mcp/protocol';
 
 export interface LayoutGrid {
   isOn: boolean;
@@ -142,4 +143,18 @@ export async function getPanelPrefs(): Promise<SidePanelPrefs> {
 
 export async function updatePanelPrefs(patch: Partial<SidePanelPrefs>): Promise<void> {
   await panelPrefsItem.setValue({ ...(await panelPrefsItem.getValue()), ...patch });
+}
+
+/** MCP opt-in (9.34): nothing connects until the user presses Connect. */
+export const mcpIntent = storage.defineItem<boolean>('local:mcpIntent', { fallback: false });
+/** Pairing token for the local MCP server (see lib/mcp/protocol.ts); never logged or sent to pages. */
+export const mcpToken = storage.defineItem<string | null>('local:mcpToken', { fallback: null });
+
+/** The stored token, made on first use. */
+export async function ensureToken(): Promise<string> {
+  const saved = await mcpToken.getValue();
+  if (saved && TOKEN_RE.test(saved)) return saved;
+  const token = generateToken();
+  await mcpToken.setValue(token);
+  return token;
 }

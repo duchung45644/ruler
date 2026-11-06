@@ -56,6 +56,13 @@ export const PING_INTERVAL_MS = 20_000;
 /** 32 random bytes in unpadded base64url. */
 export const TOKEN_BYTES = 32;
 export const TOKEN_RE = /^[A-Za-z0-9_-]{43}$/;
+/** A fresh pairing token: {@link TOKEN_BYTES} random bytes, unpadded base64url. */
+export function generateToken(): string {
+  const bytes = crypto.getRandomValues(new Uint8Array(TOKEN_BYTES));
+  let bin = '';
+  for (const b of bytes) bin += String.fromCharCode(b);
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
 /** npm package named in the copy prompt; renamed when the new server ships (Q8). */
 export const MCP_PACKAGE = '@screen-ruler/mcp';
 

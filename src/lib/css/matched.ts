@@ -133,6 +133,168 @@ const safeMatches = (el: Element, sel: string) => {
   }
 };
 
+/** One selector alternative: skipped when it targets a state or a pseudo-element. */
+interface Alt {
+  sel: string;
+  skip: boolean;
+  spec?: ReturnType<typeof specificity>;
+  /** subjectKey, once computed. */
+  key?: string | null;
+}
+/** Parsed alternatives per rule, kept while its selectorText stays the same. */
+const parsed = new WeakMap<CSSStyleRule, { text: string; alts: Alt[] }>();
+
+function altsOf(rule: CSSStyleRule): Alt[] {
+  const text = rule.selectorText;
+  let p = parsed.get(rule);
+  if (!p || p.text !== text) {
+    const alts = splitTop(text, ',').map((sel) => {
+      const { state, pseudoElement } = splitState(sel);
+      return { sel, skip: !!(state || pseudoElement) };
+    });
+    parsed.set(rule, (p = { text, alts }));
+  }
+  return p.alts;
+}
+
+/** Index just past the escape starting at `s[i] === '\\'` (hex escapes eat one whitespace). */
+function pastEscape(s: string, i: number): number {
+  const hex = /^[0-9a-fA-F]{1,6}[ \t\n\r\f]?/.exec(s.slice(i + 1, i + 8));
+  return hex ? i + 1 + hex[0].length : i + 2;
+}
+
+/** CSS escape value: zero, surrogates and out-of-range code points become U+FFFD. */
+const codePoint = (n: number) =>
+  String.fromCodePoint(n === 0 || n > 0x10ffff || (n >= 0xd800 && n <= 0xdfff) ? 0xfffd : n);
+
+/**
+ * Bucket key of a complex selector: `#id`, else `.class`, else the tag of its subject compound,
+ * read outside brackets / parentheses (`:not(.x)` says nothing). null: test it on every element.
+ * An element matching the selector always carries the key, so the index never drops a match.
+ */
+export function subjectKey(sel: string): string | null {
+  let depth = 0;
+  let quote = '';
+  let start = 0;
+  for (let i = 0; i < sel.length; i++) {
+    const c = sel[i]!;
+    if (c === '\\') {
+      i = pastEscape(sel, i) - 1;
+      continue;
+    }
+    if (quote) {
+      if (c === quote) quote = '';
+    } else if (c === '"' || c === "'") quote = c;
+    else if (c === '(' || c === '[') depth++;
+    else if (c === ')' || c === ']') depth--;
+    else if (depth === 0 && ' >+~\t\n\r\f'.includes(c)) start = i + 1;
+  }
+  const comp = sel.slice(start);
+  if (!comp || depth !== 0 || quote || comp.includes('|')) return null;
+  let i = 0;
+  const ident = () => {
+    let out = '';
+    while (i < comp.length) {
+      const c = comp[i]!;
+      if (c === '\\') {
+        const j = pastEscape(comp, i);
+        const body = comp.slice(i + 1, j);
+        // a hex escape drops its one trailing whitespace; any other escaped char (space too) stays
+        out += /^[0-9a-fA-F]/.test(body) ? codePoint(parseInt(body, 16)) : body;
+        i = j;
+      } else if (/[\w\-\u00a0-\uffff]/.test(c)) {
+        out += c;
+        i++;
+      } else break;
+    }
+    return out;
+  };
+  const skipGroup = () => {
+    let d = 0;
+    let q = '';
+    for (; i < comp.length; i++) {
+      const c = comp[i]!;
+      if (c === '\\') i = pastEscape(comp, i) - 1;
+      else if (q) {
+        if (c === q) q = '';
+      } else if (c === '"' || c === "'") q = c;
+      else if (c === '(' || c === '[') d++;
+      else if ((c === ')' || c === ']') && --d === 0) {
+        i++;
+        return;
+      }
+    }
+  };
+  let id = '';
+  let cls = '';
+  let tag = '';
+  if (/[\w\-\\\u00a0-\uffff]/.test(comp[0]!)) tag = ident().toLowerCase();
+  while (i < comp.length) {
+    const c = comp[i]!;
+    if (c === '#' || c === '.') {
+      i++;
+      const v = ident();
+      if (c === '#') id ||= v;
+      else cls ||= v;
+    } else if (c === '[' || c === '(') skipGroup();
+    else if (c === ':') {
+      i += comp[i + 1] === ':' ? 2 : 1;
+      ident();
+      if (comp[i] === '(') skipGroup();
+    } else i++;
+  }
+  return id ? `#${id}` : cls ? `.${cls}` : tag ? tag : null;
+}
+
+interface RuleIndex {
+  keyed: Map<string, number[]>;
+  /** Rules with an alternative that has no key. */
+  always: number[];
+}
+const indexes = new WeakMap<KnownRule[], RuleIndex>();
+
+/** Built once per rule list (rulesOf returns a fresh list per read). */
+function indexOf(rules: KnownRule[]): RuleIndex {
+  let ix = indexes.get(rules);
+  if (ix) return ix;
+  ix = { keyed: new Map(), always: [] };
+  rules.forEach((k, n) => {
+    let always = false;
+    const keys = new Set<string>();
+    for (const alt of altsOf(k.rule)) {
+      if (alt.skip) continue;
+      const key = alt.key !== undefined ? alt.key : (alt.key = subjectKey(alt.sel));
+      if (key === null) always = true;
+      else keys.add(key);
+    }
+    if (always) ix!.always.push(n);
+    else
+      for (const key of keys) {
+        const list = ix!.keyed.get(key);
+        if (list) list.push(n);
+        else ix!.keyed.set(key, [n]);
+      }
+  });
+  indexes.set(rules, ix);
+  return ix;
+}
+
+/** Rules that can match `el`: its id / class / tag buckets plus the unkeyed ones. */
+function candidates(el: Element, rules: KnownRule[]): Iterable<number> {
+  // quirks mode matches class / id names case-insensitively: no shortcuts there
+  if (el.ownerDocument.compatMode === 'BackCompat') return rules.keys();
+  const ix = indexOf(rules);
+  const hit = new Set<number>(ix.always);
+  const add = (key: string) => {
+    for (const n of ix.keyed.get(key) ?? []) hit.add(n);
+  };
+  if (el.id) add(`#${el.id}`);
+  for (const c of el.classList) add(`.${c}`);
+  add(el.localName.toLowerCase());
+  // rule order, so ties in the final sort come out as in the linear scan
+  return [...hit].sort((a, b) => a - b);
+}
+
 /**
  * Port of getAppliedRules, read-only: rules whose selector matches `el` itself (pseudo-element and
  * user-action-state alternatives left out), the most specific matching alternative scoring each.
@@ -140,12 +302,12 @@ const safeMatches = (el: Element, sel: string) => {
  */
 export function matchedRules(el: Element, rules: KnownRule[]): MatchedRule[] {
   const out: MatchedRule[] = [];
-  for (const k of rules) {
+  for (const n of candidates(el, rules)) {
+    const k = rules[n]!;
     let best: ReturnType<typeof specificity> | null = null;
-    for (const alt of splitTop(k.rule.selectorText, ',')) {
-      const { state, pseudoElement } = splitState(alt);
-      if (state || pseudoElement || !safeMatches(el, alt)) continue;
-      const s = specificity(alt);
+    for (const alt of altsOf(k.rule)) {
+      if (alt.skip || !safeMatches(el, alt.sel)) continue;
+      const s = (alt.spec ??= specificity(alt.sel));
       if (!best || s.score > best.score) best = s;
     }
     if (!best) continue;

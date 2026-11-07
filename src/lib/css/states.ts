@@ -17,9 +17,11 @@ const stateRe = (state: string, flags = '') =>
 const stripLiterals = (sel: string) =>
   sel.replace(/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g, '""').replace(/\[[^\]]*\]/g, '[]');
 
+const STATE_TESTS = FORCEABLE_STATES.map((st) => [st, stateRe(st)] as const);
+
 export function statesInSelector(sel: string): string[] {
   const s = stripLiterals(sel);
-  return FORCEABLE_STATES.filter((st) => stateRe(st).test(s));
+  return STATE_TESTS.filter(([, re]) => re.test(s)).map(([st]) => st);
 }
 
 export const forceAttr = (state: string, extId: string): string =>

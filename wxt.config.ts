@@ -34,7 +34,7 @@ export default defineConfig({
     optional_host_permissions: ['<all_urls>'],
     web_accessible_resources: [
       {
-        resources: ['content-scripts/content.css'],
+        resources: ['content-scripts/content.css', 'fonts/*.woff2'],
         matches: ['<all_urls>'],
         use_dynamic_url: true,
       },

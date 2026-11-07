@@ -1,2 +1,8 @@
-@import 'tailwindcss';
+@import 'tailwindcss' source(none);
+@source '../../content';
+@source '../../ui';
+@source '../../lib';
+@source not '../../lib/css/tailwind.ts';
+@source not '../../lib/tech';
+@source './';
 @import '../../ui/theme.css';

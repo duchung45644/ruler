@@ -103,24 +103,55 @@ function collectColors(root: Element): ElementColors {
   return elementColors(parts);
 }
 
+/** One measuring context for every call (creating a canvas per element was most of the cost). */
+let measure: CanvasRenderingContext2D | null | undefined;
+/** Font shorthand → rendered family; dropped while webfonts load (the answer may change). */
+const fontMemo = new Map<string, string>();
+
 /** Port of getRenderedFont (content.js:42745): the stack entry whose metrics match. */
 function renderedFont(s: CSSStyleDeclaration): string {
-  const ctx = document.createElement('canvas').getContext('2d');
+  const prefix = `${s.fontStyle} ${s.fontWeight} ${s.fontSize}`;
+  const key = `${prefix} ${s.fontFamily}`;
+  const loading = document.fonts?.status === 'loading';
+  if (loading) fontMemo.clear();
+  const known = fontMemo.get(key);
+  if (known !== undefined) return known;
+  measure ??= document.createElement('canvas').getContext('2d');
+  const ctx = measure;
   if (!ctx) return s.fontFamily;
   const probe = 'BESbswy/\\[]{}()@iIlL10OoQgMmWw';
-  const prefix = `${s.fontStyle} ${s.fontWeight} ${s.fontSize}`;
-  ctx.font = `${prefix} ${s.fontFamily}`;
+  ctx.font = key;
   const width = ctx.measureText(probe).width;
+  let found = s.fontFamily;
   for (const f of s.fontFamily.split(',')) {
     const family = f.trim().replace(/['"]/g, '');
     ctx.font = `${prefix} ${family}`;
-    if (Math.abs(width - ctx.measureText(probe).width) < 1) return family;
+    if (Math.abs(width - ctx.measureText(probe).width) < 1) {
+      found = family;
+      break;
+    }
   }
-  return s.fontFamily;
+  if (!loading) fontMemo.set(key, found);
+  return found;
 }
+
+/** Rendered samples by what they depend on; selections on one page keep meeting the same styles. */
+const samples = new Map<string, TypographyStyle['sample']>();
 
 /** Port of renderTypographyVector (content.js:41708): the pangram in the page's own font. */
 function typographySample(s: CSSStyleDeclaration): TypographyStyle['sample'] {
+  const key = [s.fontWeight, s.fontSize, s.fontFamily, s.textTransform, s.letterSpacing].join('|');
+  const loading = document.fonts?.status === 'loading';
+  if (!loading && samples.has(key)) return samples.get(key);
+  const out = drawSample(s);
+  if (!loading) {
+    if (samples.size >= 200) samples.clear();
+    samples.set(key, out);
+  }
+  return out;
+}
+
+function drawSample(s: CSSStyleDeclaration): TypographyStyle['sample'] {
   try {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -155,11 +186,12 @@ function typographySample(s: CSSStyleDeclaration): TypographyStyle['sample'] {
   }
 }
 
-/** Every element under `root`, through open shadow roots (legacy `se(e, '*')`). */
-function descendants(root: Element): Element[] {
+/** The first `limit` elements under `root` in tree order, through open shadow roots (legacy `se(e, '*')`). */
+function descendants(root: Element, limit = Infinity): Element[] {
   const out: Element[] = [];
   const walk = (el: Element) => {
     for (const c of childrenOf(el)) {
+      if (out.length >= limit) return;
       if (isOwn(c)) continue;
       out.push(c);
       walk(c);
@@ -169,11 +201,18 @@ function descendants(root: Element): Element[] {
   return out;
 }
 
+/** Same as `!!el.textContent?.trim()` without building the subtree's whole text. */
+function hasText(el: Element): boolean {
+  const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+  for (let n = w.nextNode(); n; n = w.nextNode()) if (/\S/.test((n as Text).data)) return true;
+  return false;
+}
+
 /** getElementTypography (content.js:41584): the first 100 rendered elements with text. */
 function collectTypography(root: Element): TypographyStyle[] {
   const items: { style: CSSStyleDeclaration; family: string }[] = [];
-  for (const el of [root, ...descendants(root)].slice(0, 100)) {
-    if (!el.textContent?.trim() || !isRendered(el)) continue;
+  for (const el of [root, ...descendants(root, 99)]) {
+    if (!hasText(el) || !isRendered(el)) continue;
     const s = getComputedStyle(el);
     const family = renderedFont(s);
     const key = typographyKey(family, s);

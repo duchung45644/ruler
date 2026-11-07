@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { browser } from '#imports';
 import type { Issue } from '../../lib/element/types';
-import { ERR } from '../../lib/mcp/protocol';
+import { ERR, type McpPageType } from '../../lib/mcp/protocol';
 import { layer } from '../core/overlay';
 import { sessionSignal, stopSession } from '../core/session';
 import { state } from '../core/state.svelte';
@@ -151,6 +151,50 @@ describe('mcp_call entry', () => {
       ok: true,
       data: { selector: '#a .b', specificity: [1, 1, 0], score: 10100 },
     });
+  });
+
+  it('per-element commands return what collectElementDetails returned, selection untouched', async () => {
+    document.body.insertAdjacentHTML(
+      'beforeend',
+      `<section id="s" style="display: grid; gap: 4px; padding: 8px; color: rgb(0, 0, 255);
+          background: linear-gradient(red, blue); position: absolute; top: 3px">
+        <h2 style="font-size: 20px; font-weight: 700">Title</h2>
+        <p style="color: rgb(255, 0, 0); border: 1px solid rgb(0, 128, 0)">Text <b>bold</b></p>
+        <img src="https://example.com/a.png" alt="a">
+        <div style="background-image: url(https://example.com/b.jpg)"><span>x</span></div>
+        <svg><path d="M0 0"/></svg>
+      </section>`,
+    );
+    const sel = document.body.appendChild(document.createElement('i'));
+    sel.textContent = 'selected';
+    const { collectElementDetails, styleMap } = await import('../sidepanel/details');
+    collectElementDetails(sel, elementId);
+    const before = new Map([...styleMap].map(([k, v]) => [k, structuredClone(v)]));
+    for (const el of [document.getElementById('s')!, ...document.querySelectorAll('#s *')]) {
+      const id = elementId(el);
+      const run = async (cmd: McpPageType) => {
+        const r = await runMcp(cmd, { tabId: 1, elementId: id });
+        expect(r.ok).toBe(true);
+        return (r as { data: unknown }).data;
+      };
+      const results = {
+        typography: await run('get_typography'),
+        colors: await run('get_colors'),
+        assets: await run('get_assets'),
+        layout: await run('get_layout'),
+        tailwind: await run('get_tailwind'),
+      };
+      expect(new Map([...styleMap].map(([k, v]) => [k, structuredClone(v)]))).toEqual(before);
+      const d = structuredClone(collectElementDetails(el, elementId));
+      expect(results).toEqual({
+        typography: { typography: d.typography },
+        colors: { colors: d.colors, gradients: d.gradients },
+        assets: { assets: d.assets },
+        layout: { layout: d.layout, boxModel: d.boxModel },
+        tailwind: { css: d.css },
+      });
+      collectElementDetails(sel, elementId);
+    }
   });
 });
 

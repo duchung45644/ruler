@@ -5,7 +5,13 @@
 import type { Issue } from '../../lib/element/types';
 import { specificity } from '../../lib/css/specificity';
 import { state } from '../core/state.svelte';
-import { collectElementDetails } from '../sidepanel/details';
+import {
+  assetsOf,
+  colorsAndGradientsOf,
+  cssOf,
+  layoutOf,
+  typographyOf,
+} from '../sidepanel/details';
 import { bridge, elementId, sendElement } from '../sidepanel/bridge.svelte';
 import { collectIssues } from '../sidepanel/issues';
 import { detectTechnologies, getPageData } from '../sidepanel/page';
@@ -15,21 +21,14 @@ import { buildPageInfo } from './ai-data';
 import { elementOf, type Commands } from './command';
 
 /**
- * Details / issues of another element replace the panel's per-selection state (highlight map,
+ * Issues of another element replace the panel's per-selection state (highlight map,
  * issue watcher): put the selection's back.
  */
 function restoreSelection(): void {
   if (state.selected && bridge.panelOpen) sendElement(state.selected);
 }
 
-function details(id: string) {
-  const el = elementOf(id, 'Element not found.');
-  try {
-    return collectElementDetails(el, elementId);
-  } finally {
-    restoreSelection();
-  }
-}
+const target = (id: string) => elementOf(id, 'Element not found.');
 
 /** Custom property names declared in the page's readable rules (legacy getCustomPropertyNames). */
 export function customProperties(root: Document | ShadowRoot = document): string[] {
@@ -79,16 +78,11 @@ export const pageCommands: Commands = {
       restoreSelection();
     }
   },
-  get_typography: ({ elementId: id }) => ({ typography: details(id).typography }),
-  get_colors: ({ elementId: id }) => {
-    const d = details(id);
-    return { colors: d.colors, gradients: d.gradients };
-  },
-  get_assets: ({ elementId: id }) => ({ assets: details(id).assets }),
-  get_layout: ({ elementId: id }) => {
-    const d = details(id);
-    return { layout: d.layout, boxModel: d.boxModel };
-  },
+  // each per-element command computes only its own field, touching no per-selection state
+  get_typography: ({ elementId: id }) => ({ typography: typographyOf(target(id)) }),
+  get_colors: ({ elementId: id }) => colorsAndGradientsOf(target(id)),
+  get_assets: ({ elementId: id }) => ({ assets: assetsOf(target(id)) }),
+  get_layout: ({ elementId: id }) => layoutOf(target(id)),
   // the background adds `tailwind` from `css`, so the converter stays out of content.js
-  get_tailwind: ({ elementId: id }) => ({ css: details(id).css }),
+  get_tailwind: ({ elementId: id }) => ({ css: cssOf(target(id)) }),
 };

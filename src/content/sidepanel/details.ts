@@ -32,12 +32,16 @@ const isOwn = (el: Element) => el.tagName.toLowerCase() === 'iodob-ui';
  */
 export const styleMap = new Map<Element, { colors: Set<string>; typographyKey?: string }>();
 
-function mark(el: Element, patch: { colors?: string[]; typographyKey?: string }): void {
+type Mark = (el: Element, patch: { colors?: string[]; typographyKey?: string }) => void;
+
+const mark: Mark = (el, patch) => {
   let entry = styleMap.get(el);
   if (!entry) styleMap.set(el, (entry = { colors: new Set() }));
   for (const c of patch.colors ?? []) entry.colors.add(c);
   if (patch.typographyKey) entry.typographyKey = patch.typographyKey;
-}
+};
+/** For one-off reads (MCP): leaves the selection's styleMap alone. */
+const noMark: Mark = () => {};
 
 /** Legacy `E` (content.js:40005). */
 function elementType(el: Element): ElementType {
@@ -85,7 +89,7 @@ function canvasColors(el: HTMLCanvasElement): string[] {
 }
 
 /** getSelectionColors walk (content.js:41459): hidden subtrees are skipped whole. */
-function collectColors(root: Element): ElementColors {
+function collectColors(root: Element, mark: Mark): ElementColors {
   const parts: ElementColors[] = [];
   const walk = (el: Element, depth: number) => {
     if (depth > MAX_DEPTH || isOwn(el)) return;
@@ -209,7 +213,7 @@ function hasText(el: Element): boolean {
 }
 
 /** getElementTypography (content.js:41584): the first 100 rendered elements with text. */
-function collectTypography(root: Element): TypographyStyle[] {
+function collectTypography(root: Element, mark: Mark): TypographyStyle[] {
   const items: { style: CSSStyleDeclaration; family: string }[] = [];
   for (const el of [root, ...descendants(root, 99)]) {
     if (!hasText(el) || !isRendered(el)) continue;
@@ -442,14 +446,14 @@ export function collectElementDetails(
     type,
     selector: fullPath(el),
     boxModel: boxModel(s, rect),
-    colors: collectColors(el),
+    colors: collectColors(el, mark),
     gradients: parseGradients(s.backgroundImage ?? ''),
     textContent: textOf(el, type),
     assets: collectAssetRefs(el, isOwn, MAX_DEPTH),
     animations: animations(s, (name) => keyframesOf(el, name)),
     transitions: transitions(s),
     boxShadow: splitShadows(s.boxShadow ?? ''),
-    typography: collectTypography(el),
+    typography: collectTypography(el, mark),
     issues: collectIssues(el, elementId),
     canvas: canvasInfo(el, parseFloat(s.width) || rect.width),
     layout: elementLayout(s),
@@ -463,3 +467,30 @@ export function collectElementDetails(
   if (details.textContent === undefined) delete details.textContent;
   return details;
 }
+
+/*
+ * Single fields of collectElementDetails, for MCP commands: each computes only its piece and
+ * leaves per-selection state (styleMap, issue watcher) untouched.
+ */
+export const typographyOf = (el: Element): TypographyStyle[] => collectTypography(el, noMark);
+
+export function colorsAndGradientsOf(el: Element): {
+  colors: ElementColors;
+  gradients: ElementDetails['gradients'];
+} {
+  const s = getComputedStyle(el);
+  return { colors: collectColors(el, noMark), gradients: parseGradients(s.backgroundImage ?? '') };
+}
+
+export const assetsOf = (el: Element): ElementDetails['assets'] =>
+  collectAssetRefs(el, isOwn, MAX_DEPTH);
+
+export function layoutOf(el: Element): {
+  layout: ElementDetails['layout'];
+  boxModel: ElementDetails['boxModel'];
+} {
+  const s = getComputedStyle(el);
+  return { layout: elementLayout(s), boxModel: boxModel(s, el.getBoundingClientRect()) };
+}
+
+export const cssOf = (el: Element): CssMap => computedCss(getComputedStyle(el));

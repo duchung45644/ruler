@@ -191,6 +191,16 @@ describe('router', () => {
     ]);
   });
 
+  it('adds the Tailwind classes to get_tailwind from the css the tab returns', async () => {
+    const css = { color: 'rgb(255, 0, 0)' };
+    sendMessage.mockImplementation(async (_id, m) =>
+      (m as { type: string }).type === 'ping' ? { active: true } : { ok: true, data: { css } },
+    );
+    const r = await handleCall('get_tailwind', { tabId: 1, elementId: 'v-a1' });
+    expect(r).toEqual({ ok: true, data: { tailwind: expect.any(String), css } });
+    expect((r as { data: { tailwind: string } }).data.tailwind).toContain('text-[rgb(255,0,0)]');
+  });
+
   it('times out after 12s (40s for slow commands) and always answers', async () => {
     vi.useFakeTimers();
     try {

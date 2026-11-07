@@ -15,6 +15,7 @@ import {
   type McpPageType,
   type McpPayloads,
 } from '../lib/mcp/protocol';
+import { tailwindClasses } from '../lib/css/tailwind';
 import { IDLE_STATUS, toStatus, type McpStatus } from '../lib/mcp/status';
 import { sendToFrame, sendToOptions, type BackgroundApi, type Handlers } from '../lib/messaging';
 import { ensureToken, mcpIntent, mcpToken } from '../lib/settings';
@@ -237,6 +238,13 @@ export async function handleCall(type: string, payload: unknown): Promise<CallOu
       return focusTab(p as McpPayloads['focus_tab']);
     case 'fetch_stylesheet':
       return stylesheet(p as McpPayloads['fetch_stylesheet']);
+    case 'get_tailwind': {
+      // the content script returns only `css`; the converter lives here, not in content.js
+      const r = await forwardToTab('get_tailwind', p as { tabId: number });
+      if (!r.ok) return r;
+      const { css } = r.data as { css: Record<string, string> };
+      return { ok: true, data: { tailwind: tailwindClasses(css), css } };
+    }
     default:
       return forwardToTab(type as McpPageType, p as { tabId: number });
   }

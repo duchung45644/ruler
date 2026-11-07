@@ -89,8 +89,6 @@ export const pageCommands: Commands = {
     const d = details(id);
     return { layout: d.layout, boxModel: d.boxModel };
   },
-  get_tailwind: ({ elementId: id }) => {
-    const d = details(id);
-    return { tailwind: d.tailwind, css: d.css };
-  },
+  // the background adds `tailwind` from `css`, so the converter stays out of content.js
+  get_tailwind: ({ elementId: id }) => ({ css: details(id).css }),
 };

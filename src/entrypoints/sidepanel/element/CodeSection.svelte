@@ -2,6 +2,7 @@
   import { browser } from '#imports';
   import { i18n } from '#i18n';
   import { declKey, groupBySource, overriddenDecls } from '../../../lib/css/matched';
+  import { tailwindClasses } from '../../../lib/css/tailwind';
   import type { CssMap, ElementDetails, MatchedRule } from '../../../lib/element/types';
   import { sendToBackground } from '../../../lib/messaging';
   import { updatePanelPrefs, type SidePanelPrefs } from '../../../lib/settings';
@@ -18,6 +19,8 @@
     ['tailwind', i18n.t('panel.tailwind')],
   ];
   const mode = $derived(panel.prefs.codeViewMode);
+  /** Converted here, not in the content script, so the converter is not injected into pages. */
+  const tailwind = $derived(mode === 'tailwind' ? tailwindClasses(el.css) : '');
   function setMode(m: Mode) {
     panel.prefs = { ...panel.prefs, codeViewMode: m };
     void updatePanelPrefs({ codeViewMode: m });
@@ -87,7 +90,7 @@
 <Section id="css" title={i18n.t('panel.code')}>
   {#snippet actions()}
     <CopyButton
-      text={() => (mode === 'css' ? computed : mode === 'source' ? sourceText() : el.tailwind)}
+      text={() => (mode === 'css' ? computed : mode === 'source' ? sourceText() : tailwind)}
     />
   {/snippet}
   <div class="mb-2 flex rounded-btn border border-line p-0.5" role="radiogroup" data-modes>
@@ -164,7 +167,7 @@
         {/each}
       {/if}
     {:else}
-      <div class="break-words" data-tailwind>{el.tailwind}</div>
+      <div class="break-words" data-tailwind>{tailwind}</div>
     {/if}
   </div>
 </Section>

@@ -22,7 +22,6 @@ it('collects text, colours, box model and an id', () => {
   expect(d.parentName).toBe('div');
   expect(d.parentSelectable).toBe(true);
   expect(d.css.color).toBe('rgb(255, 0, 0)');
-  expect(d.tailwind).toContain('text-[rgb(255,0,0)]');
   expect(d.before).toBeUndefined();
   expect(styleMap.get(p)?.colors.has('#FF0000')).toBe(true);
   expect(() => structuredClone(d)).not.toThrow();

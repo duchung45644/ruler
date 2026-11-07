@@ -4,7 +4,6 @@ import { boxModel } from '../../lib/element/box';
 import { canvasInfo, canvasPalette, PALETTE_SAMPLE } from '../../lib/element/canvas';
 import { colorsOf, elementColors } from '../../lib/element/colors';
 import { parseGradients } from '../../lib/element/gradients';
-import { tailwindClasses } from '../../lib/css/tailwind';
 import { compactTracks, elementLayout } from '../../lib/element/layout';
 import { animations, transitions } from '../../lib/element/motion';
 import { splitShadows } from '../../lib/element/shadow';
@@ -416,7 +415,6 @@ export function collectElementDetails(
     canvas: canvasInfo(el, parseFloat(s.width) || rect.width),
     layout: elementLayout(s),
     css,
-    tailwind: tailwindClasses(css),
     skippedCrossOriginCount: skippedCrossOriginCount(el),
   };
   const before = getComputedStyle(el, '::before');

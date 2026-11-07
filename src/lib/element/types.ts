@@ -193,8 +193,6 @@ export interface ElementDetails {
   /** Pseudo-element props that differ from the element; only when it has `content`. */
   before?: CssMap;
   after?: CssMap;
-  /** Tailwind v4 classes for `css` (legacy sidepanel.js:15763). */
-  tailwind: string;
   matchedRules?: MatchedRule[];
   skippedCrossOriginCount: number;
   /** Present in edit mode (6.49). */

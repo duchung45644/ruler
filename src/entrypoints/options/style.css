@@ -1,5 +1,10 @@
-@import 'tailwindcss';
+/* Scan only what this page renders; the default scans the whole repo and ships every tool's classes. */
+@import 'tailwindcss' source(none);
 @import '../../ui/theme.css';
+@import '../../ui/fonts.css';
+@source './';
+@source '../../ui/Dialog.svelte';
+@source '../../ui/McpPrompt.svelte';
 
 /* Embedded in chrome://extensions: solid surface, the page follows data-theme on <html>. */
 :root {

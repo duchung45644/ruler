@@ -1,19 +1,21 @@
 import { hexOf } from '../../lib/element/style';
-import { addPainter, draw, requestPaint } from '../core/overlay';
+import { addPainter, draw, requestPaint, visibleRects } from '../core/overlay';
 
 let targets: Element[] = [];
 let off: (() => void) | null = null;
 
 /** Same frame as the inspector highlight (spec §7): solid 1.5px accent, faint fill. */
 function paint(box: HTMLElement): void {
-  for (const el of targets) {
-    if (!el.isConnected) continue;
-    const r = el.getBoundingClientRect();
+  // reads first (visibleRects), then one append: see visibleRects
+  const frag = document.createDocumentFragment();
+  for (const r of visibleRects(targets)) {
+    if (!r) continue;
     draw(
-      box,
+      frag,
       `left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;box-sizing:border-box;border:1.5px solid #6366f1;background:#6366f112`,
     );
   }
+  box.append(frag);
 }
 
 /** Painter `sidepanel`: boxes over the elements a panel row points at (hover, colour, issue…). */

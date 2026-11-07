@@ -110,7 +110,7 @@
    - lệnh chỉ tới tab đã bật iodob; `focus_tab` cũng vậy;
    - validator chặn payload sai kiểu, `limit` kẹp 1–200, selector độ dài ≤ 1000, html ≤ 200 KB.
 2. **Không treo:** mọi `call` có timeout và luôn trả `result`; socket đóng giữa chừng → các lời gọi đang chờ bị huỷ; tab đóng → lỗi rõ.
-3. **Đồng nhất với sửa tay:** sửa từ MCP vào cùng undo/redo, lưu theo site, hiện trong side panel (`refresh_changes`).
+3. **Đồng nhất với sửa tay:** sửa từ MCP lưu theo site, hiện trong side panel (`refresh_changes`). Chỉ sửa HTML (text, innerHTML, insert, class, xoá, nhân bản) vào lịch sử undo/redo của engine (Ctrl+Z); sửa rule và inline style không vào lịch sử đó, hoàn tác từ danh sách Changes hoặc `revert_css_change` / `revert_all_edits` (xem `editState()` trong `src/content/edit/mode.svelte.ts`).
 4. **Trạng thái khớp ở 3 nơi:** dock, popover, trang cài đặt đổi cùng lúc khi connect/disconnect/agent đổi.
 5. **Không đổi hành vi khi MCP tắt:** không mở socket, không timer, nút dock ở trạng thái "Connect Agent".
 
@@ -184,7 +184,7 @@
 ### Task 7: Lệnh sửa (10.12, 5.28)
 
 - [ ] `set_text_content`, `set_inner_html`, `insert_html`, `apply_styles` (ruleRef → `merge_rule_styles`, không → `inline_style_edit`), `add_rule` → `rule_add`, `set_rule_selector` → `rule_selector_edit`, `revert_css_change` → `revert_rule_change` (id lạ → gợi ý `get_my_edits`), `revert_all_edits`, `set_element_classes`, `delete_element`, `duplicate_element`.
-- [ ] Gọi thẳng hàm của `src/content/edit/handlers.ts` (cùng engine với side panel) để có undo, lưu theo site, `refresh_changes` tới side panel.
+- [ ] Gọi thẳng hàm của `src/content/edit/handlers.ts` (cùng engine với side panel) để lưu theo site, `refresh_changes` tới side panel; sửa HTML có undo qua engine, sửa rule/inline hoàn tác từ danh sách Changes.
 - [ ] Bỏ điều kiện "Editor not active."; giữ "Cannot edit <tag>…" cho html/head/body.
 - [ ] Test: sửa → có trong `get_my_edits` và trong bản lưu; html được làm sạch; revert_all xoá bản lưu.
 - [ ] Commit: `feat(mcp): edit commands through the edit engine`

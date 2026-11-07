@@ -69,14 +69,6 @@ export const measureGuides = storage.defineItem<boolean>('local:bdMeasureGuides'
   fallback: false,
 });
 
-/** Legacy key; null means both on. includePadding is read but has no effect (as in legacy $e). */
-export const screenshotPrefs = storage.defineItem<{
-  includePadding?: boolean;
-  includeHighlights?: boolean;
-} | null>('local:screenshotPreferences', { fallback: null });
-export const includeHighlights = (p: { includeHighlights?: boolean } | null): boolean =>
-  p?.includeHighlights !== false;
-
 /** Legacy sidePanelPreferences.sectionVisibility keys, in legacy order (sidepanel.js:12734). */
 export const SECTION_IDS = [
   'layout',

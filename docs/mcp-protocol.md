@@ -128,8 +128,12 @@ Common fields:
 | `set_element_classes` | `elementId`, `classes` | |
 | `delete_element`, `duplicate_element` | `elementId` | |
 
-Edits from MCP go through the same edit engine as the side panel: they join undo / redo, show in
-the side panel's change list and are saved per site.
+Edits from MCP go through the same edit handlers as the side panel: they show in the side panel's
+change list and are saved per site. Only HTML edits (`set_text_content`, `set_inner_html`,
+`insert_html`, `set_element_classes`, `delete_element`, `duplicate_element`) join the engine's
+undo / redo history (Ctrl+Z). Rule and inline style edits (`apply_styles`, `add_rule`,
+`set_rule_selector`) are not in that history; revert them from the Changes list, or with
+`revert_css_change` / `revert_all_edits`.
 
 ## Copy prompt
 

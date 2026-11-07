@@ -5,10 +5,8 @@ import {
   DEFAULT_SETTINGS,
   getPanelPrefs,
   getSettings,
-  includeHighlights,
   measureColor,
   measureGuides,
-  screenshotPrefs,
   themePref,
   updatePanelPrefs,
   updateSettings,
@@ -42,14 +40,6 @@ describe('settings', () => {
     expect(s.rulerIsOn).toBe(false);
     expect(await measureColor.getValue()).toBe('#FF3B6B');
     expect(await measureGuides.getValue()).toBe(false);
-  });
-});
-
-describe('screenshotPrefs', () => {
-  it('null by default means highlights on', async () => {
-    expect(await screenshotPrefs.getValue()).toBeNull();
-    expect(includeHighlights(null)).toBe(true);
-    expect(includeHighlights({ includeHighlights: false })).toBe(false);
   });
 });
 

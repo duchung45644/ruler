@@ -112,7 +112,9 @@ export class HtmlEditor {
   /** Call before mutating `el`. */
   private track(el: Element, kind: HtmlChangeKind): string {
     const id = this.idOf(el);
-    recordChange(this.log, id, this.snapshot(el), kind);
+    // recordChange keeps the first snapshot only: don't clone + serialise the subtree again
+    const known = this.log.get(id);
+    recordChange(this.log, id, known ? known.original : this.snapshot(el), kind);
     return id;
   }
 

@@ -114,7 +114,7 @@ export type BgLayer = { color: string; image: string };
  * Any url()/gradient layer → null (ratio would be a guess); otherwise blend down to the first
  * opaque layer, over white. No coloured layer → null.
  */
-export function compositeBackground(layers: BgLayer[]): Rgba | null {
+export function compositeBackground(layers: Iterable<BgLayer>): Rgba | null {
   const stack: Rgba[] = [];
   for (const l of layers) {
     if (/gradient\(|url\(/.test(l.image)) return null;

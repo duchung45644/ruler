@@ -13,7 +13,7 @@ import { childrenOf } from '../../lib/element/assets';
 import type { Issue } from '../../lib/element/types';
 import { sendToSidePanel } from '../../lib/messaging';
 import { displaySelector } from '../../lib/selector';
-import { backgroundOf, isTextHeavy } from '../core/contrast';
+import { backgroundOf, isTextHeavy, type LayerMemo } from '../core/contrast';
 import { canHighlight } from './highlight';
 
 const MAX_DEPTH = 100;
@@ -44,12 +44,17 @@ const opacityOf = (s: CSSStyleDeclaration) => {
 };
 
 /** One element's text or icon verdict; null when fine or no solid background is found. */
-function check(el: Element, id: string, at?: { x: number; y: number }): Instance | null {
+function check(
+  el: Element,
+  id: string,
+  at?: { x: number; y: number },
+  memo?: LayerMemo,
+): Instance | null {
   const s = getComputedStyle(el);
   const icon = el.tagName.toLowerCase() === 'svg';
   const paint = icon ? (s.fill && s.fill !== 'none' ? s.fill : s.stroke) : s.color;
   const fg = paint && paint !== 'none' ? parseColor(paint) : null;
-  const bg = fg && fg.a > 0 ? backgroundOf(el, at) : null;
+  const bg = fg && fg.a > 0 ? backgroundOf(el, at, memo) : null;
   if (!fg || !bg) return null;
   const ratio = roundRatio(contrastRatio({ ...fg, a: fg.a * opacityOf(s) }, bg));
   const base = {
@@ -149,9 +154,10 @@ export function stopIssues(): void {
 export function collectIssues(root: Element, elementId: (el: Element) => string): Issue[] {
   stopIssues();
   const offscreen = new Map<Element, string>();
+  const memo: LayerMemo = new Map(); // nothing changes styles during the scan
   const add = (el: Element) => {
     const id = elementId(el);
-    const found = check(el, id);
+    const found = check(el, id, undefined, memo);
     if (!found) return;
     instances.push(found);
     if (!inViewport(el)) offscreen.set(el, id);

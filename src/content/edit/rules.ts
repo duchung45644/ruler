@@ -85,12 +85,18 @@ export function lineOf(rule: CSSStyleRule, selector: string): number | null {
   return at < 0 || !text ? null : text.slice(0, at).split('\n').length;
 }
 
-/** True when the rule sits in a sheet attached to `root` (not a fetched copy) we may write to. */
-export function writable(rule: CSSStyleRule, root: Root): boolean {
+/** Sheets owned by `root`'s nodes (constructed ones are not writable); see writable. */
+export const attachedSheets = (root: Root): Set<CSSStyleSheet> =>
+  new Set(sheetsOf(root).flatMap((s) => (s.source === 'constructed' ? [] : [s.sheet])));
+
+/**
+ * True when the rule sits in a sheet attached to `root` (not a fetched copy) we may write to.
+ * `attached` (attachedSheets) saves re-querying the tree when many rules are checked.
+ */
+export function writable(rule: CSSStyleRule, root: Root, attached = attachedSheets(root)): boolean {
   let sheet: CSSStyleSheet | null = rule.parentStyleSheet;
   while (sheet?.ownerRule?.parentStyleSheet) sheet = sheet.ownerRule.parentStyleSheet;
-  const attached = sheetsOf(root).find((s) => s.sheet === sheet);
-  if (!attached || attached.source === 'constructed') return false;
+  if (!sheet || !attached.has(sheet)) return false;
   try {
     void sheet!.cssRules;
     return true;
@@ -413,6 +419,13 @@ export class RuleTracker {
     const dormant: SerializedEdit[] = [];
     const touched = new Set<Root>();
     let applied = 0;
+    // one read of each root's rules and sheets for the whole list (was one per edit)
+    const read = new Map<Root, { all: KnownRule[]; attached: Set<CSSStyleSheet> }>();
+    const readRoot = (root: Root) => {
+      let r = read.get(root);
+      if (!r) read.set(root, (r = { all: this.all(root), attached: attachedSheets(root) }));
+      return r;
+    };
     for (const e of list) {
       const root = rootAt(e.scopeAddress);
       if (!root) {
@@ -434,7 +447,7 @@ export class RuleTracker {
         applied++;
         continue;
       }
-      const all = this.all(root);
+      const { all, attached } = readRoot(root);
       const hit = locate(
         {
           stylesheet: e.stylesheet,
@@ -445,7 +458,7 @@ export class RuleTracker {
         },
         all,
       );
-      if (!hit || !writable(hit.rule, root)) {
+      if (!hit || !writable(hit.rule, root, attached)) {
         dormant.push(e);
         continue;
       }
@@ -453,8 +466,11 @@ export class RuleTracker {
       if (rec.kind !== 'page') continue;
       rec.rule.style.cssText = e.declsText;
       rec.current.declsText = tidy(rec.rule.style.cssText);
-      if (e.selector !== rec.current.selector && validSelector(e.selector))
+      if (e.selector !== rec.current.selector && validSelector(e.selector)) {
+        const before = rec.rule;
         this.setSelector(rec, e.selector);
+        if (rec.rule !== before) read.delete(root); // rule replaced in place: the list is stale
+      }
       applied++;
     }
     for (const root of touched) this.refreshOwnRules(root);
@@ -464,6 +480,9 @@ export class RuleTracker {
   }
 
   // ---- revert ----
+
+  /** Set while revertAll runs: it notifies once at the end. */
+  private quiet = false;
 
   revert(recordId: string): boolean {
     const r = this.recs.get(recordId);
@@ -477,12 +496,17 @@ export class RuleTracker {
       if (r.rule.selectorText !== r.before.selector) this.setSelector(r, r.before.selector);
       r.rule.style.cssText = r.before.declsText;
     }
-    this.changed();
+    if (!this.quiet) this.changed();
     return true;
   }
 
   revertAll(): void {
-    for (const id of [...this.recs.keys()]) this.revert(id);
+    this.quiet = true;
+    try {
+      for (const id of [...this.recs.keys()]) this.revert(id);
+    } finally {
+      this.quiet = false;
+    }
     this.dormant = [];
     for (const root of [document, ...this.shadowRootsWithOwnStyle()])
       this.ownStyle(root, false)?.remove();

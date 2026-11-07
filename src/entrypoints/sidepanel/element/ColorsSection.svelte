@@ -47,7 +47,7 @@
           type="button"
           role="radio"
           aria-checked={fmt === f}
-          class="rounded-[6px] px-1.5 py-0.5 text-[10px] font-semibold hover:bg-line"
+          class="rounded-md px-1.5 py-0.5 text-[10px] font-semibold hover:bg-line"
           class:bg-line={fmt === f}
           class:text-fg-muted={fmt !== f}
           data-format={f}

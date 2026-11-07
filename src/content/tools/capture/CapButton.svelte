@@ -20,9 +20,9 @@
 
 <button
   type="button"
-  class="inline-flex h-[32px] items-center gap-1.5 rounded-btn px-2.5 disabled:cursor-default disabled:opacity-50 {on
+  class="inline-flex h-8 items-center gap-1.5 rounded-btn px-2.5 disabled:cursor-default disabled:opacity-50 {on
     ? 'bg-accent text-white'
-    : 'hover:bg-line'} {label ? '' : 'w-[32px] justify-center px-0 text-fg-muted'}"
+    : 'hover:bg-line'} {label ? '' : 'w-8 justify-center px-0 text-fg-muted'}"
   {disabled}
   {title}
   aria-label={title ?? label}

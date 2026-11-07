@@ -29,11 +29,11 @@
 <div
   bind:this={dock}
   data-dock
-  class="fixed bottom-[10px] left-1/2 flex -translate-x-1/2 items-center gap-[3px] rounded-panel border border-line bg-surface p-[5px] font-sans text-fg shadow-[0_10px_28px_rgba(0,0,0,.35)] backdrop-blur-surface"
+  class="fixed bottom-2.5 left-1/2 flex -translate-x-1/2 items-center gap-[3px] rounded-panel border border-line bg-surface p-[5px] font-sans text-fg shadow-[0_10px_28px_rgba(0,0,0,.35)] backdrop-blur-surface"
   class:transition-all={!resizing}
 >
   {#each groups as group, gi (gi)}
-    {#if gi}<span class="mx-[4px] h-5 w-px bg-line-strong"></span>{/if}
+    {#if gi}<span class="mx-1 h-5 w-px bg-line-strong"></span>{/if}
     {#each group as item (item.id)}
       <DockButton {item} disabled={itemLocked(item) || !!item.isDisabled?.()} />
     {/each}

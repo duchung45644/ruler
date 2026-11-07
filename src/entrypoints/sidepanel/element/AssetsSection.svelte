@@ -51,14 +51,14 @@
         {#each row.items as i (i)}
           {@const a = assets[i]!}
           <div
-            class="group relative overflow-hidden rounded-[6px] border border-line bg-[conic-gradient(var(--color-line)_25%,transparent_0_50%,var(--color-line)_0_75%,transparent_0)] bg-[length:12px_12px]"
+            class="group relative overflow-hidden rounded-md border border-line bg-[conic-gradient(var(--color-line)_25%,transparent_0_50%,var(--color-line)_0_75%,transparent_0)] bg-[length:12px_12px]"
             style:width="{row.height * ratio(a)}px"
             data-asset={a.type}
           >
             <img src={assetPreview(a)} alt="" class="size-full object-contain" loading="lazy" />
             <button
               type="button"
-              class="absolute right-1 bottom-1 grid size-6 place-items-center rounded-[6px] bg-black/60 text-white opacity-0 group-hover:opacity-100 focus:opacity-100"
+              class="absolute right-1 bottom-1 grid size-6 place-items-center rounded-md bg-black/60 text-white opacity-0 group-hover:opacity-100 focus:opacity-100"
               title={i18n.t('panel.download')}
               aria-label={i18n.t('panel.download')}
               data-download

@@ -106,7 +106,7 @@
   </div>
 {/snippet}
 
-<main class="mx-auto flex max-w-[640px] flex-col gap-5 p-4" aria-busy={!loaded}>
+<main class="mx-auto flex max-w-160 flex-col gap-5 p-4" aria-busy={!loaded}>
   <section class="flex flex-col gap-2">
     <h2 class="px-1 text-[12px] font-semibold text-fg-muted uppercase">
       {i18n.t('options.sectionAppearance')}

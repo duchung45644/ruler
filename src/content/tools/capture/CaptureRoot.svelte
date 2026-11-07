@@ -73,7 +73,7 @@
 {:else if cap.modeBar}
   <div
     data-bar="mode"
-    class="bd-in pointer-events-auto fixed bottom-[16px] left-1/2 flex -translate-x-1/2 items-center gap-0.5 capbar p-[5px] font-sans text-[13px]"
+    class="bd-in pointer-events-auto fixed bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-0.5 capbar p-[5px] font-sans text-[13px]"
   >
     {#if cap.element}
       <CapButton
@@ -99,7 +99,7 @@
         void captureFullPage(snap);
       }}
     />
-    <div class="mx-1 h-[20px] w-px bg-line"></div>
+    <div class="mx-1 h-5 w-px bg-line"></div>
     <CapButton icon={X} title={i18n.t('capture.close')} onclick={closeCapture} />
   </div>
 {/if}
@@ -124,7 +124,7 @@
       onclick={() => act('save')}
     />
     <CapButton icon={Pencil} label={i18n.t('capture.markupCapture')} onclick={markup} />
-    <div class="mx-1 h-[20px] w-px bg-line"></div>
+    <div class="mx-1 h-5 w-px bg-line"></div>
     <CapButton icon={X} title={i18n.t('capture.close')} onclick={closeCapture} />
   </div>
 {/if}

@@ -39,7 +39,7 @@
   });
 </script>
 
-<div class="flex w-[240px] flex-col gap-2 font-sans text-[12px]">
+<div class="flex w-60 flex-col gap-2 font-sans text-[12px]">
   <div class="flex items-center justify-between gap-2">
     <span class="font-semibold">{findTitle(view.index, view.count, view.hidden, i18n.t)}</span>
     <div class="flex items-center gap-1 text-fg-muted">

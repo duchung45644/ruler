@@ -263,7 +263,7 @@
       /><span class="text-fg-muted" class:opacity-0={!row.property && !row.value}>:</span>
       {#if colorOf(row)}
         <span
-          class="ml-1 inline-block size-2.5 shrink-0 rounded-[2px] border border-line-strong"
+          class="ml-1 inline-block size-2.5 shrink-0 rounded-xs border border-line-strong"
           style:background={colorOf(row)}
           data-swatch
         ></span>

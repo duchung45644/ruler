@@ -29,7 +29,7 @@
   }
 </script>
 
-<div class="flex w-[220px] flex-col gap-2 font-sans text-[12px]">
+<div class="flex w-55 flex-col gap-2 font-sans text-[12px]">
   <div class="flex items-center justify-between gap-2">
     <span class="font-semibold">{i18n.t('dock.grid')}</span>
     <div class="flex items-center gap-1">
@@ -56,7 +56,7 @@
   </label>
   <label class="flex items-center justify-between gap-2"
     >{i18n.t('grid.maxWidth')}
-    <input type="text" class="field w-[80px]" bind:value={maxWidth} onblur={blurMaxWidth} />
+    <input type="text" class="field w-20" bind:value={maxWidth} onblur={blurMaxWidth} />
   </label>
   <label class="flex items-center justify-between gap-2"
     >{i18n.t('grid.gutter')}
@@ -64,7 +64,7 @@
       type="number"
       min="0"
       max="100"
-      class="field w-[80px]"
+      class="field w-20"
       value={g.gutter}
       onchange={(e) => setGrid({ gutter: clamped(e, 0, 100, g.gutter) })}
     />
@@ -75,7 +75,7 @@
       type="number"
       min="0"
       max="350"
-      class="field w-[80px]"
+      class="field w-20"
       value={g.margin}
       onchange={(e) => setGrid({ margin: clamped(e, 0, 350, g.margin) })}
     />
@@ -87,7 +87,7 @@
       <input
         type="text"
         maxlength="6"
-        class="field w-[64px]"
+        class="field w-16"
         bind:value={hex}
         onchange={() => /^[0-9a-f]{6}$/i.test(hex) && setColor(hex)}
       />

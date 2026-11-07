@@ -75,7 +75,7 @@
     {#if off}
       <p class="mb-1 text-fg-muted">{i18n.t('audit.offGrid', [String(off)])}</p>
     {/if}
-    <div class="flex flex-col gap-[2px]">
+    <div class="flex flex-col gap-0.5">
       {#each rows as it (it.key)}
         <div
           role="button"
@@ -88,7 +88,7 @@
         >
           {#if tab === 'colors'}
             <span
-              class="h-[14px] w-[14px] shrink-0 rounded-btn border border-line"
+              class="h-3.5 w-3.5 shrink-0 rounded-btn border border-line"
               style:background={it.key}
             ></span>
           {/if}

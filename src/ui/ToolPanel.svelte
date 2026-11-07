@@ -29,7 +29,7 @@
   bind:this={box}
   role="dialog"
   aria-label={title}
-  class="pointer-events-auto fixed flex max-h-[calc(100vh-120px)] w-[300px] flex-col overflow-hidden rounded-panel border border-line bg-surface font-sans text-[12px] text-fg shadow-[0_10px_28px_rgba(0,0,0,.35)] backdrop-blur-surface"
+  class="pointer-events-auto fixed flex max-h-[calc(100vh-120px)] w-75 flex-col overflow-hidden rounded-panel border border-line bg-surface font-sans text-[12px] text-fg shadow-[0_10px_28px_rgba(0,0,0,.35)] backdrop-blur-surface"
   style:left={pos ? `${pos.left}px` : undefined}
   style:top="{pos ? pos.top : 16}px"
   style:right={pos ? undefined : '16px'}

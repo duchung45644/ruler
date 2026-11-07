@@ -109,11 +109,11 @@
 </script>
 
 {#snippet row(name: string, value: string, swatch = false)}
-  <div class="flex justify-between gap-3 py-[1px]">
+  <div class="flex justify-between gap-3 py-px">
     <span class="text-fg-muted">{name}:</span>
     <span class="flex min-w-0 items-center gap-1 font-mono">
       {#if swatch}<span
-          class="size-[10px] shrink-0 rounded-[3px] border border-line"
+          class="size-2.5 shrink-0 rounded-[3px] border border-line"
           style:background={value}
         ></span>{/if}
       <!-- an unparsed colour (not HEX) wraps in full instead of being cut -->
@@ -128,7 +128,7 @@
   <div
     class={pinned
       ? 'flex flex-col gap-2 px-3 pb-3'
-      : 'flex max-h-[inherit] w-[260px] flex-col gap-2 overflow-y-auto rounded-panel border border-line bg-surface p-3 font-sans text-[11px] text-fg shadow-[0_10px_28px_rgba(0,0,0,.35)] backdrop-blur-surface'}
+      : 'flex max-h-[inherit] w-65 flex-col gap-2 overflow-y-auto rounded-panel border border-line bg-surface p-3 font-sans text-[11px] text-fg shadow-[0_10px_28px_rgba(0,0,0,.35)] backdrop-blur-surface'}
   >
     <button
       type="button"
@@ -151,7 +151,7 @@
           <span class="text-fg-muted">{i18n.t('inspect.contrast')}:</span>
           <span class="flex items-center gap-2 font-mono">
             <span
-              class="rounded-[4px] border border-line px-1"
+              class="rounded-sm border border-line px-1"
               style:background={c.bg}
               style:color={c.fg}>Aa</span
             >

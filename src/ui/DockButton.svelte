@@ -28,7 +28,7 @@
 
 <button
   type="button"
-  class="group relative grid size-[34px] place-items-center rounded-btn text-fg hover:bg-line disabled:opacity-40 disabled:hover:bg-transparent {item.id ===
+  class="group relative grid size-8.5 place-items-center rounded-btn text-fg hover:bg-line disabled:opacity-40 disabled:hover:bg-transparent {item.id ===
   'quit'
     ? 'text-fg-muted'
     : ''}"
@@ -53,9 +53,9 @@
   </span>
   {#if notice}
     <span
-      class="pointer-events-none absolute -top-8 left-1/2 flex -translate-x-1/2 items-center gap-[6px] whitespace-nowrap rounded-full border border-line bg-surface px-2 py-[6px] font-mono text-[12px] leading-[12px] font-medium text-fg backdrop-blur-surface"
+      class="pointer-events-none absolute -top-8 left-1/2 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full border border-line bg-surface px-2 py-1.5 font-mono text-[12px] leading-3 font-medium text-fg backdrop-blur-surface"
     >
-      <span class="size-[12px] rounded-[3px]" style:background={notice.color}></span>{notice.text}
+      <span class="size-3 rounded-[3px]" style:background={notice.color}></span>{notice.text}
     </span>
   {/if}
 </button>

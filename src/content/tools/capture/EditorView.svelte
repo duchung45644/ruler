@@ -60,22 +60,20 @@
 
 <div
   bind:this={ed}
-  class="pointer-events-auto fixed inset-0 flex flex-col items-center justify-center bg-[rgba(0,0,0,.72)] py-[16px] font-sans text-[13px]"
+  class="pointer-events-auto fixed inset-0 flex flex-col items-center justify-center bg-[rgba(0,0,0,.72)] py-4 font-sans text-[13px]"
 >
   {#if e.note}
     <div
-      class="mb-[12px] max-w-[min(720px,calc(100vw-32px))] rounded-panel border border-line bg-surface px-[12px] py-[8px] text-[12px] text-fg shadow-[inset_3px_0_0_#F0A03C]"
+      class="mb-3 max-w-[min(720px,calc(100vw-32px))] rounded-panel border border-line bg-surface px-3 py-2 text-[12px] text-fg shadow-[inset_3px_0_0_#F0A03C]"
     >
       {e.note}
     </div>
   {/if}
-  <div
-    class="flex min-h-0 w-full flex-[0_1_auto] items-start justify-center overflow-auto px-[16px]"
-  >
+  <div class="flex min-h-0 w-full flex-[0_1_auto] items-start justify-center overflow-auto px-4">
     <canvas
       bind:this={canvas}
       class="block bg-white {e.pad
-        ? 'rounded-[4px]'
+        ? 'rounded-sm'
         : 'rounded-[10px] shadow-[0_8px_32px_rgba(0,0,0,.4)]'}"
       class:cursor-crosshair={e.marking && e.tool !== 'text'}
       class:cursor-text={e.marking && e.tool === 'text'}
@@ -83,7 +81,7 @@
   </div>
   <div
     data-bar="editor"
-    class="mt-[14px] flex max-w-[calc(100vw-32px)] shrink-0 flex-wrap items-center justify-center gap-0.5 capbar p-[5px]"
+    class="mt-3.5 flex max-w-[calc(100vw-32px)] shrink-0 flex-wrap items-center justify-center gap-0.5 capbar p-[5px]"
   >
     <CapButton
       icon={Copy}
@@ -106,13 +104,13 @@
         e.marking = !e.marking;
       }}
     />
-    <div class="mx-1 h-[20px] w-px bg-line"></div>
+    <div class="mx-1 h-5 w-px bg-line"></div>
     <div data-frame class="flex items-center gap-1" title={i18n.t('capture.padding')}>
       <Frame size={16} class="mx-1 text-fg-muted" />
       {#each PADDINGS as p (p)}
         <button
           type="button"
-          class="h-[28px] min-w-[28px] rounded-btn px-1.5 text-[12px] {e.pad === p
+          class="h-7 min-w-7 rounded-btn px-1.5 text-[12px] {e.pad === p
             ? 'bg-line shadow-[inset_0_0_0_1.5px_var(--color-accent)]'
             : 'text-fg-muted hover:bg-line'}"
           aria-pressed={e.pad === p}
@@ -123,7 +121,7 @@
         {#each BACKDROPS as b (b.id)}
           <button
             type="button"
-            class="size-[22px] rounded-full {e.backdrop === b.id
+            class="size-5.5 rounded-full {e.backdrop === b.id
               ? 'shadow-[0_0_0_2px_var(--color-accent)]'
               : 'shadow-[inset_0_0_0_1px_var(--color-line)]'}"
             style:background={b.css}
@@ -136,13 +134,13 @@
     </div>
     {#if e.marking}
       <div data-tools class="flex items-center gap-1">
-        <div class="mx-1 h-[20px] w-px bg-line"></div>
+        <div class="mx-1 h-5 w-px bg-line"></div>
         {#each MARK_TOOLS as t (t.id)}
           {@const I = ICONS[t.id]}
           <button
             type="button"
             data-tool={t.id}
-            class="grid size-[32px] place-items-center rounded-btn {e.tool === t.id
+            class="grid size-8 place-items-center rounded-btn {e.tool === t.id
               ? 'shadow-[inset_0_0_0_1.5px_var(--color-accent)] bg-line'
               : 'hover:bg-line'}"
             aria-pressed={e.tool === t.id}
@@ -152,12 +150,12 @@
             <I size={16} />
           </button>
         {/each}
-        <div class="mx-1 h-[20px] w-px bg-line"></div>
+        <div class="mx-1 h-5 w-px bg-line"></div>
         {#each MARK_COLORS as c (c)}
           <button
             type="button"
-            class="size-[22px] rounded-full {e.color === c
-              ? 'bg-clip-content p-[2px] shadow-[0_0_0_2px_var(--color-accent)]'
+            class="size-5.5 rounded-full {e.color === c
+              ? 'bg-clip-content p-0.5 shadow-[0_0_0_2px_var(--color-accent)]'
               : 'shadow-[inset_0_0_0_1px_var(--color-line)]'}"
             style:background-color={c}
             title={c}
@@ -165,11 +163,11 @@
             onclick={() => (e.color = c)}
           ></button>
         {/each}
-        <div class="mx-1 h-[20px] w-px bg-line"></div>
+        <div class="mx-1 h-5 w-px bg-line"></div>
         {#each MARK_SIZES as n (n)}
           <button
             type="button"
-            class="grid size-[32px] place-items-center rounded-btn {e.size === n
+            class="grid size-8 place-items-center rounded-btn {e.size === n
               ? 'shadow-[inset_0_0_0_1.5px_var(--color-accent)] bg-line'
               : 'hover:bg-line'}"
             title="{n}px"
@@ -190,7 +188,7 @@
         />
       </div>
     {/if}
-    <div class="mx-1 h-[20px] w-px bg-line"></div>
+    <div class="mx-1 h-5 w-px bg-line"></div>
     <CapButton icon={X} title={i18n.t('capture.close')} onclick={closeCapture} />
   </div>
 </div>

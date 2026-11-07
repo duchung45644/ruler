@@ -45,7 +45,7 @@
   <input
     type="number"
     step="1"
-    class="field w-[64px]"
+    class="field w-16"
     bind:this={inputs[k]}
     oninput={(e) => oninput(k, e.currentTarget)}
     onkeydown={(e) => onkeydown(k, e)}

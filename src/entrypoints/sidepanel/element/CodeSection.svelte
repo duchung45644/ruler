@@ -99,7 +99,7 @@
         type="button"
         role="radio"
         aria-checked={mode === m}
-        class="flex-1 rounded-[6px] py-1 font-medium"
+        class="flex-1 rounded-md py-1 font-medium"
         class:bg-line={mode === m}
         class:text-fg-muted={mode !== m}
         data-mode={m}

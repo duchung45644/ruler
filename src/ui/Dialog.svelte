@@ -52,7 +52,7 @@
     aria-modal="true"
     aria-labelledby="bd-dialog-title"
     aria-describedby={message ? 'bd-dialog-msg' : undefined}
-    class="w-[320px] rounded-panel border border-line bg-surface p-4 text-[13px] text-fg shadow-xl backdrop-blur-surface"
+    class="w-80 rounded-panel border border-line bg-surface p-4 text-[13px] text-fg shadow-xl backdrop-blur-surface"
     tabindex="-1"
     {onkeydown}
   >

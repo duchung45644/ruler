@@ -29,7 +29,7 @@
   const btn = 'rounded-btn border border-line px-3 py-1 text-[12px] font-medium hover:bg-line';
 </script>
 
-<div class="flex w-[300px] flex-col gap-2 text-[12px]" data-mcp-popover>
+<div class="flex w-75 flex-col gap-2 text-[12px]" data-mcp-popover>
   <div class="text-[13px] font-semibold">{i18n.t('mcp.dockTitle')}</div>
   {#if s.connected}
     <div class="flex items-baseline justify-between gap-2">

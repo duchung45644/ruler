@@ -81,7 +81,7 @@
           {#each list as it, i (i)}
             <button
               type="button"
-              class="h-[44px] w-[44px] overflow-hidden rounded-btn border-2 {i === sel
+              class="h-11 w-11 overflow-hidden rounded-btn border-2 {i === sel
                 ? 'border-accent'
                 : 'border-transparent hover:border-line-strong'}"
               style:opacity={it.visible ? undefined : 0.4}
@@ -90,7 +90,7 @@
               ><img src={it.src} alt="" class="h-full w-full object-cover" /></button
             >
           {/each}
-          {#if list.length < MAX_IMAGES}{@render drop('h-[44px] w-[44px]')}{/if}
+          {#if list.length < MAX_IMAGES}{@render drop('h-11 w-11')}{/if}
         </div>
       {:else}
         {@render drop('px-3 py-6 text-center')}
@@ -125,7 +125,7 @@
             {#each modes as [m, label] (m)}
               <button
                 type="button"
-                class="rounded-[6px] py-1 {cur.mode === m
+                class="rounded-md py-1 {cur.mode === m
                   ? 'bg-accent text-white'
                   : 'text-fg-muted hover:bg-line'}"
                 aria-pressed={cur.mode === m}

@@ -43,7 +43,7 @@
     bind:this={box}
     role="dialog"
     tabindex="-1"
-    class="pointer-events-auto fixed flex min-h-[80px] min-w-[200px] resize flex-col overflow-hidden rounded-panel border border-line bg-surface font-sans text-[11px] text-fg shadow-[0_10px_28px_rgba(0,0,0,.35)] backdrop-blur-surface"
+    class="pointer-events-auto fixed flex min-h-20 min-w-50 resize flex-col overflow-hidden rounded-panel border border-line bg-surface font-sans text-[11px] text-fg shadow-[0_10px_28px_rgba(0,0,0,.35)] backdrop-blur-surface"
     style:left="{pin.pageX - sx}px"
     style:top="{pin.pageY - sy}px"
     style:width={pin.width ? `${pin.width}px` : undefined}

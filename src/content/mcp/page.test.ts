@@ -1,5 +1,4 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { browser } from '#imports';
 import type { Issue } from '../../lib/element/types';
 import { ERR, type McpPageType } from '../../lib/mcp/protocol';
@@ -22,9 +21,6 @@ vi.mock('../../lib/ext/messaging', async (orig) => ({
   sendToSidePanel: vi.fn(async () => undefined),
   sendToBackground: vi.fn(async () => undefined),
 }));
-fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
-fakeBrowser.runtime.onConnect.addListener = () => {};
-fakeBrowser.runtime.onConnect.removeListener = () => {};
 
 const ids = (el: Element) => `v-${el.localName}`;
 

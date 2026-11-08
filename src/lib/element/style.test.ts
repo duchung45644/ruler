@@ -1,12 +1,13 @@
 import { expect, it } from 'vitest';
-import { hexOf, splitTopLevel } from './style';
+import { splitTop } from '../css/specificity';
+import { hexOf } from './style';
 
 it('splits on top-level commas only', () => {
-  expect(splitTopLevel('rgb(1, 2, 3) 0 0 4px, red 1px 1px')).toEqual([
+  expect(splitTop('rgb(1, 2, 3) 0 0 4px, red 1px 1px', ',')).toEqual([
     'rgb(1, 2, 3) 0 0 4px',
     'red 1px 1px',
   ]);
-  expect(splitTopLevel('')).toEqual([]);
+  expect(splitTop('', ',')).toEqual([]);
 });
 
 it('normalises colours to upper-case HEX, transparent to null', () => {

@@ -15,8 +15,6 @@ vi.mock('../../lib/ext/messaging', async (orig) => ({
   sendToSidePanel: vi.fn(async () => undefined),
   sendToBackground: vi.fn(async () => undefined),
 }));
-fakeBrowser.runtime.onConnect.addListener = () => {};
-fakeBrowser.runtime.onConnect.removeListener = () => {};
 
 const KEY = 'persistedRuleEdits:https://site.test';
 const tick = () => new Promise((r) => setTimeout(r, 0));

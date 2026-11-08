@@ -1,6 +1,5 @@
 import { flushSync } from 'svelte';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { fakeBrowser } from 'wxt/testing/fake-browser';
 import type { ElementDetails } from '../../lib/element/types';
 import type { RuleAddress } from '../../lib/edit/rule-address';
 import type { EditResult } from '../../lib/edit/types';
@@ -18,9 +17,6 @@ vi.mock('../../lib/ext/messaging', async (orig) => ({
   sendToSidePanel: vi.fn(async () => undefined),
   sendToBackground: vi.fn(async () => undefined),
 }));
-fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
-fakeBrowser.runtime.onConnect.addListener = () => {};
-fakeBrowser.runtime.onConnect.removeListener = () => {};
 
 const toPanel = vi.mocked(sendToSidePanel);
 const sent = (type: string) => toPanel.mock.calls.filter((c) => c[0] === type);
@@ -181,7 +177,7 @@ it('responsive: panel undo / redo step the shared history, and its flags win (8.
     expect(r).toMatchObject({ ok: true, canUndo: false, canRedo: true });
     await h.edit_redo!(sender);
     expect(route).toHaveBeenLastCalledWith(true);
-    expect(state.editState).toMatchObject({ canUndo: false, canRedo: true });
+    expect(editState()).toMatchObject({ canUndo: false, canRedo: true });
   } finally {
     setUndoRoute(null);
     setSharedHistoryState(null);

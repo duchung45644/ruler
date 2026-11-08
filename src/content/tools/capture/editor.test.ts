@@ -1,5 +1,4 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { ContentScriptContext } from 'wxt/utils/content-script-context';
 import { tick } from 'svelte';
 import { routeKey } from '../../core/keys';
@@ -8,7 +7,6 @@ import { state } from '../../core/state.svelte';
 import { openCaptureEditor } from './editor';
 import { closeCapture } from './session';
 
-fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
 // happy-dom has no 2D canvas
 HTMLCanvasElement.prototype.getContext = (() =>
   new Proxy({}, { get: () => () => {}, set: () => true })) as never;

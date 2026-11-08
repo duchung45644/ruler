@@ -1,7 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { browser } from '#imports';
 import { ContentScriptContext } from 'wxt/utils/content-script-context';
-import { fakeBrowser } from 'wxt/testing/fake-browser';
 import type { Envelope } from '../../lib/responsive/channel';
 import { frameName } from '../../lib/responsive/frame-name';
 import { routeKey } from '../core/keys';
@@ -10,8 +9,6 @@ import { startSession, stopSession } from '../core/session';
 import { state } from '../core/state.svelte';
 import { eligible } from '../edit/persist';
 import { isResponsiveFrame, startFrameMode, stopFrameMode } from './frame-mode';
-
-fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
 
 let parent: { postMessage: ReturnType<typeof vi.fn> };
 const xray = vi.fn();

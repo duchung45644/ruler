@@ -1,12 +1,8 @@
 import { afterEach, expect, it } from 'vitest';
 import { flushSync } from 'svelte';
-import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { confirmDialog } from './dialog';
 import { mountLayer } from './overlay';
 import { state } from './state.svelte';
-
-// fakeBrowser has no i18n.getMessage
-fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
 
 afterEach(() => document.body.replaceChildren());
 

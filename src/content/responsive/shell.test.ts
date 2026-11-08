@@ -34,7 +34,6 @@ vi.mock('../edit/mode.svelte', async (orig) => ({
   ...(await orig<typeof import('../edit/mode.svelte')>()),
   editor: vi.fn(() => null),
 }));
-fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
 
 const happy = (
   window as unknown as {

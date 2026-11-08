@@ -15,7 +15,6 @@ vi.mock('../../lib/ext/messaging', async (orig) => ({
   sendToSidePanel: vi.fn(async () => undefined),
   sendToBackground: vi.fn(async () => undefined),
 }));
-fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
 type Port = { name: string; onDisconnect: { addListener(fn: () => void): void } };
 const connects: ((p: Port) => void)[] = [];
 fakeBrowser.runtime.onConnect.addListener = ((fn: (p: Port) => void) => connects.push(fn)) as never;

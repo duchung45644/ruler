@@ -9,16 +9,13 @@ import { state } from '../core/state.svelte';
 import { initSidePanelBridge } from '../sidepanel/bridge.svelte';
 import { setXray } from '../tools/xray';
 import { editor, initEdit, ruleTracker, setEditMode } from '.';
-import { toggleTextEdit } from './mode.svelte';
+import { editState, toggleTextEdit } from './mode.svelte';
 
 vi.mock('../../lib/ext/messaging', async (orig) => ({
   ...(await orig<typeof import('../../lib/ext/messaging')>()),
   sendToSidePanel: vi.fn(async () => undefined),
   sendToBackground: vi.fn(async () => undefined),
 }));
-fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
-fakeBrowser.runtime.onConnect.addListener = () => {};
-fakeBrowser.runtime.onConnect.removeListener = () => {};
 
 const order: string[] = [];
 vi.mocked(sendToBackground).mockImplementation((async (t: string) => {
@@ -72,11 +69,11 @@ it('Ctrl+Z typed in an input does not undo the page', async () => {
   await setEditMode(true);
   state.selected = p;
   editor()!.delete();
-  expect(state.editState.canUndo).toBe(true);
+  expect(editState().canUndo).toBe(true);
   input.dispatchEvent(new KeyboardEvent('keydown', { key: 'z', ctrlKey: true, bubbles: true }));
-  expect(state.editState.canUndo).toBe(true);
+  expect(editState().canUndo).toBe(true);
   key('z', { ctrlKey: true });
-  expect(state.editState.canUndo).toBe(false);
+  expect(editState().canUndo).toBe(false);
 });
 
 it('text editing makes the body editable, swallows link clicks and cleans up', async () => {
@@ -124,7 +121,7 @@ it('edit keys do nothing while typing in an input inside a page shadow root (§9
   typed('d', { ctrlKey: true });
   expect(p.hasAttribute('style')).toBe(false);
   expect(document.querySelectorAll('p')).toHaveLength(1);
-  expect(state.editState.canUndo).toBe(false);
+  expect(editState().canUndo).toBe(false);
 });
 
 it('text editing leaves clicks and input in the extension UI alone', async () => {
@@ -140,7 +137,7 @@ it('text editing leaves clicks and input in the extension UI alone', async () =>
     new InputEvent('beforeinput', { inputType: 'insertText', bubbles: true, composed: true }),
   );
   toggleTextEdit();
-  expect(state.editState.canUndo).toBe(false);
+  expect(editState().canUndo).toBe(false);
 });
 
 it('end to end: a rule edit is listed, saved, and still applied after a session restart', async () => {

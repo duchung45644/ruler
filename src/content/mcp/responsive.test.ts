@@ -1,5 +1,4 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { sendToBackground } from '../../lib/ext/messaging';
 import type { Viewport } from '../../lib/responsive/viewports';
 import { hideUi } from '../core/session';
@@ -41,7 +40,6 @@ vi.mock('../responsive/shell.svelte', async (orig) => {
     ]),
   };
 });
-fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
 
 const run = (type: Parameters<typeof runMcp>[0], payload: object = {}) =>
   runMcp(type, { tabId: 1, ...payload });

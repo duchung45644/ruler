@@ -1,5 +1,4 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { layer } from '../core/overlay';
 import { sessionSignal, stopSession } from '../core/session';
 import { state } from '../core/state.svelte';
@@ -13,9 +12,6 @@ vi.mock('../../lib/ext/messaging', async (orig) => ({
   sendToSidePanel: vi.fn(async () => undefined),
   sendToBackground: vi.fn(async () => undefined),
 }));
-fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
-fakeBrowser.runtime.onConnect.addListener = () => {};
-fakeBrowser.runtime.onConnect.removeListener = () => {};
 
 const tick = () => new Promise((r) => setTimeout(r, 0));
 const data = async (type: Parameters<typeof runMcp>[0], payload: object) => {

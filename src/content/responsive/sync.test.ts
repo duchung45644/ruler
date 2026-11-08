@@ -24,7 +24,6 @@ vi.mock('../../lib/ext/messaging', async (orig) => ({
   sendToBackground: vi.fn(async () => undefined),
   sendToSidePanel: vi.fn(async () => undefined),
 }));
-fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
 
 const happy = (window as unknown as { happyDOM: { setURL(u: string): void } }).happyDOM;
 const flush = () => new Promise((r) => setTimeout(r, 0));

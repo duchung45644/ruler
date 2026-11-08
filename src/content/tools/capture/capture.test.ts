@@ -11,9 +11,6 @@ import { captureElement } from './element';
 import { openBar } from '.';
 import { capAction, openCaptureBar } from './session';
 
-// fakeBrowser has no i18n.getMessage; the UI renders labels
-fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
-
 let grab: ReturnType<typeof vi.spyOn>;
 beforeEach(async () => {
   fakeBrowser.reset();

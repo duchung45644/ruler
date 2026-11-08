@@ -19,7 +19,6 @@ vi.mock('../tools/breakpoints', async (orig) => ({
   ...(await orig<typeof import('../tools/breakpoints')>()),
   currentBreakpoints: vi.fn(() => []),
 }));
-fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
 
 const flush = () => new Promise((r) => setTimeout(r, 0));
 const fakeWin = { postMessage: vi.fn() };

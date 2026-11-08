@@ -1,8 +1,5 @@
 import { afterEach, expect, it } from 'vitest';
-import { fakeBrowser } from 'wxt/testing/fake-browser';
 
-// fakeBrowser has no i18n.getMessage; the panel renders labels
-fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
 import { layer, requestPaint } from '../../core/overlay';
 import { stopSession } from '../../core/session';
 import { state } from '../../core/state.svelte';

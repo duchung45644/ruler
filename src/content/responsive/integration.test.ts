@@ -36,7 +36,6 @@ vi.mock('../core/toast', async (orig) => ({
   ...(await orig<typeof import('../core/toast')>()),
   showToast: vi.fn(),
 }));
-fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
 
 const happy = (window as unknown as { happyDOM: { setURL(u: string): void } }).happyDOM;
 

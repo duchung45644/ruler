@@ -1,5 +1,4 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { sendToBackground, sendToSidePanel } from '../../lib/ext/messaging';
 import { stopSession } from '../core/session';
 import {
@@ -16,7 +15,6 @@ vi.mock('../../lib/ext/messaging', async (orig) => ({
   sendToSidePanel: vi.fn(async () => undefined),
   sendToBackground: vi.fn(async () => undefined),
 }));
-fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
 
 const toPanel = vi.mocked(sendToSidePanel);
 const toBg = vi.mocked(sendToBackground);

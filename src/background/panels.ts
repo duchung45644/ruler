@@ -1,4 +1,5 @@
-import { browser, storage, type Browser } from '#imports';
+import { browser, type Browser } from '#imports';
+import { storage } from '../lib/ext/storage';
 import { sendToTab, sendToTabPanel, type BackgroundApi, type Handlers } from '../lib/ext/messaging';
 import type { Technology } from '../lib/page/types';
 import { detachBounds, panelPath, type Bounds } from '../lib/ext/panels';

@@ -1,4 +1,4 @@
-import { storage } from '#imports';
+import { storage } from './storage';
 import type { ColorFormat } from '../style/color';
 import { defaultViewports, type ResponsiveSettings } from '../responsive/viewports';
 import { ZOOM_DEFAULT } from '../responsive/zoom';

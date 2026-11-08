@@ -1,4 +1,5 @@
-import { browser, storage, type Browser } from '#imports';
+import { browser, type Browser } from '#imports';
+import { storage } from '../../lib/ext/storage';
 import type { ElementDetails, Issue } from '../../lib/element/types';
 import {
   handleMessages,

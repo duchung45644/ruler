@@ -51,7 +51,6 @@ export function initEyedropper(): void {
     icon: Pipette,
     label: 'dock.eyedropper',
     key: 'c',
-    group: 'utilities',
     run: () => void pick(),
   });
 }

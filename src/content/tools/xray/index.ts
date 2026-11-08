@@ -34,7 +34,6 @@ export async function initXray(): Promise<void> {
     icon: ScanEye,
     label: 'dock.xray',
     key: 'x',
-    group: 'inspectTools',
     run: () => {
       setXray(!state.xrayOn);
       if (!state.inFrame) void updateSettings({ xrayModeIsOn: state.xrayOn });

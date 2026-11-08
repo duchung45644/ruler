@@ -103,7 +103,6 @@ export async function initMeasure(): Promise<void> {
     icon: SquareDashed,
     label: 'dock.measure',
     key: 'm',
-    group: 'designTools',
     run: () => setOn(!state.measureOn),
     isActive: () => state.measureOn,
   });

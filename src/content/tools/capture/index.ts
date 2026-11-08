@@ -32,7 +32,6 @@ export function initCapture(): void {
     icon: Camera,
     label: 'dock.capture',
     key: 's',
-    group: 'utilities',
     run: openBar,
     isDisabled: () => state.capturing,
   });

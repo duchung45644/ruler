@@ -185,7 +185,6 @@ export function initOverlay(): void {
     icon: Images,
     label: 'dock.overlay',
     key: 'o',
-    group: 'designTools',
     run: () => setOn(!state.overlayOn),
     isActive: () => state.overlayOn,
   });

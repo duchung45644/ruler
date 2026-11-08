@@ -19,7 +19,7 @@ beforeEach(() => {
   vi.spyOn(window, 'parent', 'get').mockReturnValue(parent as unknown as Window);
   vi.spyOn(window, 'top', 'get').mockReturnValue(parent as unknown as Window);
   window.name = frameName(browser.runtime.id, 2);
-  registerItem({ id: 'xray-t', label: 'x', key: 'x', group: 'inspectTools', run: xray } as never);
+  registerItem({ id: 'xray-t', label: 'x', key: 'x', run: xray } as never);
 });
 afterEach(() => {
   stopSession();

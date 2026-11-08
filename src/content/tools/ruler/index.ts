@@ -143,7 +143,6 @@ export async function initRuler(): Promise<void> {
     icon: RulerIcon,
     label: 'dock.ruler',
     key: 'r',
-    group: 'inspectTools',
     run: () => {
       apply(!state.rulerOn);
       if (!state.inFrame) void updateSettings({ rulerIsOn: state.rulerOn });

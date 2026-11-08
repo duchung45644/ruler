@@ -26,7 +26,6 @@ it('draws, moves, ignores arrows typed in the panel, clears on Esc and on toggle
   installDragGuard(sessionSignal());
   await initTools();
   const item = items.find((i) => i.id === 'measure')!;
-  expect(item.group).toBe('designTools');
   item.run();
   flushSync();
   const w = shadow.querySelector<HTMLInputElement>('input[type=number]');

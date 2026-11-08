@@ -77,8 +77,6 @@ export async function initBreakpoints(): Promise<void> {
     icon: RulerDimensionLine,
     label: 'dock.breakpoints',
     key: 'b',
-    group: 'inspectTools',
-    dock: false,
     run: () => {
       apply(!state.breakpointsOn);
       if (responsive?.active() && responsive.toggle(state.breakpointsOn) !== state.breakpointsOn)

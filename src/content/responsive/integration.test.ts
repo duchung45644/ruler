@@ -44,7 +44,6 @@ registerItem({
   id: 'xray',
   label: 'dock.xray',
   key: 'x',
-  group: 'inspectTools',
   forward: true,
   run: () => void (xrayOn = !xrayOn),
   isActive: () => xrayOn,

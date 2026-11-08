@@ -41,7 +41,6 @@ export function initMcpDock(): void {
     id: 'mcp',
     icon: McpIcon,
     label: LABELS[dockState(mcp.status)],
-    group: 'quit',
     popover: McpPopover,
     run: () => togglePopover('mcp'), // one popover at a time (1.50)
   });

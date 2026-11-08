@@ -45,7 +45,6 @@ export function initAudit(): void {
     icon: Palette,
     label: 'dock.audit',
     key: 'a',
-    group: 'designTools',
     run: () => setOn(!state.auditOn),
     isActive: () => state.auditOn,
   });

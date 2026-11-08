@@ -10,9 +10,11 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-it('registers inspectTools in legacy dock order (inspect first, as the content entry loads it)', async () => {
+it('registers the inspect tools in legacy order (inspect first, as the content entry loads it)', async () => {
   await initTools();
-  const ids = items.filter((i) => i.group === 'inspectTools').map((i) => i.id);
+  const ids = items
+    .map((i) => i.id)
+    .filter((id) => ['inspect', 'xray', 'grid', 'ruler', 'breakpoints'].includes(id));
   expect(ids).toEqual(['inspect', 'xray', 'grid', 'ruler', 'breakpoints']);
 });
 
@@ -98,15 +100,15 @@ it('ruler: drag a guide out of the top strip, swallow the click, drop back to re
   expect(await currentGuides()).toEqual([]);
 });
 
-it('registers measure in designTools on M', async () => {
+it('registers measure on M', async () => {
   await initTools();
   const m = items.find((i) => i.id === 'measure')!;
-  expect([m.group, m.key, m.label]).toEqual(['designTools', 'm', 'dock.measure']);
+  expect([m.key, m.label]).toEqual(['m', 'dock.measure']);
 });
 
-it('registers overlay in designTools on O, before measure (its arrow keys win)', async () => {
+it('registers overlay on O, before measure (its arrow keys win)', async () => {
   await initTools();
-  const ids = items.filter((i) => i.group === 'designTools').map((i) => i.id);
+  const ids = items.map((i) => i.id).filter((id) => ['overlay', 'measure', 'audit'].includes(id));
   expect(ids).toEqual(['overlay', 'measure', 'audit']);
   const o = items.find((i) => i.id === 'overlay')!;
   expect([o.key, o.label]).toEqual(['o', 'dock.overlay']);
@@ -116,7 +118,7 @@ it('registers find on F after eyedropper; a match lights it, closing clears it',
   const { runFind, clearFind, find } = await import('./find');
   const { state } = await import('../core/state.svelte');
   await initTools();
-  const ids = items.filter((i) => i.group === 'utilities').map((i) => i.id);
+  const ids = items.map((i) => i.id).filter((id) => ['eyedropper', 'find', 'capture'].includes(id));
   expect(ids.slice(ids.indexOf('eyedropper'))).toEqual(['eyedropper', 'find', 'capture']);
   const f = items.find((i) => i.id === 'find')!;
   expect([f.key, f.label]).toEqual(['f', 'dock.find']);
@@ -131,11 +133,11 @@ it('registers find on F after eyedropper; a match lights it, closing clears it',
   expect(find.results).toEqual([]);
 });
 
-it('registers audit in designTools on A; toggling mounts and clears highlights', async () => {
+it('registers audit on A; toggling mounts and clears highlights', async () => {
   const { audit } = await import('./audit');
   await initTools();
   const a = items.find((i) => i.id === 'audit')!;
-  expect([a.group, a.key, a.label]).toEqual(['designTools', 'a', 'dock.audit']);
+  expect([a.key, a.label]).toEqual(['a', 'dock.audit']);
   a.run();
   expect(a.isActive!()).toBe(true);
   audit.highlights = [document.body];

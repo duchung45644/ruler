@@ -14,7 +14,6 @@ export async function initSidePanel(): Promise<void> {
     // the API does not come and go: the first session's answer holds
     label: bridge.panelApi ? 'dock.sidePanel' : 'dock.sidePanelUnsupported',
     key: 'p',
-    group: 'environment',
     run: () => void toggleSidePanel(),
     isActive: () => bridge.panelOpen,
     isDisabled: () => !bridge.panelApi,

@@ -31,7 +31,6 @@ registerItem({
   icon: null!,
   label: 'dock.grid',
   key: 'g',
-  group: 'inspectTools',
   run: () => ran.three++,
 });
 registerItem({
@@ -39,7 +38,6 @@ registerItem({
   icon: null!,
   label: 'dock.capture',
   key: 's',
-  group: 'utilities',
   run: () => ran.eight++,
 });
 

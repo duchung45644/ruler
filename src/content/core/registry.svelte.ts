@@ -17,18 +17,6 @@ export type MessageKey = {
       ? K
       : never;
 }[keyof GeneratedI18nStructure];
-/** Display order (inventory 1.16 + 1.45, legacy getControlBar :30105). Empty groups are not drawn. */
-export const DOCK_GROUPS = [
-  'mode',
-  'selections',
-  'edit',
-  'inspectTools',
-  'utilities',
-  'environment',
-  'designTools',
-  'quit',
-] as const;
-export type DockGroup = (typeof DOCK_GROUPS)[number];
 
 export interface DockItem {
   id: string;
@@ -38,9 +26,6 @@ export interface DockItem {
   activeIcon?: Component;
   activeLabel?: MessageKey;
   key?: string;
-  group: DockGroup;
-  /** Key only, no dock button (breakpoints: the responsive button and toolbar carry it). */
-  dock?: false;
   run(): void;
   isActive?(): boolean;
   isDisabled?(): boolean;
@@ -96,12 +81,9 @@ export const items: DockItem[] = $state([]);
 /** Dock items text editing leaves usable (5.06): text edit, mode, dock, side panel, quit. */
 const TEXT_EDIT_ITEMS = ['inspect', 'sidepanel', 'quit'];
 
-/** The edit group (none registered now; edit buttons are in the panel) stays off the dock. */
-export const itemShown = (i: DockItem): boolean => i.group !== 'edit';
-
 /**
  * Dock layout by purpose: find/select, page overlays, measuring, check & capture, panel/session.
- * Items not listed fall back to their DOCK_GROUPS slot after these.
+ * Items not listed have no dock button, key only (breakpoints: the responsive toolbar carries it).
  */
 export const DOCK_LAYOUT = [
   ['select_parent', 'select_child', 'inspect', 'find'],
@@ -111,17 +93,12 @@ export const DOCK_LAYOUT = [
   ['sidepanel', 'pause', 'mcp', 'quit'], // MCP last before Quit (1.46)
 ];
 
-const LISTED = DOCK_LAYOUT.flat();
-
 /** Dock groups in display order; empty groups are dropped. */
 export function dockGroups(): DockItem[][] {
   const byId = (id: string) => items.find((i) => i.id === id);
-  return [
-    ...DOCK_LAYOUT.map((ids) => ids.map(byId).filter((i): i is DockItem => !!i)),
-    ...DOCK_GROUPS.map((g) => items.filter((i) => i.group === g && !LISTED.includes(i.id))),
-  ]
-    .map((g) => g.filter((i) => i.dock !== false && itemShown(i)))
-    .filter((g) => g.length);
+  return DOCK_LAYOUT.map((ids) => ids.map(byId).filter((i): i is DockItem => !!i)).filter(
+    (g) => g.length,
+  );
 }
 
 /** Paused or text editing: everything but a few items is locked. */
@@ -155,7 +132,6 @@ registerItem({
   label: 'dock.pause',
   activeIcon: Play,
   activeLabel: 'dock.resume',
-  group: 'utilities',
   alwaysEnabled: true,
   run: () => setPaused(!state.paused),
   isActive: () => state.paused,
@@ -164,7 +140,6 @@ registerItem({
   id: 'quit',
   icon: X,
   label: 'dock.quit',
-  group: 'quit',
   alwaysEnabled: true,
   run: () => void sendToBackground('close_extension'),
 });

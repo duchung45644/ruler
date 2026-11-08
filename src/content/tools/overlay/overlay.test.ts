@@ -9,7 +9,7 @@ afterEach(() => stopSession());
 it('registers the overlay item and stopSession leaves the page clean (Review Focus 5)', () => {
   initOverlay();
   const o = items.find((i) => i.id === 'overlay')!;
-  expect([o.group, o.key, o.label]).toEqual(['designTools', 'o', 'dock.overlay']);
+  expect([o.key, o.label]).toEqual(['o', 'dock.overlay']);
   addImage('data:image/png;base64,x', { width: 400, height: 300 });
   addImage('data:image/png;base64,y', { width: 400, height: 300 });
   expect(document.querySelectorAll('img[data-iodob]')).toHaveLength(2);

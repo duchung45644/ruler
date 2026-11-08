@@ -60,7 +60,6 @@ describe('routeKey', () => {
       icon: {} as never,
       label: 'dock.quit',
       key: '1',
-      group: 'utilities',
       run,
     });
     state.paused = false;
@@ -78,7 +77,6 @@ describe('routeKey', () => {
       icon: {} as never,
       label: 'dock.quit',
       key: 'o',
-      group: 'utilities',
       run,
     });
     state.paused = false;
@@ -96,7 +94,6 @@ describe('routeKey', () => {
       icon: {} as never,
       label: 'dock.quit',
       key: '3',
-      group: 'utilities',
       run,
       runKey,
     });
@@ -170,7 +167,6 @@ describe('routeKey while capturing', () => {
       icon: {} as never,
       label: 'dock.quit',
       key: '2',
-      group: 'utilities',
       run,
     });
     const tool = vi.fn(() => true);
@@ -219,7 +215,6 @@ describe('runShortcut (side panel keyboard_shortcut)', () => {
       icon: {} as never,
       label: 'dock.quit',
       key: '2',
-      group: 'utilities',
       run,
     });
     expect(runShortcut('2')).toBe(true);
@@ -233,7 +228,7 @@ describe('runShortcut (side panel keyboard_shortcut)', () => {
   });
 
   it('Escape deselects', () => {
-    registerItem({ id: 't2', icon: {} as never, label: 'dock.quit', group: 'utilities', run() {} });
+    registerItem({ id: 't2', icon: {} as never, label: 'dock.quit', run() {} });
     state.selected = document.body;
     expect(runShortcut('Escape')).toBe(true);
     expect(state.selected).toBeNull();

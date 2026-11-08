@@ -27,7 +27,6 @@ registerItem({
   id: 'xray',
   label: 'dock.xray',
   key: 'x',
-  group: 'inspectTools',
   forward: true,
   run: () => void (xrayOn = !xrayOn),
   isActive: () => xrayOn,
@@ -36,7 +35,6 @@ registerItem({
   id: 'sidepanel',
   label: 'x',
   key: 'p',
-  group: 'utilities',
   run: sidepanel,
 } as never);
 

@@ -1,4 +1,4 @@
-import { itemLocked, itemShown, items, type DockItem } from './registry.svelte';
+import { itemLocked, items, type DockItem } from './registry.svelte';
 import { state } from './state.svelte';
 
 const hooks = new Map<string, (e: KeyboardEvent) => boolean>();
@@ -49,7 +49,7 @@ function hookName(e: KeyboardEvent): string | null {
   return null;
 }
 
-const runnable = (i: DockItem): boolean => itemShown(i) && !itemLocked(i) && !i.isDisabled?.();
+const runnable = (i: DockItem): boolean => !itemLocked(i) && !i.isDisabled?.();
 
 /** Runs dock item `id` like its key would (frame mode's run_item). Returns whether it ran. */
 export function runItem(id: string): boolean {

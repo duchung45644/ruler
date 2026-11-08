@@ -64,7 +64,6 @@ it('alerts when the element is gone, and the dialog swallows tool keys', async (
     icon: {} as never,
     label: 'dock.quit',
     key: '2',
-    group: 'utilities',
     run,
   });
   const done = sidePanelHandlers.go_to_selected_element!('v-missing', {} as never);

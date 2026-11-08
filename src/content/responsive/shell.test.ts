@@ -104,8 +104,6 @@ beforeEach(async () => {
     id: 'breakpoints',
     label: 'dock.breakpoints',
     key: 'b',
-    group: 'inspectTools',
-    dock: false,
     run() {},
   } as never);
   initResponsive();

@@ -116,7 +116,6 @@ registerItem({
   icon: SquareDashedMousePointer,
   label: 'dock.inspect',
   key: 'i',
-  group: 'inspectTools',
   run: () => setInspect(!state.inspectOn),
   isActive: () => state.inspectOn,
 });
@@ -125,7 +124,6 @@ registerItem({
   forward: true,
   icon: ArrowUpToLine,
   label: 'dock.selectParent',
-  group: 'selections',
   run: selectParent,
   isDisabled: () => !state.selected || !parentOf(state.selected),
 });
@@ -134,7 +132,6 @@ registerItem({
   forward: true,
   icon: ArrowDownToLine,
   label: 'dock.selectChild',
-  group: 'selections',
   run: selectChild,
   isDisabled: () => !state.selected || (!stack.length && !firstChildOf(state.selected, isOwn)),
 });

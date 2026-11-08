@@ -28,7 +28,6 @@ export async function initGrid(): Promise<void> {
     icon: LayoutGridIcon,
     label: 'dock.grid',
     key: 'g',
-    group: 'inspectTools',
     popover: GridPopover,
     run: () => togglePopover('grid'),
     runKey: () => setGrid({ isOn: !state.grid.isOn }), // 3.03

@@ -104,7 +104,7 @@ it('shows and copies the Tailwind classes', async () => {
   $('[data-mode="tailwind"]').click();
   flushSync();
   const classes = 'flex px-[8px] py-[4px] text-[16px] text-[rgb(31,41,55)]';
-  expect($('[data-tailwind]').textContent).toBe(classes);
+  await vi.waitFor(() => expect($('[data-tailwind]').textContent).toBe(classes));
   $('[data-section="css"] [data-copy]').click();
   await vi.waitFor(() => expect(write).toHaveBeenCalledWith(classes));
 });

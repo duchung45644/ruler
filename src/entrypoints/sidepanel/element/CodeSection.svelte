@@ -2,7 +2,6 @@
   import { browser } from '#imports';
   import { i18n } from '#i18n';
   import { declKey, groupBySource, overriddenDecls } from '../../../lib/css/matched';
-  import { tailwindClasses } from '../../../lib/css/tailwind';
   import type { CssMap, ElementDetails, MatchedRule } from '../../../lib/element/types';
   import { sendToBackground } from '../../../lib/ext/messaging';
   import { updatePanelPrefs, type SidePanelPrefs } from '../../../lib/ext/settings';
@@ -19,8 +18,16 @@
     ['tailwind', i18n.t('panel.tailwind')],
   ];
   const mode = $derived(panel.prefs.codeViewMode);
-  /** Converted here, not in the content script, so the converter is not injected into pages. */
-  const tailwind = $derived(mode === 'tailwind' ? tailwindClasses(el.css) : '');
+  /**
+   * Converted here, not in the content script, so the converter is not injected into pages;
+   * loaded on first use, so it stays out of the panel bundle too (~27 KB).
+   */
+  let toTailwind = $state.raw<((css: CssMap) => string) | null>(null);
+  $effect(() => {
+    if (mode === 'tailwind' && !toTailwind)
+      void import('../../../lib/css/tailwind').then((m) => (toTailwind = m.tailwindClasses));
+  });
+  const tailwind = $derived(mode === 'tailwind' && toTailwind ? toTailwind(el.css) : '');
   function setMode(m: Mode) {
     panel.prefs = { ...panel.prefs, codeViewMode: m };
     void updatePanelPrefs({ codeViewMode: m });

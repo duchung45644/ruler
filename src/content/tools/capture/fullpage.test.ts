@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { afterAll, afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { ContentScriptContext } from 'wxt/utils/content-script-context';
 import * as messaging from '../../../lib/ext/messaging';
@@ -10,8 +10,12 @@ import * as session from './session';
 
 fakeBrowser.i18n.getMessage = ((key: string, subs?: string[]) =>
   [key, ...(subs ?? [])].join(' ')) as typeof fakeBrowser.i18n.getMessage;
+const realGetContext = HTMLCanvasElement.prototype.getContext;
 HTMLCanvasElement.prototype.getContext = (() =>
   new Proxy({}, { get: () => () => {}, set: () => true })) as never;
+afterAll(() => {
+  HTMLCanvasElement.prototype.getContext = realGetContext;
+});
 
 beforeEach(async () => {
   await startSession(new ContentScriptContext('content'));

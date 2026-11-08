@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { afterAll, afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { ContentScriptContext } from 'wxt/utils/content-script-context';
 import { tick } from 'svelte';
 import { routeKey } from '../../core/keys';
@@ -8,8 +8,12 @@ import { openCaptureEditor } from './editor';
 import { closeCapture } from './session';
 
 // happy-dom has no 2D canvas
+const realGetContext = HTMLCanvasElement.prototype.getContext;
 HTMLCanvasElement.prototype.getContext = (() =>
   new Proxy({}, { get: () => () => {}, set: () => true })) as never;
+afterAll(() => {
+  HTMLCanvasElement.prototype.getContext = realGetContext;
+});
 
 beforeEach(() => startSession(new ContentScriptContext('content')));
 afterEach(() => {

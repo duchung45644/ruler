@@ -5,5 +5,5 @@ import { WxtVitest } from 'wxt/testing/vitest-plugin';
 export default defineConfig({
   plugins: [WxtVitest(), svelte()],
   resolve: { conditions: ['browser'] }, // svelte client build, not the SSR one
-  test: { environment: 'happy-dom', setupFiles: ['src/test-setup.ts'] },
+  test: { environment: 'happy-dom', pool: 'vmThreads', setupFiles: ['src/test-setup.ts'] },
 });

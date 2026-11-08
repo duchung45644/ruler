@@ -3,7 +3,7 @@
   import type { Field } from '../../../lib/tools/measure';
   import ToolPanel from '../../../ui/ToolPanel.svelte';
   import { state as app } from '../../core/state.svelte';
-  import { boxValues, panelSync, prefs, savePrefs, setBox, setField, setOn } from '.';
+  import { boxValues, prefs, savePrefs, setBox, setField, setOn } from '.';
 
   // Port of openMeasurePanel (unpacked/scripts/bd/measure-guides.js:303).
   const inputs: Partial<Record<Field, HTMLInputElement>> = {};
@@ -17,11 +17,7 @@
       if (el !== (el.getRootNode() as ShadowRoot).activeElement)
         el.value = v ? String(Math.round(v[k])) : '';
   }
-  $effect(() => {
-    panelSync.fn = sync;
-    sync();
-    return () => (panelSync.fn = null);
-  });
+  $effect(sync); // reruns when the box changes
 
   function oninput(k: Field, el: HTMLInputElement) {
     if (el.value !== '') setField(k, Number(el.value));

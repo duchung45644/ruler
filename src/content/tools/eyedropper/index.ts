@@ -1,7 +1,7 @@
 import Pipette from '@lucide/svelte/icons/pipette';
 import { copyText } from '../../../lib/ext/clipboard';
 import { formatCss } from '../../../lib/style/color';
-import { layer, requestPaint } from '../../core/overlay';
+import { host, layer, requestPaint } from '../../core/overlay';
 import { registerItem } from '../../core/registry.svelte';
 import { sessionSignal } from '../../core/session';
 import { state } from '../../core/state.svelte';
@@ -13,16 +13,16 @@ let busy = false;
 
 async function pick(): Promise<void> {
   if (busy || !('EyeDropper' in window)) return;
-  const host = (layer.getRootNode() as ShadowRoot).host as HTMLElement | undefined;
-  if (!host) return;
-  host.dataset.hidden = ''; // theme.css :host([data-hidden]) — inline styles lose to WXT's reset
+  const ui = host();
+  if (ui === layer) return;
+  ui.dataset.hidden = ''; // theme.css :host([data-hidden]) — inline styles lose to WXT's reset
   state.hovered = null;
   requestPaint();
   const ac = new AbortController();
   const signal = AbortSignal.any([ac.signal, sessionSignal()]);
   const reveal = () => {
     ac.abort();
-    delete host.dataset.hidden;
+    delete ui.dataset.hidden;
   };
   signal.addEventListener('abort', () => clearTimeout(timer), { once: true });
   // the picker may leave without settling; the first press after 300ms brings the UI back

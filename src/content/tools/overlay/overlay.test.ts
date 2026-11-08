@@ -51,13 +51,13 @@ it('an image that finishes loading after stopSession is dropped', () => {
 it('arrow keys do not nudge an image while capturing (3.25)', async () => {
   const { routeKey } = await import('../../core/keys');
   const { state } = await import('../../core/state.svelte');
-  const { images } = await import('.');
+  const { overlay } = await import('./images.svelte');
   initOverlay();
   items.find((i) => i.id === 'overlay')!.run();
   addImage('data:image/png;base64,x', { width: 400, height: 300 });
-  const x = images()[0]!.x;
+  const x = overlay.images[0]!.x;
   state.capturing = true;
   routeKey(new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
   state.capturing = false;
-  expect(images()[0]!.x).toBe(x);
+  expect(overlay.images[0]!.x).toBe(x);
 });

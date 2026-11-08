@@ -1,5 +1,6 @@
 import { mount, unmount, type Component } from 'svelte';
 import { createShadowRootUi, type ContentScriptContext } from '#imports';
+import { layer } from '../content/core/overlay';
 
 export async function mountUi(
   ctx: ContentScriptContext,
@@ -46,5 +47,18 @@ export function mountInShadow<P extends Record<string, unknown>>(
   return () => {
     unmount(app);
     target.remove();
+  };
+}
+
+/** Tool panel show/hide: mounts `component` into the overlay layer's shadow root on, unmounts off. */
+export function panelToggle(component: Component): (on: boolean) => void {
+  let off: (() => void) | null = null;
+  return (on) => {
+    const shadow = layer.getRootNode();
+    if (on && !off && shadow instanceof ShadowRoot) off = mountInShadow(shadow, component);
+    else if (!on) {
+      off?.();
+      off = null;
+    }
   };
 }

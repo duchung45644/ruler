@@ -10,15 +10,13 @@ import {
 import { getSettings, updateSettings } from '../../../lib/ext/settings';
 import { resetDrag, startDrag } from '../../core/drag';
 import { isOwnEvent, pageElementAt } from '../../core/events';
-import { addPainter, draw, layer, requestPaint } from '../../core/overlay';
+import { addPainter, CHIP, draw, host, layer, requestPaint, scroll } from '../../core/overlay';
 import { registerItem } from '../../core/registry.svelte';
 import { onStop, sessionSignal } from '../../core/session';
 import { state } from '../../core/state.svelte';
 
 const GUIDE = '#00B3FF';
 const HOT = '#FF3B6B';
-export const CHIP =
-  "font:600 11px/1 'iodob Geist Mono',ui-monospace,monospace;color:#fff;padding:3px 5px;border-radius:4px;white-space:nowrap;transform:translate(-50%,-50%)";
 
 /** Page guides: kept and drawn for the session; created/dragged only while the ruler is on (3.05 / 3.16). */
 let guides: Guide[] = [];
@@ -28,8 +26,6 @@ let crossX: HTMLElement | null = null;
 let crossY: HTMLElement | null = null;
 let moveCursor = false;
 
-const host = (): Element => (layer.getRootNode() as ShadowRoot).host ?? layer;
-const scroll = () => ({ x: scrollX, y: scrollY });
 const live = () => state.rulerOn && !state.paused;
 
 /** Exposed for tests. */
@@ -186,7 +182,6 @@ export async function initRuler(): Promise<void> {
     opts,
   );
   window.addEventListener('resize', () => state.rulerOn && buildRulers(), { signal });
-  window.addEventListener('scroll', requestPaint, { signal, passive: true });
   onStop(() => {
     apply(false); // not persisted: next session restores it (1.43)
     guides = [];

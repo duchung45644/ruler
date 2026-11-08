@@ -1,10 +1,10 @@
 import Palette from '@lucide/svelte/icons/palette';
 import { scanStyles, type AuditRow } from '../../../lib/tools/audit';
-import { mountInShadow } from '../../../ui/mount';
+import { panelToggle } from '../../../ui/mount';
 import { ownNodes } from '../../core/events';
-import { addPainter, draw, layer, requestPaint, visibleRects } from '../../core/overlay';
+import { addPainter, draw, requestPaint, visibleRects } from '../../core/overlay';
 import { registerItem } from '../../core/registry.svelte';
-import { onStop, sessionSignal } from '../../core/session';
+import { onStop } from '../../core/session';
 import { state } from '../../core/state.svelte';
 import AuditPanel from './AuditPanel.svelte';
 
@@ -15,7 +15,6 @@ export const audit = {
   rows: { colors: [], fonts: [], spacing: [] } as Record<AuditTab, AuditRow[]>,
   highlights: [] as Element[],
 };
-let unmountPanel: (() => void) | null = null;
 
 const isOwn = (el: Element) => el.localName === 'iodob-ui' || ownNodes.has(el);
 
@@ -31,18 +30,13 @@ export function highlight(row: AuditRow | null): void {
   requestPaint();
 }
 
+const showPanel = panelToggle(AuditPanel);
+
 export function setOn(next: boolean): void {
   state.auditOn = next;
-  if (next) {
-    rescan();
-    const shadow = layer.getRootNode();
-    if (shadow instanceof ShadowRoot && !unmountPanel)
-      unmountPanel = mountInShadow(shadow, AuditPanel);
-  } else {
-    unmountPanel?.();
-    unmountPanel = null;
-    highlight(null);
-  }
+  if (next) rescan();
+  else highlight(null);
+  showPanel(next);
 }
 
 export function initAudit(): void {
@@ -56,11 +50,6 @@ export function initAudit(): void {
     isActive: () => state.auditOn,
   });
   onStop(() => setOn(false));
-  window.addEventListener('scroll', requestPaint, {
-    signal: sessionSignal(),
-    passive: true,
-    capture: true,
-  });
   addPainter('audit', (box) => {
     if (state.paused) return;
     const frag = document.createDocumentFragment();

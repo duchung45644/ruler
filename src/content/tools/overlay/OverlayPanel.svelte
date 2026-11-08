@@ -1,6 +1,5 @@
 <script lang="ts">
   import { i18n } from '#i18n';
-  import type { OverlayImage } from '../../../lib/tools/overlay-image';
   import Eye from '@lucide/svelte/icons/eye';
   import EyeOff from '@lucide/svelte/icons/eye-off';
   import Pin from '@lucide/svelte/icons/pin';
@@ -8,36 +7,16 @@
   import Trash2 from '@lucide/svelte/icons/trash-2';
   import ToolPanel from '../../../ui/ToolPanel.svelte';
   import { state as app } from '../../core/state.svelte';
-  import {
-    edit,
-    images,
-    MAX_IMAGES,
-    loadFiles,
-    panelSync,
-    removeSelected,
-    select,
-    selected,
-    setOn,
-    togglePin,
-  } from '.';
+  import { edit, MAX_IMAGES, loadFiles, removeSelected, select, setOn, togglePin } from '.';
+  import { overlay } from './images.svelte';
 
   // Port of openOverlayPanel (unpacked/scripts/bd/overlay.js:183).
   type NumKey = 'x' | 'y' | 'scale';
-  let list: OverlayImage[] = $state([]);
-  let sel = $state(-1);
+  const list = $derived(overlay.images);
+  const sel = $derived(overlay.sel);
   let over = $state(false);
   let file: HTMLInputElement;
   const cur = $derived(list[sel]);
-
-  function sync() {
-    list = images().map((o) => ({ ...o }));
-    sel = selected();
-  }
-  $effect(() => {
-    panelSync.fn = sync;
-    sync();
-    return () => (panelSync.fn = null);
-  });
   const modes = [
     ['normal', 'overlay.normal'],
     ['difference', 'overlay.difference'],

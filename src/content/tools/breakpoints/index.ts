@@ -89,7 +89,6 @@ export async function initBreakpoints(): Promise<void> {
     isDisabled: () => !!responsive?.active() && !responsive.available(),
   });
   const signal = sessionSignal();
-  window.addEventListener('scroll', requestPaint, { signal, passive: true });
   // a stylesheet that loads after enabling (or after an auto-restore at injection) adds breakpoints
   document.addEventListener(
     'load',

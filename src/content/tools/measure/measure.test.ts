@@ -12,7 +12,7 @@ import { layer } from '../../core/overlay';
 import { sessionSignal, stopSession } from '../../core/session';
 import { installDragGuard } from '../../core/drag';
 import { initTools } from '..';
-import { currentBox } from '.';
+import { measure } from './box.svelte';
 
 afterEach(() => {
   stopSession();
@@ -41,34 +41,34 @@ it('draws, moves, ignores arrows typed in the panel, clears on Esc and on toggle
   document.body.dispatchEvent(ev('pointerdown', 100, 100));
   window.dispatchEvent(ev('pointermove', 200, 150));
   document.body.dispatchEvent(ev('pointerup', 200, 150));
-  expect(currentBox()).toEqual({ l: 100, t: 100, r: 200, b: 150 });
+  expect(measure.box).toEqual({ l: 100, t: 100, r: 200, b: 150 });
 
   w!.dispatchEvent(
     new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, composed: true }),
   );
-  expect(currentBox()).toEqual({ l: 100, t: 100, r: 200, b: 150 });
+  expect(measure.box).toEqual({ l: 100, t: 100, r: 200, b: 150 });
   window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
-  expect(currentBox()!.l).toBe(99);
+  expect(measure.box!.l).toBe(99);
 
   await new Promise((r) => setTimeout(r, 60));
   document.body.dispatchEvent(ev('pointerdown', 150, 120)); // inside: move
   window.dispatchEvent(ev('pointermove', 160, 130));
   document.body.dispatchEvent(ev('pointerup', 160, 130));
-  expect(currentBox()).toEqual({ l: 109, t: 110, r: 209, b: 160 });
+  expect(measure.box).toEqual({ l: 109, t: 110, r: 209, b: 160 });
 
   window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
-  expect(currentBox()).toBeNull();
+  expect(measure.box).toBeNull();
 
   await new Promise((r) => setTimeout(r, 60));
   document.body.dispatchEvent(ev('pointerdown', 10, 10));
   document.body.dispatchEvent(ev('pointerup', 11, 11)); // under 2×2: dropped
-  expect(currentBox()).toBeNull();
+  expect(measure.box).toBeNull();
 
   await new Promise((r) => setTimeout(r, 60));
   document.body.dispatchEvent(ev('pointerdown', 10, 10));
   document.body.dispatchEvent(ev('pointerup', 50, 50));
   item.run(); // off: panel closed, box cleared
   flushSync();
-  expect(currentBox()).toBeNull();
+  expect(measure.box).toBeNull();
   expect(shadow.querySelector('input[type=number]')).toBeNull();
 });

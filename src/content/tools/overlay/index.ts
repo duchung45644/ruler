@@ -8,45 +8,38 @@ import {
   type Corner,
   type OverlayImage,
 } from '../../../lib/tools/overlay-image';
-import { mountInShadow } from '../../../ui/mount';
+import { panelToggle } from '../../../ui/mount';
 import { isDragging, startDrag } from '../../core/drag';
 import { ownNodes } from '../../core/events';
 import { addKeyHandler } from '../../core/keys';
-import { addPainter, layer, requestPaint } from '../../core/overlay';
+import { addPainter, requestPaint, scroll } from '../../core/overlay';
 import { registerItem } from '../../core/registry.svelte';
 import { onStop, sessionSignal } from '../../core/session';
 import { state } from '../../core/state.svelte';
+import { overlay } from './images.svelte';
 import OverlayPanel from './OverlayPanel.svelte';
 
 /** Design overlay (3.13–3.15), port of unpacked/scripts/bd/overlay.js. Images live in the page DOM
  * so mix-blend-mode: difference blends with the page (the host is its own stacking context). */
 type Entry = { o: OverlayImage; img: HTMLImageElement };
 let list: Entry[] = [];
-let sel = -1;
-let unmountPanel: (() => void) | null = null;
 let dragCursor = false;
-/** Panel sync, set by OverlayPanel; run by the painter once per frame. */
-export const panelSync: { fn: (() => void) | null } = { fn: null };
 
 const live = () => state.overlayOn && !state.paused;
-const scroll = () => ({ x: scrollX, y: scrollY });
 const nat = (img: HTMLImageElement) => ({
   width: img.naturalWidth || 1,
   height: img.naturalHeight || 1,
 });
 const resizeCursor = (c: Corner) => (c === 'tl' || c === 'br' ? 'nwse-resize' : 'nesw-resize');
 
-export const images = (): readonly OverlayImage[] => list.map((e) => e.o);
-export const selected = (): number => sel;
-
 export function select(i: number): void {
-  sel = i;
+  overlay.sel = i;
   requestPaint();
 }
 
 /** Edits the selected image (legacy `edit`). */
 export function edit(patch: (o: OverlayImage) => Partial<OverlayImage>): void {
-  const e = list[sel];
+  const e = list[overlay.sel];
   if (!e) return;
   Object.assign(e.o, patch(e.o));
   requestPaint();
@@ -55,12 +48,13 @@ export function edit(patch: (o: OverlayImage) => Partial<OverlayImage>): void {
 export const togglePin = () => edit((o) => togglePinned(o, scroll()));
 
 export function removeSelected(): void {
-  const e = list[sel];
+  const e = list[overlay.sel];
   if (!e) return;
   e.img.remove();
   ownNodes.delete(e.img);
-  list.splice(sel, 1);
-  sel = Math.min(sel, list.length - 1);
+  list.splice(overlay.sel, 1);
+  overlay.images.splice(overlay.sel, 1);
+  overlay.sel = Math.min(overlay.sel, list.length - 1);
   requestPaint();
 }
 
@@ -130,7 +124,8 @@ export function addImage(
   };
   document.documentElement.append(img);
   ownNodes.add(img);
-  list.push({ o, img });
+  overlay.images.push(o);
+  list.push({ o: overlay.images.at(-1)!, img }); // the proxy: edits reach the panel
   select(list.length - 1);
 }
 
@@ -170,22 +165,17 @@ function position(): void {
     const w = img.naturalWidth ? (img.naturalWidth * o.scale) / 100 : 0;
     const diff = o.mode === 'difference';
     const shadow = diff ? 'none' : '0 4px 24px rgba(0,0,0,.35), 0 1px 3px rgba(0,0,0,.25)';
-    const outline = many && i === sel ? '2px solid #5B5BF0' : 'none';
+    const outline = many && i === overlay.sel ? '2px solid #5B5BF0' : 'none';
     const cursor = img.style.cursor || 'move';
     img.style.cssText = `all:initial;position:fixed;left:${left}px;top:${top}px;z-index:2147483646;pointer-events:auto;cursor:${cursor};width:${w ? `${w}px` : 'auto'};max-width:none;box-shadow:${shadow};outline:${outline};opacity:${diff ? 1 : o.opacity / 100};mix-blend-mode:${o.mode};display:block;`;
   });
 }
 
+const showPanel = panelToggle(OverlayPanel);
+
 export function setOn(next: boolean): void {
   state.overlayOn = next;
-  if (next) {
-    const shadow = layer.getRootNode();
-    if (shadow instanceof ShadowRoot && !unmountPanel)
-      unmountPanel = mountInShadow(shadow, OverlayPanel);
-  } else {
-    unmountPanel?.();
-    unmountPanel = null;
-  }
+  showPanel(next);
   requestPaint();
 }
 
@@ -212,10 +202,9 @@ export function initOverlay(): void {
     },
     { capture: true, signal },
   );
-  window.addEventListener('scroll', requestPaint, { signal, passive: true });
   onStop(
     addKeyHandler((e) => {
-      const d = state.overlayOn && list[sel] && nudgeDelta(e);
+      const d = state.overlayOn && list[overlay.sel] && nudgeDelta(e);
       if (!d) return false;
       edit((o) => ({ x: o.x + d.dx, y: o.y + d.dy }));
       return true;
@@ -228,12 +217,12 @@ export function initOverlay(): void {
       ownNodes.delete(img);
     }
     list = [];
-    sel = -1;
+    overlay.images = [];
+    overlay.sel = -1;
     if (dragCursor) document.documentElement.style.cursor = '';
     dragCursor = false;
   });
   addPainter('overlay', () => {
     position();
-    panelSync.fn?.();
   });
 }

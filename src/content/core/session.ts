@@ -68,6 +68,8 @@ async function start(ctx: ContentScriptContext): Promise<void> {
   onStop(() => (uiRef = null));
   onStop(mountLayer(ui.shadow));
   window.addEventListener('resize', requestPaint, { signal });
+  // capture: nested scrollers too (audit/find highlights)
+  window.addEventListener('scroll', requestPaint, { signal, passive: true, capture: true });
   window.addEventListener('keydown', routeKey, { signal });
   // isolateEvents stops keydown at our shadow root (page never sees our typing), so route it here too
   ui.shadow.addEventListener('keydown', routeKey as EventListener, { signal });

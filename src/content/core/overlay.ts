@@ -1,6 +1,14 @@
 export const layer = document.createElement('div');
 layer.style.cssText = 'position:fixed;inset:0;pointer-events:none';
 
+/** Session UI host (the layer's shadow host); the layer itself when unmounted. */
+export const host = (): HTMLElement =>
+  ((layer.getRootNode() as ShadowRoot).host as HTMLElement | undefined) ?? layer;
+export const scroll = () => ({ x: scrollX, y: scrollY });
+/** Label chip shared by ruler and measure painters. */
+export const CHIP =
+  "font:600 11px/1 'iodob Geist Mono',ui-monospace,monospace;color:#fff;padding:3px 5px;border-radius:4px;white-space:nowrap;transform:translate(-50%,-50%)";
+
 const painters = new Map<string, { box: HTMLElement; paint: (layer: HTMLElement) => void }>();
 let raf = 0;
 

@@ -6,13 +6,15 @@
  */
 import type { Technology } from '../page/types';
 
+/** Shared hit for probes that find a library but no version; detectAll only reads it. */
+const NONE = Object.freeze({ version: null });
+
 type Probe = any;
 type Hit = { version?: unknown } | false | null | undefined | '' | 0;
 export interface Signature {
   id: string;
   icon: string | null;
   url: string | null;
-  npm?: string | null;
   test(w: Probe): Hit;
 }
 
@@ -132,18 +134,13 @@ export const SIGNATURES: Record<string, Signature> = {
     icon: 'vaadin',
     url: 'https://vaadin.com/',
     test: function (t: Probe) {
-      return (
-        !(!t.vaadin || !t.vaadin.registerWidgetset) && {
-          version: null,
-        }
-      );
+      return !(!t.vaadin || !t.vaadin.registerWidgetset) && NONE;
     },
   },
   Bootstrap: {
     id: 'bootstrap',
     icon: 'bootstrap',
     url: 'https://getbootstrap.com/',
-    npm: 'bootstrap',
     test: function (t: Probe) {
       if (t.bootstrap && typeof t.bootstrap.Tooltip === 'function') {
         return {
@@ -166,7 +163,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'zurb',
     icon: 'zurb',
     url: 'https://foundation.zurb.com/',
-    npm: 'foundation-sites',
     test: function (t: Probe) {
       return (
         !(!t.Foundation || !t.Foundation.Toggler) && {
@@ -179,7 +175,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'polymer',
     icon: 'polymer',
     url: 'https://www.polymer-project.org/',
-    npm: '@polymer/polymer',
     test: function (t: Probe) {
       return (
         !(!t.Polymer || !t.Polymer.dom) && {
@@ -192,7 +187,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'litelement',
     icon: 'lit',
     url: 'https://lit-element.polymer-project.org/',
-    npm: 'lit-element',
     test: function (t: Probe) {
       return (
         !(!t.litElementVersions || !t.litElementVersions.length) && {
@@ -209,7 +203,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'lit-html',
     icon: 'lit',
     url: 'https://lit-html.polymer-project.org/',
-    npm: 'lit-element',
     test: function (t: Probe) {
       return (
         !(!t.litHtmlVersions || !t.litHtmlVersions.length) && {
@@ -226,7 +219,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'highcharts',
     icon: 'highcharts',
     url: 'http://www.highcharts.com',
-    npm: 'highcharts',
     test: function (t: Probe) {
       return (
         !(!t.Highcharts || !t.Highcharts.Point) && {
@@ -239,13 +231,8 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'createjs',
     icon: 'createjs',
     url: 'https://createjs.com/',
-    npm: 'createjs',
     test: function (t: Probe) {
-      return (
-        !(!t.createjs || !t.createjs.promote) && {
-          version: null,
-        }
-      );
+      return !(!t.createjs || !t.createjs.promote) && NONE;
     },
   },
   'Google Maps': {
@@ -261,9 +248,8 @@ export const SIGNATURES: Record<string, Signature> = {
       return (
         (u('script[src*="maps.googleapis.com/maps/api"]') ||
           u('iframe[src*="google.com/maps/embed"]') ||
-          !!u('.gm-style, [class^="gm-"], [id*="gmap"]')) && {
-          version: null,
-        }
+          !!u('.gm-style, [class^="gm-"], [id*="gmap"]')) &&
+        NONE
       );
     },
   },
@@ -271,7 +257,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'jquery',
     icon: 'jquery',
     url: 'http://jquery.com',
-    npm: 'jquery',
     test: function (t: Probe) {
       const n = t.jQuery || t.$;
       return (
@@ -285,7 +270,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'jquery_ui',
     icon: 'jquery_ui',
     url: 'http://jqueryui.com',
-    npm: 'jquery-ui',
     test: function (t: Probe) {
       const n = t.jQuery || t.$ || t.$jq || t.$j;
       if (n && n.fn && n.fn.jquery && n.ui) {
@@ -311,7 +295,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'dojo',
     icon: 'dojo',
     url: 'http://dojotoolkit.org',
-    npm: 'dojo',
     test: function (t: Probe) {
       return (
         !(!t.dojo || !t.dojo.delegate) && {
@@ -361,7 +344,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'yui3',
     icon: 'yui',
     url: 'https://yuilibrary.com/',
-    npm: 'yui',
     test: function (t: Probe) {
       return (
         !(!t.YUI || !t.YUI.Env) && {
@@ -391,13 +373,8 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'closure',
     icon: 'closure',
     url: 'https://developers.google.com/closure/library/',
-    npm: 'google-closure-library',
     test: function (t: Probe) {
-      return (
-        !(!t.goog || !t.goog.provide) && {
-          version: null,
-        }
-      );
+      return !(!t.goog || !t.goog.provide) && NONE;
     },
   },
   Raphaël: {
@@ -416,7 +393,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'react',
     icon: 'react',
     url: 'https://reactjs.org/',
-    npm: 'react',
     test: function (t: Probe) {
       if (t.React && t.React.Component) {
         return {
@@ -444,20 +420,14 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'next',
     icon: 'next',
     url: 'https://nextjs.org/',
-    npm: 'next',
     test: function (t: Probe) {
-      return (
-        (t.__NEXT_DATA__ || !!u('script[src*="/_next/static/"]')) && {
-          version: null,
-        }
-      );
+      return (t.__NEXT_DATA__ || !!u('script[src*="/_next/static/"]')) && NONE;
     },
   },
   Preact: {
     id: 'preact',
     icon: 'preact',
     url: 'https://preactjs.com/',
-    npm: 'preact',
     test: function (t: Probe) {
       if (!t.preact && !t.h) {
         return false;
@@ -504,7 +474,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'modernizr',
     icon: 'modernizr',
     url: 'https://modernizr.com/',
-    npm: 'modernizr',
     test: function (t: Probe) {
       return (
         !(!t.Modernizr || !t.Modernizr.addTest) && {
@@ -517,7 +486,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'backbone',
     icon: 'backbone',
     url: 'http://backbonejs.org/',
-    npm: 'backbone',
     test: function (t: Probe) {
       return (
         !(!t.Backbone || !t.Backbone.Model.extend) && {
@@ -530,7 +498,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'leaflet',
     icon: 'leaflet',
     url: 'http://leafletjs.com',
-    npm: 'leaflet',
     test: function (t: Probe) {
       return (
         !(!t.L || !t.L.GeoJSON || (!t.L.marker && !t.L.Marker)) && {
@@ -543,7 +510,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'mapbox',
     icon: 'mapbox',
     url: 'https://www.mapbox.com/',
-    npm: 'mapbox-gl',
     test: function (t: Probe) {
       return (
         !!(t.L && t.L.mapbox && t.L.mapbox.geocoder) && {
@@ -556,7 +522,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'lodash',
     icon: 'lodash',
     url: 'https://lodash.com/',
-    npm: 'lodash',
     test: function ({ _ }) {
       return (
         !(
@@ -574,7 +539,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'underscore',
     icon: 'underscore',
     url: 'http://underscorejs.org/',
-    npm: 'underscore',
     test: function (t: Probe) {
       return (
         !(!t._ || typeof t._.tap !== 'function') &&
@@ -588,7 +552,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'socketio',
     icon: 'socketio',
     url: 'https://socket.io/',
-    npm: 'socket.io',
     test: function (t: Probe) {
       return (
         !(!t.io || (!t.io.sockets && !t.io.Socket)) && {
@@ -601,7 +564,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'mustache',
     icon: 'mustache',
     url: 'http://mustache.github.io/',
-    npm: 'mustache',
     test: function (t: Probe) {
       return (
         !(!t.Mustache || !t.Mustache.to_html) && {
@@ -614,7 +576,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'fabricjs',
     icon: 'fabric',
     url: 'http://fabricjs.com/',
-    npm: 'fabric',
     test: function (t: Probe) {
       return (
         !(!t.fabric || !t.fabric.util) && {
@@ -627,51 +588,35 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'fusejs',
     icon: 'fusejs',
     url: 'http://fusejs.io/',
-    npm: 'fuse.js',
     test: function (t: Probe) {
-      return (
-        !!t.Fuse && {
-          version: null,
-        }
-      );
+      return !!t.Fuse && NONE;
     },
   },
   'Tween.js': {
     id: 'tweenjs',
     icon: 'tween',
     url: 'https://github.com/tweenjs/tween.js',
-    npm: 'tween.js',
     test: function (t: Probe) {
-      return (
-        !(!t.TWEEN || !t.TWEEN.Easing) && {
-          version: null,
-        }
-      );
+      return !(!t.TWEEN || !t.TWEEN.Easing) && NONE;
     },
   },
   'three.js': {
     id: 'threejs',
     icon: 'threejs',
     url: 'https://threejs.org/',
-    npm: 'three',
     test: function (t: Probe) {
       if (t.THREE && t.THREE.REVISION) {
         return {
           version: `r${t.THREE.REVISION}`,
         };
       }
-      return (
-        !!t.THREE && {
-          version: null,
-        }
-      );
+      return !!t.THREE && NONE;
     },
   },
   'Paper.js': {
     id: 'paperjs',
     icon: 'paperjs',
     url: 'http://paperjs.org/',
-    npm: 'paper',
     test: function (t: Probe) {
       return (
         !(!t.paper || !t.paper.Point) && {
@@ -684,7 +629,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'd3',
     icon: 'd3',
     url: 'https://d3js.org/',
-    npm: 'd3',
     test: function (t: Probe) {
       return (
         !(!t.d3 || !t.d3.select) && {
@@ -697,7 +641,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'handlebars',
     icon: 'handlebars',
     url: 'http://handlebarsjs.com/',
-    npm: 'handlebars',
     test: function (t: Probe) {
       return (
         !(!t.Handlebars || !t.Handlebars.compile) && {
@@ -710,7 +653,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'handsontable',
     icon: 'handsontable',
     url: 'https://handsontable.com/',
-    npm: 'handsontable',
     test: function (t: Probe) {
       return (
         !(!t.Handsontable || !t.Handsontable.Core) && {
@@ -723,7 +665,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'knockout',
     icon: 'knockout',
     url: 'http://knockoutjs.com/',
-    npm: 'knockout',
     test: function (t: Probe) {
       return (
         !(!t.ko || !t.ko.applyBindings) && {
@@ -748,7 +689,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'jquery-mobile',
     icon: 'jquery_mobile',
     url: 'http://jquerymobile.com/',
-    npm: 'jquery-mobile',
     test: function (t: Probe) {
       const n = t.jQuery || t.$ || t.$jq || t.$j;
       return (
@@ -762,20 +702,14 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'webfontloader',
     icon: 'webfontloader',
     url: 'https://github.com/typekit/webfontloader',
-    npm: 'webfontloader',
     test: function (t: Probe) {
-      return (
-        !(!t.WebFont || !t.WebFont.load) && {
-          version: null,
-        }
-      );
+      return !(!t.WebFont || !t.WebFont.load) && NONE;
     },
   },
   Angular: {
     id: 'angular',
     icon: 'angular',
     url: 'https://angular.io/',
-    npm: '@angular/core',
     test: function (t: Probe) {
       const n = u('[ng-version]');
       if (n) {
@@ -783,18 +717,13 @@ export const SIGNATURES: Record<string, Signature> = {
           version: n.getAttribute('ng-version') || null,
         };
       }
-      return (
-        !!(t.ng && t.ng.probe instanceof Function) && {
-          version: null,
-        }
-      );
+      return !!(t.ng && t.ng.probe instanceof Function) && NONE;
     },
   },
   AngularJS: {
     id: 'angularjs',
     icon: 'angularjs',
     url: 'https://angularjs.org/',
-    npm: 'angular',
     test: function ({ angular }) {
       return (
         !!(angular && angular.version && angular.version.full) && {
@@ -807,21 +736,15 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'ionic',
     icon: 'ionic',
     url: 'https://ionicframework.com/',
-    npm: '@ionic/cli',
     test: function () {
       const n = u('ion-app');
-      return (
-        !(!n || n.nodeName !== 'ION-APP') && {
-          version: null,
-        }
-      );
+      return !(!n || n.nodeName !== 'ION-APP') && NONE;
     },
   },
   'Ember.js': {
     id: 'emberjs',
     icon: 'emberjs',
     url: 'https://emberjs.com/',
-    npm: 'ember-source',
     test: function (t: Probe) {
       const n = t.Ember || t.Em;
       return (
@@ -835,7 +758,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'hammerjs',
     icon: 'hammerjs',
     url: 'http://eightmedia.github.io/hammer.js/',
-    npm: 'hammerjs',
     test: function (t: Probe) {
       return (
         !(!t.Hammer || !t.Hammer.Pinch) && {
@@ -848,20 +770,14 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'visibilityjs',
     icon: 'icon38',
     url: 'https://github.com/ai/visibilityjs',
-    npm: 'visibilityjs',
     test: function (t: Probe) {
-      return (
-        !(!t.Visibility || !t.Visibility.every) && {
-          version: null,
-        }
-      );
+      return !(!t.Visibility || !t.Visibility.every) && NONE;
     },
   },
   'Pixi.js': {
     id: 'pixi',
     icon: 'pixi',
     url: 'http://www.pixijs.com/',
-    npm: 'pixi.js',
     test: function ({ PIXI }) {
       return (
         !!(PIXI && PIXI.WebGLRenderer && PIXI.VERSION) && {
@@ -874,7 +790,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'greensock',
     icon: 'greensock',
     url: 'https://greensock.com/gsap',
-    npm: 'gsap',
     test: function (t: Probe) {
       return (
         !(!t.TweenMax || !t.TweenMax.pauseAll) && {
@@ -887,20 +802,14 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'isotope',
     icon: null,
     url: 'https://isotope.metafizzy.co/',
-    npm: 'isotope-layout',
     test: function (t: Probe) {
-      return (
-        !!(t.Isotope || (t.$ != null && t.$.Isotope)) && {
-          version: null,
-        }
-      );
+      return !!(t.Isotope || (t.$ != null && t.$.Isotope)) && NONE;
     },
   },
   Marionette: {
     id: 'marionette',
     icon: 'marionette',
     url: 'https://marionettejs.com/',
-    npm: 'backbone.marionette',
     test: function (t: Probe) {
       return (
         !(!t.Marionette || !t.Marionette.Application) && {
@@ -913,7 +822,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'canjs',
     icon: 'canjs',
     url: 'https://canjs.com/',
-    npm: 'can',
     test: function (t: Probe) {
       return (
         !(!t.can || !t.can.Construct) && {
@@ -926,7 +834,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'vue',
     icon: 'vue',
     url: 'https://vuejs.org/',
-    npm: 'vue',
     test: function (t: Probe) {
       return (
         !(
@@ -948,20 +855,14 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'nuxt',
     icon: 'nuxt',
     url: 'https://nuxtjs.org/',
-    npm: 'nuxt',
     test: function (t: Probe) {
-      return (
-        !!(t.__NUXT__ || t.$nuxt || c().some((t) => t.__vue__?.nuxt)) && {
-          version: null,
-        }
-      );
+      return !!(t.__NUXT__ || t.$nuxt || c().some((t) => t.__vue__?.nuxt)) && NONE;
     },
   },
   Two: {
     id: 'two',
     icon: 'two',
     url: 'https://two.js.org/',
-    npm: 'two.js',
     test: function (t: Probe) {
       return (
         !(!t.Two || !t.Two.Utils) && {
@@ -974,20 +875,14 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'materialdesignlite',
     icon: 'mdl',
     url: 'https://getmdl.io/',
-    npm: 'material-design-lite',
     test: function (t: Probe) {
-      return (
-        !(!t.componentHandler || !t.componentHandler.upgradeElement) && {
-          version: null,
-        }
-      );
+      return !(!t.componentHandler || !t.componentHandler.upgradeElement) && NONE;
     },
   },
   'Kendo UI': {
     id: 'kendoui',
     icon: 'kendoui',
     url: 'https://github.com/telerik/kendo-ui-core',
-    npm: 'kendo-ui-core',
     test: function (t: Probe) {
       return (
         !!(t.kendo && t.kendo.View && t.kendo.View.extend) && {
@@ -1000,20 +895,14 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'matterjs',
     icon: 'matter-js',
     url: 'http://brm.io/matter-js/',
-    npm: 'matter-js',
     test: function (t: Probe) {
-      return (
-        !(!t.Matter || !t.Matter.Engine) && {
-          version: null,
-        }
-      );
+      return !(!t.Matter || !t.Matter.Engine) && NONE;
     },
   },
   Riot: {
     id: 'riot',
     icon: 'riot',
     url: 'https://riot.js.org/',
-    npm: 'riot',
     test: function (t: Probe) {
       return (
         !(!t.riot || !t.riot.mixin) && {
@@ -1026,7 +915,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'momentjs',
     icon: 'momentjs',
     url: 'http://momentjs.com/',
-    npm: 'moment',
     test: function (t: Probe) {
       return (
         !(!t.moment || (!t.moment.isMoment && !t.moment.lang)) && {
@@ -1039,7 +927,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'moment-timezone',
     icon: 'momentjs',
     url: 'http://momentjs.com/timezone/',
-    npm: 'moment-timezone',
     test: function (t: Probe) {
       return (
         !(!t.moment || !t.moment.tz) && {
@@ -1052,7 +939,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'scrollmagic',
     icon: 'scrollmagic',
     url: 'http://scrollmagic.io/',
-    npm: 'scrollmagic',
     test: function (t: Probe) {
       return (
         !(!t.ScrollMagic || !t.ScrollMagic.Controller) && {
@@ -1065,7 +951,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'numeraljs',
     icon: 'numeraljs',
     url: 'http://numeraljs.com/',
-    npm: 'numeraljs',
     test: function (t: Probe) {
       return (
         !(!t.numeral || !t.isNumeral) && {
@@ -1078,7 +963,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'framer',
     icon: 'framer',
     url: 'https://framer.com/',
-    npm: 'framerjs',
     test: function (t: Probe) {
       return (
         !(!t.Framer || !t.Framer.Layer) && {
@@ -1091,20 +975,14 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'marko',
     icon: 'marko',
     url: 'https://markojs.com/',
-    npm: 'marko',
     test: function () {
-      return (
-        !!u('[data-marko-key], [data-marko]') && {
-          version: null,
-        }
-      );
+      return !!u('[data-marko-key], [data-marko]') && NONE;
     },
   },
   AMP: {
     id: 'amp',
     icon: 'amp',
     url: 'https://amp.dev/',
-    npm: 'https://www.npmjs.com/org/ampproject',
     test: function (t: Probe) {
       const n = t.document.documentElement.getAttribute('amp-version');
       return (
@@ -1118,33 +996,22 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'gatsby',
     icon: 'gatsby',
     url: 'https://www.gatsbyjs.org/',
-    npm: 'gatsby',
     test: function () {
-      return (
-        !!document.getElementById('___gatsby') && {
-          version: null,
-        }
-      );
+      return !!document.getElementById('___gatsby') && NONE;
     },
   },
   Shopify: {
     id: 'shopify',
     icon: 'shopify',
     url: 'https://www.shopify.com/',
-    npm: null,
     test: function (t: Probe) {
-      return (
-        !(!t.Shopify || !t.Shopify.shop) && {
-          version: null,
-        }
-      );
+      return !(!t.Shopify || !t.Shopify.shop) && NONE;
     },
   },
   Magento: {
     id: 'magento',
     icon: 'magento',
     url: 'https://magento.com/',
-    npm: null,
     test: function () {
       const n = /\/static(?:\/version\d+)?\/frontend\/.+\/.+\/requirejs\/require(?:\.min)?\.js/;
       return (
@@ -1158,7 +1025,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'wordpress',
     icon: 'wordpress',
     url: 'https://wordpress.org/',
-    npm: null,
     test: function () {
       const n = !!u('link[rel="https://api.w.org/"]');
       const e = !!a('link[href*="wp-includes"], script[src*="wp-includes"]').length;
@@ -1175,7 +1041,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'wp_theme',
     icon: 'theme',
     url: 'https://wordpress.org/themes/',
-    npm: null,
     test: function () {
       let n = null;
       const e = /\/wp-content\/themes\/([^/]+)\//;
@@ -1200,13 +1065,11 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'wix',
     icon: 'wix',
     url: 'https://www.wix.com/',
-    npm: null,
     test: function (t: Probe) {
       return (
         ((t.wixPerformanceMeasurements && t.wixPerformanceMeasurements.info) ||
-          !(!t.wixBiSession || !t.wixBiSession.info)) && {
-          version: null,
-        }
+          !(!t.wixBiSession || !t.wixBiSession.info)) &&
+        NONE
       );
     },
   },
@@ -1214,7 +1077,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'corejs',
     icon: 'corejs',
     url: 'https://github.com/zloirock/core-js',
-    npm: 'core-js',
     test: function ({ '__core-js_shared__': __core_js_shared__, core }) {
       if (__core_js_shared__) {
         const o = __core_js_shared__.versions;
@@ -1235,7 +1097,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'drupal',
     icon: 'drupal',
     url: 'https://www.drupal.org/',
-    npm: null,
     test: function (t: Probe) {
       const n = u('meta[name="generator"][content^="Drupal"]');
       const version = n ? n.getAttribute('content').replace(/\D+/gi, '') : null;
@@ -1257,7 +1118,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'create-react-app',
     icon: 'cra',
     url: 'https://create-react-app.dev/',
-    npm: 'react-scripts',
     test: function (t: Probe) {
       let n;
       let e;
@@ -1270,9 +1130,7 @@ export const SIGNATURES: Record<string, Signature> = {
         }
       } while ((firstElementChild = firstElementChild.nextElementSibling));
       return (
-        !!(e && n && /You need to enable JavaScript to run this app/.test(n.textContent)) && {
-          version: null,
-        }
+        !!(e && n && /You need to enable JavaScript to run this app/.test(n.textContent)) && NONE
       );
     },
   },
@@ -1280,7 +1138,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'joomla',
     icon: 'joomla',
     url: 'https://www.joomla.org/',
-    npm: null,
     test: function (t: Probe) {
       const n = u('meta[name=generator][content^="Joomla"]');
       const e = !!a('script[src*="/media/jui/js/bootstrap.min.js"]').length;
@@ -1289,18 +1146,13 @@ export const SIGNATURES: Record<string, Signature> = {
           version: n.getAttribute('content').replace(/^\w+\s/, ''),
         };
       }
-      return (
-        !(!t.Joomla && !e) && {
-          version: null,
-        }
-      );
+      return !(!t.Joomla && !e) && NONE;
     },
   },
   'WP Rocket': {
     id: 'wp-rocket',
     icon: 'wp-rocket',
     url: 'https://wp-rocket.me/',
-    npm: null,
     test: function (t: Probe) {
       let n = 0;
       if (t.RocketLazyLoadScripts || t.RocketPreloadLinksConfig) {
@@ -1315,24 +1167,15 @@ export const SIGNATURES: Record<string, Signature> = {
       if (u('.rocket-lazyload, [data-rocket-lazyload]')) {
         n++;
       }
-      return (
-        n >= 2 && {
-          version: null,
-        }
-      );
+      return n >= 2 && NONE;
     },
   },
   Remix: {
     id: 'remix',
     icon: 'remix',
     url: 'https://remix.run/',
-    npm: 'remix',
     test: function (t: Probe) {
-      return (
-        !!t.__remixContext && {
-          version: null,
-        }
-      );
+      return !!t.__remixContext && NONE;
     },
   },
   ECharts: {
@@ -1345,11 +1188,7 @@ export const SIGNATURES: Record<string, Signature> = {
           version: t.echarts.version || null,
         };
       }
-      return (
-        !!u('[_echarts_instance_]') && {
-          version: null,
-        }
-      );
+      return !!u('[_echarts_instance_]') && NONE;
     },
   },
   'Chart.js': {
@@ -1362,11 +1201,7 @@ export const SIGNATURES: Record<string, Signature> = {
           version: t.Chart.version || null,
         };
       }
-      return (
-        !!e(a('canvas')).some((t) => t.$chartjs) && {
-          version: null,
-        }
-      );
+      return !!e(a('canvas')).some((t) => t.$chartjs) && NONE;
     },
   },
   FusionCharts: {
@@ -1379,11 +1214,7 @@ export const SIGNATURES: Record<string, Signature> = {
           version: t.FusionCharts.version.join('.') || null,
         };
       }
-      return (
-        !!e(a('.fusioncharts-container')).some((t) => t.FusionCharts) && {
-          version: null,
-        }
-      );
+      return !!e(a('.fusioncharts-container')).some((t) => t.FusionCharts) && NONE;
     },
   },
   AmCharts: {
@@ -1418,11 +1249,7 @@ export const SIGNATURES: Record<string, Signature> = {
     icon: 'apexcharts',
     url: 'https://apexcharts.com/',
     test: function (t: Probe) {
-      return (
-        ((t.ApexCharts && t.ApexCharts.getChartByID) || !!u('svg.apexcharts-svg')) && {
-          version: null,
-        }
-      );
+      return ((t.ApexCharts && t.ApexCharts.getChartByID) || !!u('svg.apexcharts-svg')) && NONE;
     },
   },
   Chartist: {
@@ -1430,11 +1257,7 @@ export const SIGNATURES: Record<string, Signature> = {
     icon: 'chartist',
     url: 'https://github.com/chartist-js/chartist',
     test: function () {
-      return (
-        !!e(a('svg')).some((t) => t.attributes['xmlns:ct']) && {
-          version: null,
-        }
-      );
+      return !!e(a('svg')).some((t) => t.attributes['xmlns:ct']) && NONE;
     },
   },
   Plotly: {
@@ -1447,18 +1270,13 @@ export const SIGNATURES: Record<string, Signature> = {
           version: t.Plotly.version || null,
         };
       }
-      return (
-        !!u('.js-plotly-plot') && {
-          version: null,
-        }
-      );
+      return !!u('.js-plotly-plot') && NONE;
     },
   },
   Svelte: {
     id: 'svelte',
     icon: 'svelte',
     url: 'https://svelte.dev/',
-    npm: 'svelte',
     test: function (t: Probe) {
       const e = t.__svelte?.v;
       return (
@@ -1467,9 +1285,7 @@ export const SIGNATURES: Record<string, Signature> = {
           ? {
               version: e.values().next().value,
             }
-          : {
-              version: null,
-            })
+          : NONE)
       );
     },
   },
@@ -1477,39 +1293,27 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'sveltekit',
     icon: 'svelte',
     url: 'https://kit.svelte.dev/',
-    npm: '@sveltejs/kit',
     test: function () {
-      return (
-        !!document.body.innerHTML.includes('__sveltekit_') && {
-          version: null,
-        }
-      );
+      return !!document.body.innerHTML.includes('__sveltekit_') && NONE;
     },
   },
   Astro: {
     id: 'astro',
     icon: 'astro',
     url: 'https://astro.build/',
-    npm: 'astro',
     test: function () {
-      return (
-        !(!u('astro-island') && !u('[astro-island]')) && {
-          version: null,
-        }
-      );
+      return !(!u('astro-island') && !u('[astro-island]')) && NONE;
     },
   },
   'Vercel Analytics': {
     id: 'vercel-analytics',
     icon: 'vercel',
     url: 'https://vercel.com/analytics',
-    npm: '@vercel/analytics',
     test: function (t: Probe) {
       return (
         ((t.va && typeof t.va === 'function') ||
-          !!u('script[src*="vercel.com/_vercel/insights"]')) && {
-          version: null,
-        }
+          !!u('script[src*="vercel.com/_vercel/insights"]')) &&
+        NONE
       );
     },
   },
@@ -1517,20 +1321,14 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'vite',
     icon: 'vite',
     url: 'https://vitejs.dev/',
-    npm: 'vite',
     test: function (t: Probe) {
-      return (
-        !(!t.__vite_plugin_react_preamble_installed__ && !t.__vite_is_modern_browser) && {
-          version: null,
-        }
-      );
+      return !(!t.__vite_plugin_react_preamble_installed__ && !t.__vite_is_modern_browser) && NONE;
     },
   },
   WooCommerce: {
     id: 'woocommerce',
     icon: 'woocommerce',
     url: 'https://woocommerce.com/',
-    npm: null,
     test: function (t: Probe) {
       const n = u('meta[name="generator"][content*="WooCommerce"]');
       if (n) {
@@ -1540,9 +1338,7 @@ export const SIGNATURES: Record<string, Signature> = {
         };
       }
       return (
-        !(!t.wc_add_to_cart_params && !document.body.classList.contains('woocommerce')) && {
-          version: null,
-        }
+        !(!t.wc_add_to_cart_params && !document.body.classList.contains('woocommerce')) && NONE
       );
     },
   },
@@ -1550,114 +1346,74 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'stripe',
     icon: 'stripe',
     url: 'https://stripe.com/',
-    npm: '@stripe/stripe-js',
     test: function (t: Probe) {
-      return (
-        !(!t.Stripe || typeof t.Stripe !== 'function') && {
-          version: null,
-        }
-      );
+      return !(!t.Stripe || typeof t.Stripe !== 'function') && NONE;
     },
   },
   htmx: {
     id: 'htmx',
     icon: 'htmx',
     url: 'https://htmx.org/',
-    npm: 'htmx.org',
     test: function (t: Probe) {
       if (t.htmx) {
         return {
           version: t.htmx.version || null,
         };
       }
-      return (
-        !!u('[hx-get], [hx-post], [hx-trigger]') && {
-          version: null,
-        }
-      );
+      return !!u('[hx-get], [hx-post], [hx-trigger]') && NONE;
     },
   },
   'Alpine.js': {
     id: 'alpinejs',
     icon: 'alpine',
     url: 'https://alpinejs.dev/',
-    npm: 'alpinejs',
     test: function (t: Probe) {
       if (t.Alpine) {
         return {
           version: t.Alpine.version || null,
         };
       }
-      return (
-        !!u('[x-data], [x-init]') && {
-          version: null,
-        }
-      );
+      return !!u('[x-data], [x-init]') && NONE;
     },
   },
   'Framer Motion': {
     id: 'framer-motion',
     icon: 'framer',
     url: 'https://www.framer.com/motion/',
-    npm: 'framer-motion',
     test: function () {
-      return (
-        !(!u('[data-framer-name]') && !u('[data-framer-component-type]')) && {
-          version: null,
-        }
-      );
+      return !(!u('[data-framer-name]') && !u('[data-framer-component-type]')) && NONE;
     },
   },
   Sanity: {
     id: 'sanity',
     icon: 'sanity',
     url: 'https://www.sanity.io/',
-    npm: '@sanity/client',
     test: function (t: Probe) {
-      return (
-        !!t.__sanityClient && {
-          version: null,
-        }
-      );
+      return !!t.__sanityClient && NONE;
     },
   },
   Contentful: {
     id: 'contentful',
     icon: 'contentful',
     url: 'https://www.contentful.com/',
-    npm: 'contentful',
     test: function (t: Probe) {
-      return (
-        !!t.contentful && {
-          version: null,
-        }
-      );
+      return !!t.contentful && NONE;
     },
   },
   Storybook: {
     id: 'storybook',
     icon: 'storybook',
     url: 'https://storybook.js.org/',
-    npm: '@storybook/react',
     test: function (t: Probe) {
-      return (
-        !(!t.__STORYBOOK_ADDONS && !t.__STORYBOOK_STORY_STORE__) && {
-          version: null,
-        }
-      );
+      return !(!t.__STORYBOOK_ADDONS && !t.__STORYBOOK_STORY_STORE__) && NONE;
     },
   },
   Qwik: {
     id: 'qwik',
     icon: 'qwik',
     url: 'https://qwik.builder.io/',
-    npm: '@builder.io/qwik',
     test: function (t: Probe) {
-      return (
-        !(!t.qwikloader && !u('[q\\:id]')) && {
-          version: null,
-        }
-      );
+      return !(!t.qwikloader && !u('[q\\:id]')) && NONE;
     },
   },
   'Google Analytics': {
@@ -1682,31 +1438,21 @@ export const SIGNATURES: Record<string, Signature> = {
     icon: 'plausible',
     url: 'https://plausible.io/',
     test: function (t: Probe) {
-      return (
-        !(!t.plausible && !u('script[src*="plausible.io"]')) && {
-          version: null,
-        }
-      );
+      return !(!t.plausible && !u('script[src*="plausible.io"]')) && NONE;
     },
   },
   Posthog: {
     id: 'posthog',
     icon: 'posthog',
     url: 'https://posthog.com/',
-    npm: 'posthog-js',
     test: function (t: Probe) {
-      return (
-        !!t.posthog && {
-          version: null,
-        }
-      );
+      return !!t.posthog && NONE;
     },
   },
   Sentry: {
     id: 'sentry',
     icon: 'sentry',
     url: 'https://sentry.io/',
-    npm: '@sentry/browser',
     test: function (t: Probe) {
       return (
         !(!t.Sentry && !t.__SENTRY__) && {
@@ -1719,20 +1465,14 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'pinia',
     icon: 'pinia',
     url: 'https://pinia.vuejs.org/',
-    npm: 'pinia',
     test: function (t: Probe) {
-      return (
-        t.__VUE_DEVTOOLS_GLOBAL_HOOK__?.stores?.size > 0 && {
-          version: null,
-        }
-      );
+      return t.__VUE_DEVTOOLS_GLOBAL_HOOK__?.stores?.size > 0 && NONE;
     },
   },
   'Material UI': {
     id: 'mui',
     icon: 'mui',
     url: 'https://mui.com/',
-    npm: '@mui/material',
     test: function () {
       if (u('[class^="MuiButton-"], [class^="MuiModal-"], [class^="MuiPaper-"]')) {
         return {
@@ -1750,26 +1490,19 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'antd',
     icon: 'antd',
     url: 'https://ant.design/',
-    npm: 'antd',
     test: function (t: Probe) {
-      return (
-        (t.antd || !!u('.ant-layout, .ant-modal, .ant-table, .ant-btn')) && {
-          version: null,
-        }
-      );
+      return (t.antd || !!u('.ant-layout, .ant-modal, .ant-table, .ant-btn')) && NONE;
     },
   },
   'Chakra UI': {
     id: 'chakra',
     icon: 'chakra',
     url: 'https://chakra-ui.com/',
-    npm: '@chakra-ui/react',
     test: function (t: Probe) {
       return (
         (u('[class^="chakra-button"], [class^="chakra-input"], [class^="chakra-toast"]') ||
-          !(!t.document.documentElement.getAttribute('data-theme') || !u('[class^="css-"]'))) && {
-          version: null,
-        }
+          !(!t.document.documentElement.getAttribute('data-theme') || !u('[class^="css-"]'))) &&
+        NONE
       );
     },
   },
@@ -1777,7 +1510,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'tailwindcss',
     icon: 'tailwind',
     url: 'https://tailwindcss.com/',
-    npm: 'tailwindcss',
     test: function () {
       if (
         (() => {
@@ -1813,69 +1545,48 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'solidjs',
     icon: 'solid',
     url: 'https://www.solidjs.com/',
-    npm: 'solid-js',
     test: function () {
-      return (
-        !!u('[data-hk]') && {
-          version: null,
-        }
-      );
+      return !!u('[data-hk]') && NONE;
     },
   },
   Flatpickr: {
     id: 'flatpickr',
     icon: 'flatpickr',
     url: 'https://flatpickr.js.org/',
-    npm: 'flatpickr',
     test: function (t: Probe) {
       if (t.flatpickr) {
         return {
           version: t.flatpickr.version || null,
         };
       }
-      return (
-        !!u('.flatpickr-calendar') && {
-          version: null,
-        }
-      );
+      return !!u('.flatpickr-calendar') && NONE;
     },
   },
   Pikaday: {
     id: 'pikaday',
     icon: null,
     url: 'https://pikaday.com/',
-    npm: 'pikaday',
     test: function (t: Probe) {
-      return (
-        !!t.Pikaday && {
-          version: null,
-        }
-      );
+      return !!t.Pikaday && NONE;
     },
   },
   'Tippy.js': {
     id: 'tippy',
     icon: 'tippy',
     url: 'https://atomiks.github.io/tippyjs/',
-    npm: 'tippy.js',
     test: function (t: Probe) {
       if (t.tippy) {
         return {
           version: t.tippy.version || null,
         };
       }
-      return (
-        !!u('[data-tippy-root]') && {
-          version: null,
-        }
-      );
+      return !!u('[data-tippy-root]') && NONE;
     },
   },
   'Popper.js': {
     id: 'popper',
     icon: 'popper',
     url: 'https://popper.js.org/',
-    npm: '@popperjs/core',
     test: function (t: Probe) {
       return (
         !!t.Popper && {
@@ -1888,72 +1599,46 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'rellax',
     icon: 'rellax',
     url: 'https://dixonandmoe.com/rellax/',
-    npm: 'rellax',
     test: function (t: Probe) {
-      return (
-        (t.Rellax || !!u('.rellax')) && {
-          version: null,
-        }
-      );
+      return (t.Rellax || !!u('.rellax')) && NONE;
     },
   },
   'Locomotive Scroll': {
     id: 'locomotive-scroll',
     icon: 'locomotive',
     url: 'https://locomotivemtl.github.io/locomotive-scroll/',
-    npm: 'locomotive-scroll',
     test: function (t: Probe) {
-      return (
-        (t.LocomotiveScroll || !!u('[data-scroll-container]')) && {
-          version: null,
-        }
-      );
+      return (t.LocomotiveScroll || !!u('[data-scroll-container]')) && NONE;
     },
   },
   'Smooth Scroll': {
     id: 'smooth-scroll',
     icon: null,
     url: 'https://github.com/cferdinandi/smooth-scroll',
-    npm: 'smooth-scroll',
     test: function (t: Probe) {
-      return (
-        (t.SmoothScroll || !!u('[data-scroll]')) && {
-          version: null,
-        }
-      );
+      return (t.SmoothScroll || !!u('[data-scroll]')) && NONE;
     },
   },
   SweetAlert2: {
     id: 'sweetalert2',
     icon: 'sweetalert',
     url: 'https://sweetalert2.github.io/',
-    npm: 'sweetalert2',
     test: function (t: Probe) {
-      return (
-        !(!t.Swal && !t.swal) && {
-          version: null,
-        }
-      );
+      return !(!t.Swal && !t.swal) && NONE;
     },
   },
   Fancybox: {
     id: 'fancybox',
     icon: null,
     url: 'https://fancyapps.com/fancybox/',
-    npm: '@fancyapps/ui',
     test: function (t: Probe) {
-      return (
-        (t.Fancybox || !!u('[data-fancybox]')) && {
-          version: null,
-        }
-      );
+      return (t.Fancybox || !!u('[data-fancybox]')) && NONE;
     },
   },
   'Sortable.js': {
     id: 'sortable',
     icon: 'sortable',
     url: 'https://sortablejs.github.io/Sortable/',
-    npm: 'sortablejs',
     test: function (t: Probe) {
       return (
         !!t.Sortable && {
@@ -1966,20 +1651,14 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'dragula',
     icon: 'dragula',
     url: 'https://bevacqua.github.io/dragula/',
-    npm: 'dragula',
     test: function (t: Probe) {
-      return (
-        !!t.dragula && {
-          version: null,
-        }
-      );
+      return !!t.dragula && NONE;
     },
   },
   Masonry: {
     id: 'masonry',
     icon: null,
     url: 'https://masonry.desandro.com/',
-    npm: 'masonry-layout',
     test: function (t: Probe) {
       return (
         !!t.Masonry && {
@@ -1992,64 +1671,43 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'packery',
     icon: 'packery',
     url: 'https://packery.metafizzy.co/',
-    npm: 'packery',
     test: function (t: Probe) {
-      return (
-        !!t.Packery && {
-          version: null,
-        }
-      );
+      return !!t.Packery && NONE;
     },
   },
   LazyLoad: {
     id: 'lazyload',
     icon: null,
     url: 'https://github.com/verlok/vanilla-lazyload',
-    npm: 'vanilla-lazyload',
     test: function (t: Probe) {
-      return (
-        (t.LazyLoad || !!u('[data-src], .lazy')) && {
-          version: null,
-        }
-      );
+      return (t.LazyLoad || !!u('[data-src], .lazy')) && NONE;
     },
   },
   Lozad: {
     id: 'lozad',
     icon: null,
     url: 'https://apoorv.pro/lozad.js/',
-    npm: 'lozad',
     test: function (t: Probe) {
-      return (
-        (t.lozad || !!u('.lozad')) && {
-          version: null,
-        }
-      );
+      return (t.lozad || !!u('.lozad')) && NONE;
     },
   },
   'Highlight.js': {
     id: 'highlightjs',
     icon: null,
     url: 'https://highlightjs.org/',
-    npm: 'highlight.js',
     test: function (t: Probe) {
       if (t.hljs) {
         return {
           version: t.hljs.versionString || null,
         };
       }
-      return (
-        !!u('.hljs') && {
-          version: null,
-        }
-      );
+      return !!u('.hljs') && NONE;
     },
   },
   Prism: {
     id: 'prism',
     icon: 'prism',
     url: 'https://prismjs.com/',
-    npm: 'prismjs',
     test: function (t: Probe) {
       return (
         !!t.Prism && {
@@ -2062,38 +1720,27 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'medium-editor',
     icon: 'medium-editor',
     url: 'https://yabwe.github.io/medium-editor/',
-    npm: 'medium-editor',
     test: function (t: Probe) {
-      return (
-        !!t.MediumEditor && {
-          version: null,
-        }
-      );
+      return !!t.MediumEditor && NONE;
     },
   },
   Quill: {
     id: 'quill',
     icon: 'quill',
     url: 'https://quilljs.com/',
-    npm: 'quill',
     test: function (t: Probe) {
       if (t.Quill) {
         return {
           version: t.Quill.version || null,
         };
       }
-      return (
-        !!u('.ql-editor') && {
-          version: null,
-        }
-      );
+      return !!u('.ql-editor') && NONE;
     },
   },
   'Font Awesome': {
     id: 'font-awesome',
     icon: 'fontawesome',
     url: 'https://fontawesome.com/',
-    npm: '@fortawesome/fontawesome-free',
     test: function (t: Probe) {
       if (t.FontAwesomeConfig) {
         return {
@@ -2116,51 +1763,35 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'feather',
     icon: null,
     url: 'https://feathericons.com/',
-    npm: 'feather-icons',
     test: function (t: Probe) {
-      return (
-        (t.feather || !!u('[data-feather]')) && {
-          version: null,
-        }
-      );
+      return (t.feather || !!u('[data-feather]')) && NONE;
     },
   },
   'js-cookie': {
     id: 'js-cookie',
     icon: 'jscookie',
     url: 'https://github.com/js-cookie/js-cookie',
-    npm: 'js-cookie',
     test: function (t: Probe) {
-      return (
-        !(!t.Cookies || !t.Cookies.get) && {
-          version: null,
-        }
-      );
+      return !(!t.Cookies || !t.Cookies.get) && NONE;
     },
   },
   Select2: {
     id: 'select2',
     icon: 'select2',
     url: 'https://select2.org/',
-    npm: 'select2',
     test: function (t: Probe) {
       if (t.jQuery && t.jQuery.fn && t.jQuery.fn.select2) {
         return {
           version: t.jQuery.fn.select2.defaults?.version || null,
         };
       }
-      return (
-        !!u('.select2-container') && {
-          version: null,
-        }
-      );
+      return !!u('.select2-container') && NONE;
     },
   },
   DataTables: {
     id: 'datatables',
     icon: null,
     url: 'https://datatables.net/',
-    npm: 'datatables.net',
     test: function (t: Probe) {
       return (
         !!(t.jQuery && t.jQuery.fn && t.jQuery.fn.DataTable) && {
@@ -2173,33 +1804,22 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'slick',
     icon: 'slick',
     url: 'https://kenwheeler.github.io/slick/',
-    npm: 'slick-carousel',
     test: function (t: Probe) {
-      return (
-        ((t.jQuery && t.jQuery.fn && t.jQuery.fn.slick) || !!u('.slick-slider')) && {
-          version: null,
-        }
-      );
+      return ((t.jQuery && t.jQuery.fn && t.jQuery.fn.slick) || !!u('.slick-slider')) && NONE;
     },
   },
   'Owl Carousel': {
     id: 'owl-carousel',
     icon: 'owl',
     url: 'https://owlcarousel2.github.io/OwlCarousel2/',
-    npm: 'owl.carousel',
     test: function (t: Probe) {
-      return (
-        ((t.jQuery && t.jQuery.fn && t.jQuery.fn.owlCarousel) || !!u('.owl-carousel')) && {
-          version: null,
-        }
-      );
+      return ((t.jQuery && t.jQuery.fn && t.jQuery.fn.owlCarousel) || !!u('.owl-carousel')) && NONE;
     },
   },
   'Magnific Popup': {
     id: 'magnific-popup',
     icon: null,
     url: 'https://dimsemenov.com/plugins/magnific-popup/',
-    npm: 'magnific-popup',
     test: function (t: Probe) {
       return (
         !(!t.jQuery || !t.jQuery.magnificPopup) && {
@@ -2212,12 +1832,9 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'lightbox2',
     icon: null,
     url: 'https://lokeshdhakar.com/projects/lightbox2/',
-    npm: 'lightbox2',
     test: function (t: Probe) {
       return (
-        ((t.lightbox && typeof t.lightbox.init === 'function') || !!u('[data-lightbox]')) && {
-          version: null,
-        }
+        ((t.lightbox && typeof t.lightbox.init === 'function') || !!u('[data-lightbox]')) && NONE
       );
     },
   },
@@ -2225,7 +1842,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'axios',
     icon: 'axios',
     url: 'https://axios-http.com/',
-    npm: 'axios',
     test: function (t: Probe) {
       return (
         !!t.axios && {
@@ -2238,59 +1854,39 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'swiper',
     icon: 'swiper',
     url: 'https://swiperjs.com/',
-    npm: 'swiper',
     test: function (t: Probe) {
       if (t.Swiper) {
         return {
           version: t.Swiper.version || null,
         };
       }
-      return (
-        !!u('.swiper, .swiper-container') && {
-          version: null,
-        }
-      );
+      return !!u('.swiper, .swiper-container') && NONE;
     },
   },
   'AOS (Animate On Scroll)': {
     id: 'aos',
     icon: null,
     url: 'https://michalsnik.github.io/aos/',
-    npm: 'aos',
     test: function (t: Probe) {
-      return (
-        (t.AOS || !!u('[data-aos]')) && {
-          version: null,
-        }
-      );
+      return (t.AOS || !!u('[data-aos]')) && NONE;
     },
   },
   'Particles.js': {
     id: 'particles',
     icon: 'particles',
     url: 'https://vincentgarreau.com/particles.js/',
-    npm: 'particles.js',
     test: function (t: Probe) {
-      return (
-        (t.particlesJS || !!document.getElementById('particles-js')) && {
-          version: null,
-        }
-      );
+      return (t.particlesJS || !!document.getElementById('particles-js')) && NONE;
     },
   },
   'Typed.js': {
     id: 'typed',
     icon: null,
     url: 'https://mattboldt.com/demos/typed-js/',
-    npm: 'typed.js',
     test: function (t: Probe) {
       if (t.Typed && typeof t.Typed === 'function') {
         try {
-          return (
-            !(!t.Typed.prototype || typeof t.Typed.prototype.destroy !== 'function') && {
-              version: null,
-            }
-          );
+          return !(!t.Typed.prototype || typeof t.Typed.prototype.destroy !== 'function') && NONE;
         } catch {
           return false;
         }
@@ -2302,15 +1898,10 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'countup',
     icon: null,
     url: 'https://inorganik.github.io/countUp.js/',
-    npm: 'countup.js',
     test: function (t: Probe) {
       if (t.CountUp && typeof t.CountUp === 'function') {
         try {
-          return (
-            !(!t.CountUp.prototype || typeof t.CountUp.prototype.start !== 'function') && {
-              version: null,
-            }
-          );
+          return !(!t.CountUp.prototype || typeof t.CountUp.prototype.start !== 'function') && NONE;
         } catch {
           return false;
         }
@@ -2322,7 +1913,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'animejs',
     icon: 'animejs',
     url: 'https://animejs.com/',
-    npm: 'animejs',
     test: function (t: Probe) {
       return (
         !(!t.anime || typeof t.anime !== 'function' || (!t.anime.version && !t.anime.timeline)) && {
@@ -2335,7 +1925,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'lottie',
     icon: 'lottie',
     url: 'https://airbnb.io/lottie/',
-    npm: 'lottie-web',
     test: function (t: Probe) {
       return (
         !(!t.lottie || (!t.lottie.loadAnimation && !t.lottie.version)) && {
@@ -2348,25 +1937,19 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'parsley',
     icon: null,
     url: 'https://parsleyjs.org/',
-    npm: 'parsleyjs',
     test: function (t: Probe) {
       if (t.Parsley && (t.Parsley.version || t.Parsley.Factory)) {
         return {
           version: t.Parsley.version || null,
         };
       }
-      return (
-        !!u('[data-parsley-validate]') && {
-          version: null,
-        }
-      );
+      return !!u('[data-parsley-validate]') && NONE;
     },
   },
   'jQuery Validation': {
     id: 'jquery-validation',
     icon: null,
     url: 'https://jqueryvalidation.org/',
-    npm: 'jquery-validation',
     test: function (t: Probe) {
       return (
         !!(t.jQuery && t.jQuery.fn && t.jQuery.fn.validate) && {
@@ -2379,25 +1962,17 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'lucide',
     icon: 'lucide',
     url: 'https://lucide.dev/',
-    npm: 'lucide-react',
     test: function () {
-      return (
-        !!u('[data-lucide]') && {
-          version: null,
-        }
-      );
+      return !!u('[data-lucide]') && NONE;
     },
   },
   'Phosphor Icons': {
     id: 'phosphor',
     icon: 'phosphor',
     url: 'https://phosphoricons.com/',
-    npm: 'phosphor-icons',
     test: function (t: Probe) {
       if (t.phosphor && n(t.phosphor) === 'object') {
-        return {
-          version: null,
-        };
+        return NONE;
       }
       return (
         !!u(
@@ -2409,9 +1984,7 @@ export const SIGNATURES: Record<string, Signature> = {
             'i[class^="ph-thin"]',
             'i[class^="ph-regular"]',
           ].join(', '),
-        ) && {
-          version: null,
-        }
+        ) && NONE
       );
     },
   },
@@ -2419,51 +1992,33 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'ionicons',
     icon: 'ionicons',
     url: 'https://ionic.io/ionicons',
-    npm: 'ionicons',
     test: function () {
-      return (
-        !!u('ion-icon') && {
-          version: null,
-        }
-      );
+      return !!u('ion-icon') && NONE;
     },
   },
   'Radix UI': {
     id: 'radix-ui',
     icon: 'radix',
     url: 'https://www.radix-ui.com/',
-    npm: '@radix-ui/react-dialog',
     test: function () {
-      return (
-        !(!u('[data-radix-portal]') && !u('[data-radix-dialog]')) && {
-          version: null,
-        }
-      );
+      return !(!u('[data-radix-portal]') && !u('[data-radix-dialog]')) && NONE;
     },
   },
   'Headless UI': {
     id: 'headlessui',
     icon: null,
     url: 'https://headlessui.com/',
-    npm: '@headlessui/react',
     test: function () {
-      return (
-        !!u('[data-headlessui-state]') && {
-          version: null,
-        }
-      );
+      return !!u('[data-headlessui-state]') && NONE;
     },
   },
   PrimeNG: {
     id: 'primeng',
     icon: 'primeng',
     url: 'https://primeng.org/',
-    npm: 'primeng',
     test: function (t: Probe) {
       return (
-        !!(t.ng && u('.p-component') && u('[class^="p-button"], [class^="p-inputtext"]')) && {
-          version: null,
-        }
+        !!(t.ng && u('.p-component') && u('[class^="p-button"], [class^="p-inputtext"]')) && NONE
       );
     },
   },
@@ -2471,16 +2026,13 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'primereact',
     icon: 'primereact',
     url: 'https://primereact.org/',
-    npm: 'primereact',
     test: function (t: Probe) {
       return (
         !(
           (!t.React && !u('[data-reactroot], [data-reactid]')) ||
           !u('.p-component') ||
           !u('[class^="p-button"], [class^="p-inputtext"]')
-        ) && {
-          version: null,
-        }
+        ) && NONE
       );
     },
   },
@@ -2488,20 +2040,14 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'unocss',
     icon: 'unocss',
     url: 'https://unocss.dev/',
-    npm: 'unocss',
     test: function (t: Probe) {
-      return (
-        !!t.__unocss && {
-          version: null,
-        }
-      );
+      return !!t.__unocss && NONE;
     },
   },
   Tachyons: {
     id: 'tachyons',
     icon: null,
     url: 'https://tachyons.io/',
-    npm: 'tachyons',
     test: function () {
       const n = `${document.body.className} ${c()
         .slice(0, 100)
@@ -2511,9 +2057,7 @@ export const SIGNATURES: Record<string, Signature> = {
         !(
           !/\b(pa[0-7]|ma[0-7]|mv[0-7]|mh[0-7]|pv[0-7]|ph[0-7])\b/.test(n) ||
           !/\b(db|dib|dn|dt|dtc)\b/.test(n)
-        ) && {
-          version: null,
-        }
+        ) && NONE
       );
     },
   },
@@ -2521,7 +2065,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'quasar',
     icon: 'quasar',
     url: 'https://quasar.dev/',
-    npm: 'quasar',
     test: function (t: Probe) {
       return (
         !(!t.Quasar || (!t.Quasar.version && !t.Quasar.components)) && {
@@ -2534,7 +2077,6 @@ export const SIGNATURES: Record<string, Signature> = {
     id: 'vuetify',
     icon: 'vuetify',
     url: 'https://vuetifyjs.com/',
-    npm: 'vuetify',
     test: function (t: Probe) {
       return (
         !(!t.$vuetify || (!t.$vuetify.version && !t.$vuetify.theme)) && {
@@ -2555,11 +2097,7 @@ export const SIGNATURES: Record<string, Signature> = {
         .some(
           (t) => t.name.includes('fonts.gstatic.com') || t.name.includes('fonts.googleapis.com'),
         );
-      return (
-        !!(n || e || o) && {
-          version: null,
-        }
-      );
+      return !!(n || e || o) && NONE;
     },
   },
   'Google Tag Manager': {
@@ -2594,9 +2132,7 @@ export const SIGNATURES: Record<string, Signature> = {
           u('script[src*="cloudflareinsights.com"]') ||
           t.document.cookie.includes('__cflb') ||
           t.document.cookie.includes('__cf_bm')
-        ) && {
-          version: null,
-        }
+        ) && NONE
       );
     },
   },
@@ -2631,9 +2167,7 @@ export const SIGNATURES: Record<string, Signature> = {
           typeof t.gtag !== 'function' &&
           !u('script[src*="googleadservices.com"]') &&
           !u('script[src*="googlesyndication.com"]')
-        ) && {
-          version: null,
-        }
+        ) && NONE
       );
     },
   },
@@ -2647,9 +2181,7 @@ export const SIGNATURES: Record<string, Signature> = {
           u('script[src*="edgekey.net"]') ||
           u('script[src*="akamaihd.net"]') ||
           u('script[src*="akamaized.net"]')
-        ) && {
-          version: null,
-        }
+        ) && NONE
       );
     },
   },
@@ -2683,9 +2215,8 @@ export const SIGNATURES: Record<string, Signature> = {
         n(t.analytics) === 'object' &&
         typeof t.analytics.track === 'function' &&
         typeof t.analytics.identify === 'function' &&
-        n(t.analytics.Integrations) === 'object' && {
-          version: null,
-        }
+        n(t.analytics.Integrations) === 'object' &&
+        NONE
       );
     },
   },
@@ -2699,9 +2230,7 @@ export const SIGNATURES: Record<string, Signature> = {
           n(t.mixpanel) !== 'object' ||
           typeof t.mixpanel.track !== 'function' ||
           !t.mixpanel.__loaded
-        ) && {
-          version: null,
-        }
+        ) && NONE
       );
     },
   },
@@ -2710,12 +2239,7 @@ export const SIGNATURES: Record<string, Signature> = {
     icon: 'amplitude',
     url: 'https://amplitude.com/',
     test: function (t: Probe) {
-      return (
-        n(t.amplitude) === 'object' &&
-        typeof t.amplitude.getInstance === 'function' && {
-          version: null,
-        }
-      );
+      return n(t.amplitude) === 'object' && typeof t.amplitude.getInstance === 'function' && NONE;
     },
   },
   Matomo: {
@@ -2723,11 +2247,7 @@ export const SIGNATURES: Record<string, Signature> = {
     icon: 'matomo',
     url: 'https://matomo.org/',
     test: function (t: Probe) {
-      return (
-        !(t._paq === undefined || !Array.isArray(t._paq)) && {
-          version: null,
-        }
-      );
+      return !(t._paq === undefined || !Array.isArray(t._paq)) && NONE;
     },
   },
   HubSpot: {
@@ -2735,11 +2255,7 @@ export const SIGNATURES: Record<string, Signature> = {
     icon: 'hubspot',
     url: 'https://www.hubspot.com/',
     test: function (t: Probe) {
-      return (
-        !(t._hsq === undefined || !Array.isArray(t._hsq)) && {
-          version: null,
-        }
-      );
+      return !(t._hsq === undefined || !Array.isArray(t._hsq)) && NONE;
     },
   },
   Intercom: {
@@ -2747,12 +2263,7 @@ export const SIGNATURES: Record<string, Signature> = {
     icon: 'intercom',
     url: 'https://www.intercom.com/',
     test: function (t: Probe) {
-      return (
-        typeof t.Intercom === 'function' &&
-        n(t.intercomSettings) === 'object' && {
-          version: null,
-        }
-      );
+      return typeof t.Intercom === 'function' && n(t.intercomSettings) === 'object' && NONE;
     },
   },
   Drift: {
@@ -2760,12 +2271,7 @@ export const SIGNATURES: Record<string, Signature> = {
     icon: 'drift',
     url: 'https://www.drift.com/',
     test: function (t: Probe) {
-      return (
-        n(t.drift) === 'object' &&
-        n(t.drift.api) === 'object' && {
-          version: null,
-        }
-      );
+      return n(t.drift) === 'object' && n(t.drift.api) === 'object' && NONE;
     },
   },
   Fastly: {
@@ -2773,11 +2279,7 @@ export const SIGNATURES: Record<string, Signature> = {
     icon: 'fastly',
     url: 'https://www.fastly.com/',
     test: function () {
-      return (
-        !(!u('meta[name="fastly-id"]') && !u('script[src*="fastly.net"]')) && {
-          version: null,
-        }
-      );
+      return !(!u('meta[name="fastly-id"]') && !u('script[src*="fastly.net"]')) && NONE;
     },
   },
   Netlify: {
@@ -2787,9 +2289,7 @@ export const SIGNATURES: Record<string, Signature> = {
     test: function () {
       for (let n = a('meta[name="generator"]'), e = 0; e < n.length; e++) {
         if (n[e].content && n[e].content.includes('Netlify')) {
-          return {
-            version: null,
-          };
+          return NONE;
         }
       }
       return false;
@@ -2801,11 +2301,7 @@ export const SIGNATURES: Record<string, Signature> = {
     url: 'https://pages.cloudflare.com/',
     test: function () {
       const n = u('meta[name="generator"]');
-      return (
-        !!(n && n.content && n.content.includes('Cloudflare Pages')) && {
-          version: null,
-        }
-      );
+      return !!(n && n.content && n.content.includes('Cloudflare Pages')) && NONE;
     },
   },
   Optimizely: {
@@ -2818,9 +2314,7 @@ export const SIGNATURES: Record<string, Signature> = {
           t.optimizely === undefined ||
           !Array.isArray(t.optimizely) ||
           typeof t.optimizely.push !== 'function'
-        ) && {
-          version: null,
-        }
+        ) && NONE
       );
     },
   },
@@ -2829,11 +2323,7 @@ export const SIGNATURES: Record<string, Signature> = {
     icon: 'vwo',
     url: 'https://vwo.com/',
     test: function (t: Probe) {
-      return (
-        (t._vwo_code !== undefined || t.VWO !== undefined) && {
-          version: null,
-        }
-      );
+      return (t._vwo_code !== undefined || t.VWO !== undefined) && NONE;
     },
   },
   'Google Optimize': {
@@ -2841,11 +2331,7 @@ export const SIGNATURES: Record<string, Signature> = {
     icon: 'google-optimize',
     url: 'https://optimize.google.com/',
     test: function (t: Probe) {
-      return (
-        !(!u('script[src*="optimize.google.com"]') && t.google_optimize === undefined) && {
-          version: null,
-        }
-      );
+      return !(!u('script[src*="optimize.google.com"]') && t.google_optimize === undefined) && NONE;
     },
   },
   Bugsnag: {
@@ -2853,12 +2339,7 @@ export const SIGNATURES: Record<string, Signature> = {
     icon: 'bugsnag',
     url: 'https://www.bugsnag.com/',
     test: function (t: Probe) {
-      return (
-        t.Bugsnag !== undefined &&
-        typeof t.Bugsnag.notify === 'function' && {
-          version: null,
-        }
-      );
+      return t.Bugsnag !== undefined && typeof t.Bugsnag.notify === 'function' && NONE;
     },
   },
   Rollbar: {
@@ -2866,12 +2347,7 @@ export const SIGNATURES: Record<string, Signature> = {
     icon: 'rollbar',
     url: 'https://rollbar.com/',
     test: function (t: Probe) {
-      return (
-        t.Rollbar !== undefined &&
-        typeof t.Rollbar.error === 'function' && {
-          version: null,
-        }
-      );
+      return t.Rollbar !== undefined && typeof t.Rollbar.error === 'function' && NONE;
     },
   },
   LogRocket: {
@@ -2879,12 +2355,7 @@ export const SIGNATURES: Record<string, Signature> = {
     icon: 'logrocket',
     url: 'https://logrocket.com/',
     test: function (t: Probe) {
-      return (
-        t.LogRocket !== undefined &&
-        typeof t.LogRocket.init === 'function' && {
-          version: null,
-        }
-      );
+      return t.LogRocket !== undefined && typeof t.LogRocket.init === 'function' && NONE;
     },
   },
   FullStory: {
@@ -2892,12 +2363,7 @@ export const SIGNATURES: Record<string, Signature> = {
     icon: 'fullstory',
     url: 'https://www.fullstory.com/',
     test: function (t: Probe) {
-      return (
-        t.FS !== undefined &&
-        typeof t.FS.identify === 'function' && {
-          version: null,
-        }
-      );
+      return t.FS !== undefined && typeof t.FS.identify === 'function' && NONE;
     },
   },
 };

@@ -1,11 +1,11 @@
+import { parseColor } from './color';
+
 export type ThemePref = 'system' | 'light' | 'dark';
 
+/** Plain (non-linear) luma as legacy; null when unreadable or fully transparent. Any colour syntax (oklch…). */
 function luminance(bg: string): number | null {
-  const m = bg.match(/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?\)/);
-  if (!m) return null;
-  if (m[4] !== undefined && parseFloat(m[4]) === 0) return null;
-  const [r, g, b] = [m[1], m[2], m[3]].map((v) => parseFloat(v!) / 255) as [number, number, number];
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  const c = parseColor(bg);
+  return !c || c.a === 0 ? null : (0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b) / 255;
 }
 
 // port legacy-src/content.js:21133 (bdDetectPageIsDark); null instead of matchMedia fallback

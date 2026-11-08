@@ -35,6 +35,12 @@ describe('detectPageIsDark', () => {
     set('transparent', 'rgba(0, 0, 0, 0)');
     expect(detectPageIsDark(document)).toBe(null);
   });
+  it('reads oklch backgrounds (Tailwind 4)', () => {
+    const view = { getComputedStyle: () => ({ backgroundColor: 'oklch(0.2 0.02 260)' }) };
+    expect(detectPageIsDark({ ...document, defaultView: view, body: document.body } as never)).toBe(
+      true,
+    );
+  });
 });
 
 describe('applyDocTheme', () => {

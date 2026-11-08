@@ -5,6 +5,7 @@
  * the decompiled helpers are written back as plain JS. Runs in the page's MAIN world.
  */
 import type { Technology } from '../page/types';
+import { isOwnHost } from '../dom/dom';
 
 /** Shared hit for probes that find a library but no version; detectAll only reads it. */
 const NONE = Object.freeze({ version: null });
@@ -21,8 +22,9 @@ export interface Signature {
 /** Shadow roots of the page, cached for one detectAll run (legacy `r`). */
 let roots: ShadowRoot[] | null = null;
 const OWN_CLASS = /^(?:exception|sr-ignore)-[a-p]{32}$/;
-/** Our own UI hosts (legacy `s`): skipped so the extension never detects itself. */
+/** Our own UI hosts (and legacy `s` markers): skipped so the extension never detects itself. */
 function isOwn(el: Element & { dataset?: DOMStringMap }): boolean {
+  if (isOwnHost(el)) return true;
   for (const c of el.classList ?? []) if (OWN_CLASS.test(c)) return true;
   const id = el.dataset ? el.dataset.id : null;
   return typeof id === 'string' && /[a-p]{32}/.test(id);

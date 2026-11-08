@@ -1,7 +1,7 @@
 import SquareDashedMousePointer from '@lucide/svelte/icons/square-dashed-mouse-pointer';
 import ArrowUpToLine from '@lucide/svelte/icons/arrow-up-to-line';
 import ArrowDownToLine from '@lucide/svelte/icons/arrow-down-to-line';
-import { firstChildOf, isRendered, parentOf, siblingOf } from '../../../lib/dom/dom';
+import { firstChildOf, isRendered, parentOf, siblingOf, isOwnHost } from '../../../lib/dom/dom';
 import { mount, unmount } from 'svelte';
 import { placeNear, sizeLabels, type Rect } from '../../../lib/dom/geometry';
 import { getSettings, pinHintDone, updateSettings } from '../../../lib/ext/settings';
@@ -26,7 +26,6 @@ import PinnedInspector from './PinnedInspector.svelte';
 import { addPin, clearPins, pinUi, signature } from './pins.svelte';
 import { initDistance } from '../distance';
 
-const isOwn = (n: Element) => n === host();
 /** Elements we came up from, so "child" walks back down the same branch (2.03, 2.04). */
 // Untracked on purpose: every stack change goes through select(), which also sets
 // state.selected, so the dock's isDisabled re-runs anyway.
@@ -101,12 +100,12 @@ export function selectParent(): void {
 
 /** The element selectChild would go to (the side panel's child row, 6.21). */
 export const childOf = (el: Element): Element | null =>
-  (el === state.selected && stack.at(-1)) || firstChildOf(el, isOwn);
+  (el === state.selected && stack.at(-1)) || firstChildOf(el, isOwnHost);
 
 /** Port of selectChild (legacy-src/content.js:47070). */
 export function selectChild(): void {
   if (!state.selected) return;
-  const c = stack.pop() ?? firstChildOf(state.selected, isOwn);
+  const c = stack.pop() ?? firstChildOf(state.selected, isOwnHost);
   if (c) select(c, true);
 }
 
@@ -133,7 +132,7 @@ registerItem({
   icon: ArrowDownToLine,
   label: 'dock.selectChild',
   run: selectChild,
-  isDisabled: () => !state.selected || (!stack.length && !firstChildOf(state.selected, isOwn)),
+  isDisabled: () => !state.selected || (!stack.length && !firstChildOf(state.selected, isOwnHost)),
 });
 
 const px = (v: string) => parseFloat(v) || 0;
@@ -399,7 +398,7 @@ export async function initInspector(): Promise<void> {
   // 2.05 Alt+Shift+Left/Right: previous / next sibling
   const sibling = (dir: -1 | 1) => (e: KeyboardEvent) => {
     if (!state.selected || e.ctrlKey || e.metaKey) return false;
-    const n = siblingOf(state.selected, dir, isOwn);
+    const n = siblingOf(state.selected, dir, isOwnHost);
     if (n) select(n);
     return true;
   };

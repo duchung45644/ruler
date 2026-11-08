@@ -1,6 +1,6 @@
 import { renderedFont } from '../../lib/css/inspect';
 import { cssRulesOf } from '../../lib/css/matched';
-import { isRendered } from '../../lib/dom/dom';
+import { isRendered, isOwnHost } from '../../lib/dom/dom';
 import { childrenOf, collectAssetRefs } from '../../lib/element/assets';
 import { boxModel } from '../../lib/element/box';
 import { canvasInfo, canvasPalette, PALETTE_SAMPLE } from '../../lib/element/canvas';
@@ -26,7 +26,6 @@ import { collectIssues } from './issues';
 import { skippedCrossOriginCount } from './rules';
 
 const MAX_DEPTH = 100;
-const isOwn = (el: Element) => el.tagName.toLowerCase() === 'iodob-ui';
 
 /**
  * What each element under the selection contributed, for the panel's hover highlights
@@ -94,7 +93,7 @@ function canvasColors(el: HTMLCanvasElement): string[] {
 function collectColors(root: Element, mark: Mark): ElementColors {
   const parts: ElementColors[] = [];
   const walk = (el: Element, depth: number) => {
-    if (depth > MAX_DEPTH || isOwn(el)) return;
+    if (depth > MAX_DEPTH || isOwnHost(el)) return;
     const s = getComputedStyle(el);
     if (s.display === 'none' || s.visibility === 'hidden' || s.opacity === '0') return;
     const own = colorsOf(s);
@@ -166,7 +165,7 @@ function descendants(root: Element, limit = Infinity): Element[] {
   const walk = (el: Element) => {
     for (const c of childrenOf(el)) {
       if (out.length >= limit) return;
-      if (isOwn(c)) continue;
+      if (isOwnHost(c)) continue;
       out.push(c);
       walk(c);
     }
@@ -416,7 +415,7 @@ export function collectElementDetails(
     colors: collectColors(el, mark),
     gradients: parseGradients(s.backgroundImage ?? ''),
     textContent: textOf(el, type),
-    assets: collectAssetRefs(el, isOwn, MAX_DEPTH),
+    assets: collectAssetRefs(el, isOwnHost, MAX_DEPTH),
     animations: animations(s, (name) => keyframesOf(el, name)),
     transitions: transitions(s),
     boxShadow: splitShadows(s.boxShadow ?? ''),
@@ -450,7 +449,7 @@ export function colorsAndGradientsOf(el: Element): {
 }
 
 export const assetsOf = (el: Element): ElementDetails['assets'] =>
-  collectAssetRefs(el, isOwn, MAX_DEPTH);
+  collectAssetRefs(el, isOwnHost, MAX_DEPTH);
 
 export function layoutOf(el: Element): {
   layout: ElementDetails['layout'];

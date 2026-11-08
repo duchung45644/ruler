@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { firstChildOf, isRendered, parentOf, shadowRoots, siblingOf } from './dom';
+import { firstChildOf, isOwnHost, isRendered, parentOf, shadowRoots, siblingOf } from './dom';
 
 const isOwn = (n: Element) => n.tagName === 'IODOB-UI';
 
@@ -58,4 +58,15 @@ describe('dom traversal', () => {
     const page = document.getElementById('p')!.attachShadow({ mode: 'open' });
     expect(shadowRoots(document, isOwn)).toEqual([page]);
   });
+});
+
+it('isOwnHost matches every iodob-* host, not page elements', () => {
+  const tags = ['iodob-ui', 'iodob-capture', 'iodob-cover', 'div', 'my-iodob-ui'];
+  expect(tags.map((t) => isOwnHost(document.createElement(t)))).toEqual([
+    true,
+    true,
+    true,
+    false,
+    false,
+  ]);
 });

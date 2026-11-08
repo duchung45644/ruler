@@ -5,7 +5,7 @@ import {
   parseBreakpoints,
   type Breakpoint,
 } from '../../../lib/tools/breakpoints';
-import { shadowRoots } from '../../../lib/dom/dom';
+import { shadowRoots, isOwnHost } from '../../../lib/dom/dom';
 import { fetchCrossOrigin, fetchedCopy } from '../../sidepanel/rules';
 import { getSettings, updateSettings } from '../../../lib/ext/settings';
 import { addPainter, draw, requestPaint } from '../../core/overlay';
@@ -15,14 +15,13 @@ import { state } from '../../core/state.svelte';
 
 /** Line / label colors by kind; the responsive frame headers use the same (3.22). */
 export const COLORS = { min: '#008C21', max: '#0891B2', both: '#E8A23D' };
-const isOwn = (el: Element) => el.localName === 'iodob-ui';
 let found: Breakpoint[] = [];
 
 /** Breakpoints shown right now (empty while the tool is off); responsive mode builds frames from them (Q5). */
 export const currentBreakpoints = (): Breakpoint[] => (state.breakpointsOn ? [...found] : []);
 
 function read(blocked: string[] = []): Breakpoint[] {
-  const roots = [document, ...shadowRoots(document, isOwn)];
+  const roots = [document, ...shadowRoots(document, isOwnHost)];
   return parseBreakpoints(mediaConditions(roots, fetchedCopy, blocked));
 }
 

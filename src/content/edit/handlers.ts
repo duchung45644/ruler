@@ -11,12 +11,12 @@ import { state } from '../core/state.svelte';
 import { bridge, elementById, sendElement, setEditHooks } from '../sidepanel/bridge.svelte';
 import { rootOf, rulesOf } from '../sidepanel/rules';
 import { selectElement } from '../tools/inspector';
+import { isOwnHost } from '../../lib/dom/dom';
 import type { HtmlEditor } from './engine';
 import {
   editor,
   editState,
   getUndoRoute,
-  isOwn,
   onEditChange,
   ruleTracker,
   stateForcer,
@@ -208,7 +208,7 @@ export const editHandlers: Handlers<ContentApi> = {
     const root = rootAt(scopeAddress);
     let el: Element | undefined;
     try {
-      el = [...(root?.querySelectorAll(selector) ?? [])].find((e) => !isOwn(e));
+      el = [...(root?.querySelectorAll(selector) ?? [])].find((e) => !isOwnHost(e));
     } catch {
       return false;
     }

@@ -1,4 +1,5 @@
 import { compositeBackground, type BgLayer, type Rgba } from '../../lib/style/color';
+import { isOwnHost } from '../../lib/dom/dom';
 
 export const TEXT =
   'h1 h2 h3 h4 h5 h6 p b i em strong u small mark code a label button td th blockquote pre sub sup del ins cite q'.split(
@@ -72,7 +73,7 @@ export function backgroundOf(
     yield* layersOf(el);
     const under: Iterable<Element> = onScreen ? document.elementsFromPoint(x, y) : ancestors(el);
     for (const n of under) {
-      if (n === el || el.contains(n) || n.tagName.toLowerCase() === 'iodob-ui') continue;
+      if (n === el || el.contains(n) || isOwnHost(n)) continue;
       const l = paintedLayers(n, memo);
       if (l) yield* l;
     }

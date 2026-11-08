@@ -1,12 +1,11 @@
 import ScanEye from '@lucide/svelte/icons/scan-eye';
-import { shadowRoots } from '../../../lib/dom/dom';
+import { shadowRoots, isOwnHost } from '../../../lib/dom/dom';
 import { getSettings, updateSettings } from '../../../lib/ext/settings';
 import { xrayDepth, xraySheet } from '../../../lib/tools/xray';
 import { registerItem } from '../../core/registry.svelte';
 import { onStop, sessionSignal } from '../../core/session';
 import { state } from '../../core/state.svelte';
 
-const isOwn = (el: Element) => el.localName === 'iodob-ui';
 let sheets: HTMLStyleElement[] = [];
 
 function addSheet(parent: Node, css: string): void {
@@ -24,7 +23,8 @@ export function setXray(on: boolean): void {
   sheets = [];
   if (!on) return;
   addSheet(document.head, xraySheet('body', 0));
-  for (const r of shadowRoots(document, isOwn)) addSheet(r, xraySheet(':host', xrayDepth(r.host)));
+  for (const r of shadowRoots(document, isOwnHost))
+    addSheet(r, xraySheet(':host', xrayDepth(r.host)));
 }
 
 export async function initXray(): Promise<void> {

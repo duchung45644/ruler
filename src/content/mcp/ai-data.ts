@@ -3,13 +3,12 @@
  * extractAiAttributes (:48492), buildOutlineTree (:48567), buildElementSummary (:48654),
  * queryBySelector (:48757). `idOf` tags elements with the same data-sr-id-* ids the panel uses.
  */
-import { queryAllDeep } from '../../lib/dom/dom';
+import { queryAllDeep, isOwnHost } from '../../lib/dom/dom';
 import { displaySelector } from '../../lib/dom/selector';
 import { LIMITS } from '../../lib/mcp/protocol';
 
 export type IdOf = (el: Element) => string;
 
-const isOwn = (el: Element) => el.localName === 'iodob-ui';
 const SKIP_OUTLINE = new Set(['script', 'style', 'link', 'meta', 'noscript', 'br']);
 const SKIP_QUERY = new Set(['script', 'style', 'link', 'meta', 'noscript']);
 const ATTRS = [
@@ -175,7 +174,7 @@ export function buildOutlineTree(
   const maxChildren = opts.maxChildren ?? 30;
   const walk = (el: Element, depth: number): OutlineNode | null => {
     const tag = el.tagName.toLowerCase();
-    if (SKIP_OUTLINE.has(tag) || isOwn(el)) return null;
+    if (SKIP_OUTLINE.has(tag) || isOwnHost(el)) return null;
     const node: OutlineNode = { id: idOf(el), tag, selector: displaySelector(el) };
     if (el.id) node.htmlId = el.id;
     const c = classesOf(el);
@@ -228,7 +227,7 @@ export function queryBySelector(
   const root = opts.root ?? document.body;
   let all: Element[];
   try {
-    all = queryAllDeep(root, selector, isOwn);
+    all = queryAllDeep(root, selector, isOwnHost);
   } catch (e) {
     return {
       count: 0,
@@ -240,7 +239,7 @@ export function queryBySelector(
   const matches = [];
   let count = 0;
   for (const el of all) {
-    if (SKIP_QUERY.has(el.tagName.toLowerCase()) || isOwn(el)) continue;
+    if (SKIP_QUERY.has(el.tagName.toLowerCase()) || isOwnHost(el)) continue;
     if (el === document.body || el === document.documentElement) continue;
     count++;
     if (matches.length >= limit) continue;

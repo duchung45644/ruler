@@ -6,10 +6,10 @@ import { WeightTotals } from '../../lib/page/weight';
 import { sendToBackground, sendToSidePanel, withTimeout } from '../../lib/ext/messaging';
 import { displaySelector } from '../../lib/dom/selector';
 import { onStop, sessionSignal } from '../core/session';
+import { isOwnHost } from '../../lib/dom/dom';
 
 const DETECT_TIMEOUT = 2000; // legacy waited 2s for TECH_DETECTION_RESULT
 const THROTTLE = 250; // page_weight_update at most 4×/s (7.09)
-const isOwn = (el: Element) => el.tagName.toLowerCase() === 'iodob-ui';
 
 let idOf: (el: Element) => string = () => '';
 let cached: PageData | null = null;
@@ -71,7 +71,7 @@ export function getPageData(): PageData {
   const data: PageData = (cached = {
     ...collectPageMetadata(document, location.href),
     pageWeight: pageWeight(),
-    seoIssues: collectSeoIssues(document, idOf, displaySelector, isOwn).map(localise),
+    seoIssues: collectSeoIssues(document, idOf, displaySelector, isOwnHost).map(localise),
   });
   technologies = null;
   send(sendToSidePanel('page_data', data));

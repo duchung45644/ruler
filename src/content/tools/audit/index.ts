@@ -7,6 +7,7 @@ import { registerItem } from '../../core/registry.svelte';
 import { onStop } from '../../core/session';
 import { state } from '../../core/state.svelte';
 import AuditPanel from './AuditPanel.svelte';
+import { isOwnHost } from '../../../lib/dom/dom';
 
 /** Page colors, fonts & spacing (3.19 / 3.20), port of unpacked/scripts/bd/audit.js.
  * Plain object on purpose: element sets must not become Svelte proxies. */
@@ -16,7 +17,7 @@ export const audit = {
   highlights: [] as Element[],
 };
 
-const isOwn = (el: Element) => el.localName === 'iodob-ui' || ownNodes.has(el);
+const isOwn = (el: Element) => isOwnHost(el) || ownNodes.has(el);
 
 export function rescan(): void {
   audit.rows = scanStyles(document.documentElement, isOwn);

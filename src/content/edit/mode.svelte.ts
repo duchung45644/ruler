@@ -9,8 +9,7 @@ import { cancelScheduledExtras, unwatchMedia } from './payload';
 import { RuleTracker } from './rules';
 import { StateForcer } from './states';
 import { setTextEdit } from './text';
-
-export const isOwn = (el: Element): boolean => el.localName === 'iodob-ui';
+import { isOwnHost } from '../../lib/dom/dom';
 
 let engine: HtmlEditor | null = null;
 let tracker: RuleTracker | null = null;
@@ -95,7 +94,7 @@ function ensureEngine(): HtmlEditor {
   return (engine ??= new HtmlEditor({
     extId: browser.runtime.id,
     ids: elementIdMap(),
-    isOwn,
+    isOwn: isOwnHost,
     selected: () => state.selected,
     select: (el) => {
       if (el) selectElement(el);
@@ -121,7 +120,7 @@ function teardown(): void {
  */
 export function setEditMode(on: boolean): Promise<void> {
   if (state.editOn === on) return Promise.resolve();
-  setTextEdit(false, engine, isOwn);
+  setTextEdit(false, engine, isOwnHost);
   state.editOn = on;
   if (on) {
     ensureEngine();
@@ -133,13 +132,13 @@ export function setEditMode(on: boolean): Promise<void> {
 
 export function toggleTextEdit(): void {
   if (!state.editOn) return;
-  setTextEdit(!state.textEditOn, engine, isOwn);
+  setTextEdit(!state.textEditOn, engine, isOwnHost);
 }
 
 /** Session stop: leave edit mode quietly; the tracker and its `<style>` stay (CSS edits persist). */
 export function stopEditMode(): void {
   if (state.editOn) {
-    setTextEdit(false, engine, isOwn);
+    setTextEdit(false, engine, isOwnHost);
     teardown();
   }
   state.editOn = false;

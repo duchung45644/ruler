@@ -75,10 +75,10 @@ it('says when there is nothing to show', () => {
 it('clears everything only after confirming, in order', async () => {
   open({ rules: [change('r1')], html: [] });
   await click('[data-clear-all]');
-  await click('[data-dialog-cancel]');
+  await click('[role=alertdialog] button:first-of-type');
   expect(types()).toEqual([]);
   await click('[data-clear-all]');
-  await click('[data-dialog-confirm]');
+  await click('[role=alertdialog] button:last-of-type');
   await vi.waitFor(() =>
     expect(types()).toEqual([
       'revert_all_rule_changes',
@@ -93,18 +93,20 @@ it('says when the element is gone or the tab cannot be reached', async () => {
   open({ rules: [change('r1')], html: [] });
   await click('[data-select]');
   await vi.waitFor(() =>
-    expect(document.querySelector('[data-dialog]')!.textContent).toContain(
+    expect(document.querySelector('[role=alertdialog]')!.textContent).toContain(
       'dialog_noSelectedElement',
     ),
   );
-  await click('[data-dialog-confirm]');
-  expect(document.querySelector('[data-dialog]')).toBeNull();
+  await click('[role=alertdialog] button:last-of-type');
+  expect(document.querySelector('[role=alertdialog]')).toBeNull();
   reply = () => {
     throw new Error('Could not establish connection');
   };
   await click('[data-select]');
   await vi.waitFor(() =>
-    expect(document.querySelector('[data-dialog]')!.textContent).toContain('dialog_tabUnavailable'),
+    expect(document.querySelector('[role=alertdialog]')!.textContent).toContain(
+      'dialog_tabUnavailable',
+    ),
   );
 });
 
@@ -116,7 +118,8 @@ it('groups rule changes with no element by selector and finds a match on click',
   });
   expect(document.querySelectorAll('[data-group]')).toHaveLength(2);
   // the dialog store is module-wide: the last test may have left one open
-  if (document.querySelector('[data-dialog]')) await click('[data-dialog-confirm]');
+  if (document.querySelector('[role=alertdialog]'))
+    await click('[role=alertdialog] button:last-of-type');
   reply = (t) => (t === 'select_rule_target' ? true : ok);
   await click('[data-find]');
   await vi.waitFor(() => expect(types()).toContain('select_rule_target'));
@@ -124,11 +127,11 @@ it('groups rule changes with no element by selector and finds a match on click',
     (c) => (c[1] as { type: string }).type === 'select_rule_target',
   );
   expect((call![1] as { data: unknown[] }).data.slice(0, 2)).toEqual(['.card', null]);
-  expect(document.querySelector('[data-dialog]')).toBeNull();
+  expect(document.querySelector('[role=alertdialog]')).toBeNull();
   reply = (t) => (t === 'select_rule_target' ? false : ok);
   await click('[data-find]');
   await vi.waitFor(() =>
-    expect(document.querySelector('[data-dialog]')!.textContent).toContain(
+    expect(document.querySelector('[role=alertdialog]')!.textContent).toContain(
       'dialog_noSelectedElement',
     ),
   );

@@ -46,13 +46,15 @@
   }
 </script>
 
-<div class="pointer-events-auto fixed inset-0 grid place-items-center bg-black/40 font-sans">
+<div
+  class="pointer-events-auto fixed inset-0 z-50 grid place-items-center bg-black/40 p-4 font-sans"
+>
   <div
     role="alertdialog"
     aria-modal="true"
     aria-labelledby="bd-dialog-title"
     aria-describedby={message ? 'bd-dialog-msg' : undefined}
-    class="w-80 rounded-panel border border-line bg-surface p-4 text-[13px] text-fg shadow-xl backdrop-blur-surface"
+    class="w-80 max-w-full rounded-panel border border-line bg-surface p-4 text-[13px] text-fg shadow-xl backdrop-blur-surface"
     tabindex="-1"
     {onkeydown}
   >

@@ -1,5 +1,6 @@
 import type { Animation, Keyframe, Transition } from './types';
-import { splitTopLevel, type StyleLike } from './style';
+import { splitTop } from '../css/specificity';
+import type { StyleLike } from './style';
 
 export type Bezier = [number, number, number, number];
 
@@ -32,7 +33,7 @@ const at = (list: string[], i: number, fallback: string) => list[i] || list[0] |
 export function animations(style: StyleLike, keyframes: (name: string) => Keyframe[]): Animation[] {
   const names = style.getPropertyValue('animation-name');
   if (!names || names === 'none') return [];
-  const list = (p: string) => splitTopLevel(style.getPropertyValue(p));
+  const list = (p: string) => splitTop(style.getPropertyValue(p), ',');
   const dur = list('animation-duration');
   const fn = list('animation-timing-function');
   const delay = list('animation-delay');
@@ -55,10 +56,10 @@ export function transitions(style: StyleLike): Transition[] {
   const props = style.getPropertyValue('transition-property');
   const duration = style.getPropertyValue('transition-duration');
   if (!props || props === 'none' || !duration || duration === '0s') return [];
-  const dur = splitTopLevel(duration);
-  const fn = splitTopLevel(style.getPropertyValue('transition-timing-function'));
-  const delay = splitTopLevel(style.getPropertyValue('transition-delay'));
-  return splitTopLevel(props).map((property, i) => ({
+  const dur = splitTop(duration, ',');
+  const fn = splitTop(style.getPropertyValue('transition-timing-function'), ',');
+  const delay = splitTop(style.getPropertyValue('transition-delay'), ',');
+  return splitTop(props, ',').map((property, i) => ({
     property,
     duration: at(dur, i, '0s'),
     timingFunction: at(fn, i, 'ease'),

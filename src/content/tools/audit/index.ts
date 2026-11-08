@@ -2,7 +2,7 @@ import Palette from '@lucide/svelte/icons/palette';
 import { scanStyles, type AuditRow } from '../../../lib/tools/audit';
 import { panelToggle } from '../../../ui/mount';
 import { ownNodes } from '../../core/events';
-import { addPainter, draw, requestPaint, visibleRects } from '../../core/overlay';
+import { addPainter, drawBoxes, requestPaint } from '../../core/overlay';
 import { registerItem } from '../../core/registry.svelte';
 import { onStop } from '../../core/session';
 import { state } from '../../core/state.svelte';
@@ -52,14 +52,8 @@ export function initAudit(): void {
   onStop(() => setOn(false));
   addPainter('audit', (box) => {
     if (state.paused) return;
-    const frag = document.createDocumentFragment();
-    for (const r of visibleRects(audit.highlights)) {
-      if (!r || r.width === 0) continue;
-      draw(
-        frag,
-        `left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;outline:2px solid #7C4DFF;background:rgba(124,77,255,.12)`,
-      );
-    }
-    box.append(frag);
+    drawBoxes(box, audit.highlights, (_, r) =>
+      r.width ? 'outline:2px solid #7C4DFF;background:rgba(124,77,255,.12)' : null,
+    );
   });
 }

@@ -1,5 +1,6 @@
 /** Element commands (10.11, legacy content.js:23309–23531, :23626). */
 import { splitState } from '../../lib/css/specificity';
+import { serializeDecls } from '../../lib/edit/decls';
 import { LIMITS } from '../../lib/mcp/protocol';
 import { state } from '../core/state.svelte';
 import { buildPayload } from '../edit/payload';
@@ -21,9 +22,7 @@ export function matchedRulesFor(el: Element) {
       return {
         ruleRef: r.address,
         selector: r.selector,
-        declsText: r.declarations
-          .map((d) => `${d.property}: ${d.value}${d.important ? ' !important' : ''};`)
-          .join(' '),
+        declsText: serializeDecls(r.declarations),
         wrappers: r.wrappers,
         media: r.wrappers.find((w) => w.startsWith('@media')) ?? null,
         mediaActive: r.mediaActive,

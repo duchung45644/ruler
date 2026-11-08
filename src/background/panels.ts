@@ -41,6 +41,12 @@ export async function dock(tabId: number): Promise<void> {
   await browser.windows.remove(w).catch(() => {});
 }
 
+/** Bring `tabId` to the front: activate it, then focus its window. */
+export async function activateTab(tabId: number): Promise<void> {
+  const tab = await browser.tabs.update(tabId, { active: true });
+  if (tab?.windowId !== undefined) await browser.windows.update(tab.windowId, { focused: true });
+}
+
 /** Script turned off / closed in `tabId` (1.36, 1.37): no panel, no window, panel shows empty. */
 export async function closePanelFor(tabId: number): Promise<void> {
   disableFor(tabId);
@@ -146,16 +152,11 @@ export const panelHandlers: Handlers<BackgroundApi> = {
   },
   check_panel_api: () => !!browser.sidePanel,
   has_host_permission: () => browser.permissions.contains({ origins: ['<all_urls>'] }),
-  async go_to_tab(tabId) {
-    try {
-      const tab = await browser.tabs.update(Number(tabId), { active: true });
-      if (tab?.windowId !== undefined)
-        await browser.windows.update(tab.windowId, { focused: true });
-      return true;
-    } catch {
-      return false;
-    }
-  },
+  go_to_tab: (tabId) =>
+    activateTab(Number(tabId)).then(
+      () => true,
+      () => false,
+    ),
   async open_external_tab(url, sender) {
     if (typeof url !== 'string' || !/^https?:/i.test(url)) return false;
     const opts: Browser.tabs.CreateProperties = { url, active: true };

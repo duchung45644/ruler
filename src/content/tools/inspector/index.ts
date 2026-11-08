@@ -9,7 +9,15 @@ import { detectPageIsDark, measureColor } from '../../../lib/style/theme';
 import { isOwnEvent, pageElementAt } from '../../core/events';
 import { isDragging } from '../../core/drag';
 import { addKeyHandler, onKey } from '../../core/keys';
-import { addPainter, draw, drawNumber, layer, requestPaint } from '../../core/overlay';
+import {
+  addPainter,
+  draw,
+  drawGuides,
+  drawNumber,
+  host,
+  layer,
+  requestPaint,
+} from '../../core/overlay';
 import { registerItem } from '../../core/registry.svelte';
 import { onStop, sessionSignal } from '../../core/session';
 import { panelTarget, state } from '../../core/state.svelte';
@@ -18,8 +26,7 @@ import PinnedInspector from './PinnedInspector.svelte';
 import { addPin, clearPins, pinUi, signature } from './pins.svelte';
 import { initDistance } from '../distance';
 
-let host: Element | null = null;
-const isOwn = (n: Element) => n === host;
+const isOwn = (n: Element) => n === host();
 /** Elements we came up from, so "child" walks back down the same branch (2.03, 2.04). */
 // Untracked on purpose: every stack change goes through select(), which also sets
 // state.selected, so the dock's isDisabled re-runs anyway.
@@ -165,44 +172,51 @@ function frame(box: HTMLElement, r: Rect, color: string): void {
   drawNumber(box, l.height.x, l.height.y, r.height, color, '-100%', '-50%');
 }
 
+type Sides = [number, number, number, number];
+
+/** Rect, margin / border / padding sides (top, right, bottom, left) and the margin and padding-box rects. */
+function bands(el: Element) {
+  const r = el.getBoundingClientRect();
+  const s = getComputedStyle(el);
+  const side = (p: 'margin' | 'padding' | 'border', w = '') =>
+    (['Top', 'Right', 'Bottom', 'Left'] as const).map((k) =>
+      px(s[`${p}${k}${w}` as 'marginTop']),
+    ) as Sides;
+  const m = side('margin');
+  const b = side('border', 'Width');
+  const p = side('padding');
+  const outer = {
+    x: r.x - m[3],
+    y: r.y - m[0],
+    width: r.width + m[3] + m[1],
+    height: r.height + m[0] + m[2],
+  };
+  const inner = {
+    x: r.x + b[3],
+    y: r.y + b[0],
+    width: r.width - b[3] - b[1],
+    height: r.height - b[0] - b[2],
+  };
+  return { r, m, b, p, outer, inner };
+}
+
 /** One Box Model part of `el`, in DevTools colours (panel Box Model hover). */
 function paintBoxPart(
   box: HTMLElement,
   el: Element,
   part: NonNullable<typeof state.boxPart>,
 ): void {
-  const r = el.getBoundingClientRect();
-  const s = getComputedStyle(el);
-  const side = (p: string) =>
-    [`${p}Top`, `${p}Right`, `${p}Bottom`, `${p}Left`].map((k) => px(s[k as 'marginTop'])) as [
-      number,
-      number,
-      number,
-      number,
-    ];
-  const [mt, mr, mb, ml] = side('margin');
-  const [bt, br, bb, bl] = [
-    s.borderTopWidth,
-    s.borderRightWidth,
-    s.borderBottomWidth,
-    s.borderLeftWidth,
-  ].map(px) as [number, number, number, number];
-  const [pt, pr, pb, pl] = side('padding');
-  const inB = { x: r.x + bl, y: r.y + bt, width: r.width - bl - br, height: r.height - bt - bb };
-  if (part === 'margin')
-    ring(
-      box,
-      { x: r.x - ml, y: r.y - mt, width: r.width + ml + mr, height: r.height + mt + mb },
-      mt,
-      mr,
-      mb,
-      ml,
-      'rgba(246,178,107,.66)',
-    );
-  else if (part === 'border') ring(box, r, bt, br, bb, bl, 'rgba(255,229,153,.66)');
-  else if (part === 'padding') ring(box, inB, pt, pr, pb, pl, 'rgba(147,196,125,.55)');
+  const { r, m, b, p, outer, inner } = bands(el);
+  if (part === 'margin') ring(box, outer, ...m, 'rgba(246,178,107,.66)');
+  else if (part === 'border') ring(box, r, ...b, 'rgba(255,229,153,.66)');
+  else if (part === 'padding') ring(box, inner, ...p, 'rgba(147,196,125,.55)');
   else {
-    const c = { x: inB.x + pl, y: inB.y + pt, w: inB.width - pl - pr, h: inB.height - pt - pb };
+    const c = {
+      x: inner.x + p[3],
+      y: inner.y + p[0],
+      w: inner.width - p[3] - p[1],
+      h: inner.height - p[0] - p[2],
+    };
     if (c.w > 0 && c.h > 0)
       draw(
         box,
@@ -213,32 +227,9 @@ function paintBoxPart(
 
 /** Hover: margin/padding bands + frame + `tag#id.class` (port of highlightElement :43810, getElementTagOverlay :44937). */
 function paintHover(box: HTMLElement, el: Element, color: string): void {
-  const r = el.getBoundingClientRect();
-  const s = getComputedStyle(el);
-  const [mt, mr, mb, ml] = [s.marginTop, s.marginRight, s.marginBottom, s.marginLeft].map(px) as [
-    number,
-    number,
-    number,
-    number,
-  ];
-  const outer = { x: r.x - ml, y: r.y - mt, width: r.width + ml + mr, height: r.height + mt + mb };
-  ring(box, outer, mt, mr, mb, ml, 'rgba(246,178,107,.3)');
-  const [bt, br, bb, bl] = [
-    s.borderTopWidth,
-    s.borderRightWidth,
-    s.borderBottomWidth,
-    s.borderLeftWidth,
-  ].map(px) as [number, number, number, number];
-  const inner = { x: r.x + bl, y: r.y + bt, width: r.width - bl - br, height: r.height - bt - bb };
-  ring(
-    box,
-    inner,
-    px(s.paddingTop),
-    px(s.paddingRight),
-    px(s.paddingBottom),
-    px(s.paddingLeft),
-    'rgba(147,196,125,.3)',
-  );
+  const { r, m, p, outer, inner } = bands(el);
+  ring(box, outer, ...m, 'rgba(246,178,107,.3)');
+  ring(box, inner, ...p, 'rgba(147,196,125,.3)');
   frame(box, r, color);
   const tag = signature(el);
   // below the element (the width number owns the top edge); flip above when there is no room
@@ -276,7 +267,6 @@ function placePanel(
 /** Wire listeners/painters for one session (called from startSession after mountLayer). */
 export async function initInspector(): Promise<void> {
   const signal = sessionSignal();
-  host = (layer.getRootNode() as ShadowRoot).host ?? null;
   // ponytail: measure colour computed once per session; re-detect if pages that switch theme live matter
   const color = measureColor(detectPageIsDark(document));
   let mouse: { x: number; y: number } | null = null;
@@ -323,7 +313,7 @@ export async function initInspector(): Promise<void> {
     state.hovered = el;
     requestPaint();
   };
-  const hitTest = () => hover(mouse && host ? pageElementAt(mouse.x, mouse.y, host) : null);
+  const hitTest = () => hover(mouse ? pageElementAt(mouse.x, mouse.y, host()) : null);
   // text editing hands clicks to the page's contentEditable
   const live = () => state.inspectOn && !state.paused && !state.capturing && !state.textEditOn;
   const opts = { signal, capture: true };
@@ -333,8 +323,8 @@ export async function initInspector(): Promise<void> {
     'mousemove',
     (e) => {
       if (isDragging()) return; // spec §9: no hover-inspect while dragging (the guard swallows)
-      if (!live() || !host) return;
-      if (isOwnEvent(e, host)) {
+      if (!live()) return;
+      if (isOwnEvent(e, host())) {
         // over a pin / the dock: hide the floating panel; over the panel itself keep it (Copy)
         if (!panelBox || !e.composedPath().includes(panelBox)) panelHidden = true;
         return hover(null);
@@ -348,7 +338,7 @@ export async function initInspector(): Promise<void> {
   // 1.25 swallow press/menu events so page menus, click-outside handlers, selection and drag don't fire
   const block = (e: Event) => {
     if (isDragging()) return;
-    if (!live() || !host || isOwnEvent(e, host)) return;
+    if (!live() || isOwnEvent(e, host())) return;
     e.preventDefault();
     e.stopImmediatePropagation(); // also stops page listeners on window registered after ours
   };
@@ -369,10 +359,10 @@ export async function initInspector(): Promise<void> {
     'click',
     (e) => {
       if (isDragging()) return;
-      if (!live() || !host || isOwnEvent(e, host)) return;
+      if (!live() || isOwnEvent(e, host())) return;
       e.preventDefault();
       e.stopImmediatePropagation(); // also stops page listeners on window registered after ours
-      const el = pageElementAt(e.clientX, e.clientY, host);
+      const el = pageElementAt(e.clientX, e.clientY, host());
       if (el && picker) return picker(el);
       if (el) select(el === state.selected ? null : el);
     },
@@ -420,7 +410,6 @@ export async function initInspector(): Promise<void> {
   onStop(onKey('Alt+Shift+ArrowRight', sibling(1)));
   onStop(() => {
     stack = [];
-    host = null;
     panelHidden = false;
   });
 
@@ -433,11 +422,7 @@ export async function initInspector(): Promise<void> {
       // inspector off: the selection stays (the side panel still uses it) but is not drawn
       const r = sel.getBoundingClientRect();
       // solid alignment guides (spec §7: no dashes), port of drawAlignmentLines :45110
-      const line = (css: string) => draw(box, `${css};background:${color};opacity:.5`);
-      line(`left:0;right:0;top:${r.top}px;height:1px`);
-      line(`left:0;right:0;top:${r.bottom - 1}px;height:1px`);
-      line(`top:0;bottom:0;left:${r.left}px;width:1px`);
-      line(`top:0;bottom:0;left:${r.right - 1}px;width:1px`);
+      drawGuides(box, r.left, r.top, r.right - 1, r.bottom - 1, `background:${color};opacity:.5`);
       frame(box, r, color);
     }
     if (sel && state.boxPart) paintBoxPart(box, sel, state.boxPart);

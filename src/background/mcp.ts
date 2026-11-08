@@ -20,6 +20,7 @@ import { IDLE_STATUS, toStatus, type McpStatus } from '../lib/mcp/status';
 import {
   sendToFrame,
   sendToOptions,
+  withTimeout,
   type BackgroundApi,
   type Handlers,
 } from '../lib/ext/messaging';
@@ -27,6 +28,7 @@ import { ensureToken, mcpIntent, mcpToken } from '../lib/ext/settings';
 import { fetchStylesheet, isAllowedStylesheetUrl } from '../lib/ext/stylesheet-fetch';
 import { isInjectable } from '../lib/ext/tabs';
 import { McpSocket, type McpSocketOptions } from './mcp-socket';
+import { activateTab } from './panels';
 
 let socket: McpSocket | null = null;
 let intent = false;
@@ -176,22 +178,14 @@ export async function forwardToTab(
   if (!(await isIodobTab(tabId)) && !(await waitForReload(tabId))) return fail(ERR.tabInactiveHint);
   if (type === 'exit_responsive_mode') reloading.set(tabId, Date.now());
   const ms = SLOW_TYPES.includes(type) ? SLOW_TIMEOUT_MS : CALL_TIMEOUT_MS;
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  const timeout = new Promise<CallOutcome>(
-    (res) => (timer = setTimeout(() => res(fail(timeoutError(type))), ms)),
+  return withTimeout(
+    sendToFrame(tabId, 0, 'mcp_call', type, payload).then(
+      (v) => v ?? fail('Empty response from content script.'),
+      () => fail(ERR.tabInactiveHint), // tab closed or navigated mid-call
+    ),
+    ms,
+    () => fail(timeoutError(type)),
   );
-  try {
-    const r = await Promise.race([
-      sendToFrame(tabId, 0, 'mcp_call', type, payload).then(
-        (v) => v ?? fail('Empty response from content script.'),
-        () => fail(ERR.tabInactiveHint), // tab closed or navigated mid-call
-      ),
-      timeout,
-    ]);
-    return r;
-  } finally {
-    clearTimeout(timer);
-  }
 }
 
 async function listTabs(): Promise<CallOutcome> {
@@ -212,8 +206,7 @@ async function listTabs(): Promise<CallOutcome> {
 async function focusTab({ tabId }: McpPayloads['focus_tab']): Promise<CallOutcome> {
   if (!(await isIodobTab(tabId))) return fail(ERR.tabInactive);
   try {
-    const tab = await browser.tabs.update(tabId, { active: true });
-    if (tab?.windowId !== undefined) await browser.windows.update(tab.windowId, { focused: true });
+    await activateTab(tabId);
     return { ok: true, data: { success: true } };
   } catch (e) {
     return fail(String((e as Error)?.message ?? e));

@@ -17,7 +17,8 @@ const stateRe = (state: string, flags = '') =>
 const stripLiterals = (sel: string) =>
   sel.replace(/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g, '""').replace(/\[[^\]]*\]/g, '[]');
 
-const STATE_TESTS = FORCEABLE_STATES.map((st) => [st, stateRe(st)] as const);
+/** Built once: splitState runs for every selector alternative of every rule. */
+export const STATE_TESTS = FORCEABLE_STATES.map((st) => [st, stateRe(st)] as const);
 
 export function statesInSelector(sel: string): string[] {
   const s = stripLiterals(sel);

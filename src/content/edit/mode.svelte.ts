@@ -54,7 +54,6 @@ let shared: SharedHistoryState | null = null;
  */
 export function setSharedHistoryState(s: SharedHistoryState | null): void {
   shared = s ? { canUndo: !!s.canUndo, canRedo: !!s.canRedo } : null;
-  state.editState = editState();
 }
 
 export function editState(): EditState {
@@ -89,7 +88,6 @@ export function setUndoRoute(fn: UndoRoute | null): void {
 export const getUndoRoute = (): UndoRoute | null => undoRoute;
 
 function changed(): void {
-  state.editState = editState();
   for (const fn of changeListeners) fn();
 }
 
@@ -129,7 +127,6 @@ export function setEditMode(on: boolean): Promise<void> {
     ensureEngine();
     ruleTracker().watch();
   } else teardown();
-  state.editState = editState();
   if (state.selected) sendElement(state.selected);
   return Promise.resolve();
 }
@@ -147,5 +144,4 @@ export function stopEditMode(): void {
   }
   state.editOn = false;
   state.textEditOn = false;
-  state.editState = { ...EMPTY_EDIT_STATE };
 }

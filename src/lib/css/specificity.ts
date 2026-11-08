@@ -1,3 +1,5 @@
+import { STATE_TESTS } from './states';
+
 export type Specificity = [number, number, number];
 
 /** Split at top-level occurrences of `sep` (outside brackets and quotes). */
@@ -112,11 +114,6 @@ export function specificity(sel: string): { array: Specificity; score: number } 
   return { array, score: 10000 * array[0] + 100 * array[1] + array[2] };
 }
 
-const STATES = [':hover', ':focus', ':focus-visible', ':focus-within', ':active', ':visited'];
-/** Built once: splitState runs for every selector alternative of every rule. */
-const STATE_RES = STATES.map(
-  (s) => [s, new RegExp(`${s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![a-z-])`)] as const,
-);
 const PSEUDO_ELEMENT =
   /::?(?:before|after|first-line|first-letter)(?![\w-])|::(?:placeholder|selection|marker|backdrop|file-selector-button)(?![\w-])/;
 
@@ -135,7 +132,7 @@ function lastCompound(sel: string): string {
 /** Port of Jg: the user-action state and pseudo-element on the subject compound. */
 export function splitState(sel: string): { state: string | null; pseudoElement: string | null } {
   const last = lastCompound(sel || '');
-  const state = STATE_RES.find(([, re]) => re.test(last))?.[0] ?? null;
+  const state = STATE_TESTS.find(([, re]) => re.test(last))?.[0] ?? null;
   const m = PSEUDO_ELEMENT.exec(last);
   return { state, pseudoElement: m ? m[0].replace(/^::?/, '::') : null };
 }

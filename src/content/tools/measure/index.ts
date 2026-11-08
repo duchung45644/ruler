@@ -9,12 +9,13 @@ import {
   type Box,
   type Field,
 } from '../../../lib/tools/measure';
+import { CURSORS } from '../../../lib/capture/capture';
 import { measureColor, measureGuides } from '../../../lib/ext/settings';
 import { panelToggle } from '../../../ui/mount';
 import { isDragging, startDrag } from '../../core/drag';
 import { isOwnEvent } from '../../core/events';
 import { addKeyHandler } from '../../core/keys';
-import { addPainter, CHIP, draw, host, requestPaint, scroll } from '../../core/overlay';
+import { addPainter, CHIP, draw, drawGuides, host, requestPaint, scroll } from '../../core/overlay';
 import { registerItem } from '../../core/registry.svelte';
 import { onStop, sessionSignal } from '../../core/session';
 import { state } from '../../core/state.svelte';
@@ -115,15 +116,7 @@ export async function initMeasure(): Promise<void> {
       // the ruler owns the cursor while it is on (legacy pointermove :172)
       if (!live() || isDragging() || state.rulerOn) return;
       const hit = measure.box && hitBox(measure.box, e.clientX, e.clientY, scroll());
-      setCursor(
-        !hit
-          ? ''
-          : hit.mode === 'move'
-            ? 'move'
-            : hit.corner === 'tl' || hit.corner === 'br'
-              ? 'nwse-resize'
-              : 'nesw-resize',
-      );
+      setCursor(hit ? CURSORS[hit.mode === 'move' ? 'move' : hit.corner] : '');
     },
     opts,
   );
@@ -152,10 +145,7 @@ export async function initMeasure(): Promise<void> {
     if (prefs.guides) {
       // spec §7: solid lines, not the legacy dashed ones
       const g = `background:${c};opacity:.7`;
-      draw(layerBox, `left:0;right:0;top:${y}px;height:1px;${g}`);
-      draw(layerBox, `left:0;right:0;top:${y + h}px;height:1px;${g}`);
-      draw(layerBox, `top:0;bottom:0;left:${x}px;width:1px;${g}`);
-      draw(layerBox, `top:0;bottom:0;left:${x + w}px;width:1px;${g}`);
+      drawGuides(layerBox, x, y, x + w, y + h, g);
     }
     const m = draw(
       layerBox,

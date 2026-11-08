@@ -1,3 +1,5 @@
+import { cssRulesOf } from '../css/matched';
+
 export type Breakpoint = { width: number; kind: 'min' | 'max' | 'both' };
 
 /** Port of getPageBreakpoints (legacy-src/content.js:48891): grouped by Math.round across kinds. */
@@ -55,16 +57,11 @@ export function mediaConditions(
       if (inner?.length) walk(inner);
     }
   };
-  const read = (sheet: CSSStyleSheet) => walk(sheet.cssRules);
   for (const r of roots)
     for (const sheet of [...r.styleSheets, ...(r.adoptedStyleSheets ?? [])]) {
-      try {
-        read(sheet);
-      } catch {
-        const copy = copyOf(sheet.href);
-        if (copy) read(copy);
-        else if (sheet.href) blocked.push(sheet.href);
-      }
+      const rules = cssRulesOf(sheet) ?? copyOf(sheet.href)?.cssRules;
+      if (rules) walk(rules);
+      else if (sheet.href) blocked.push(sheet.href);
     }
   return out;
 }

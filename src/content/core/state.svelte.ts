@@ -1,5 +1,4 @@
 import type { ColorFormat } from '../../lib/style/color';
-import { EMPTY_EDIT_STATE } from '../../lib/edit/types';
 import { DEFAULT_SETTINGS } from '../../lib/ext/settings';
 
 export const state = $state({
@@ -36,7 +35,6 @@ export const state = $state({
   /** Edit mode (dock Inspect / Edit switch) and its text-editing sub-mode. */
   editOn: false,
   textEditOn: false,
-  editState: { ...EMPTY_EDIT_STATE },
 });
 
 /** Element the inspector panel describes: live hover wins, else the selection. */

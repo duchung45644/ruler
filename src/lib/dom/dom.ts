@@ -10,6 +10,10 @@ export function isRendered(el: Element): boolean {
   return r.width > 0 || r.height > 0;
 }
 
+/** Puts an attribute back to a saved value; null removes it. */
+export const restoreAttr = (el: Element, name: string, v: string | null) =>
+  v === null ? el.removeAttribute(name) : el.setAttribute(name, v);
+
 /** Stops below body: null when the parent is body/html (legacy selectParent :46993). */
 export function parentOf(el: Element): Element | null {
   const p = el.parentElement;
@@ -33,9 +37,13 @@ export function siblingOf(
   return n;
 }
 
+/** Matches of `sel` in root, then in each open shadow root under it (tree order). */
+export const queryAllDeep = (root: ParentNode, sel: string, isOwn: (el: Element) => boolean) =>
+  [root, ...shadowRoots(root, isOwn)].flatMap((r) => [...r.querySelectorAll(sel)]);
+
 /** Every open shadow root under root, nested, in tree order, skipping our own hosts (port of legacy oe(), content.js:1548). */
 export function shadowRoots(
-  root: Document | ShadowRoot,
+  root: ParentNode,
   isOwn: (el: Element) => boolean,
   depth = 0,
 ): ShadowRoot[] {

@@ -258,6 +258,13 @@ async function postToPanel<R>(packet: Packet): Promise<R | undefined> {
   }
 }
 
+/** `p`, or `fallback` once `ms` pass first; the timer never outlives the race. */
+export function withTimeout<T>(p: Promise<T>, ms: number, fallback: () => T): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<T>((res) => (timer = setTimeout(() => res(fallback()), ms)));
+  return Promise.race([p, timeout]).finally(() => clearTimeout(timer));
+}
+
 export function handleMessages<T extends Target>(
   target: T,
   handlers: Handlers<ApiOf<T>>,

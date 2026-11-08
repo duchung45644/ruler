@@ -3,7 +3,7 @@ import { collectPageMetadata } from '../../lib/page/meta';
 import { collectSeoIssues } from '../../lib/page/seo';
 import type { PageData, PageWeight, SeoFinding, SeoIssue, Technology } from '../../lib/page/types';
 import { WeightTotals } from '../../lib/page/weight';
-import { sendToBackground, sendToSidePanel } from '../../lib/ext/messaging';
+import { sendToBackground, sendToSidePanel, withTimeout } from '../../lib/ext/messaging';
 import { displaySelector } from '../../lib/dom/selector';
 import { onStop, sessionSignal } from '../core/session';
 
@@ -48,15 +48,14 @@ const localise = (f: SeoFinding): SeoIssue => ({
  * never a page postMessage (Review Focus 7); no answer in 2s means none.
  */
 export function detectTechnologies(): Promise<Technology[]> {
-  const run = sendToBackground('run_tech_detection').then(
-    (r) => (r?.success ? r.technologies : []),
+  return withTimeout(
+    sendToBackground('run_tech_detection').then(
+      (r) => (r?.success ? r.technologies : []),
+      () => [],
+    ),
+    DETECT_TIMEOUT,
     () => [],
   );
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  const timeout = new Promise<Technology[]>(
-    (res) => (timer = setTimeout(() => res([]), DETECT_TIMEOUT)),
-  );
-  return Promise.race([run, timeout]).finally(() => clearTimeout(timer));
 }
 
 /**

@@ -1,6 +1,6 @@
 import TextSearch from '@lucide/svelte/icons/text-search';
 import { findAll, isVisible } from '../../../lib/tools/find';
-import { addPainter, draw, requestPaint, visibleRects } from '../../core/overlay';
+import { addPainter, drawBoxes, requestPaint } from '../../core/overlay';
 import { registerItem, togglePopover } from '../../core/registry.svelte';
 import { onStop } from '../../core/session';
 import { state } from '../../core/state.svelte';
@@ -79,17 +79,12 @@ export function initFind(): void {
     isActive: () => state.findOn,
   });
   onStop(clearFind);
-  addPainter('find', (box) => {
-    // reads first (visibleRects), then one append: see visibleRects
-    const frag = document.createDocumentFragment();
-    visibleRects(find.results).forEach((r, i) => {
-      if (!r) return;
-      const pct = i === find.index ? 45 : 20;
-      draw(
-        frag,
-        `left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;background:color-mix(in srgb,var(--color-accent) ${pct}%,transparent)`,
-      );
-    });
-    box.append(frag);
-  });
+  addPainter('find', (box) =>
+    drawBoxes(
+      box,
+      find.results,
+      (i) =>
+        `background:color-mix(in srgb,var(--color-accent) ${i === find.index ? 45 : 20}%,transparent)`,
+    ),
+  );
 }

@@ -1,3 +1,5 @@
+import { renderedFont } from '../../lib/css/inspect';
+import { cssRulesOf } from '../../lib/css/matched';
 import { isRendered } from '../../lib/dom/dom';
 import { childrenOf, collectAssetRefs } from '../../lib/element/assets';
 import { boxModel } from '../../lib/element/box';
@@ -105,38 +107,6 @@ function collectColors(root: Element, mark: Mark): ElementColors {
   };
   walk(root, 0);
   return elementColors(parts);
-}
-
-/** One measuring context for every call (creating a canvas per element was most of the cost). */
-let measure: CanvasRenderingContext2D | null | undefined;
-/** Font shorthand → rendered family; dropped while webfonts load (the answer may change). */
-const fontMemo = new Map<string, string>();
-
-/** Port of getRenderedFont (content.js:42745): the stack entry whose metrics match. */
-function renderedFont(s: CSSStyleDeclaration): string {
-  const prefix = `${s.fontStyle} ${s.fontWeight} ${s.fontSize}`;
-  const key = `${prefix} ${s.fontFamily}`;
-  const loading = document.fonts?.status === 'loading';
-  if (loading) fontMemo.clear();
-  const known = fontMemo.get(key);
-  if (known !== undefined) return known;
-  measure ??= document.createElement('canvas').getContext('2d');
-  const ctx = measure;
-  if (!ctx) return s.fontFamily;
-  const probe = 'BESbswy/\\[]{}()@iIlL10OoQgMmWw';
-  ctx.font = key;
-  const width = ctx.measureText(probe).width;
-  let found = s.fontFamily;
-  for (const f of s.fontFamily.split(',')) {
-    const family = f.trim().replace(/['"]/g, '');
-    ctx.font = `${prefix} ${family}`;
-    if (Math.abs(width - ctx.measureText(probe).width) < 1) {
-      found = family;
-      break;
-    }
-  }
-  if (!loading) fontMemo.set(key, found);
-  return found;
 }
 
 /** Rendered samples by what they depend on; selections on one page keep meeting the same styles. */
@@ -269,11 +239,8 @@ function sheetKeyframes(name: string): Keyframe[] {
     }
   };
   for (const sheet of document.styleSheets) {
-    try {
-      walk(sheet.cssRules);
-    } catch {
-      // cross-origin sheet
-    }
+    const rules = cssRulesOf(sheet); // null: cross-origin sheet
+    if (rules) walk(rules);
   }
   return [...byOffset.values()].sort((a, b) => a.offset - b.offset);
 }

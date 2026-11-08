@@ -128,19 +128,34 @@ export function cssSnippet(el: Element, style: Style, f?: ColorFormat): string {
   return `${elementSelector(el)} {\n${lines.join('\n')}\n}`;
 }
 
-/** Port of getRenderedFont (:42745): first family in the stack whose metrics match the computed font. */
-export function renderedFont(el: Element): string {
-  const s = getComputedStyle(el);
-  const ctx = document.createElement('canvas').getContext('2d');
-  if (!ctx) return s.fontFamily;
-  const sample = 'BESbswy/\\[]{}()@iIlL10OoQgMmWw';
+/** One measuring context for every call (creating a canvas per element was most of the cost). */
+let measure: CanvasRenderingContext2D | null | undefined;
+/** Font shorthand → rendered family; dropped while webfonts load (the answer may change). */
+const fontMemo = new Map<string, string>();
+
+/** Port of getRenderedFont (content.js:42745): the stack entry whose metrics match. */
+export function renderedFont(s: CSSStyleDeclaration): string {
   const prefix = `${s.fontStyle} ${s.fontWeight} ${s.fontSize}`;
-  ctx.font = `${prefix} ${s.fontFamily}`;
-  const width = ctx.measureText(sample).width;
+  const key = `${prefix} ${s.fontFamily}`;
+  const loading = document.fonts?.status === 'loading';
+  if (loading) fontMemo.clear();
+  const known = fontMemo.get(key);
+  if (known !== undefined) return known;
+  measure ??= document.createElement('canvas').getContext('2d');
+  const ctx = measure;
+  if (!ctx) return s.fontFamily;
+  const probe = 'BESbswy/\\[]{}()@iIlL10OoQgMmWw';
+  ctx.font = key;
+  const width = ctx.measureText(probe).width;
+  let found = s.fontFamily;
   for (const f of s.fontFamily.split(',')) {
-    const name = f.trim().replace(/['"]/g, '');
-    ctx.font = `${prefix} ${name}`;
-    if (Math.abs(width - ctx.measureText(sample).width) < 1) return name;
+    const family = f.trim().replace(/['"]/g, '');
+    ctx.font = `${prefix} ${family}`;
+    if (Math.abs(width - ctx.measureText(probe).width) < 1) {
+      found = family;
+      break;
+    }
   }
-  return s.fontFamily;
+  if (!loading) fontMemo.set(key, found);
+  return found;
 }

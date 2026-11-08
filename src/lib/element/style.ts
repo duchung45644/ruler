@@ -3,25 +3,6 @@ import { formatColor, formatCss, parseColor } from '../style/color';
 /** What the collectors read: a computed style, or a plain stub in tests. */
 export type StyleLike = { getPropertyValue(prop: string): string };
 
-/** Port of `B` (content.js:39664): split on commas outside parentheses. */
-export function splitTopLevel(s: string): string[] {
-  const out: string[] = [];
-  let cur = '';
-  let depth = 0;
-  for (const ch of s) {
-    if (ch === '(') depth++;
-    else if (ch === ')') depth--;
-    else if (ch === ',' && depth === 0) {
-      if (cur.trim()) out.push(cur.trim());
-      cur = '';
-      continue;
-    }
-    cur += ch;
-  }
-  if (cur.trim()) out.push(cur.trim());
-  return out;
-}
-
 const hexMemo = new Map<string, string | null>();
 
 /** Upper-case HEX of a computed colour; null when unparseable or fully transparent. */

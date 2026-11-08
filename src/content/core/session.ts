@@ -12,7 +12,8 @@ import { setPaused } from './registry.svelte';
 import { state } from './state.svelte';
 
 let controller: AbortController | null = null;
-let cleanups: (() => void)[] = [];
+/** A Set: the same cleanup registered twice in a session still runs once. */
+let cleanups = new Set<() => void>();
 let ctxRef: ContentScriptContext | null = null;
 let uiRef: { host: HTMLElement } | null = null;
 
@@ -41,7 +42,7 @@ export function sessionSignal(): AbortSignal {
 }
 
 export function onStop(fn: () => void): void {
-  cleanups.push(fn);
+  cleanups.add(fn);
 }
 
 export async function startSession(ctx: ContentScriptContext): Promise<void> {
@@ -96,7 +97,7 @@ export function stopSession(): void {
   controller?.abort();
   controller = null;
   const fns = cleanups;
-  cleanups = [];
+  cleanups = new Set();
   for (const fn of fns) fn();
   setPaused(false);
   Object.assign(state, {

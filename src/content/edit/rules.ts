@@ -1,6 +1,6 @@
 /** CSS rule edit tracker (port of the rule editor class, content.js:16813–17400; 5.18, 5.19). */
 import type { KnownRule } from '../../lib/css/matched';
-import { INLINE_SOURCE, sheetsOf } from '../../lib/css/matched';
+import { cssRulesOf, INLINE_SOURCE, sheetsOf } from '../../lib/css/matched';
 import { parseDecls, serializeDecls } from '../../lib/edit/decls';
 import { addressOf, locate, scopeAddressOf, type RuleAddress } from '../../lib/edit/rule-address';
 import type { SerializedEdit } from '../../lib/edit/serialize';
@@ -96,14 +96,27 @@ export const attachedSheets = (root: Root): Set<CSSStyleSheet> =>
 export function writable(rule: CSSStyleRule, root: Root, attached = attachedSheets(root)): boolean {
   let sheet: CSSStyleSheet | null = rule.parentStyleSheet;
   while (sheet?.ownerRule?.parentStyleSheet) sheet = sheet.ownerRule.parentStyleSheet;
-  if (!sheet || !attached.has(sheet)) return false;
-  try {
-    void sheet!.cssRules;
-    return true;
-  } catch {
-    return false;
-  }
+  return !!sheet && attached.has(sheet) && !!cssRulesOf(sheet);
 }
+
+/** `sel { decls }` nested inside its at-rule wrappers, outermost first. */
+export const wrapRule = (sel: string, decls: string, wrappers: string[]) =>
+  wrappers.reduceRight((inner, w) => `${w} { ${inner} }`, `${sel} { ${decls} }`);
+
+/** Our <style> goes in <head>, or straight into a shadow root. */
+export const appendStyle = (root: Root, style: HTMLStyleElement) =>
+  (root.nodeType === Node.DOCUMENT_NODE ? (root as Document).head : root).append(style);
+
+const pageEdit = (r: PageRecord): SerializedEdit => ({
+  own: false,
+  stylesheet: r.origin.stylesheet,
+  scopeAddress: r.scopeAddress,
+  wrappers: [...r.origin.wrappers],
+  occ: r.origin.occ,
+  originalSelector: r.before.selector,
+  selector: r.current.selector,
+  declsText: r.current.declsText,
+});
 
 export class RuleTracker {
   private recs = new Map<string, Rec>();
@@ -252,7 +265,7 @@ export class RuleTracker {
     if (!create) return null;
     const style = document.createElement('style');
     style.id = this.styleId;
-    (root.nodeType === Node.DOCUMENT_NODE ? (root as Document).head : root).append(style);
+    appendStyle(root, style);
     return style;
   }
 
@@ -291,12 +304,7 @@ export class RuleTracker {
         continue;
       }
       style.textContent = own
-        .map((r) =>
-          r.wrappers.reduceRight(
-            (inner, w) => `${w} { ${inner} }`,
-            `${r.current.selector} { ${r.current.declsText} }`,
-          ),
-        )
+        .map((r) => wrapRule(r.current.selector, r.current.declsText, r.wrappers))
         .join('\n');
       const rules = this.all(root).filter((k) => k.source === OWN_SOURCE);
       own.forEach((r, i) => (r.rule = rules[i]?.rule ?? null));
@@ -390,17 +398,7 @@ export class RuleTracker {
   serialize(): SerializedEdit[] {
     const out: SerializedEdit[] = [];
     for (const r of this.recs.values()) {
-      if (r.kind === 'page')
-        out.push({
-          own: false,
-          stylesheet: r.origin.stylesheet,
-          scopeAddress: r.scopeAddress,
-          wrappers: [...r.origin.wrappers],
-          occ: r.origin.occ,
-          originalSelector: r.before.selector,
-          selector: r.current.selector,
-          declsText: r.current.declsText,
-        });
+      if (r.kind === 'page') out.push(pageEdit(r));
       else if (r.kind === 'own')
         out.push({
           own: true,
@@ -532,16 +530,7 @@ export class RuleTracker {
       if (r.kind !== 'page') continue;
       if (writable(r.rule, r.root)) continue;
       this.recs.delete(r.recordId);
-      lost.push({
-        own: false,
-        stylesheet: r.origin.stylesheet,
-        scopeAddress: r.scopeAddress,
-        wrappers: r.origin.wrappers,
-        occ: r.origin.occ,
-        originalSelector: r.before.selector,
-        selector: r.current.selector,
-        declsText: r.current.declsText,
-      });
+      lost.push(pageEdit(r));
     }
     const retry = [...lost, ...this.dormant];
     this.dormant = [];

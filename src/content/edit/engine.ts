@@ -12,7 +12,7 @@ import {
 import { History, type Action } from '../../lib/edit/history';
 import { PROTECTED_TAGS, sanitizeHtml } from '../../lib/edit/sanitize';
 import type { EditResult, EditState, InsertPosition } from '../../lib/edit/types';
-import { parentOf, siblingOf } from '../../lib/dom/dom';
+import { parentOf, restoreAttr, siblingOf } from '../../lib/dom/dom';
 import {
   displaySelector,
   ensureElementId,
@@ -42,9 +42,6 @@ interface Original {
 }
 
 const protectedTag = (el: Element) => PROTECTED_TAGS.has(el.localName);
-
-const restoreAttr = (el: Element, name: string, v: string | null) =>
-  v === null ? el.removeAttribute(name) : el.setAttribute(name, v);
 
 export class HtmlEditor {
   private history = new History(50);

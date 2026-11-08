@@ -39,18 +39,22 @@ function splitDecls(text: string): string[] {
   return out;
 }
 
+/** One declaration: custom properties keep their case, a trailing !important becomes the flag. */
+export function toDecl(property: string, raw: string): Decl {
+  property = property.trim();
+  if (!property.startsWith('--')) property = property.toLowerCase();
+  let value = raw.trim();
+  const imp = /\s*!\s*important\s*$/i.exec(value);
+  if (imp) value = value.slice(0, imp.index).trim();
+  return { property, value, important: !!imp };
+}
+
 export function parseDecls(text: string): Decl[] {
   const out: Decl[] = [];
   for (const part of splitDecls(text)) {
     const colon = part.indexOf(':');
-    if (colon < 0) continue;
-    let property = part.slice(0, colon).trim();
-    let value = part.slice(colon + 1).trim();
-    if (!property) continue;
-    if (!property.startsWith('--')) property = property.toLowerCase();
-    const imp = /\s*!\s*important\s*$/i.exec(value);
-    if (imp) value = value.slice(0, imp.index).trim();
-    out.push({ property, value, important: !!imp });
+    if (colon < 0 || !part.slice(0, colon).trim()) continue;
+    out.push(toDecl(part.slice(0, colon), part.slice(colon + 1)));
   }
   return out;
 }

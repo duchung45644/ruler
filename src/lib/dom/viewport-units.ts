@@ -3,19 +3,13 @@
  * (`min-height: 100vh`, Tailwind `min-h-screen`, `h-dvh`…) would grow with it. Before that, pin those
  * elements at their current pixel size; the returned function puts their inline styles back.
  */
+import { cssRulesOf } from '../css/matched';
+
 const PROPS = ['height', 'min-height', 'max-height'] as const;
 /** vh, svh, lvh, dvh, vb and vmin / vmax (they follow the height too). */
 const VIEWPORT_UNIT = /\d(?:\.\d+)?(?:[sld]?v(?:h|b|min|max))\b/i;
 
 type Prop = (typeof PROPS)[number];
-
-function rulesOf(sheet: CSSStyleSheet): CSSRuleList | null {
-  try {
-    return sheet.cssRules;
-  } catch {
-    return null; // cross-origin sheet: unreadable, skipped
-  }
-}
 
 /** Selector → viewport-unit properties, from every readable rule (nested @media/@layer too). */
 function collect(rules: CSSRuleList, selector: string | null, out: Map<string, Set<Prop>>): void {
@@ -44,7 +38,7 @@ export function pinViewportUnits(roots: (Document | ShadowRoot)[]): () => void {
   for (const root of roots) {
     const bySelector = new Map<string, Set<Prop>>();
     for (const sheet of [...root.styleSheets, ...(root.adoptedStyleSheets ?? [])]) {
-      const rules = rulesOf(sheet);
+      const rules = cssRulesOf(sheet); // null: cross-origin, skipped
       if (rules) collect(rules, null, bySelector);
     }
     for (const [sel, props] of bySelector) {

@@ -77,6 +77,14 @@ function captureVisible(windowId: number): Promise<string> {
   return p;
 }
 
+const toDataUrl = (blob: Blob) =>
+  new Promise<string>((res, rej) => {
+    const fr = new FileReader();
+    fr.onload = () => res(String(fr.result));
+    fr.onerror = rej;
+    fr.readAsDataURL(blob);
+  });
+
 /** Crop in device px; any failure keeps the full image (legacy $e). */
 async function crop(dataUrl: string, rect: DeviceRect): Promise<string> {
   try {
@@ -85,12 +93,7 @@ async function crop(dataUrl: string, rect: DeviceRect): Promise<string> {
     const c = new OffscreenCanvas(w, h);
     c.getContext('2d')!.drawImage(bmp, x, y, w, h, 0, 0, w, h);
     const blob = await c.convertToBlob({ type: 'image/png' });
-    return await new Promise<string>((res, rej) => {
-      const fr = new FileReader();
-      fr.onload = () => res(String(fr.result));
-      fr.onerror = rej;
-      fr.readAsDataURL(blob);
-    });
+    return await toDataUrl(blob);
   } catch {
     return dataUrl;
   }
@@ -108,14 +111,6 @@ async function captureTab(
     return { success: false, error: 'CAPTURE_FAILED' };
   }
 }
-
-const toDataUrl = (blob: Blob) =>
-  new Promise<string>((res, rej) => {
-    const fr = new FileReader();
-    fr.onload = () => res(String(fr.result));
-    fr.onerror = rej;
-    fr.readAsDataURL(blob);
-  });
 
 /** 10.05 / 10.14: the visible tab for an agent, PNG scaled down to ≤ 2000 px (Q6 a). */
 async function captureForAi(tab?: { id?: number; windowId?: number }): Promise<AiCapture> {

@@ -1,21 +1,16 @@
 import { hexOf } from '../../lib/element/style';
-import { addPainter, draw, requestPaint, visibleRects } from '../core/overlay';
+import { addPainter, drawBoxes, requestPaint } from '../core/overlay';
 
 let targets: Element[] = [];
 let off: (() => void) | null = null;
 
 /** Same frame as the inspector highlight (spec §7): solid 1.5px accent, faint fill. */
 function paint(box: HTMLElement): void {
-  // reads first (visibleRects), then one append: see visibleRects
-  const frag = document.createDocumentFragment();
-  for (const r of visibleRects(targets)) {
-    if (!r) continue;
-    draw(
-      frag,
-      `left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;box-sizing:border-box;border:1.5px solid #6366f1;background:#6366f112`,
-    );
-  }
-  box.append(frag);
+  drawBoxes(
+    box,
+    targets,
+    () => 'box-sizing:border-box;border:1.5px solid #6366f1;background:#6366f112',
+  );
 }
 
 /** Painter `sidepanel`: boxes over the elements a panel row points at (hover, colour, issue…). */
@@ -31,9 +26,6 @@ export function clearHighlights(): void {
   off?.();
   off = null;
 }
-
-/** Scroll / resize move the boxes with the page. */
-export const repaintHighlights = () => off && requestPaint();
 
 const SKIP = ['meta', 'link', 'script', 'style', 'title', 'base', 'head'];
 

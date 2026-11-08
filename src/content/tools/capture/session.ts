@@ -13,7 +13,6 @@ import { cap } from './state.svelte';
 /** Capture session, port of unpacked/scripts/bd/capture/capture.js. */
 let ui: { host: HTMLElement; shadow: ShadowRoot; remove(): void } | null = null;
 let viewKey: ((e: KeyboardEvent) => boolean) | null = null;
-let stopHooked = false;
 
 export const frames = (): Promise<void> =>
   new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
@@ -114,13 +113,7 @@ async function mountCapture(): Promise<boolean> {
   // isolateEvents stops keydown at the shadow root, so route it from there too (like session.ts)
   ui.shadow.addEventListener('keydown', routeKey as EventListener, { signal });
   setCaptureKeyHandler(onKey);
-  if (!stopHooked) {
-    stopHooked = true;
-    onStop(() => {
-      stopHooked = false;
-      closeCapture();
-    });
-  }
+  onStop(closeCapture);
   return true;
 }
 

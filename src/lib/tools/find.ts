@@ -1,5 +1,5 @@
 import type { i18n } from '#i18n';
-import { isRendered, shadowRoots } from '../dom/dom';
+import { isRendered, queryAllDeep } from '../dom/dom';
 
 const isOwn = (el: Element) => el.localName === 'iodob-ui';
 
@@ -11,9 +11,7 @@ export function findAll(
   if (!selector.trim()) return { found: [], hidden: 0 };
   let all: Element[];
   try {
-    all = [document, ...shadowRoots(document, isOwn)].flatMap((r) => [
-      ...r.querySelectorAll(selector),
-    ]);
+    all = queryAllDeep(document, selector, isOwn);
   } catch {
     return { found: [], hidden: 0 }; // invalid selector: silent (Review Focus 4)
   }

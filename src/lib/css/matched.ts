@@ -1,4 +1,5 @@
 import type { MatchedRule } from '../element/types';
+import { parseDecls } from '../edit/decls';
 import { specificity, splitState, splitTop } from './specificity';
 
 /** A style rule met while walking the sheets, with the at-rules around it. */
@@ -29,6 +30,15 @@ export interface SourcedSheet {
 }
 
 /** The sheets that style `root`'s tree, in cascade order: owned by nodes, then adopted. */
+/** A sheet's rules, or null when it cannot be read (cross-origin). */
+export function cssRulesOf(sheet: CSSStyleSheet): CSSRuleList | null {
+  try {
+    return sheet.cssRules;
+  } catch {
+    return null;
+  }
+}
+
 export function sheetsOf(root: Document | ShadowRoot): SourcedSheet[] {
   const owned = [...root.querySelectorAll('style, link[rel~="stylesheet"]')].flatMap((n) => {
     const sheet = (n as HTMLStyleElement | HTMLLinkElement).sheet;
@@ -100,32 +110,16 @@ export function collectRules(
     }
   };
   const visit = (s: SourcedSheet, wrappers: string[], on: boolean) => {
-    let rules: CSSRuleList;
-    try {
-      rules = s.sheet.cssRules;
-    } catch {
-      onBlocked?.(s);
-      return;
-    }
-    walk(rules, s.source, wrappers, on);
+    const rules = cssRulesOf(s.sheet);
+    if (rules) walk(rules, s.source, wrappers, on);
+    else onBlocked?.(s);
   };
   for (const s of sheets) visit(s, [], true);
   return out;
 }
 
-/** Declarations as written (shorthands kept), from the rule's cssText. */
-export function declarations(style: CSSStyleDeclaration): MatchedRule['declarations'] {
-  return splitTop(style.cssText, ';').flatMap((d) => {
-    const colon = d.indexOf(':');
-    if (colon < 0) return [];
-    let value = d.slice(colon + 1).trim();
-    const important = /!\s*important$/i.test(value);
-    if (important) value = value.replace(/\s*!\s*important$/i, '');
-    return [{ property: d.slice(0, colon).trim(), value, important }];
-  });
-}
-
-const safeMatches = (el: Element, sel: string) => {
+/** el.matches that treats an invalid selector as no match. */
+export const safeMatches = (el: Element, sel: string) => {
   try {
     return el.matches(sel);
   } catch {
@@ -319,7 +313,7 @@ export function matchedRules(el: Element, rules: KnownRule[]): MatchedRule[] {
       sourceIndex: k.sourceIndex,
       score: best.score,
       source: k.source,
-      declarations: declarations(k.rule.style),
+      declarations: parseDecls(k.rule.style.cssText),
     });
   }
   const inline = (el as HTMLElement).style;
@@ -332,7 +326,7 @@ export function matchedRules(el: Element, rules: KnownRule[]): MatchedRule[] {
       sourceIndex: rules.length,
       score: INLINE_SCORE,
       source: INLINE_SOURCE,
-      declarations: declarations(inline),
+      declarations: parseDecls(inline.cssText),
     });
   }
   return out.sort((a, b) => b.score - a.score || b.sourceIndex - a.sourceIndex);

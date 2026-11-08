@@ -79,7 +79,7 @@
     const img = el instanceof HTMLImageElement ? el : null;
     const format = img?.src.split('.').pop()?.split('?')[0]?.toUpperCase() ?? '';
     return {
-      groups: inspectGroups(s, renderedFont(el), core.colorFormat),
+      groups: inspectGroups(s, renderedFont(s), core.colorFormat),
       contrast: contrastOf(el, s),
       img: img && {
         natural:

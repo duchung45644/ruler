@@ -5,9 +5,9 @@ import {
   nudgeDelta,
   resizeFromCorner,
   togglePinned,
-  type Corner,
   type OverlayImage,
 } from '../../../lib/tools/overlay-image';
+import { CURSORS } from '../../../lib/capture/capture';
 import { panelToggle } from '../../../ui/mount';
 import { isDragging, startDrag } from '../../core/drag';
 import { ownNodes } from '../../core/events';
@@ -30,7 +30,6 @@ const nat = (img: HTMLImageElement) => ({
   width: img.naturalWidth || 1,
   height: img.naturalHeight || 1,
 });
-const resizeCursor = (c: Corner) => (c === 'tl' || c === 'br' ? 'nwse-resize' : 'nesw-resize');
 
 export function select(i: number): void {
   overlay.sel = i;
@@ -63,7 +62,7 @@ function onPointerMove(e: PointerEvent): void {
   const img = e.currentTarget as HTMLImageElement;
   const r = img.getBoundingClientRect();
   const c = cornerAt(r, e.clientX - r.left, e.clientY - r.top);
-  img.style.cursor = c ? resizeCursor(c) : 'move';
+  img.style.cursor = CURSORS[c ?? 'move'];
 }
 
 function onPointerDown(e: PointerEvent): void {
@@ -76,7 +75,7 @@ function onPointerDown(e: PointerEvent): void {
   const corner = cornerAt(r, e.clientX - r.left, e.clientY - r.top);
   const start = { ...o };
   const { clientX: cx, clientY: cy } = e;
-  document.documentElement.style.cursor = corner ? resizeCursor(corner) : 'move';
+  document.documentElement.style.cursor = CURSORS[corner ?? 'move'];
   dragCursor = true;
   startDrag(
     e,

@@ -70,6 +70,39 @@ export function visibleRects(els: readonly Element[]): (DOMRect | null)[] {
   });
 }
 
+/** Boxes over `els`, reads first (visibleRects) then one append; `css` returning null skips one. */
+export function drawBoxes(
+  parent: ParentNode,
+  els: readonly Element[],
+  css: (i: number, r: DOMRect) => string | null,
+): void {
+  const frag = document.createDocumentFragment();
+  visibleRects(els).forEach((r, i) => {
+    const extra = r && css(i, r);
+    if (r && extra !== null)
+      draw(
+        frag,
+        `left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;${extra}`,
+      );
+  });
+  parent.append(frag);
+}
+
+/** Four full-width / full-height 1px lines through the edges x1, y1, x2, y2 (alignment guides). */
+export function drawGuides(
+  parent: ParentNode,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  css: string,
+): void {
+  draw(parent, `left:0;right:0;top:${y1}px;height:1px;${css}`);
+  draw(parent, `left:0;right:0;top:${y2}px;height:1px;${css}`);
+  draw(parent, `top:0;bottom:0;left:${x1}px;width:1px;${css}`);
+  draw(parent, `top:0;bottom:0;left:${x2}px;width:1px;${css}`);
+}
+
 /** C-style number (spec §7): mono ~10px bold, no background; `tx`/`ty` = translate anchor. */
 export function drawNumber(
   parent: HTMLElement,

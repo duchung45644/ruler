@@ -1,5 +1,5 @@
 /** Forced :hover / :focus / … on the selected element (port of forceState, content.js:34379–34406; 5.11). */
-import type { KnownRule } from '../../lib/css/matched';
+import { safeMatches, type KnownRule } from '../../lib/css/matched';
 import { splitTop } from '../../lib/css/specificity';
 import {
   FORCEABLE_STATES,
@@ -8,16 +8,9 @@ import {
   statesInSelector,
 } from '../../lib/css/states';
 import { rootOf, rulesOf } from '../sidepanel/rules';
+import { appendStyle, wrapRule } from './rules';
 
 const STATE_RE = new RegExp(`(${FORCEABLE_STATES.join('|')})(?![a-z-])`, 'g');
-
-const matches = (el: Element, sel: string) => {
-  try {
-    return el.matches(sel);
-  } catch {
-    return false;
-  }
-};
 
 /** States of rules that would match `el` if their states held. */
 export function availableStates(el: Element, rules: KnownRule[]): string[] {
@@ -27,7 +20,7 @@ export function availableStates(el: Element, rules: KnownRule[]): string[] {
       const states = statesInSelector(alt);
       if (!states.length) continue;
       const bare = alt.replace(STATE_RE, '').trim() || '*';
-      if (matches(el, bare)) for (const s of states) out.add(s);
+      if (safeMatches(el, bare)) for (const s of states) out.add(s);
     }
   return FORCEABLE_STATES.filter((s) => out.has(s));
 }
@@ -58,20 +51,15 @@ export class StateForcer {
     for (const k of rulesOf(root).rules) {
       const sel = splitTop(k.rule.selectorText, ',')
         .map((alt) => rewriteForState(alt, state, this.extId))
-        .filter((s): s is string => !!s && matches(el, s))
+        .filter((s): s is string => !!s && safeMatches(el, s))
         .join(', ');
       if (!sel) continue;
-      css.push(
-        k.wrappers.reduceRight(
-          (inner, w) => `${w} { ${inner} }`,
-          `${sel} { ${k.rule.style.cssText} }`,
-        ),
-      );
+      css.push(wrapRule(sel, k.rule.style.cssText, k.wrappers));
     }
     const style = document.createElement('style');
     style.id = this.styleId;
     style.textContent = css.join('\n');
-    (root.nodeType === Node.DOCUMENT_NODE ? (root as Document).head : root).append(style);
+    appendStyle(root, style);
     this.style = style;
   }
 

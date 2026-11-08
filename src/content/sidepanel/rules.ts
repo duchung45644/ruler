@@ -1,4 +1,10 @@
-import { collectRules, matchedRules, sheetsOf, type KnownRule } from '../../lib/css/matched';
+import {
+  collectRules,
+  cssRulesOf,
+  matchedRules,
+  sheetsOf,
+  type KnownRule,
+} from '../../lib/css/matched';
 import type { MatchedRule } from '../../lib/element/types';
 import { sendToBackground } from '../../lib/ext/messaging';
 
@@ -32,18 +38,9 @@ export function rulesOf(root: Document | ShadowRoot): { rules: KnownRule[]; bloc
 
 const sheetsFor = (el: Element | null) => rulesOf(rootOf(el));
 
-const unreadable = (sheet: CSSStyleSheet) => {
-  try {
-    void sheet.cssRules;
-    return false;
-  } catch {
-    return true;
-  }
-};
-
 /** Cross-origin sheets we can neither read nor have a copy of (6.05); top level only, cheap. */
 export const skippedCrossOriginCount = (el: Element) =>
-  sheetsOf(rootOf(el)).filter((s) => !fetched.has(s.source) && unreadable(s.sheet)).length;
+  sheetsOf(rootOf(el)).filter((s) => !fetched.has(s.source) && !cssRulesOf(s.sheet)).length;
 
 /** get_matched_rules (split from 5.21), read-only. */
 export function getMatchedRules(el: Element | null): {

@@ -1,5 +1,5 @@
 import type { Gradient } from './types';
-import { splitTopLevel } from './style';
+import { splitTop } from '../css/specificity';
 
 const COLOR_START = /^(?:rgba?|oklab|oklch|lab|lch|hwb|color)\(/;
 const STOP =
@@ -20,29 +20,15 @@ const SIDE_ANGLES: Record<string, number> = {
 };
 
 /** Port of `P` (content.js:40238): each top-level `*-gradient(…)` of a background-image. */
-export function splitGradients(image: string): string[] {
-  const out: string[] = [];
-  const re = /(?:repeating-)?(?:linear|radial|conic)-gradient\(/gi;
-  for (let m = re.exec(image); m; m = re.exec(image)) {
-    let depth = 1;
-    let i = m.index + m[0].length;
-    for (; i < image.length && depth; i++) {
-      if (image[i] === '(') depth++;
-      else if (image[i] === ')') depth--;
-    }
-    if (depth) break;
-    out.push(image.slice(m.index, i));
-    re.lastIndex = i;
-  }
-  return out;
-}
+export const splitGradients = (image: string): string[] =>
+  splitTop(image, ',').filter((l) => /^(?:repeating-)?(?:linear|radial|conic)-gradient\(/i.test(l));
 
 /** Port of `F` (content.js:40275): type, angle / shape, colour stops with filled-in positions. */
 export function parseGradient(src: string): Gradient | null {
   const m = /^((?:repeating-)?(?:linear|radial|conic)-gradient)\((.+)\)$/i.exec(src);
   if (!m) return null;
   const type = m[1]!.toLowerCase();
-  const parts = splitTopLevel(m[2]!);
+  const parts = splitTop(m[2]!, ',');
   const g: Gradient = { type, angle: null, shape: null, stops: [], raw: src };
   let first = 0;
   const head = parts[0];

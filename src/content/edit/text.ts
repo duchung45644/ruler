@@ -1,5 +1,5 @@
 /** Text edit mode (port of toggleTextEditMode :42022, enterTextEditMode :42044, exitTextEditMode :42271; 5.06). */
-import { shadowRoots } from '../../lib/dom/dom';
+import { restoreAttr, shadowRoots } from '../../lib/dom/dom';
 import { layer } from '../core/overlay';
 import { state } from '../core/state.svelte';
 import type { HtmlEditor } from './engine';
@@ -24,9 +24,6 @@ interface Session {
 }
 
 let session: Session | null = null;
-
-const restoreAttr = (el: Element, name: string, v: string | null) =>
-  v === null ? el.removeAttribute(name) : el.setAttribute(name, v);
 
 const elementOf = (n: Node | null): Element | null =>
   !n ? null : n.nodeType === Node.ELEMENT_NODE ? (n as Element) : n.parentElement;

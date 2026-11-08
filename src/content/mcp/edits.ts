@@ -3,7 +3,7 @@
  * through the side panel's edit engine, so it joins undo / redo, shows in the panel's change
  * list and is saved per site like a manual edit (Q9 a). There is no "edit mode" to enter (5.28).
  */
-import { mergeDecls, parseDecls, serializeDecls, type Decl } from '../../lib/edit/decls';
+import { mergeDecls, parseDecls, serializeDecls, toDecl, type Decl } from '../../lib/edit/decls';
 import { PROTECTED_TAGS } from '../../lib/edit/sanitize';
 import type { EditResult, InsertPosition } from '../../lib/edit/types';
 import type { McpInsertPosition, Styles } from '../../lib/mcp/protocol';
@@ -24,15 +24,7 @@ const POSITIONS: Record<McpInsertPosition, InsertPosition> = {
 };
 const sender = {} as never; // the edit handlers take the message sender last; unused there
 
-const decls = (s: Styles): Decl[] =>
-  Object.entries(s).map(([property, raw]) => {
-    const imp = /\s*!\s*important\s*$/i.exec(raw);
-    return {
-      property: property.startsWith('--') ? property : property.toLowerCase(),
-      value: imp ? raw.slice(0, imp.index).trim() : raw.trim(),
-      important: !!imp,
-    };
-  });
+const decls = (s: Styles): Decl[] => Object.entries(s).map(([p, v]) => toDecl(p, v));
 
 /** EditResult → command result: the engine's error is the agent's error. */
 function done(r: EditResult | undefined | Promise<EditResult>): unknown {

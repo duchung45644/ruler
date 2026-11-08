@@ -21,7 +21,6 @@ import {
   highlight,
   highlightForColor,
   highlightForTypography,
-  repaintHighlights,
 } from './highlight';
 import { currentIssues, stopIssues } from './issues';
 import {
@@ -204,7 +203,6 @@ export async function initSidePanelBridge(): Promise<void> {
   signal.addEventListener('abort', () => browser.runtime.onConnect.removeListener(onConnect), {
     once: true,
   });
-  window.addEventListener('scroll', repaintHighlights, { signal, passive: true, capture: true });
   initPageData(elementId);
 
   const stopEffect = $effect.root(() => {

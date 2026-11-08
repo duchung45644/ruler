@@ -1,4 +1,4 @@
-import { shadowRoots } from '../dom/dom';
+import { queryAllDeep } from '../dom/dom';
 import type { SeoFinding } from './types';
 
 /** The 16 checks of collectSEOIssues (content.js:39254), in the order they run. */
@@ -33,10 +33,7 @@ export function collectSeoIssues(
   isOwn: (el: Element) => boolean = () => false,
 ): SeoFinding[] {
   // legacy `se`: the document, then every open shadow root
-  const all = (sel: string) => [
-    ...doc.querySelectorAll(sel),
-    ...shadowRoots(doc, isOwn).flatMap((r) => [...r.querySelectorAll(sel)]),
-  ];
+  const all = (sel: string) => queryAllDeep(doc, sel, isOwn);
   const out: SeoFinding[] = [];
   const add = (id: SeoCheck, severity: SeoFinding['severity'], target: string) =>
     out.push({ id, groupingKey: id, severity, target });

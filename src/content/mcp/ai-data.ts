@@ -3,6 +3,7 @@
  * extractAiAttributes (:48492), buildOutlineTree (:48567), buildElementSummary (:48654),
  * queryBySelector (:48757). `idOf` tags elements with the same data-sr-id-* ids the panel uses.
  */
+import { queryAllDeep } from '../../lib/dom/dom';
 import { displaySelector } from '../../lib/dom/selector';
 import { LIMITS } from '../../lib/mcp/protocol';
 
@@ -227,7 +228,7 @@ export function queryBySelector(
   const root = opts.root ?? document.body;
   let all: Element[];
   try {
-    all = deepQuery(root, selector);
+    all = queryAllDeep(root, selector, isOwn);
   } catch (e) {
     return {
       count: 0,
@@ -258,17 +259,4 @@ export function queryBySelector(
     });
   }
   return { count, truncated: count - matches.length, matches };
-}
-
-function deepQuery(root: Element, selector: string): Element[] {
-  const out = [...root.querySelectorAll(selector)];
-  const visit = (r: ParentNode) => {
-    for (const el of r.querySelectorAll('*')) {
-      if (!el.shadowRoot || isOwn(el)) continue;
-      out.push(...el.shadowRoot.querySelectorAll(selector));
-      visit(el.shadowRoot);
-    }
-  };
-  visit(root);
-  return out;
 }

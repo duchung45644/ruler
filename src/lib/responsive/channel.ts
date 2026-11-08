@@ -1,4 +1,3 @@
-import type { Breakpoint } from '../tools/breakpoints';
 import type { SerializedEdit } from '../edit/serialize';
 import type { EditState } from '../edit/types';
 import type { CallOutcome } from '../mcp/protocol';
@@ -37,7 +36,6 @@ export interface FrameApi {
   apply_inline_styles(list: InlineStyleEdit[]): void;
   collect_rule_edits(): SerializedEdit[];
   get_current_url(): string;
-  get_breakpoints(): Breakpoint[];
   /** Registry item id; only items flagged `forward` are sent. */
   run_item(id: string): void;
   set_paused(paused: boolean): void;
@@ -81,7 +79,6 @@ export interface ShellApi {
   /** A shortcut key typed inside the frame, run by the shell. */
   shortcut(key: string): void;
   request_ui_scale(): number;
-  pin_inspector_top(pin: boolean): void;
   open_external(url: string): void;
 }
 

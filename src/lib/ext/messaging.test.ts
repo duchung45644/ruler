@@ -92,8 +92,10 @@ describe('side panel channel', () => {
     vi.spyOn(fakeBrowser.runtime.onMessage, 'addListener').mockImplementation(((l: never) => {
       listener = l;
     }) as never);
-    handleMessages('sidepanel', { ping }, undefined, { accept: (s) => s.tab?.id === 5 });
-    const packet = { target: 'sidepanel', type: 'ping', data: [] };
+    handleMessages('sidepanel', { tab_specific_ping: ping }, undefined, {
+      accept: (s) => s.tab?.id === 5,
+    });
+    const packet = { target: 'sidepanel', type: 'tab_specific_ping', data: [] };
     const reply = vi.fn();
     expect(listener(packet, { tab: { id: 7 } }, reply)).toBe(false);
     expect(ping).not.toHaveBeenCalled();
@@ -111,10 +113,10 @@ describe('side panel channel', () => {
 
   it('sendToFrame passes frameId', async () => {
     const send = vi.spyOn(fakeBrowser.tabs, 'sendMessage').mockResolvedValue('u' as never);
-    expect(await sendToFrame(3, 0, 'get_url')).toBe('u');
+    expect(await sendToFrame(3, 0, 'check_script_is_active')).toBe('u');
     expect(send).toHaveBeenCalledWith(
       3,
-      { target: 'content', type: 'get_url', data: [] },
+      { target: 'content', type: 'check_script_is_active', data: [] },
       {
         frameId: 0,
       },
@@ -138,13 +140,13 @@ describe('side panel channel', () => {
       'background',
       {
         check_panel_api: () => (order.push('sync'), true),
-        get_tab_id: () => (order.push('async'), 1),
+        has_host_permission: () => (order.push('async'), true),
       },
       undefined,
       { sync: ['check_panel_api'] },
     );
     listener({ target: 'background', type: 'check_panel_api', data: [] }, {}, () => {});
-    listener({ target: 'background', type: 'get_tab_id', data: [] }, {}, () => {});
+    listener({ target: 'background', type: 'has_host_permission', data: [] }, {}, () => {});
     expect(order).toEqual(['sync']);
   });
 });

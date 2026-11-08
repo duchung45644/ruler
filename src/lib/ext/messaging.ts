@@ -40,7 +40,6 @@ export interface BackgroundApi {
   request_clipboard_permission(): boolean;
   capture_tab(rect: DeviceRect | null): CaptureResult;
   full_capture(opts: FullCaptureOpts): FullCaptureResult;
-  get_tab_id(): number | undefined;
   go_to_tab(tabId: number): boolean;
   open_external_tab(url: string): boolean;
   open_side_panel(): { success: boolean; error?: string };
@@ -81,7 +80,6 @@ export interface ContentApi {
   /** `id` (data-sr-id-*) comes from the side panel; the keyboard command sends none. */
   select_parent(id?: string): void;
   select_child(id?: string): void;
-  save_screenshot(): void;
   /** Panel → page (legacy `editor` / `script` targets). Sends page_data + selection back (9.38). */
   side_panel_loaded(): void;
   refresh_page_data(): void;
@@ -91,8 +89,6 @@ export interface ContentApi {
   remove_highlight_hovered(): void;
   highlight_box_part(part: 'margin' | 'border' | 'padding' | 'content' | null): void;
   go_to_selected_element(id?: string): boolean;
-  get_host_name(): string;
-  get_url(): string;
   highlight_issue_element(id: string): void;
   highlight_elements_for_color(color: string): void;
   highlight_elements_for_typography(key: string): void;
@@ -115,7 +111,6 @@ export interface ContentApi {
   edit_duplicate(): EditResult;
   edit_delete(): EditResult;
   get_history_state(): EditResult;
-  set_element_styles(id: string, decls: Decl[]): EditResult;
   set_element_classes(id: string, classes: string): EditResult;
   get_page_classes(): string[];
   /** Html is sanitized on the content side before it touches the DOM. */
@@ -129,9 +124,7 @@ export interface ContentApi {
   merge_rule_styles(addr: RuleAddress, decls: Decl[]): EditResult;
   rule_selector_edit(addr: RuleAddress, selector: string): EditResult;
   rule_add(selector?: string): EditResult;
-  get_rule_changes(): RuleChange[];
   get_all_flattened_changes(): { rules: RuleChange[]; html: HtmlChange[] };
-  get_html_changes(): HtmlChange[];
   revert_rule_change(recordId: string): EditResult;
   revert_all_rule_changes(): EditResult;
   revert_all_edits(): EditResult;
@@ -161,7 +154,6 @@ export interface SidePanelApi {
   content_script_loaded(): void;
   close(): void;
   select_element(d: ElementDetails): void;
-  update_canvas_fps(fps: number): void;
   page_data(d: PageData): void;
   page_technologies(t: Technology[]): void;
   page_weight_update(w: PageWeight | null): void;
@@ -171,7 +163,6 @@ export interface SidePanelApi {
   edit_payload_extras(paySeq: number, inherited: EditableRule[]): void;
   media_activity(active: Record<string, boolean>): void;
   refresh_changes(): void;
-  page_updated(): void;
   edit_state(s: EditState): void;
   responsive_state(s: { on: boolean }): void;
   /** Blocked responsive frame (Q4): show and focus the host-permission grant; true = shown. */

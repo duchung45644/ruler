@@ -23,7 +23,7 @@ export const edit = $state({
   mediaActive: {} as Record<string, boolean>,
   editState: { ...EMPTY_EDIT_STATE } as EditState,
   classes: '',
-  /** null: not loaded, or stale since the last refresh_changes / page_updated. */
+  /** null: not loaded, or stale since the last refresh_changes. */
   changes: null as Changes | null,
 });
 

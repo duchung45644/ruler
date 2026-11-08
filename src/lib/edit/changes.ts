@@ -1,7 +1,7 @@
 /** Per-element log of HTML edits, in the shape of getHtmlChanges (content.js:15197, 15503). */
 
 export type HtmlChangeKind =
-  'class' | 'text' | 'html' | 'style' | 'delete' | 'insert' | 'duplicate' | 'paste';
+  'class' | 'text' | 'html' | 'delete' | 'insert' | 'duplicate' | 'paste';
 
 export interface Snapshot {
   selector: string;

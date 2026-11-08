@@ -6,7 +6,7 @@
   import Section from '../Section.svelte';
   import { toPage } from '../store.svelte';
 
-  let { el, fps }: { el: ElementDetails; fps: number | null } = $props();
+  let { el }: { el: ElementDetails } = $props();
   const b = $derived(el.boxModel);
   /** Ring under the pointer: like DevTools, only it keeps its colour, the rest go white. */
   let hot = $state<string | null>(null);
@@ -24,7 +24,6 @@
     [i18n.t('panel.contextType'), c.contextType ?? i18n.t('panel.unknown')],
     [i18n.t('panel.canvasDimensions'), formatSize(c.width, c.height)],
     [i18n.t('panel.pixelRatio'), `${c.pixelRatio}x`],
-    ...(fps !== null ? [['FPS', String(fps)] as [string, string]] : []),
   ];
 </script>
 

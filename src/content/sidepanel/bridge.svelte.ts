@@ -168,8 +168,6 @@ export const sidePanelHandlers: Handlers<ContentApi> = {
     selectElement(el, { scroll: true });
     return true;
   },
-  get_host_name: () => location.hostname,
-  get_url: () => location.href,
   check_script_is_active: () => ({ scriptIsActive: state.active }),
   side_panel_loaded() {
     if (!state.active) return;

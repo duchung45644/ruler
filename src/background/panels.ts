@@ -146,7 +146,6 @@ export const panelHandlers: Handlers<BackgroundApi> = {
   },
   check_panel_api: () => !!browser.sidePanel,
   has_host_permission: () => browser.permissions.contains({ origins: ['<all_urls>'] }),
-  get_tab_id: (sender) => sender.tab?.id,
   async go_to_tab(tabId) {
     try {
       const tab = await browser.tabs.update(Number(tabId), { active: true });

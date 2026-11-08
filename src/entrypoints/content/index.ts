@@ -9,7 +9,6 @@ import { mcpDockHandlers } from '../../content/mcp/dock.svelte';
 import { initTools } from '../../content/tools';
 import { isResponsiveFrame, startFrameMode } from '../../content/responsive/frame-mode';
 import { exitResponsive, onFramesUnblocked } from '../../content/responsive';
-import { openBar } from '../../content/tools/capture';
 import { handleMessages } from '../../lib/ext/messaging';
 import { loadFonts } from '../../ui/fonts';
 import './style.css';
@@ -45,7 +44,6 @@ export default defineContentScript({
       ...mcpHandlers,
       ...mcpDockHandlers,
       ping: () => ({ active: state.active }),
-      save_screenshot: () => (state.active ? openBar() : undefined),
       start_frame_mode: () => {
         if (isResponsiveFrame()) startFrameMode();
       },

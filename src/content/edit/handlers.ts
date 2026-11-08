@@ -134,7 +134,6 @@ export const editHandlers: Handlers<ContentApi> = {
   edit_duplicate: () => withEngine((e) => e.duplicate()),
   edit_delete: () => withEngine((e) => e.delete()),
   get_history_state: () => ok(),
-  set_element_styles: (id, decls) => onElement(id, (e, el) => e.setStyles(el, decls)),
   set_element_classes: (id, cls) =>
     resendSelection(onElement(id, (e, el) => e.setClasses(el, cls))),
   get_page_classes: () => pageClasses(),
@@ -163,12 +162,10 @@ export const editHandlers: Handlers<ContentApi> = {
     // called without a selector, the sender lands in this slot
     return fromRule(ruleTracker().addRule(root, typeof sel === 'string' ? sel : undefined));
   },
-  get_rule_changes: () => ruleTracker().flattened(),
   get_all_flattened_changes: () => ({
     rules: ruleTracker().flattened(),
     html: editor()?.htmlChanges() ?? [],
   }),
-  get_html_changes: () => editor()?.htmlChanges() ?? [],
   revert_rule_change: (recordId) =>
     ruleTracker().revert(recordId) ? ok() : fail('Change not found'),
   revert_all_rule_changes() {

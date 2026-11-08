@@ -29,7 +29,7 @@
 <div data-element-tab role="presentation" onmouseleave={clearHighlights}>
   <EditToolbar />
   <Header {el} />
-  <BoxModel {el} fps={panel.canvasFps} />
+  <BoxModel {el} />
   {#if issues.length}<IssuesSection {issues} />{/if}
   <CssRulesSection {el} />
   {#if el.layout}<LayoutSection layout={el.layout} />{/if}

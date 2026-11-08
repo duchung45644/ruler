@@ -9,7 +9,6 @@ import {
   type HtmlChangeKind,
   type Snapshot,
 } from '../../lib/edit/changes';
-import { mergeDecls, parseDecls, serializeDecls, type Decl } from '../../lib/edit/decls';
 import { History, type Action } from '../../lib/edit/history';
 import { PROTECTED_TAGS, sanitizeHtml } from '../../lib/edit/sanitize';
 import type { EditResult, EditState, InsertPosition } from '../../lib/edit/types';
@@ -33,7 +32,6 @@ export interface HtmlEditorOptions {
 }
 
 /** Panel styles may carry these; inline style cannot express them (5.17). */
-export type StyleDecl = Decl & { state?: string; media?: string; pseudo?: string };
 
 /** What clearByIds puts back: attributes and children as first seen. */
 interface Original {
@@ -327,15 +325,6 @@ export class HtmlEditor {
     const a = this.attrAction(el, 'class', value, 'class');
     a.coalesceKey = key;
     return this.done(a);
-  }
-
-  setStyles(el: Element, decls: StyleDecl[]): EditResult {
-    if (this.opts.isOwn(el)) return this.fail('Cannot edit extension UI');
-    if (decls.some((d) => d.state || d.media || d.pseudo))
-      return this.fail('Inline styles cannot target states, media queries or pseudo-elements');
-    const merged = mergeDecls(parseDecls(el.getAttribute('style') ?? ''), decls);
-    const text = serializeDecls(merged);
-    return this.done(this.attrAction(el, 'style', text || null, 'style'));
   }
 
   // ---- content edits (5.15) ----

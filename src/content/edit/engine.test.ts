@@ -76,15 +76,6 @@ it('sanitizes inserted html', () => {
   expect(img.hasAttribute('onerror')).toBe(false);
 });
 
-it('rejects inline styles with state or media', () => {
-  const p = document.querySelector('p')!;
-  expect(
-    ed.setStyles(p, [{ property: 'color', value: 'red', important: false, state: ':hover' }]).ok,
-  ).toBe(false);
-  expect(ed.setStyles(p, [{ property: 'color', value: 'red', important: false }]).ok).toBe(true);
-  expect(p.style.color).toBe('red');
-});
-
 it('undoing everything restores the page and drops its own ids (2.24)', () => {
   const start = document.body.innerHTML;
   sel = lis()[0]!;
@@ -94,9 +85,6 @@ it('undoing everything restores the page and drops its own ids (2.24)', () => {
   sel = lis()[1]!;
   ed.delete();
   ed.setText(document.querySelector('p')!, 'new');
-  ed.setStyles(document.querySelector('p')!, [
-    { property: 'color', value: 'red', important: false },
-  ]);
   while (ed.historyState().canUndo) ed.undo();
   expect(document.body.innerHTML).toBe(start);
   expect(document.body.innerHTML).not.toContain('data-sr-id');

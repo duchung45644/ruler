@@ -35,7 +35,6 @@ export const panel = $state({
   visible: true,
   selectedTab: 'element' as PanelTab,
   element: null as ElementDetails | null,
-  canvasFps: null as number | null,
   issues: null as Issue[] | null,
   page: null as PageData | null,
   technologies: null as Technology[] | null,
@@ -75,7 +74,6 @@ function reloadPageData(): void {
 function dropSelection(): void {
   panel.element = null;
   panel.issues = null;
-  panel.canvasFps = null;
   clearEdit();
 }
 
@@ -169,7 +167,6 @@ export async function startPanel(signal: AbortSignal, search = location.search):
   handleMessages(
     'sidepanel',
     {
-      ping: () => ({ isOpen: true }),
       // no reply from a hidden panel: the page then opens one instead of closing this (legacy)
       tab_specific_ping: () =>
         document.visibilityState === 'visible' ? { isOpen: true } : (undefined as never),
@@ -186,11 +183,7 @@ export async function startPanel(signal: AbortSignal, search = location.search):
         if (moved && panel.responsive) reloadPageData();
         panel.element = d;
         panel.issues = d.issues ?? null;
-        panel.canvasFps = null;
         takeEditDetails(d);
-      },
-      update_canvas_fps(fps, sender) {
-        if (fromSelected(sender)) panel.canvasFps = fps;
       },
       page_data(d, sender) {
         if (frameOf(sender) === pageFrame()) panel.page = d;
@@ -219,9 +212,6 @@ export async function startPanel(signal: AbortSignal, search = location.search):
       },
       refresh_changes(sender) {
         if (fromSelected(sender)) changesInvalidated();
-      },
-      page_updated(sender) {
-        if (fromSelected(sender)) edit.changes = null;
       },
       responsive_state(s, sender) {
         if (frameOf(sender) !== 0) return; // the top frame's shell only (6.51)

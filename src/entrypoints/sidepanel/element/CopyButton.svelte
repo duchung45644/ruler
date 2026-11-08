@@ -5,7 +5,7 @@
   import { onDestroy } from 'svelte';
   import { copyText } from '../../../lib/ext/clipboard';
 
-  let { text, label = false }: { text: string | (() => string); label?: boolean } = $props();
+  let { text }: { text: string | (() => string) } = $props();
   let copied = $state(false);
   let timer: ReturnType<typeof setTimeout> | undefined;
   onDestroy(() => clearTimeout(timer));
@@ -30,5 +30,4 @@
   onclick={copy}
 >
   {#if copied}<Check class="size-3.5" />{:else}<Copy class="size-3.5" />{/if}
-  {#if label}<span>{name}</span>{/if}
 </button>

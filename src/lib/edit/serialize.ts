@@ -21,11 +21,6 @@ export type SerializedEdit =
       declsText: string;
     };
 
-export interface PersistedEdits {
-  edits: SerializedEdit[];
-  updatedAt: number;
-}
-
 const isStr = (v: unknown): v is string => typeof v === 'string';
 const isStrs = (v: unknown): v is string[] => Array.isArray(v) && v.every(isStr);
 const isScope = (v: unknown): v is string | null => v === null || isStr(v);
@@ -40,12 +35,4 @@ export function isSerializedEdit(x: unknown): x is SerializedEdit {
   if (e.own === false)
     return isStr(e.stylesheet) && isStr(e.originalSelector) && Number.isInteger(e.occ);
   return false;
-}
-
-export function isPersistedEdits(x: unknown): x is PersistedEdits {
-  if (!x || typeof x !== 'object') return false;
-  const p = x as Record<string, unknown>;
-  return (
-    Array.isArray(p.edits) && p.edits.every(isSerializedEdit) && typeof p.updatedAt === 'number'
-  );
 }

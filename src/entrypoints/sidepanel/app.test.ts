@@ -239,10 +239,9 @@ it('undock leaves a handoff and asks the background to detach', async () => {
   await vi.waitFor(() => expect(window.close).toHaveBeenCalled());
 });
 
-it('detached window shows the dock button and is-detached class', async () => {
+it('detached window shows the dock button', async () => {
   await open('?tabId=5&detached=1');
   expect(button('panel_dock')).toBeDefined();
-  expect(document.documentElement.classList.contains('is-detached')).toBe(true);
 });
 
 it('forwards dock letter keys to the page, not when typing', async () => {

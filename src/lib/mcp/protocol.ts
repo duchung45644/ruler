@@ -396,8 +396,6 @@ export interface McpPayloads {
 }
 /** Commands that run in a tab (all but the background ones). */
 export type McpPageType = Exclude<McpType, (typeof BACKGROUND_TYPES)[number]>;
-/** What a command returns; per-command shapes are documented in docs/mcp-protocol.md. */
-export type McpResult = Record<string, unknown>;
 
 export type Validated<K extends McpType = McpType> =
   { ok: true; payload: McpPayloads[K] } | { ok: false; error: string };

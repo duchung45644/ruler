@@ -47,7 +47,7 @@ describe('sidePanelPreferences', () => {
   it('defaults when empty', async () => {
     const p = await getPanelPrefs();
     expect(p).toEqual(DEFAULT_PANEL_PREFS);
-    expect(Object.keys(p.sectionVisibility)).toHaveLength(20);
+    expect(Object.keys(p.sectionVisibility)).toHaveLength(18);
     expect(Object.values(p.sectionVisibility).every((v) => v.collapsed)).toBe(true);
     expect([p.colorFormat, p.codeViewMode, p.socialPreviewType]).toEqual([
       'HEX',

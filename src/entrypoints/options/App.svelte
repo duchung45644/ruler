@@ -106,102 +106,93 @@
   </div>
 {/snippet}
 
+{#snippet section(title: string, body: Snippet)}
+  <section class="flex flex-col gap-2">
+    <h2 class="px-1 text-[12px] font-semibold text-fg-muted uppercase">{title}</h2>
+    <div class="divide-y divide-line rounded-panel border border-line">{@render body()}</div>
+  </section>
+{/snippet}
+
 <main class="mx-auto flex max-w-160 flex-col gap-5 p-4" aria-busy={!loaded}>
-  <section class="flex flex-col gap-2">
-    <h2 class="px-1 text-[12px] font-semibold text-fg-muted uppercase">
-      {i18n.t('options.sectionAppearance')}
-    </h2>
-    <div class="divide-y divide-line rounded-panel border border-line">
-      {#snippet themeSelect()}
-        <select
-          class={selectCls}
-          data-setting="theme"
-          value={theme}
-          onchange={(e) => void themePref.setValue((theme = e.currentTarget.value as ThemePref))}
-        >
-          {#each themes as [id, label] (id)}<option value={id}>{label}</option>{/each}
-        </select>
-      {/snippet}
-      {@render row(i18n.t('options.rowTheme'), null, themeSelect)}
-    </div>
-  </section>
+  {#snippet appearance()}
+    {#snippet themeSelect()}
+      <select
+        class={selectCls}
+        data-setting="theme"
+        value={theme}
+        onchange={(e) => void themePref.setValue((theme = e.currentTarget.value as ThemePref))}
+      >
+        {#each themes as [id, label] (id)}<option value={id}>{label}</option>{/each}
+      </select>
+    {/snippet}
+    {@render row(i18n.t('options.rowTheme'), null, themeSelect)}
+  {/snippet}
+  {@render section(i18n.t('options.sectionAppearance'), appearance)}
 
-  <section class="flex flex-col gap-2">
-    <h2 class="px-1 text-[12px] font-semibold text-fg-muted uppercase">
-      {i18n.t('options.sectionExtension')}
-    </h2>
-    <div class="divide-y divide-line rounded-panel border border-line">
-      {#snippet formatSelect()}
-        <select
-          class={selectCls}
-          data-setting="colorFormat"
-          value={colorFormat}
-          onchange={(e) =>
-            // updatePanelPrefs keeps sectionVisibility, codeViewMode… (9.02)
-            void updatePanelPrefs({
-              colorFormat: (colorFormat = e.currentTarget.value as ColorFormat),
-            })}
-        >
-          {#each formats as [id, label] (id)}<option value={id}>{label}</option>{/each}
-        </select>
-      {/snippet}
-      {#snippet clearButton()}
-        <button
-          type="button"
-          class="rounded-btn border border-line px-3 py-1 font-medium hover:bg-line"
-          data-action="clear-saved-edits"
-          onclick={() => (confirming = true)}>{i18n.t('options.savedEditsClear')}</button
-        >
-      {/snippet}
-      {@render row(
-        i18n.t('options.rowColorFormat'),
-        i18n.t('options.colorFormatSecondary'),
-        formatSelect,
-      )}
-      {@render row(
-        i18n.t('options.savedEditsTitle'),
-        i18n.t('options.savedEditsSecondary'),
-        clearButton,
-      )}
-    </div>
-  </section>
+  {#snippet extension()}
+    {#snippet formatSelect()}
+      <select
+        class={selectCls}
+        data-setting="colorFormat"
+        value={colorFormat}
+        onchange={(e) =>
+          // updatePanelPrefs keeps sectionVisibility, codeViewMode… (9.02)
+          void updatePanelPrefs({
+            colorFormat: (colorFormat = e.currentTarget.value as ColorFormat),
+          })}
+      >
+        {#each formats as [id, label] (id)}<option value={id}>{label}</option>{/each}
+      </select>
+    {/snippet}
+    {#snippet clearButton()}
+      <button
+        type="button"
+        class="rounded-btn border border-line px-3 py-1 font-medium hover:bg-line"
+        data-action="clear-saved-edits"
+        onclick={() => (confirming = true)}>{i18n.t('options.savedEditsClear')}</button
+      >
+    {/snippet}
+    {@render row(
+      i18n.t('options.rowColorFormat'),
+      i18n.t('options.colorFormatSecondary'),
+      formatSelect,
+    )}
+    {@render row(
+      i18n.t('options.savedEditsTitle'),
+      i18n.t('options.savedEditsSecondary'),
+      clearButton,
+    )}
+  {/snippet}
+  {@render section(i18n.t('options.sectionExtension'), extension)}
 
-  <section class="flex flex-col gap-2">
-    <h2 class="px-1 text-[12px] font-semibold text-fg-muted uppercase">
-      {i18n.t('options.sectionTerminalAi')}
-    </h2>
-    <div class="divide-y divide-line rounded-panel border border-line">
-      {#snippet mcpControl()}
-        <div class="flex items-center gap-2">
-          {#if mcp.versionMismatch}
-            <button
-              type="button"
-              data-action="mcp-outdated"
-              class="grid size-7 place-items-center rounded-btn text-amber-500 hover:bg-line"
-              aria-label={i18n.t('options.mcpOutdatedTooltip')}
-              title={i18n.t('options.mcpOutdatedTooltip')}
-              onclick={() => (outdatedOpen = true)}><TriangleAlert size={16} /></button
-            >
-          {/if}
+  {#snippet terminalAi()}
+    {#snippet mcpControl()}
+      <div class="flex items-center gap-2">
+        {#if mcp.versionMismatch}
           <button
             type="button"
-            data-action="mcp-toggle"
-            class="rounded-btn border border-line px-3 py-1 font-medium hover:bg-line"
-            onclick={() => void toggleMcp()}
-            >{mcp.intent ? i18n.t('options.mcpDisconnect') : i18n.t('options.mcpConnect')}</button
+            data-action="mcp-outdated"
+            class="grid size-7 place-items-center rounded-btn text-amber-500 hover:bg-line"
+            aria-label={i18n.t('options.mcpOutdatedTooltip')}
+            title={i18n.t('options.mcpOutdatedTooltip')}
+            onclick={() => (outdatedOpen = true)}><TriangleAlert size={16} /></button
           >
-        </div>
-      {/snippet}
-      {@render row(
-        i18n.t('options.rowMcpServer'),
-        i18n.t('options.mcpServerSecondary'),
-        mcpControl,
-      )}
-      {#if showPrompt && prompt}
-        <div class="px-4 py-3"><McpPrompt {prompt} /></div>
-      {/if}
-    </div>
-  </section>
+        {/if}
+        <button
+          type="button"
+          data-action="mcp-toggle"
+          class="rounded-btn border border-line px-3 py-1 font-medium hover:bg-line"
+          onclick={() => void toggleMcp()}
+          >{mcp.intent ? i18n.t('options.mcpDisconnect') : i18n.t('options.mcpConnect')}</button
+        >
+      </div>
+    {/snippet}
+    {@render row(i18n.t('options.rowMcpServer'), i18n.t('options.mcpServerSecondary'), mcpControl)}
+    {#if showPrompt && prompt}
+      <div class="px-4 py-3"><McpPrompt {prompt} /></div>
+    {/if}
+  {/snippet}
+  {@render section(i18n.t('options.sectionTerminalAi'), terminalAi)}
 </main>
 
 {#if outdatedOpen}

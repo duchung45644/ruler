@@ -154,7 +154,6 @@ export async function startPanel(signal: AbortSignal, search = location.search):
   panel.detached = q.get('detached') === '1';
   panel.visible = document.visibilityState === 'visible';
   if (panel.detached) {
-    document.documentElement.classList.add('is-detached');
     // a detached window is named after its tab (7.11)
     if (panel.tabId !== null)
       void browser.tabs.get(panel.tabId).then(

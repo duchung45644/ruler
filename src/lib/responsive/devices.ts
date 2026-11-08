@@ -60,6 +60,3 @@ export const CUSTOM_PRESET: DevicePreset = {
   width: 390,
   height: 844,
 };
-
-/** Flat list (8.10) plus `custom` last. */
-export const DEVICE_PRESETS: DevicePreset[] = [...DEVICE_GROUPS.flat(), CUSTOM_PRESET];

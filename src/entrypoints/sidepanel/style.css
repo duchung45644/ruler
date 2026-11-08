@@ -6,30 +6,12 @@
 @source not '../../lib/tech';
 @import '../../ui/theme.css';
 @import '../../ui/fonts.css';
+@import '../../ui/page.css';
 
 /* Panel theme is data-theme on <html>, not the OS scheme, so tints for light get their own variant. */
 @custom-variant light (&:where([data-theme='light'], [data-theme='light'] *));
 
-/* Solid panel background (decision #7): the translucent overlay surface has nothing behind it. */
-:root {
-  --color-surface: var(--color-zinc-900);
-  color-scheme: dark;
-}
-:root[data-theme='light'] {
-  --color-surface: #fff;
-  color-scheme: light;
-}
 body {
-  margin: 0;
   min-height: 100vh;
-  background: var(--color-surface);
-  color: var(--color-fg);
-  font-family: var(--font-sans);
   font-size: 12px;
-  accent-color: var(--color-accent);
-  opacity: 0;
-  transition: opacity 0.15s;
-}
-body.ready {
-  opacity: 1;
 }

@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { styleOf } from './style';
+import { styleOf } from './test-fixtures';
 import { typographyKey, typographyStyles } from './typography';
 
 const s = (size: string, weight = '400') =>

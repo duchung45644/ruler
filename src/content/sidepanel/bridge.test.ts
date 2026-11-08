@@ -8,7 +8,6 @@ import { sessionSignal, stopSession } from '../core/session';
 import { state } from '../core/state.svelte';
 import type { ElementDetails } from '../../lib/element/types';
 import { sendToBackground, sendToSidePanel } from '../../lib/ext/messaging';
-import { highlightCount } from './highlight';
 import { bridge, initSidePanelBridge, sidePanelHandlers, toggleSidePanel } from './bridge.svelte';
 
 vi.mock('../../lib/ext/messaging', async (orig) => ({
@@ -26,6 +25,13 @@ const toPanel = vi.mocked(sendToSidePanel);
 const toBg = vi.mocked(sendToBackground);
 const sent = (type: string) => toPanel.mock.calls.filter((c) => c[0] === type);
 let shadow: ShadowRoot;
+/** Highlight boxes painted on the next frame. */
+const highlightCount = async () => {
+  await new Promise((r) => setTimeout(r, 50));
+  return [...layer.querySelectorAll<HTMLElement>('div')].filter((d) =>
+    d.style.border.includes('1.5px'),
+  ).length;
+};
 
 beforeEach(async () => {
   const host = document.body.appendChild(document.createElement('iodob-ui'));
@@ -146,11 +152,11 @@ describe('contrast issues and highlights', () => {
       span.getAttribute(`data-sr-id-${fakeBrowser.runtime.id}`),
     ]);
     sidePanelHandlers.highlight_elements_for_color!('#eeeeee', {} as never);
-    expect(highlightCount()).toBe(1);
+    expect(await highlightCount()).toBe(1);
     sidePanelHandlers.highlight_elements_for_issue!(d.issues[0]!.id, {} as never);
-    expect(highlightCount()).toBe(1);
+    expect(await highlightCount()).toBe(1);
     sidePanelHandlers.clear_element_highlights!({} as never);
-    expect(highlightCount()).toBe(0);
+    expect(await highlightCount()).toBe(0);
   });
 
   it('alerts for a missing issue element', async () => {

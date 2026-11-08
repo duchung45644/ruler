@@ -32,8 +32,6 @@ export function clearHighlights(): void {
   off = null;
 }
 
-export const highlightCount = (): number => targets.length;
-
 /** Scroll / resize move the boxes with the page. */
 export const repaintHighlights = () => off && requestPaint();
 

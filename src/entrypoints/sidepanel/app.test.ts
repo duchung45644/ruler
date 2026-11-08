@@ -2,7 +2,7 @@ import { flushSync, mount, unmount } from 'svelte';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import App from './App.svelte';
-import { sampleElement } from './element/sample';
+import { sampleElement } from './test-fixtures';
 import { edit } from './edit/edit-store.svelte';
 import { panel, toPage, toPageData } from './store.svelte';
 

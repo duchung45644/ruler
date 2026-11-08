@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import { animations, easingPath, parseEasing, transitions } from './motion';
-import { styleOf } from './style';
+import { styleOf } from './test-fixtures';
 
 it('parses keywords and cubic-bezier, not steps', () => {
   expect(parseEasing('ease-in')).toEqual([0.42, 0, 1, 1]);

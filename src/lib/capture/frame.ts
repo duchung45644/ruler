@@ -1,6 +1,5 @@
 /** Background frame around a capture, like code-screenshot apps: padding, backdrop, rounded shadowed image. */
 export const PADDINGS = [0, 16, 32, 64] as const;
-export type Padding = (typeof PADDINGS)[number];
 
 export const BACKDROPS = [
   { id: 'gradient', css: 'linear-gradient(135deg,#a5b4fc,#f9a8d4)', stops: ['#a5b4fc', '#f9a8d4'] },

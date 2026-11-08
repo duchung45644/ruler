@@ -5,7 +5,7 @@ import type { ElementDetails } from '../../../lib/element/types';
 import { DEFAULT_PANEL_PREFS, getPanelPrefs } from '../../../lib/ext/settings';
 import { panel } from '../store.svelte';
 import ElementTab from './ElementTab.svelte';
-import { sampleElement } from './sample';
+import { sampleElement } from '../test-fixtures';
 
 let app: ReturnType<typeof mount> | null = null;
 /** Every message in send order: [target, type, ...data]. */

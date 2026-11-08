@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import { colorsOf, elementColors } from './colors';
-import { styleOf } from './style';
+import { styleOf } from './test-fixtures';
 
 it('collects text, background + gradient stops, borders unlike the text', () => {
   const c = colorsOf(

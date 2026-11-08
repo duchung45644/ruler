@@ -53,7 +53,17 @@ it.each([
 it('ruler: drag a guide out of the top strip, swallow the click, drop back to remove', async () => {
   const { installDragGuard } = await import('../core/drag');
   const { sessionSignal } = await import('../core/session');
-  const { currentGuides } = await import('./ruler');
+  /** Guide lines as painted (scroll is 0, so client px = page px). */
+  const currentGuides = async () => {
+    await flush();
+    return [...layer.querySelectorAll<HTMLElement>('div')]
+      .filter((d) => (d.style.top && d.style.bottom) || (d.style.left && d.style.right))
+      .map((d) =>
+        d.style.bottom
+          ? { axis: 'v', pos: parseFloat(d.style.left) }
+          : { axis: 'h', pos: parseFloat(d.style.top) },
+      );
+  };
   const { state } = await import('../core/state.svelte');
   installDragGuard(sessionSignal());
   await initTools();
@@ -65,9 +75,9 @@ it('ruler: drag a guide out of the top strip, swallow the click, drop back to re
   document.body.addEventListener('click', pageClick);
 
   document.body.dispatchEvent(ev('pointerdown', 100, 5));
-  expect(currentGuides()).toEqual([{ axis: 'v', pos: 100 }]);
+  expect(await currentGuides()).toEqual([{ axis: 'v', pos: 100 }]);
   window.dispatchEvent(ev('pointermove', 240, 300));
-  expect(currentGuides()[0]!.pos).toBe(240);
+  expect((await currentGuides())[0]!.pos).toBe(240);
   document.body.dispatchEvent(ev('pointerup', 240, 300));
   document.body.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
   expect(pageClick).not.toHaveBeenCalled();
@@ -80,11 +90,11 @@ it('ruler: drag a guide out of the top strip, swallow the click, drop back to re
   await flush();
   document.body.dispatchEvent(ev('pointerdown', 241, 400));
   document.body.dispatchEvent(ev('pointerup', 241, 5));
-  expect(currentGuides()).toEqual([]);
+  expect(await currentGuides()).toEqual([]);
 
   document.body.dispatchEvent(ev('pointerdown', 5, 150)); // left strip: horizontal
   document.body.dispatchEvent(ev('pointerup', 300, 150));
-  expect(currentGuides()).toEqual([{ axis: 'h', pos: 150 }]);
+  expect(await currentGuides()).toEqual([{ axis: 'h', pos: 150 }]);
   window.dispatchEvent(new MouseEvent('mousemove', { clientX: 300, clientY: 151 }));
   items.find((i) => i.id === 'ruler')!.run(); // off: the guide stays painted (legacy)
   expect(state.rulerOn).toBe(false);
@@ -92,7 +102,7 @@ it('ruler: drag a guide out of the top strip, swallow the click, drop back to re
   expect(layer.textContent).toContain('150');
   stopSession();
   expect(document.documentElement.style.cursor).toBe('');
-  expect(currentGuides()).toEqual([]);
+  expect(await currentGuides()).toEqual([]);
 });
 
 it('registers measure in designTools on M', async () => {

@@ -3,7 +3,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import type { RulePayload } from '../../../lib/edit/types';
 import App from '../App.svelte';
-import { sampleElement } from '../element/sample';
+import { sampleElement } from '../test-fixtures';
 import { panel } from '../store.svelte';
 import { clearEdit, edit } from './edit-store.svelte';
 

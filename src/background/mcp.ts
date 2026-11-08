@@ -36,8 +36,6 @@ const onCall: McpSocketOptions['onCall'] = (c, reply) =>
     reply({ ok: false, error: String((e as Error)?.message ?? e) }),
   );
 
-export const mcpStatus = (): McpStatus => status;
-
 /** Is iodob on in this tab's top frame? Only those tabs see MCP at all (Q4 a). */
 export async function isIodobTab(tabId: number): Promise<boolean> {
   const r = await sendToFrame(tabId, 0, 'ping').catch(() => undefined);

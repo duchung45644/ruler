@@ -37,11 +37,6 @@ export function hexOf(css: string | undefined): string | null {
   return v;
 }
 
-/** Plain-object style for tests: `{ 'margin-top': '8px' }`. */
-export const styleOf = (props: Record<string, string>): StyleLike => ({
-  getPropertyValue: (p) => props[p] ?? '',
-});
-
 /** Legacy `O` (content.js:40229): modern colour functions inside a value rewritten as rgb(). */
 export const rgbify = (v: string): string =>
   v.replace(/(?:oklab|oklch|lab|lch|hwb)\([^)]+\)|color\([^)]+\)/g, (m) => formatCss(m, 'RGB'));

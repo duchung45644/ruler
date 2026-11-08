@@ -1,4 +1,4 @@
-import type { ElementDetails } from '../../../lib/element/types';
+import type { ElementDetails } from '../../lib/element/types';
 
 /** Hand-built details for tests and the visual check. */
 export function sampleElement(patch: Partial<ElementDetails> = {}): ElementDetails {

@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import { elementLayout } from './layout';
-import { styleOf } from './style';
+import { styleOf } from './test-fixtures';
 
 it('returns flex info, grid info with compacted tracks, else null', () => {
   expect(elementLayout(styleOf({ display: 'block' }))).toBeNull();

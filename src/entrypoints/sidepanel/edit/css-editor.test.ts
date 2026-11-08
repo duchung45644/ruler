@@ -2,7 +2,7 @@ import { flushSync, mount, unmount } from 'svelte';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import type { EditableRule, RulePayload } from '../../../lib/edit/types';
-import { sampleElement } from '../element/sample';
+import { sampleElement } from '../test-fixtures';
 import { panel } from '../store.svelte';
 import ClassInput from './ClassInput.svelte';
 import CssEditor from './CssEditor.svelte';

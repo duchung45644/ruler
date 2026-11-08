@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import { boxModel } from './box';
-import { styleOf } from './style';
+import { styleOf } from './test-fixtures';
 
 it('reads whole px per side and derives the content box', () => {
   const b = boxModel(

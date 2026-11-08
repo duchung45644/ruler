@@ -28,9 +28,6 @@ let moveCursor = false;
 
 const live = () => state.rulerOn && !state.paused;
 
-/** Exposed for tests. */
-export const currentGuides = (): readonly Guide[] => guides;
-
 function setCursor(on: boolean): void {
   if (on === moveCursor) return;
   moveCursor = on;

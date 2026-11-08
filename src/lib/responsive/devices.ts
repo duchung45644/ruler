@@ -63,7 +63,3 @@ export const CUSTOM_PRESET: DevicePreset = {
 
 /** Flat list (8.10) plus `custom` last. */
 export const DEVICE_PRESETS: DevicePreset[] = [...DEVICE_GROUPS.flat(), CUSTOM_PRESET];
-
-export function findPreset(key: string): DevicePreset | undefined {
-  return DEVICE_PRESETS.find((p) => p.key === key);
-}

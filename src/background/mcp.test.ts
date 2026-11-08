@@ -3,17 +3,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { browser } from '#imports';
 import { mcpIntent, mcpToken } from '../lib/ext/settings';
 import { ERR, timeoutError } from '../lib/mcp/protocol';
-import {
-  connect,
-  disconnect,
-  handleCall,
-  initMcp,
-  mcpHandlers,
-  mcpStatus,
-  prompt,
-  resetMcp,
-} from './mcp';
+import { connect, disconnect, handleCall, initMcp, mcpHandlers, prompt, resetMcp } from './mcp';
 import { FakeWebSocket } from './mcp-fake-ws';
+import type { McpStatus } from '../lib/mcp/status';
 
 const sendMessage = vi.fn<(...a: unknown[]) => Promise<unknown>>();
 const runtimeSend = vi.fn<(...a: unknown[]) => Promise<unknown>>(async () => undefined);
@@ -41,6 +33,9 @@ afterEach(() => {
   resetMcp();
   vi.unstubAllGlobals();
 });
+
+/** What the settings page / dock get when they ask (mcp_status). */
+const mcpStatus = () => mcpHandlers.mcp_status!({} as never) as McpStatus;
 
 const statusSentTo = (tabId: number) =>
   sendMessage.mock.calls

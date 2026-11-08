@@ -2,7 +2,7 @@ import { browser } from '#imports';
 import { i18n } from '#i18n';
 import { assetFileName } from '../../../lib/element/assets';
 import type { Asset } from '../../../lib/element/types';
-import { sendToBackground, type ContentApi } from '../../../lib/messaging';
+import { sendToBackground, type ContentApi } from '../../../lib/ext/messaging';
 import { panel, toPage } from '../store.svelte';
 
 /** Clicks that act on the page bring its tab forward first (6.21, legacy go_to_tab). */

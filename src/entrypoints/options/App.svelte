@@ -6,8 +6,8 @@
   import McpPrompt from '../../ui/McpPrompt.svelte';
   import { MIN_MCP_SERVER_VERSION } from '../../lib/mcp/protocol';
   import { IDLE_STATUS, type McpStatus } from '../../lib/mcp/status';
-  import { handleMessages, sendToBackground } from '../../lib/messaging';
-  import type { ColorFormat } from '../../lib/color';
+  import { handleMessages, sendToBackground } from '../../lib/ext/messaging';
+  import type { ColorFormat } from '../../lib/style/color';
   import { clearAllPersistedEdits } from '../../lib/edit/persist-key';
   import {
     getPanelPrefs,
@@ -16,8 +16,8 @@
     panelPrefsItem,
     themePref,
     updatePanelPrefs,
-  } from '../../lib/settings';
-  import { applyDocTheme, type ThemePref } from '../../lib/theme';
+  } from '../../lib/ext/settings';
+  import { applyDocTheme, type ThemePref } from '../../lib/style/theme';
 
   let { onready }: { onready?: () => void } = $props();
 

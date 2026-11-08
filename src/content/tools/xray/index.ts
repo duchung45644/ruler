@@ -1,7 +1,7 @@
 import ScanEye from '@lucide/svelte/icons/scan-eye';
-import { shadowRoots } from '../../../lib/dom';
-import { getSettings, updateSettings } from '../../../lib/settings';
-import { xrayDepth, xraySheet } from '../../../lib/xray';
+import { shadowRoots } from '../../../lib/dom/dom';
+import { getSettings, updateSettings } from '../../../lib/ext/settings';
+import { xrayDepth, xraySheet } from '../../../lib/tools/xray';
 import { registerItem } from '../../core/registry.svelte';
 import { onStop, sessionSignal } from '../../core/session';
 import { state } from '../../core/state.svelte';

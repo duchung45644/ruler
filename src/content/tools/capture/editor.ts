@@ -1,4 +1,4 @@
-import { BACKDROPS, frameLayout, type BackdropId } from '../../../lib/frame';
+import { BACKDROPS, frameLayout, type BackdropId } from '../../../lib/capture/frame';
 import {
   MARK_COLORS,
   MARK_TOOLS,
@@ -11,7 +11,7 @@ import {
   type MarkItem,
   type MarkTool,
   type Pt,
-} from '../../../lib/markup';
+} from '../../../lib/capture/markup';
 import { ensureCapture, loadImg, setViewKey } from './session';
 import { cap } from './state.svelte';
 

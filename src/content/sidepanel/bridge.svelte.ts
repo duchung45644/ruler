@@ -6,8 +6,8 @@ import {
   sendToSidePanel,
   type ContentApi,
   type Handlers,
-} from '../../lib/messaging';
-import { ensureElementId, ID_ATTR, resolveElementById } from '../../lib/selector';
+} from '../../lib/ext/messaging';
+import { ensureElementId, ID_ATTR, resolveElementById } from '../../lib/dom/selector';
 import { alertDialog } from '../core/dialog';
 import { runShortcut } from '../core/keys';
 import { onStop, sessionSignal } from '../core/session';

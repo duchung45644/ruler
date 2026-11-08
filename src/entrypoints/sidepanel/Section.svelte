@@ -1,7 +1,7 @@
 <script lang="ts">
   import ChevronDown from '@lucide/svelte/icons/chevron-down';
   import type { Snippet } from 'svelte';
-  import { updatePanelPrefs, type SectionId } from '../../lib/settings';
+  import { updatePanelPrefs, type SectionId } from '../../lib/ext/settings';
   import { panel } from './store.svelte';
 
   let {

@@ -1,4 +1,4 @@
-import type { Issue, Severity } from './element/types';
+import type { Issue, Severity } from '../element/types';
 
 /** Non-text contrast minimum (WCAG 1.4.11); icons smaller than 8px are not checked. */
 export const ICON_MIN_RATIO = 3;

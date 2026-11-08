@@ -1,9 +1,9 @@
 <script lang="ts">
   import { i18n } from '#i18n';
-  import { formatCss, type ColorFormat } from '../../../lib/color';
+  import { formatCss, type ColorFormat } from '../../../lib/style/color';
   import type { ElementColors } from '../../../lib/element/types';
-  import { copyText } from '../../../lib/clipboard';
-  import { updatePanelPrefs } from '../../../lib/settings';
+  import { copyText } from '../../../lib/ext/clipboard';
+  import { updatePanelPrefs } from '../../../lib/ext/settings';
   import Section from '../Section.svelte';
   import { panel } from '../store.svelte';
   import Swatch from './Swatch.svelte';

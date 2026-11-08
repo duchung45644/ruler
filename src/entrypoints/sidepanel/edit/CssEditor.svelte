@@ -5,7 +5,7 @@
   import { declKey, inheritedProperty, overriddenDecls } from '../../../lib/css/matched';
   import type { EditableRule, RulePayload } from '../../../lib/edit/types';
   import type { ElementDetails } from '../../../lib/element/types';
-  import { sendToBackground } from '../../../lib/messaging';
+  import { sendToBackground } from '../../../lib/ext/messaging';
   import { toPage } from '../store.svelte';
   import ClassInput from './ClassInput.svelte';
   import DeclEditor, { type Mark } from './DeclEditor.svelte';

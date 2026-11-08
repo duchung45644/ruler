@@ -1,7 +1,7 @@
 import { i18n } from '#i18n';
-import { screenshotName } from '../../../lib/capture';
-import { copyImage } from '../../../lib/clipboard';
-import { sendToBackground } from '../../../lib/messaging';
+import { screenshotName } from '../../../lib/capture/capture';
+import { copyImage } from '../../../lib/ext/clipboard';
+import { sendToBackground } from '../../../lib/ext/messaging';
 import { mountUi } from '../../../ui/mount';
 import { ownNodes } from '../../core/events';
 import { routeKey, setCaptureKeyHandler } from '../../core/keys';

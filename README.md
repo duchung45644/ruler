@@ -32,11 +32,28 @@ corepack pnpm exec vitest run src
 | `src/entrypoints/`     | background, content script, side panel, trang cài đặt                    |
 | `src/content/`         | công cụ trên trang (`tools/`), sửa (`edit/`), responsive, MCP phía trang |
 | `src/background/`      | xử lý phía service worker: panel, responsive, MCP                        |
-| `src/lib/`             | logic thuần dùng chung (CSS, màu, đo, giao thức MCP…)                    |
+| `src/lib/`             | logic thuần dùng chung, chia theo nhóm (xem bảng dưới)                   |
 | `src/ui/`              | component và theme dùng chung                                            |
 | `src/locales/`         | chuỗi `en` / `vi`                                                        |
 | `packages/mcp-server/` | MCP server cục bộ (`@iodob/mcp-server`)                                  |
 | `docs/`                | spec, plan từng đợt, kiểm kê hành vi (`inventory.md`), giao thức MCP     |
+
+`src/lib/`:
+
+| Thư mục       | Nội dung                                                             |
+| ------------- | -------------------------------------------------------------------- |
+| `ext/`        | API extension: messaging, settings, tabs, clipboard, panel, phím     |
+| `dom/`        | DOM, selector, hình học, đơn vị viewport, a11y                       |
+| `style/`      | màu, theme, định dạng số                                             |
+| `tools/`      | logic của từng công cụ trên trang (đo, gióng, X-Ray, tìm, thống kê…) |
+| `capture/`    | chụp màn hình, chụp cả trang, khung, vẽ chú thích                    |
+| `css/`        | rule CSS khớp, specificity, trạng thái, gợi ý, Tailwind              |
+| `edit/`       | sửa CSS: thay đổi, diff, lịch sử, lưu                                |
+| `element/`    | dữ liệu phần tử cho side panel (box, màu, font, layout…)             |
+| `page/`       | dữ liệu trang: meta, SEO, dung lượng                                 |
+| `responsive/` | thiết bị, viewport, zoom, đồng bộ cuộn                               |
+| `tech/`       | nhận diện công nghệ                                                  |
+| `mcp/`        | giao thức MCP                                                        |
 
 Manifest không có `host_permissions` hay `content_scripts`: content script được chèn bằng `scripting.executeScript` khi người dùng bật extension trên tab.
 

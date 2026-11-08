@@ -3,7 +3,7 @@
   import Check from '@lucide/svelte/icons/check';
   import Copy from '@lucide/svelte/icons/copy';
   import { onDestroy } from 'svelte';
-  import { copyText } from '../../../lib/clipboard';
+  import { copyText } from '../../../lib/ext/clipboard';
 
   let { text, label = false }: { text: string | (() => string); label?: boolean } = $props();
   let copied = $state(false);

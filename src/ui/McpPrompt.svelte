@@ -2,7 +2,7 @@
   import { i18n } from '#i18n';
   import Check from '@lucide/svelte/icons/check';
   import Copy from '@lucide/svelte/icons/copy';
-  import { copyText } from '../lib/clipboard';
+  import { copyText } from '../lib/ext/clipboard';
 
   /** The copy prompt (with the pairing token) for the agent, and its copy button (10.07). */
   let { prompt }: { prompt: string } = $props();

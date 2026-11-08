@@ -1,8 +1,8 @@
 import { storage } from '#imports';
-import type { ColorFormat } from './color';
-import { defaultViewports, type ResponsiveSettings } from './responsive/viewports';
-import { ZOOM_DEFAULT } from './responsive/zoom';
-import { generateToken, TOKEN_RE } from './mcp/protocol';
+import type { ColorFormat } from '../style/color';
+import { defaultViewports, type ResponsiveSettings } from '../responsive/viewports';
+import { ZOOM_DEFAULT } from '../responsive/zoom';
+import { generateToken, TOKEN_RE } from '../mcp/protocol';
 
 export interface LayoutGrid {
   isOn: boolean;

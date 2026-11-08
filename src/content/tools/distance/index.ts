@@ -1,4 +1,4 @@
-import { gapLines } from '../../../lib/geometry';
+import { gapLines } from '../../../lib/dom/geometry';
 import { addPainter, draw, drawNumber } from '../../core/overlay';
 import { state } from '../../core/state.svelte';
 

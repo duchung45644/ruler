@@ -1,7 +1,7 @@
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { beforeEach, expect, it, vi } from 'vitest';
 import { browser } from '#imports';
-import { handleMessages } from '../lib/messaging';
+import { handleMessages } from '../lib/ext/messaging';
 import { createOptionsMenu, OPTIONS_MENU_ID, optionsHandlers } from './options';
 
 const openOptionsPage = vi.fn(async () => {});

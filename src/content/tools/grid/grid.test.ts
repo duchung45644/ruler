@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, it } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
-import { getSettings } from '../../../lib/settings';
+import { getSettings } from '../../../lib/ext/settings';
 import { routeKey } from '../../core/keys';
 import { stopSession } from '../../core/session';
 import { state } from '../../core/state.svelte';

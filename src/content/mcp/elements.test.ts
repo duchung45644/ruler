@@ -8,8 +8,8 @@ import { editHandlers } from '../edit/handlers';
 import { elementId, initSidePanelBridge } from '../sidepanel/bridge.svelte';
 import { runMcp } from '.';
 
-vi.mock('../../lib/messaging', async (orig) => ({
-  ...(await orig<typeof import('../../lib/messaging')>()),
+vi.mock('../../lib/ext/messaging', async (orig) => ({
+  ...(await orig<typeof import('../../lib/ext/messaging')>()),
   sendToSidePanel: vi.fn(async () => undefined),
   sendToBackground: vi.fn(async () => undefined),
 }));

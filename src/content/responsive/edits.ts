@@ -28,7 +28,7 @@ import {
   stepHistory,
   type SharedHistoryState,
 } from '../edit/mode.svelte';
-import { sendToSidePanel } from '../../lib/messaging';
+import { sendToSidePanel } from '../../lib/ext/messaging';
 import type { Channel } from './bridge';
 
 /** Ops arriving this close together form one shared step (legacy batch window). */

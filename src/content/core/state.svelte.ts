@@ -1,6 +1,6 @@
-import type { ColorFormat } from '../../lib/color';
+import type { ColorFormat } from '../../lib/style/color';
 import { EMPTY_EDIT_STATE } from '../../lib/edit/types';
-import { DEFAULT_SETTINGS } from '../../lib/settings';
+import { DEFAULT_SETTINGS } from '../../lib/ext/settings';
 
 export const state = $state({
   active: false,

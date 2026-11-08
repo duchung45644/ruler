@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
-import { sendToBackground, sendToSidePanel } from '../../lib/messaging';
+import { sendToBackground, sendToSidePanel } from '../../lib/ext/messaging';
 import { stopSession } from '../core/session';
 import {
   detectTechnologies,
@@ -11,8 +11,8 @@ import {
   unsubscribeWeight,
 } from './page';
 
-vi.mock('../../lib/messaging', async (orig) => ({
-  ...(await orig<typeof import('../../lib/messaging')>()),
+vi.mock('../../lib/ext/messaging', async (orig) => ({
+  ...(await orig<typeof import('../../lib/ext/messaging')>()),
   sendToSidePanel: vi.fn(async () => undefined),
   sendToBackground: vi.fn(async () => undefined),
 }));

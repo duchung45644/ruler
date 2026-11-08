@@ -1,5 +1,5 @@
 import TextSearch from '@lucide/svelte/icons/text-search';
-import { findAll, isVisible } from '../../../lib/find';
+import { findAll, isVisible } from '../../../lib/tools/find';
 import { addPainter, draw, requestPaint, visibleRects } from '../../core/overlay';
 import { registerItem, togglePopover } from '../../core/registry.svelte';
 import { onStop, sessionSignal } from '../../core/session';

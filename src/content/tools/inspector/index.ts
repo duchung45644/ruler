@@ -1,11 +1,11 @@
 import SquareDashedMousePointer from '@lucide/svelte/icons/square-dashed-mouse-pointer';
 import ArrowUpToLine from '@lucide/svelte/icons/arrow-up-to-line';
 import ArrowDownToLine from '@lucide/svelte/icons/arrow-down-to-line';
-import { firstChildOf, isRendered, parentOf, siblingOf } from '../../../lib/dom';
+import { firstChildOf, isRendered, parentOf, siblingOf } from '../../../lib/dom/dom';
 import { mount, unmount } from 'svelte';
-import { placeNear, sizeLabels, type Rect } from '../../../lib/geometry';
-import { getSettings, pinHintDone, updateSettings } from '../../../lib/settings';
-import { detectPageIsDark, measureColor } from '../../../lib/theme';
+import { placeNear, sizeLabels, type Rect } from '../../../lib/dom/geometry';
+import { getSettings, pinHintDone, updateSettings } from '../../../lib/ext/settings';
+import { detectPageIsDark, measureColor } from '../../../lib/style/theme';
 import { isOwnEvent, pageElementAt } from '../../core/events';
 import { isDragging } from '../../core/drag';
 import { addKeyHandler, onKey } from '../../core/keys';

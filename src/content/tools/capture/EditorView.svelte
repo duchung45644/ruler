@@ -10,8 +10,8 @@
   import Undo2 from '@lucide/svelte/icons/undo-2';
   import X from '@lucide/svelte/icons/x';
   import Frame from '@lucide/svelte/icons/frame';
-  import { BACKDROPS, PADDINGS } from '../../../lib/frame';
-  import { MARK_COLORS, MARK_SIZES, MARK_TOOLS } from '../../../lib/markup';
+  import { BACKDROPS, PADDINGS } from '../../../lib/capture/frame';
+  import { MARK_COLORS, MARK_SIZES, MARK_TOOLS } from '../../../lib/capture/markup';
   import CapButton from './CapButton.svelte';
   import { attachEditor, setBackdrop, setTool } from './editor';
   import { capAction, closeCapture, copyCanvas, saveCanvas } from './session';

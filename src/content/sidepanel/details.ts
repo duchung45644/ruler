@@ -1,4 +1,4 @@
-import { isRendered } from '../../lib/dom';
+import { isRendered } from '../../lib/dom/dom';
 import { childrenOf, collectAssetRefs } from '../../lib/element/assets';
 import { boxModel } from '../../lib/element/box';
 import { canvasInfo, canvasPalette, PALETTE_SAMPLE } from '../../lib/element/canvas';
@@ -17,7 +17,7 @@ import type {
   TypographyStyle,
 } from '../../lib/element/types';
 import { typographyKey, typographyStyles } from '../../lib/element/typography';
-import { displaySelector, fullPath } from '../../lib/selector';
+import { displaySelector, fullPath } from '../../lib/dom/selector';
 import { isTextHeavy } from '../core/contrast';
 import { childOf } from '../tools/inspector';
 import { collectIssues } from './issues';

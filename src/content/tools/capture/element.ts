@@ -1,6 +1,6 @@
-import { elementCaptureRect, isFullyVisible } from '../../../lib/capture';
+import { elementCaptureRect, isFullyVisible } from '../../../lib/capture/capture';
 import type { Edges } from '../../../lib/responsive/capture-rect';
-import { sendToBackground } from '../../../lib/messaging';
+import { sendToBackground } from '../../../lib/ext/messaging';
 import { hideUi } from '../../core/session';
 import { state } from '../../core/state.svelte';
 import { frameSelectionRect } from '../../responsive/shell.svelte';

@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
-import { items } from '../content/core/registry.svelte';
-import { stopSession } from '../content/core/session';
-import { initXray } from '../content/tools/xray';
+import { items } from '../../content/core/registry.svelte';
+import { stopSession } from '../../content/core/session';
+import { initXray } from '../../content/tools/xray';
 import { xrayDepth, xraySheet } from './xray';
 
 describe('xray', () => {

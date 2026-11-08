@@ -1,6 +1,6 @@
 /** Stable address of a stylesheet rule across re-reads (port of content.js:16845, 17387). */
 import type { KnownRule } from '../css/matched';
-import { fullPath } from '../selector';
+import { fullPath } from '../dom/selector';
 
 export interface RuleAddress {
   stylesheet: string;

@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { sendToBackground, sendToSidePanel } from '../../lib/messaging';
+import { sendToBackground, sendToSidePanel } from '../../lib/ext/messaging';
 import { blockedState, readDoc, requestHostGrant } from './blocked';
 
-vi.mock('../../lib/messaging', () => ({
+vi.mock('../../lib/ext/messaging', () => ({
   sendToBackground: vi.fn(async () => ({ success: true })),
   sendToSidePanel: vi.fn(async () => undefined),
 }));

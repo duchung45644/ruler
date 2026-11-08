@@ -7,7 +7,7 @@
  */
 import { browser, type Browser } from '#imports';
 import { ERR, type CallOutcome, type McpPageType } from '../../lib/mcp/protocol';
-import type { ContentApi, Handlers } from '../../lib/messaging';
+import type { ContentApi, Handlers } from '../../lib/ext/messaging';
 import { state } from '../core/state.svelte';
 import { allFramesMcpCall, frameMcpCall } from '../responsive/shell.svelte';
 import { McpFail, type Commands } from './command';

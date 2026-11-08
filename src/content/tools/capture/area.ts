@@ -6,7 +6,7 @@ import {
   hitSel,
   isValidSel,
   type SelRect,
-} from '../../../lib/capture';
+} from '../../../lib/capture/capture';
 import { loadImg } from './session';
 
 const HANDLES = ['0 0', '50% 0', '100% 0', '0 50%', '100% 50%', '0 100%', '50% 100%', '100% 100%'];

@@ -10,7 +10,7 @@ import { initTools } from '../../content/tools';
 import { isResponsiveFrame, startFrameMode } from '../../content/responsive/frame-mode';
 import { exitResponsive, onFramesUnblocked } from '../../content/responsive';
 import { openBar } from '../../content/tools/capture';
-import { handleMessages } from '../../lib/messaging';
+import { handleMessages } from '../../lib/ext/messaging';
 import { loadFonts } from '../../ui/fonts';
 import './style.css';
 

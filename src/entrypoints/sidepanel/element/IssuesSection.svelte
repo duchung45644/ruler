@@ -4,7 +4,7 @@
   import ChevronRight from '@lucide/svelte/icons/chevron-right';
   import Info from '@lucide/svelte/icons/info';
   import TriangleAlert from '@lucide/svelte/icons/triangle-alert';
-  import { formatCss } from '../../../lib/color';
+  import { formatCss } from '../../../lib/style/color';
   import type { Issue } from '../../../lib/element/types';
   import Section from '../Section.svelte';
   import { panel } from '../store.svelte';

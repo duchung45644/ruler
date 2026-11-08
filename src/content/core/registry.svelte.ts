@@ -3,7 +3,7 @@ import type { GeneratedI18nStructure } from '#i18n';
 import Pause from '@lucide/svelte/icons/pause';
 import Play from '@lucide/svelte/icons/play';
 import X from '@lucide/svelte/icons/x';
-import { sendToBackground } from '../../lib/messaging';
+import { sendToBackground } from '../../lib/ext/messaging';
 import { layer, requestPaint } from './overlay';
 import { state } from './state.svelte';
 

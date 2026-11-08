@@ -1,6 +1,6 @@
 <script lang="ts">
   import { i18n } from '#i18n';
-  import { formatCss } from '../../../lib/color';
+  import { formatCss } from '../../../lib/style/color';
   import type { Gradient } from '../../../lib/element/types';
   import Section from '../Section.svelte';
   import { panel } from '../store.svelte';

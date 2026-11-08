@@ -4,10 +4,10 @@ import {
   mediaConditions,
   parseBreakpoints,
   type Breakpoint,
-} from '../../../lib/breakpoints';
-import { shadowRoots } from '../../../lib/dom';
+} from '../../../lib/tools/breakpoints';
+import { shadowRoots } from '../../../lib/dom/dom';
 import { fetchCrossOrigin, fetchedCopy } from '../../sidepanel/rules';
-import { getSettings, updateSettings } from '../../../lib/settings';
+import { getSettings, updateSettings } from '../../../lib/ext/settings';
 import { addPainter, draw, requestPaint } from '../../core/overlay';
 import { registerItem } from '../../core/registry.svelte';
 import { onStop, sessionSignal } from '../../core/session';

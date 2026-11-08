@@ -1,6 +1,6 @@
 import { collectRules, matchedRules, sheetsOf, type KnownRule } from '../../lib/css/matched';
 import type { MatchedRule } from '../../lib/element/types';
-import { sendToBackground } from '../../lib/messaging';
+import { sendToBackground } from '../../lib/ext/messaging';
 
 /** Fetched copies of cross-origin sheets by href; never attached to the page. */
 const fetched = new Map<string, CSSStyleSheet>();

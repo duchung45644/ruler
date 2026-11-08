@@ -1,5 +1,5 @@
 import type { i18n } from '#i18n';
-import { isRendered, shadowRoots } from './dom';
+import { isRendered, shadowRoots } from '../dom/dom';
 
 const isOwn = (el: Element) => el.localName === 'iodob-ui';
 

@@ -3,8 +3,8 @@ import { collectPageMetadata } from '../../lib/page/meta';
 import { collectSeoIssues } from '../../lib/page/seo';
 import type { PageData, PageWeight, SeoFinding, SeoIssue, Technology } from '../../lib/page/types';
 import { WeightTotals } from '../../lib/page/weight';
-import { sendToBackground, sendToSidePanel } from '../../lib/messaging';
-import { displaySelector } from '../../lib/selector';
+import { sendToBackground, sendToSidePanel } from '../../lib/ext/messaging';
+import { displaySelector } from '../../lib/dom/selector';
 import { onStop, sessionSignal } from '../core/session';
 
 const DETECT_TIMEOUT = 2000; // legacy waited 2s for TECH_DETECTION_RESULT

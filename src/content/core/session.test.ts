@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ContentScriptContext } from 'wxt/utils/content-script-context';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 
-import { themePref } from '../../lib/settings';
+import { themePref } from '../../lib/ext/settings';
 import { onKey } from './keys';
 import { onStop, sessionSignal, startSession, stopSession } from './session';
 

@@ -8,7 +8,7 @@ import { runItem, setForwardKey } from '../core/keys';
 import { layer } from '../core/overlay';
 import { setPaused } from '../core/registry.svelte';
 import { hideUi } from '../core/session';
-import { isFullyVisible } from '../../lib/capture';
+import { isFullyVisible } from '../../lib/capture/capture';
 import { state } from '../core/state.svelte';
 import { ruleTracker, setSharedHistoryState } from '../edit/mode.svelte';
 import { setSelectionHook } from '../sidepanel/bridge.svelte';

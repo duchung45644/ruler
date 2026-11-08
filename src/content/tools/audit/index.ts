@@ -1,5 +1,5 @@
 import Palette from '@lucide/svelte/icons/palette';
-import { scanStyles, type AuditRow } from '../../../lib/audit';
+import { scanStyles, type AuditRow } from '../../../lib/tools/audit';
 import { mountInShadow } from '../../../ui/mount';
 import { ownNodes } from '../../core/events';
 import { addPainter, draw, layer, requestPaint, visibleRects } from '../../core/overlay';

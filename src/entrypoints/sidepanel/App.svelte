@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onDestroy, onMount, tick } from 'svelte';
-  import { forwardKey } from '../../lib/panel-keys';
+  import { forwardKey } from '../../lib/ext/panel-keys';
   import EmptyElement from './EmptyElement.svelte';
   import HostGrant from './HostGrant.svelte';
   import ChangesView from './edit/ChangesView.svelte';

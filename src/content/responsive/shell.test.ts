@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushSync } from 'svelte';
 import { browser } from '#imports';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
-import { sendToBackground, sendToSidePanel } from '../../lib/messaging';
+import { sendToBackground, sendToSidePanel } from '../../lib/ext/messaging';
 import type { Envelope } from '../../lib/responsive/channel';
 import { locateElement } from '../../lib/responsive/element-locator';
 import { defaultViewports } from '../../lib/responsive/viewports';
@@ -25,8 +25,8 @@ import {
   teardownShell,
 } from './shell.svelte';
 
-vi.mock('../../lib/messaging', async (orig) => ({
-  ...(await orig<typeof import('../../lib/messaging')>()),
+vi.mock('../../lib/ext/messaging', async (orig) => ({
+  ...(await orig<typeof import('../../lib/ext/messaging')>()),
   sendToBackground: vi.fn(async () => undefined),
   sendToSidePanel: vi.fn(async () => undefined),
 }));

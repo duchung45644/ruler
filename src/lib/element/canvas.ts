@@ -1,4 +1,4 @@
-import { formatColor } from '../color';
+import { formatColor } from '../style/color';
 import type { CanvasInfo } from './types';
 
 /** Legacy samples the canvas drawn down to this square (getCanvasColors, content.js:41375). */

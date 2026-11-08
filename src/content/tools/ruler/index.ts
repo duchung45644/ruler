@@ -1,6 +1,13 @@
 import RulerIcon from '@lucide/svelte/icons/ruler';
-import { guideGaps, nearestGuide, RULER, snapPos, ticks, type Guide } from '../../../lib/guides';
-import { getSettings, updateSettings } from '../../../lib/settings';
+import {
+  guideGaps,
+  nearestGuide,
+  RULER,
+  snapPos,
+  ticks,
+  type Guide,
+} from '../../../lib/tools/guides';
+import { getSettings, updateSettings } from '../../../lib/ext/settings';
 import { resetDrag, startDrag } from '../../core/drag';
 import { isOwnEvent, pageElementAt } from '../../core/events';
 import { addPainter, draw, layer, requestPaint } from '../../core/overlay';

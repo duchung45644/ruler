@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Component } from 'svelte';
-  import { popoverLeft } from '../lib/geometry';
+  import { popoverLeft } from '../lib/dom/geometry';
 
   let { id, dock, body: Body }: { id: string; dock: HTMLElement; body: Component } = $props();
   let el: HTMLElement;

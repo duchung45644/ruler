@@ -4,7 +4,7 @@ import { locate } from '../../lib/edit/rule-address';
 import { isSerializedEdit } from '../../lib/edit/serialize';
 import type { EditResult, RuleChange } from '../../lib/edit/types';
 import type { ElementDetails } from '../../lib/element/types';
-import { sendToSidePanel, type ContentApi, type Handlers } from '../../lib/messaging';
+import { sendToSidePanel, type ContentApi, type Handlers } from '../../lib/ext/messaging';
 import { requestPaint } from '../core/overlay';
 import { onStop } from '../core/session';
 import { state } from '../core/state.svelte';

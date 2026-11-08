@@ -1,6 +1,6 @@
 <script lang="ts">
   import { i18n } from '#i18n';
-  import type { OverlayImage } from '../../../lib/overlay-image';
+  import type { OverlayImage } from '../../../lib/tools/overlay-image';
   import Eye from '@lucide/svelte/icons/eye';
   import EyeOff from '@lucide/svelte/icons/eye-off';
   import Pin from '@lucide/svelte/icons/pin';

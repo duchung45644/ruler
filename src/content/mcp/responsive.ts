@@ -5,7 +5,7 @@
 import { ERR } from '../../lib/mcp/protocol';
 import { clampSize, nextId, MAX_VIEWPORTS, type Viewport } from '../../lib/responsive/viewports';
 import { ZOOM_MAX, ZOOM_MIN } from '../../lib/responsive/zoom';
-import { sendToBackground } from '../../lib/messaging';
+import { sendToBackground } from '../../lib/ext/messaging';
 import { runItem } from '../core/keys';
 import { state } from '../core/state.svelte';
 import {

@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { i18n } from '#i18n';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { ContentScriptContext } from 'wxt/utils/content-script-context';
-import * as messaging from '../../../lib/messaging';
+import * as messaging from '../../../lib/ext/messaging';
 import { routeKey } from '../../core/keys';
 import { startSession, stopSession } from '../../core/session';
 import { state } from '../../core/state.svelte';

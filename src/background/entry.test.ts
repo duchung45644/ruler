@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
-import background, { toggleTab } from './entrypoints/background';
+import background, { toggleTab } from '../entrypoints/background';
 
 beforeEach(() => {
   fakeBrowser.reset();

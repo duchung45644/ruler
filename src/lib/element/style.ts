@@ -1,4 +1,4 @@
-import { formatColor, formatCss, parseColor } from '../color';
+import { formatColor, formatCss, parseColor } from '../style/color';
 
 /** What the collectors read: a computed style, or a plain stub in tests. */
 export type StyleLike = { getPropertyValue(prop: string): string };

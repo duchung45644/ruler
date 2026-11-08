@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushSync } from 'svelte';
 import { browser } from '#imports';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
-import { sendToBackground } from '../../lib/messaging';
+import { sendToBackground } from '../../lib/ext/messaging';
 import type { Envelope, ShellApi } from '../../lib/responsive/channel';
 import { layer, mountLayer } from '../core/overlay';
 import { items } from '../core/registry.svelte';
@@ -19,8 +19,8 @@ import {
 } from './shell.svelte';
 import { createFrameSync, createShellSync, type ShellSyncDeps } from './sync';
 
-vi.mock('../../lib/messaging', async (orig) => ({
-  ...(await orig<typeof import('../../lib/messaging')>()),
+vi.mock('../../lib/ext/messaging', async (orig) => ({
+  ...(await orig<typeof import('../../lib/ext/messaging')>()),
   sendToBackground: vi.fn(async () => undefined),
   sendToSidePanel: vi.fn(async () => undefined),
 }));

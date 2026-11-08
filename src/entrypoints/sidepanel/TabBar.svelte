@@ -3,7 +3,7 @@
   import AppWindow from '@lucide/svelte/icons/app-window';
   import PanelRight from '@lucide/svelte/icons/panel-right';
   import Settings from '@lucide/svelte/icons/settings';
-  import { sendToBackground } from '../../lib/messaging';
+  import { sendToBackground } from '../../lib/ext/messaging';
   import { edit } from './edit/edit-store.svelte';
   import { panel, toggleDetach, type PanelTab } from './store.svelte';
 

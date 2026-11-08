@@ -1,5 +1,5 @@
 <script module lang="ts">
-  import { contrastRatio, parseColor, toHex, wcagLevel } from '../../../lib/color';
+  import { contrastRatio, parseColor, toHex, wcagLevel } from '../../../lib/style/color';
   import { backgroundOf, isTextHeavy } from '../../core/contrast';
 
   /** Port of getTextColorWithAccessibility (:43944) + renderAccessibilityInfo (:43350). */
@@ -57,10 +57,10 @@
 <script lang="ts">
   import { i18n } from '#i18n';
   import Copy from '@lucide/svelte/icons/copy';
-  import { copyText } from '../../../lib/clipboard';
+  import { copyText } from '../../../lib/ext/clipboard';
   import { cssSnippet, inspectGroups, renderedFont } from '../../../lib/css/inspect';
   import Info from '@lucide/svelte/icons/info';
-  import { pinHintDone } from '../../../lib/settings';
+  import { pinHintDone } from '../../../lib/ext/settings';
   import { panelTarget, state as core } from '../../core/state.svelte';
 
   /** `el` set = content of a pinned inspector (fixed element, no frame, no hint). */

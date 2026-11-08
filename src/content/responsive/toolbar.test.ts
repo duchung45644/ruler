@@ -4,14 +4,14 @@ import { browser } from '#imports';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import type { Envelope } from '../../lib/responsive/channel';
 import { stepZoom } from '../../lib/responsive/zoom';
-import { getSettings, updateSettings } from '../../lib/settings';
+import { getSettings, updateSettings } from '../../lib/ext/settings';
 import { mountLayer } from '../core/overlay';
 import { state } from '../core/state.svelte';
 import { currentBreakpoints } from '../tools/breakpoints';
 import { enterResponsive, SAVE_DELAY_MS, setZoom, shell, teardownShell } from './shell.svelte';
 
-vi.mock('../../lib/messaging', async (orig) => ({
-  ...(await orig<typeof import('../../lib/messaging')>()),
+vi.mock('../../lib/ext/messaging', async (orig) => ({
+  ...(await orig<typeof import('../../lib/ext/messaging')>()),
   sendToBackground: vi.fn(async () => undefined),
   sendToSidePanel: vi.fn(async () => undefined),
 }));

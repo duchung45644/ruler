@@ -7,12 +7,12 @@ import {
   roundRatio,
   type Instance,
   type Verdict,
-} from '../../lib/a11y';
-import { contrastRatio, formatColor, parseColor, type Rgba } from '../../lib/color';
+} from '../../lib/dom/a11y';
+import { contrastRatio, formatColor, parseColor, type Rgba } from '../../lib/style/color';
 import { childrenOf } from '../../lib/element/assets';
 import type { Issue } from '../../lib/element/types';
-import { sendToSidePanel } from '../../lib/messaging';
-import { displaySelector } from '../../lib/selector';
+import { sendToSidePanel } from '../../lib/ext/messaging';
+import { displaySelector } from '../../lib/dom/selector';
 import { backgroundOf, isTextHeavy, type LayerMemo } from '../core/contrast';
 import { canHighlight } from './highlight';
 

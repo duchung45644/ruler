@@ -1,6 +1,6 @@
 <script lang="ts">
   import { i18n } from '#i18n';
-  import type { Field } from '../../../lib/measure';
+  import type { Field } from '../../../lib/tools/measure';
   import ToolPanel from '../../../ui/ToolPanel.svelte';
   import { state as app } from '../../core/state.svelte';
   import { boxValues, panelSync, prefs, savePrefs, setBox, setField, setOn } from '.';

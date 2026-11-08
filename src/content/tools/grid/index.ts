@@ -1,5 +1,5 @@
 import LayoutGridIcon from '@lucide/svelte/icons/layout-grid';
-import { getSettings, updateSettings, type LayoutGrid } from '../../../lib/settings';
+import { getSettings, updateSettings, type LayoutGrid } from '../../../lib/ext/settings';
 import { addPainter, draw, requestPaint } from '../../core/overlay';
 import { registerItem, togglePopover } from '../../core/registry.svelte';
 import { onStop, sessionSignal } from '../../core/session';

@@ -8,7 +8,7 @@
   import Scan from '@lucide/svelte/icons/scan';
   import ScrollText from '@lucide/svelte/icons/scroll-text';
   import X from '@lucide/svelte/icons/x';
-  import { placeSelBar } from '../../../lib/capture';
+  import { placeSelBar } from '../../../lib/capture/capture';
   import { state as app } from '../../core/state.svelte';
   import CapButton from './CapButton.svelte';
   import EditorView from './EditorView.svelte';

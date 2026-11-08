@@ -1,6 +1,6 @@
 <script lang="ts">
   import { i18n } from '#i18n';
-  import { formatBytes } from '../../../lib/format';
+  import { formatBytes } from '../../../lib/style/format';
   import { PW_TYPES, type PageWeight } from '../../../lib/page/types';
   import Section from '../Section.svelte';
 

@@ -1,7 +1,7 @@
 /** MCP dock button and popover state (1.46, 1.50, 10.06, 10.07, 9.30). */
 import { dockState, IDLE_STATUS, type McpStatus } from '../../lib/mcp/status';
-import { sendToBackground, type ContentApi, type Handlers } from '../../lib/messaging';
-import { mcpIntent } from '../../lib/settings';
+import { sendToBackground, type ContentApi, type Handlers } from '../../lib/ext/messaging';
+import { mcpIntent } from '../../lib/ext/settings';
 import { items, registerItem, togglePopover, type MessageKey } from '../core/registry.svelte';
 import { onStop } from '../core/session';
 import { state } from '../core/state.svelte';

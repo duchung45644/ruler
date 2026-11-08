@@ -1,5 +1,5 @@
 /** Frames of pages that refuse embedding (8.15; Q4): detection and the grant flow. */
-import { sendToBackground, sendToSidePanel } from '../../lib/messaging';
+import { sendToBackground, sendToSidePanel } from '../../lib/ext/messaging';
 
 /** After `load`, a frame with no `ready_for_state_sync` by then is checked for a block. */
 export const BLOCK_CHECK_MS = 1_500;

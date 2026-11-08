@@ -1,10 +1,10 @@
 import { browser, type Browser } from '#imports';
-import type { DeviceRect } from './capture-bg';
-import type { ElementDetails, Issue, MatchedRule } from './element/types';
-import type { HtmlChange } from './edit/changes';
-import type { Decl } from './edit/decls';
-import type { RuleAddress } from './edit/rule-address';
-import type { SerializedEdit } from './edit/serialize';
+import type { DeviceRect } from '../capture/capture-bg';
+import type { ElementDetails, Issue, MatchedRule } from '../element/types';
+import type { HtmlChange } from '../edit/changes';
+import type { Decl } from '../edit/decls';
+import type { RuleAddress } from '../edit/rule-address';
+import type { SerializedEdit } from '../edit/serialize';
 import type {
   EditResult,
   EditState,
@@ -12,10 +12,10 @@ import type {
   InsertPosition,
   RuleChange,
   RulePayload,
-} from './edit/types';
-import type { CallOutcome, McpPageType } from './mcp/protocol';
-import type { McpStatus } from './mcp/status';
-import type { PageData, PageWeight, Technology } from './page/types';
+} from '../edit/types';
+import type { CallOutcome, McpPageType } from '../mcp/protocol';
+import type { McpStatus } from '../mcp/status';
+import type { PageData, PageWeight, Technology } from '../page/types';
 
 export type CaptureResult =
   { success: true; dataUrl: string } | { success: false; error: 'INVALID_URL' | 'CAPTURE_FAILED' };

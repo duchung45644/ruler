@@ -17,8 +17,8 @@ import {
 import { fromBackground, mcpHandlers, runMcp } from '.';
 import { rankA11y } from './page';
 
-vi.mock('../../lib/messaging', async (orig) => ({
-  ...(await orig<typeof import('../../lib/messaging')>()),
+vi.mock('../../lib/ext/messaging', async (orig) => ({
+  ...(await orig<typeof import('../../lib/ext/messaging')>()),
   sendToSidePanel: vi.fn(async () => undefined),
   sendToBackground: vi.fn(async () => undefined),
 }));

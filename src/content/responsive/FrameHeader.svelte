@@ -9,7 +9,7 @@
   import TriangleAlert from '@lucide/svelte/icons/triangle-alert';
   import X from '@lucide/svelte/icons/x';
   import { i18n } from '#i18n';
-  import { breakpointLabel } from '../../lib/breakpoints';
+  import { breakpointLabel } from '../../lib/tools/breakpoints';
   import { COLORS } from '../tools/breakpoints';
   import {
     cycleFrameScheme,

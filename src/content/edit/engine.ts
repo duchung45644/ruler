@@ -13,14 +13,14 @@ import { mergeDecls, parseDecls, serializeDecls, type Decl } from '../../lib/edi
 import { History, type Action } from '../../lib/edit/history';
 import { PROTECTED_TAGS, sanitizeHtml } from '../../lib/edit/sanitize';
 import type { EditResult, EditState, InsertPosition } from '../../lib/edit/types';
-import { parentOf, siblingOf } from '../../lib/dom';
+import { parentOf, siblingOf } from '../../lib/dom/dom';
 import {
   displaySelector,
   ensureElementId,
   ID_ATTR,
   resolveElementById,
   uniquePath,
-} from '../../lib/selector';
+} from '../../lib/dom/selector';
 
 export interface HtmlEditorOptions {
   extId: string;

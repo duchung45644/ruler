@@ -1,7 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest';
 
 const sendToBackground = vi.fn();
-vi.mock('../../lib/messaging', () => ({
+vi.mock('../../lib/ext/messaging', () => ({
   sendToBackground: (...a: unknown[]) => sendToBackground(...a),
 }));
 

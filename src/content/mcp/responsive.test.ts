@@ -1,14 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
-import { sendToBackground } from '../../lib/messaging';
+import { sendToBackground } from '../../lib/ext/messaging';
 import type { Viewport } from '../../lib/responsive/viewports';
 import { hideUi } from '../core/session';
 import { state } from '../core/state.svelte';
 import { frameMcpCall, setViewportList, setZoom, shell } from '../responsive/shell.svelte';
 import { runMcp } from '.';
 
-vi.mock('../../lib/messaging', async (orig) => ({
-  ...(await orig<typeof import('../../lib/messaging')>()),
+vi.mock('../../lib/ext/messaging', async (orig) => ({
+  ...(await orig<typeof import('../../lib/ext/messaging')>()),
   sendToBackground: vi.fn(async () => undefined),
   sendToSidePanel: vi.fn(async () => undefined),
 }));

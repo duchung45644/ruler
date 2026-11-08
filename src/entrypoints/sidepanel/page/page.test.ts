@@ -2,7 +2,7 @@ import { flushSync, mount, unmount } from 'svelte';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import type { PageData, PageWeight } from '../../../lib/page/types';
-import { DEFAULT_PANEL_PREFS, getPanelPrefs } from '../../../lib/settings';
+import { DEFAULT_PANEL_PREFS, getPanelPrefs } from '../../../lib/ext/settings';
 import App from '../App.svelte';
 import { panel } from '../store.svelte';
 

@@ -8,8 +8,8 @@ import {
   resizeBox,
   type Box,
   type Field,
-} from '../../../lib/measure';
-import { measureColor, measureGuides } from '../../../lib/settings';
+} from '../../../lib/tools/measure';
+import { measureColor, measureGuides } from '../../../lib/ext/settings';
 import { mountInShadow } from '../../../ui/mount';
 import { isDragging, startDrag } from '../../core/drag';
 import { isOwnEvent } from '../../core/events';

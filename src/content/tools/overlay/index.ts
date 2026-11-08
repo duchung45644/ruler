@@ -7,7 +7,7 @@ import {
   togglePinned,
   type Corner,
   type OverlayImage,
-} from '../../../lib/overlay-image';
+} from '../../../lib/tools/overlay-image';
 import { mountInShadow } from '../../../ui/mount';
 import { isDragging, startDrag } from '../../core/drag';
 import { ownNodes } from '../../core/events';

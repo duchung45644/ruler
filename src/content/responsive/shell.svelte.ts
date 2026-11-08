@@ -3,7 +3,7 @@ import { mount, unmount } from 'svelte';
 import { browser } from '#imports';
 import { i18n } from '#i18n';
 import { isSerializedEdit } from '../../lib/edit/serialize';
-import { sendToBackground, sendToSidePanel } from '../../lib/messaging';
+import { sendToBackground, sendToSidePanel } from '../../lib/ext/messaging';
 import type { CallOutcome } from '../../lib/mcp/protocol';
 import type { FrameApi } from '../../lib/responsive/channel';
 import { frameName } from '../../lib/responsive/frame-name';
@@ -24,7 +24,7 @@ import {
 import type { DevicePreset } from '../../lib/responsive/devices';
 import { clampZoom, stepZoom } from '../../lib/responsive/zoom';
 import { frameRectToParent, type Edges } from '../../lib/responsive/capture-rect';
-import { getSettings, updateSettings } from '../../lib/settings';
+import { getSettings, updateSettings } from '../../lib/ext/settings';
 import { confirmDialog, sizeDialog } from '../core/dialog';
 import { runShortcut } from '../core/keys';
 import { setHideUiHook } from '../core/session';
@@ -39,7 +39,7 @@ import {
   toggleTextEdit,
 } from '../edit/mode.svelte';
 import { HANDOFF_FLAG, persistNow } from '../edit/persist';
-import type { Breakpoint } from '../../lib/breakpoints';
+import type { Breakpoint } from '../../lib/tools/breakpoints';
 import {
   currentBreakpoints,
   pageHasBreakpoints,
@@ -51,7 +51,7 @@ import { BLOCK_CHECK_MS, blockedState, readDoc, type Blocked } from './blocked';
 import { loadTimer } from './frame';
 import { enterForward, exitForward, frameFindCount, installForward, readyState } from './forward';
 import { applyInlineStyles, createShellEdits, historyFlags } from './edits';
-import Shell from './Shell.svelte';
+import ShellView from './ShellView.svelte';
 
 export interface ShellFrame {
   vp: Viewport;
@@ -501,7 +501,7 @@ export async function enterResponsive(): Promise<boolean> {
     // before the dock in the shadow tree, so the dock (and later dialogs) stay on top
     target = document.createElement('div');
     root.prepend(target);
-    app = mount(Shell, { target });
+    app = mount(ShellView, { target });
     selectedFrame = null;
     // frames' own selection boxes and labels must not end up in a capture (Q6)
     setHideUiHook((mode) => {
@@ -537,7 +537,7 @@ export async function frameSelectionRect(): Promise<Edges | null> {
   return c.right > c.left && c.bottom > c.top ? c : null;
 }
 
-/** Shell.svelte calls this per iframe; returns the cleanup. */
+/** ShellView.svelte calls this per iframe; returns the cleanup. */
 export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
   const signal = controller?.signal;
   if (!signal) return () => {};

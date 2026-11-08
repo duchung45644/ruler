@@ -1,7 +1,7 @@
 <script lang="ts">
   import { i18n } from '#i18n';
   import TriangleAlert from '@lucide/svelte/icons/triangle-alert';
-  import { sendToBackground } from '../../lib/messaging';
+  import { sendToBackground } from '../../lib/ext/messaging';
   import McpPrompt from '../../ui/McpPrompt.svelte';
   import { mcp, setStatus } from './dock.svelte';
 

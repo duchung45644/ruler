@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
-import { sendToBackground, sendToSidePanel } from '../../lib/messaging';
+import { sendToBackground, sendToSidePanel } from '../../lib/ext/messaging';
 import { routeKey } from '../core/keys';
 import { layer } from '../core/overlay';
 import { registerItem } from '../core/registry.svelte';
@@ -11,8 +11,8 @@ import { setXray } from '../tools/xray';
 import { editor, initEdit, ruleTracker, setEditMode } from '.';
 import { toggleTextEdit } from './mode.svelte';
 
-vi.mock('../../lib/messaging', async (orig) => ({
-  ...(await orig<typeof import('../../lib/messaging')>()),
+vi.mock('../../lib/ext/messaging', async (orig) => ({
+  ...(await orig<typeof import('../../lib/ext/messaging')>()),
   sendToSidePanel: vi.fn(async () => undefined),
   sendToBackground: vi.fn(async () => undefined),
 }));

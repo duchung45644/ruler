@@ -1,7 +1,7 @@
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { browser } from '#imports';
-import { mcpIntent, mcpToken } from '../lib/settings';
+import { mcpIntent, mcpToken } from '../lib/ext/settings';
 import { ERR, timeoutError } from '../lib/mcp/protocol';
 import {
   connect,
@@ -231,7 +231,7 @@ describe('router', () => {
   it('has no runtime.onMessage way in', async () => {
     const listeners: ((m: unknown, s: unknown, r: () => void) => unknown)[] = [];
     browser.runtime.onMessage.addListener = ((l: never) => listeners.push(l)) as never;
-    const { handleMessages } = await import('../lib/messaging');
+    const { handleMessages } = await import('../lib/ext/messaging');
     handleMessages('background', mcpHandlers);
     const reply = vi.fn();
     for (const msg of [

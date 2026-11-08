@@ -1,5 +1,5 @@
 import { browser, storage, type Browser } from '#imports';
-import { sendToFrame, sendToTab, type BackgroundApi, type Handlers } from '../lib/messaging';
+import { sendToFrame, sendToTab, type BackgroundApi, type Handlers } from '../lib/ext/messaging';
 import type { SerializedEdit } from '../lib/edit/serialize';
 import { parseFrameName } from '../lib/responsive/frame-name';
 

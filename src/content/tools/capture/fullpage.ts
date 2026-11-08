@@ -9,10 +9,10 @@ import {
   stitchDone,
   stitchHeight,
   useScroller,
-} from '../../../lib/fullpage';
-import { shadowRoots } from '../../../lib/dom';
-import { sendToBackground } from '../../../lib/messaging';
-import { pinViewportUnits } from '../../../lib/viewport-units';
+} from '../../../lib/capture/fullpage';
+import { shadowRoots } from '../../../lib/dom/dom';
+import { sendToBackground } from '../../../lib/ext/messaging';
+import { pinViewportUnits } from '../../../lib/dom/viewport-units';
 import { mountUi } from '../../../ui/mount';
 import { ownNodes } from '../../core/events';
 import { onStop, sessionCtx, sessionSignal } from '../../core/session';

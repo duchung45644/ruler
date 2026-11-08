@@ -1,6 +1,6 @@
 import Pipette from '@lucide/svelte/icons/pipette';
-import { copyText } from '../../../lib/clipboard';
-import { formatCss } from '../../../lib/color';
+import { copyText } from '../../../lib/ext/clipboard';
+import { formatCss } from '../../../lib/style/color';
 import { layer, requestPaint } from '../../core/overlay';
 import { registerItem } from '../../core/registry.svelte';
 import { sessionSignal } from '../../core/session';

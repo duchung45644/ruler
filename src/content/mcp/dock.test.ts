@@ -1,21 +1,21 @@
 import { flushSync, mount, unmount } from 'svelte';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
-import { copyText } from '../../lib/clipboard';
+import { copyText } from '../../lib/ext/clipboard';
 import { IDLE_STATUS } from '../../lib/mcp/status';
-import { sendToBackground } from '../../lib/messaging';
+import { sendToBackground } from '../../lib/ext/messaging';
 import { items } from '../core/registry.svelte';
 import { state } from '../core/state.svelte';
 import { initMcpDock, mcp, mcpDockHandlers, setStatus } from './dock.svelte';
 import McpPopover from './McpPopover.svelte';
 
-vi.mock('../../lib/messaging', async (orig) => ({
-  ...(await orig<typeof import('../../lib/messaging')>()),
+vi.mock('../../lib/ext/messaging', async (orig) => ({
+  ...(await orig<typeof import('../../lib/ext/messaging')>()),
   sendToBackground: vi.fn(async (type: string) =>
     type === 'mcp_prompt' ? 'PROMPT IODOB_MCP_TOKEN=x' : undefined,
   ),
 }));
-vi.mock('../../lib/clipboard', () => ({ copyText: vi.fn(async () => true) }));
+vi.mock('../../lib/ext/clipboard', () => ({ copyText: vi.fn(async () => true) }));
 fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
 
 let app: ReturnType<typeof mount> | null = null;

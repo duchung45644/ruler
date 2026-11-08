@@ -1,4 +1,4 @@
-import { compositeBackground, type BgLayer, type Rgba } from '../../lib/color';
+import { compositeBackground, type BgLayer, type Rgba } from '../../lib/style/color';
 
 export const TEXT =
   'h1 h2 h3 h4 h5 h6 p b i em strong u small mark code a label button td th blockquote pre sub sup del ins cite q'.split(

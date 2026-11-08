@@ -4,7 +4,7 @@
   import ChevronUp from '@lucide/svelte/icons/chevron-up';
   import X from '@lucide/svelte/icons/x';
   import { onDestroy, onMount } from 'svelte';
-  import { findTitle } from '../../../lib/find';
+  import { findTitle } from '../../../lib/tools/find';
   import { state as app } from '../../core/state.svelte';
   import { clearFind, find, onFindChange, runFind, stepFind } from '.';
 

@@ -6,7 +6,7 @@ import {
   fitSize,
   nextCaptureDelay,
   type DeviceRect,
-} from '../lib/capture-bg';
+} from '../lib/capture/capture-bg';
 import {
   type AiCapture,
   handleMessages,
@@ -14,8 +14,8 @@ import {
   type CaptureResult,
   type FullCaptureOpts,
   type FullCaptureResult,
-} from '../lib/messaging';
-import { isInjectable } from '../lib/tabs';
+} from '../lib/ext/messaging';
+import { isInjectable } from '../lib/ext/tabs';
 import {
   closePanelFor,
   enableFor,

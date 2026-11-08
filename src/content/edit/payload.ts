@@ -10,7 +10,7 @@ import {
 import { parseDecls } from '../../lib/edit/decls';
 import { addressOf, scopeAddressOf } from '../../lib/edit/rule-address';
 import type { EditableRule, RulePayload } from '../../lib/edit/types';
-import { sendToSidePanel } from '../../lib/messaging';
+import { sendToSidePanel } from '../../lib/ext/messaging';
 import { rootOf, rulesOf } from '../sidepanel/rules';
 import { attachedSheets, lineOf, writable } from './rules';
 import { availableStates, type StateForcer } from './states';

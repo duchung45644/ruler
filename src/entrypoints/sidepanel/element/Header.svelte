@@ -2,7 +2,7 @@
   import { i18n } from '#i18n';
   import CornerDownRight from '@lucide/svelte/icons/corner-down-right';
   import CornerLeftUp from '@lucide/svelte/icons/corner-left-up';
-  import { formatSize } from '../../../lib/format';
+  import { formatSize } from '../../../lib/style/format';
   import type { ElementDetails } from '../../../lib/element/types';
   import CopyButton from './CopyButton.svelte';
   import { clearHighlights, hover, onPage } from './actions';

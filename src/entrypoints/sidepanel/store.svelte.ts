@@ -5,17 +5,17 @@ import {
   sendToBackground,
   sendToFrame,
   type ContentApi,
-} from '../../lib/messaging';
+} from '../../lib/ext/messaging';
 import type { PageData, PageWeight, Technology } from '../../lib/page/types';
-import { readHandoff, type Handoff } from '../../lib/panels';
+import { readHandoff, type Handoff } from '../../lib/ext/panels';
 import {
   DEFAULT_PANEL_PREFS,
   getPanelPrefs,
   panelPrefsItem,
   mergePanelPrefs,
   themePref,
-} from '../../lib/settings';
-import { applyDocTheme, type ThemePref } from '../../lib/theme';
+} from '../../lib/ext/settings';
+import { applyDocTheme, type ThemePref } from '../../lib/style/theme';
 import {
   changesInvalidated,
   clearEdit,

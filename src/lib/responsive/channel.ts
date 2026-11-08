@@ -1,4 +1,4 @@
-import type { Breakpoint } from '../breakpoints';
+import type { Breakpoint } from '../tools/breakpoints';
 import type { SerializedEdit } from '../edit/serialize';
 import type { EditState } from '../edit/types';
 import type { CallOutcome } from '../mcp/protocol';

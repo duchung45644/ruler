@@ -8,7 +8,7 @@ import {
   type RulePayload,
 } from '../../../lib/edit/types';
 import type { ElementDetails } from '../../../lib/element/types';
-import { sendToFrame, type ContentApi } from '../../../lib/messaging';
+import { sendToFrame, type ContentApi } from '../../../lib/ext/messaging';
 import { panel, toPage } from '../store.svelte';
 
 export interface Changes {

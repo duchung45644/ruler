@@ -1,7 +1,7 @@
 <script lang="ts">
   import { i18n } from '#i18n';
-  import { offGrid, type AuditRow } from '../../../lib/audit';
-  import { copyText } from '../../../lib/clipboard';
+  import { offGrid, type AuditRow } from '../../../lib/tools/audit';
+  import { copyText } from '../../../lib/ext/clipboard';
   import ToolPanel from '../../../ui/ToolPanel.svelte';
   import { state as app } from '../../core/state.svelte';
   import { audit, highlight, rescan, setOn, type AuditTab } from '.';

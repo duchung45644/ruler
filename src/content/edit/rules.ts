@@ -5,7 +5,7 @@ import { parseDecls, serializeDecls } from '../../lib/edit/decls';
 import { addressOf, locate, scopeAddressOf, type RuleAddress } from '../../lib/edit/rule-address';
 import type { SerializedEdit } from '../../lib/edit/serialize';
 import type { RuleChange } from '../../lib/edit/types';
-import { ID_ATTR } from '../../lib/selector';
+import { ID_ATTR } from '../../lib/dom/selector';
 import { OWN_SOURCE, rulesOf } from '../sidepanel/rules';
 
 type Root = Document | ShadowRoot;

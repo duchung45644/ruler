@@ -1,7 +1,7 @@
 <script lang="ts">
   import { i18n } from '#i18n';
   import type { Snippet } from 'svelte';
-  import { formatDim, formatSize } from '../../../lib/format';
+  import { formatDim, formatSize } from '../../../lib/style/format';
   import type { CanvasInfo, ElementDetails, Sides } from '../../../lib/element/types';
   import Section from '../Section.svelte';
   import { toPage } from '../store.svelte';

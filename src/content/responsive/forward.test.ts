@@ -2,7 +2,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { flushSync } from 'svelte';
 import { browser } from '#imports';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
-import { findTitle } from '../../lib/find';
+import { findTitle } from '../../lib/tools/find';
 import type { Envelope } from '../../lib/responsive/channel';
 import { routeKey } from '../core/keys';
 import { mountLayer } from '../core/overlay';
@@ -11,8 +11,8 @@ import { state } from '../core/state.svelte';
 import { find, runFind, stepFind } from '../tools/find';
 import { enterResponsive, teardownShell } from './shell.svelte';
 
-vi.mock('../../lib/messaging', async (orig) => ({
-  ...(await orig<typeof import('../../lib/messaging')>()),
+vi.mock('../../lib/ext/messaging', async (orig) => ({
+  ...(await orig<typeof import('../../lib/ext/messaging')>()),
   sendToBackground: vi.fn(async () => undefined),
   sendToSidePanel: vi.fn(async () => undefined),
 }));

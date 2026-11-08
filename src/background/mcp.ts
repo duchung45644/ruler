@@ -17,10 +17,15 @@ import {
 } from '../lib/mcp/protocol';
 import { tailwindClasses } from '../lib/css/tailwind';
 import { IDLE_STATUS, toStatus, type McpStatus } from '../lib/mcp/status';
-import { sendToFrame, sendToOptions, type BackgroundApi, type Handlers } from '../lib/messaging';
-import { ensureToken, mcpIntent, mcpToken } from '../lib/settings';
-import { fetchStylesheet, isAllowedStylesheetUrl } from '../lib/stylesheet-fetch';
-import { isInjectable } from '../lib/tabs';
+import {
+  sendToFrame,
+  sendToOptions,
+  type BackgroundApi,
+  type Handlers,
+} from '../lib/ext/messaging';
+import { ensureToken, mcpIntent, mcpToken } from '../lib/ext/settings';
+import { fetchStylesheet, isAllowedStylesheetUrl } from '../lib/ext/stylesheet-fetch';
+import { isInjectable } from '../lib/ext/tabs';
 import { McpSocket, type McpSocketOptions } from './mcp-socket';
 
 let socket: McpSocket | null = null;

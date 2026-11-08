@@ -4,8 +4,8 @@
   import { declKey, groupBySource, overriddenDecls } from '../../../lib/css/matched';
   import { tailwindClasses } from '../../../lib/css/tailwind';
   import type { CssMap, ElementDetails, MatchedRule } from '../../../lib/element/types';
-  import { sendToBackground } from '../../../lib/messaging';
-  import { updatePanelPrefs, type SidePanelPrefs } from '../../../lib/settings';
+  import { sendToBackground } from '../../../lib/ext/messaging';
+  import { updatePanelPrefs, type SidePanelPrefs } from '../../../lib/ext/settings';
   import Section from '../Section.svelte';
   import { panel, toPage } from '../store.svelte';
   import CopyButton from './CopyButton.svelte';

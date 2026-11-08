@@ -8,8 +8,8 @@ import { ERR } from '../lib/mcp/protocol';
 import { connect, resetMcp } from './mcp';
 import { FakeWebSocket } from './mcp-fake-ws';
 
-vi.mock('../lib/messaging', async (orig) => ({
-  ...(await orig<typeof import('../lib/messaging')>()),
+vi.mock('../lib/ext/messaging', async (orig) => ({
+  ...(await orig<typeof import('../lib/ext/messaging')>()),
   sendToSidePanel: vi.fn(async () => undefined),
 }));
 

@@ -7,12 +7,12 @@ import { registerItem } from '../core/registry.svelte';
 import { sessionSignal, stopSession } from '../core/session';
 import { state } from '../core/state.svelte';
 import type { ElementDetails } from '../../lib/element/types';
-import { sendToBackground, sendToSidePanel } from '../../lib/messaging';
+import { sendToBackground, sendToSidePanel } from '../../lib/ext/messaging';
 import { highlightCount } from './highlight';
 import { bridge, initSidePanelBridge, sidePanelHandlers, toggleSidePanel } from './bridge.svelte';
 
-vi.mock('../../lib/messaging', async (orig) => ({
-  ...(await orig<typeof import('../../lib/messaging')>()),
+vi.mock('../../lib/ext/messaging', async (orig) => ({
+  ...(await orig<typeof import('../../lib/ext/messaging')>()),
   sendToSidePanel: vi.fn(async () => undefined),
   sendToBackground: vi.fn(async () => undefined),
 }));

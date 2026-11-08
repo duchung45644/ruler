@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
-import { sendToSidePanel } from '../../lib/messaging';
+import { sendToSidePanel } from '../../lib/ext/messaging';
 import { layer } from '../core/overlay';
 import { sessionSignal, stopSession } from '../core/session';
 import { state } from '../core/state.svelte';
@@ -10,8 +10,8 @@ import { persistNow } from '../edit/persist';
 import { elementId, initSidePanelBridge } from '../sidepanel/bridge.svelte';
 import { runMcp } from '.';
 
-vi.mock('../../lib/messaging', async (orig) => ({
-  ...(await orig<typeof import('../../lib/messaging')>()),
+vi.mock('../../lib/ext/messaging', async (orig) => ({
+  ...(await orig<typeof import('../../lib/ext/messaging')>()),
   sendToSidePanel: vi.fn(async () => undefined),
   sendToBackground: vi.fn(async () => undefined),
 }));

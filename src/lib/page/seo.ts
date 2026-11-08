@@ -1,4 +1,4 @@
-import { shadowRoots } from '../dom';
+import { shadowRoots } from '../dom/dom';
 import type { SeoFinding } from './types';
 
 /** The 16 checks of collectSEOIssues (content.js:39254), in the order they run. */

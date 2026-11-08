@@ -1,6 +1,6 @@
 /** Opens the options page (1.13): `open_options_page` and the action context menu (Q1). */
 import { browser, i18n } from '#imports';
-import type { BackgroundApi, Handlers } from '../lib/messaging';
+import type { BackgroundApi, Handlers } from '../lib/ext/messaging';
 
 export const OPTIONS_MENU_ID = 'open_options_page';
 

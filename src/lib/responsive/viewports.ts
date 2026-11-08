@@ -1,4 +1,4 @@
-import type { Breakpoint } from '../breakpoints';
+import type { Breakpoint } from '../tools/breakpoints';
 
 export type Scheme = 'system' | 'light' | 'dark';
 export interface Viewport {

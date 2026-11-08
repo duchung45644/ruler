@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeBrowser } from 'wxt/testing/fake-browser';
-import { ensureToken, mcpToken } from '../lib/settings';
+import { ensureToken, mcpToken } from '../lib/ext/settings';
 import { TOKEN_RE } from '../lib/mcp/protocol';
 import { BACKOFF_MAX_MS, McpSocket, type SocketSnapshot } from './mcp-socket';
 import { FakeWebSocket } from './mcp-fake-ws';

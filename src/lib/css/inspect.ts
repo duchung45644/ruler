@@ -1,4 +1,4 @@
-import { formatColor, formatCss, parseColor, type ColorFormat } from '../color';
+import { formatColor, formatCss, parseColor, type ColorFormat } from '../style/color';
 
 type Style = Pick<CSSStyleDeclaration, 'getPropertyValue'>;
 export type InspectGroup = {

@@ -2,7 +2,7 @@
   import { i18n } from '#i18n';
   import Download from '@lucide/svelte/icons/download';
   import type { PageData } from '../../../lib/page/types';
-  import { updatePanelPrefs, type SidePanelPrefs } from '../../../lib/settings';
+  import { updatePanelPrefs, type SidePanelPrefs } from '../../../lib/ext/settings';
   import { downloadAsset, requestDownloads } from '../element/actions';
   import Section from '../Section.svelte';
   import { panel } from '../store.svelte';

@@ -1,4 +1,4 @@
-import { parseColor, toHex } from './color';
+import { parseColor, toHex } from '../style/color';
 
 /** Page styles audit (3.19), port of scanPage in unpacked/scripts/bd/audit.js. */
 export type AuditRow = {

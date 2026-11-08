@@ -3,7 +3,7 @@
  * extractAiAttributes (:48492), buildOutlineTree (:48567), buildElementSummary (:48654),
  * queryBySelector (:48757). `idOf` tags elements with the same data-sr-id-* ids the panel uses.
  */
-import { displaySelector } from '../../lib/selector';
+import { displaySelector } from '../../lib/dom/selector';
 import { LIMITS } from '../../lib/mcp/protocol';
 
 export type IdOf = (el: Element) => string;

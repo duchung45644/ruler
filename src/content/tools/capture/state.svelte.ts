@@ -1,6 +1,6 @@
-import type { SelRect } from '../../../lib/capture';
-import type { BackdropId } from '../../../lib/frame';
-import type { MarkTool } from '../../../lib/markup';
+import type { SelRect } from '../../../lib/capture/capture';
+import type { BackdropId } from '../../../lib/capture/frame';
+import type { MarkTool } from '../../../lib/capture/markup';
 
 export type EditorImage = HTMLImageElement | HTMLCanvasElement;
 

@@ -1,8 +1,8 @@
 import { browser, storage, type Browser } from '#imports';
-import { sendToTab, sendToTabPanel, type BackgroundApi, type Handlers } from '../lib/messaging';
+import { sendToTab, sendToTabPanel, type BackgroundApi, type Handlers } from '../lib/ext/messaging';
 import type { Technology } from '../lib/page/types';
-import { detachBounds, panelPath, type Bounds } from '../lib/panels';
-import { fetchStylesheet } from '../lib/stylesheet-fetch';
+import { detachBounds, panelPath, type Bounds } from '../lib/ext/panels';
+import { fetchStylesheet } from '../lib/ext/stylesheet-fetch';
 
 const detachedItem = storage.defineItem<Record<string, number>>('session:detachedPanels', {
   fallback: {},

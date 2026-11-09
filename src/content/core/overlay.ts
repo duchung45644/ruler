@@ -22,14 +22,30 @@ export function addPainter(id: string, paint: (layer: HTMLElement) => void): () 
   };
 }
 
-export function requestPaint(): void {
+/** Painters to redraw next frame; `all` wins over the named set. */
+let all = false;
+const dirty = new Set<string>();
+
+/**
+ * Repaint on the next frame: every painter, or only the named ones. Hover passes its few
+ * painters so a mousemove doesn't rebuild the grid, ruler or find boxes it can't change.
+ */
+export function requestPaint(...ids: (string | Event)[]): void {
+  // used directly as a scroll/resize listener too: an Event (or no name) means every painter
+  const names = ids.filter((x): x is string => typeof x === 'string');
+  if (names.length) for (const id of names) dirty.add(id);
+  else all = true;
   if (raf) return;
   raf = requestAnimationFrame(() => {
     raf = 0;
-    for (const { box, paint } of painters.values()) {
-      box.replaceChildren(); // each frame repaints from scratch
+    const every = all;
+    all = false;
+    for (const [id, { box, paint }] of painters) {
+      if (!every && !dirty.has(id)) continue;
+      box.replaceChildren(); // a painter redraws from scratch
       paint(box);
     }
+    dirty.clear();
   });
 }
 
@@ -40,6 +56,8 @@ export function mountLayer(shadow: ShadowRoot): () => void {
   return () => {
     if (raf) cancelAnimationFrame(raf);
     raf = 0;
+    all = false;
+    dirty.clear();
     painters.clear();
     layer.replaceChildren();
     layer.remove();

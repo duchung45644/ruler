@@ -307,9 +307,10 @@ export async function initInspector(): Promise<void> {
     );
   }
 
+  // hover only changes these painters (panelTarget, the hovered box, distances to it)
   const hover = (el: Element | null) => {
     state.hovered = el;
-    requestPaint();
+    requestPaint('inspector', 'inspect-panel', 'distance');
   };
   const hitTest = () => hover(mouse ? pageElementAt(mouse.x, mouse.y, host()) : null);
   // text editing hands clicks to the page's contentEditable

@@ -129,6 +129,9 @@
     {/snippet}
     {@render row(i18n.t('options.rowTheme'), null, themeSelect)}
   {/snippet}
+  <p class="px-1 text-[12px] leading-snug text-fg-muted" data-sync-note>
+    {i18n.t('options.syncNote')}
+  </p>
   {@render section(i18n.t('options.sectionAppearance'), appearance)}
 
   {#snippet extension()}

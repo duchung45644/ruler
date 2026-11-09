@@ -12,6 +12,7 @@ import {
   setEditMode,
   stepHistory,
   stopEditMode,
+  clearForcedOnDeselect,
 } from './mode.svelte';
 import { editHandlers, initEditHandlers, resendSelection } from './handlers';
 import { persistNow, restorePersisted, schedulePersist } from './persist';
@@ -61,6 +62,7 @@ export function initEdit(): void {
   void setEditMode(true);
   onStop(addKeyHandler(onKey));
   onStop(stopEditMode);
+  onStop(clearForcedOnDeselect());
   initEditHandlers();
 
   const signal = sessionSignal();

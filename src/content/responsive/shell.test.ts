@@ -86,7 +86,7 @@ const fakeWin = {
 };
 
 beforeEach(async () => {
-  await fakeBrowser.storage.local.clear();
+  await Promise.all([fakeBrowser.storage.local.clear(), fakeBrowser.storage.sync.clear()]);
   happy.setURL('https://site.test/page');
   vi.mocked(sendToBackground).mockClear();
   // happy-dom never loads iframes and logs that it did not

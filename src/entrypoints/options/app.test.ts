@@ -31,7 +31,7 @@ const choose = (name: string, value: string) => {
   s.dispatchEvent(new Event('change', { bubbles: true }));
   flushSync();
 };
-const stored = async (key: string) => (await fakeBrowser.storage.local.get(key))[key];
+const stored = async (key: string) => (await fakeBrowser.storage.sync.get(key))[key];
 
 it('shows the stored theme and applies it to the page', async () => {
   await fakeBrowser.storage.local.set({ theme: 'light' });
@@ -95,7 +95,7 @@ it('clears saved edits only after confirming', async () => {
 
 it('follows changes made elsewhere', async () => {
   await open();
-  await fakeBrowser.storage.local.set({
+  await fakeBrowser.storage.sync.set({
     theme: 'light',
     sidePanelPreferences: { colorFormat: 'HSL' },
   });

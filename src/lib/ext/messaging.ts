@@ -134,7 +134,8 @@ export interface ContentApi {
   revert_all_edits(): EditResult;
   clear_elements_by_ids(ids: string[], scope: 'all' | 'html' | 'css'): EditResult;
   clear_changes(): EditResult;
-  force_element_state(state: string | null): EditResult;
+  /** Forces exactly these states on the selected element ([] clears). */
+  set_forced_states(states: string[]): EditResult;
   apply_pending_rule_edits(edits: SerializedEdit[]): EditResult;
   /** Returns whether text editing is now on. */
   toggle_text_edit(): boolean;

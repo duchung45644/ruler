@@ -87,7 +87,13 @@
     "pin": "Pin to screen",
     "pinTitle": "Keep the image fixed while scrolling",
     "remove": "Remove",
-    "hint": "Click an image (or its thumbnail) to select it. Drag the middle to move, a corner to resize. Arrow keys nudge the selected image 1px (Shift: 10px)."
+    "hint": "Click an image (or its thumbnail) to select it. Drag the middle to move, a corner to resize. Arrow keys nudge the selected image 1px (Shift: 10px).",
+    "onion": "Onion skin",
+    "invert": "Invert",
+    "twoTone": "Two-tone",
+    "split": "Before/after split",
+    "splitSide": "Design on the left",
+    "splitHint": "Drag the divider to compare the design (one side) with the page (other side)."
   },
   "find": {
     "title": "Find Element",
@@ -334,10 +340,11 @@
     "overriddenHidden": "Overridden by a stylesheet PixelLens can't read",
     "overriddenHiddenGrant": "Overridden by a stylesheet PixelLens can't read. Allow access to all sites to see it.",
     "crossOriginMissing": "Some styles may be missing.",
-    "stateDefault": "Default",
     "filter": "Filter",
     "showClasses": "Classes",
-    "toggleDecl": "Turn this declaration on or off"
+    "toggleDecl": "Turn this declaration on or off",
+    "forceState": "Force state",
+    "stateNoRules": "No rule uses this state on this element"
   },
   "changes": {
     "elementsOne": "1 Element",
@@ -417,9 +424,10 @@
     "mcpOutdatedBody": "Your MCP server is version $1, but this extension expects $2 or newer. Update the npm package or restart your AI client to refetch.",
     "mcpVersionUnknown": "unknown",
     "tourTitle": "Welcome tour",
-    "tourSecondary": "The short dock tour shown the first time you open iodob.",
+    "tourSecondary": "The short dock tour shown the first time you open PixelLens.",
     "tourShow": "Show again",
-    "tourQueued": "Shows next time"
+    "tourQueued": "Shows next time",
+    "syncNote": "Your preferences sync across devices signed in to the same browser account. Saved edits, overlay images and the MCP token stay on this device."
   },
   "mcp": {
     "dockTitle": "MCP",

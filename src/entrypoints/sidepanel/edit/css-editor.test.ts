@@ -6,7 +6,7 @@ import { sampleElement } from '../test-fixtures';
 import { panel } from '../store.svelte';
 import ClassInput from './ClassInput.svelte';
 import CssEditor from './CssEditor.svelte';
-import StateSelect from './StateSelect.svelte';
+import StateChips from './StateChips.svelte';
 import { clearEdit, edit } from './edit-store.svelte';
 
 const ok = { ok: true, canUndo: true, canRedo: false, editCount: 1, hasClipboard: false };
@@ -59,7 +59,7 @@ const payload = (rules = [rule()]): RulePayload => ({
   rules,
   inline: [],
   availableStates: [':hover', ':focus'],
-  forcedState: null,
+  forcedStates: [],
   paySeq: 1,
   crossOriginMissing: 0,
 });
@@ -155,13 +155,16 @@ it('shows the classes the page resends after undo, unless typing is pending', as
   expect(input.value).toBe('card x');
 });
 
-it('forces the picked state', async () => {
-  ui = mount(StateSelect, { target: document.body, props: { payload: payload() } });
+it('state chips show what is forced and toggle one state', async () => {
+  const p = { ...payload(), forcedStates: [':focus'] };
+  ui = mount(StateChips, { target: document.body, props: { payload: p } });
   flushSync();
-  const select = document.querySelector<HTMLSelectElement>('[data-state-select]')!;
-  select.value = ':hover';
-  select.dispatchEvent(new Event('change', { bubbles: true }));
-  await vi.waitFor(() => expect(sent('force_element_state')).toEqual([[':hover']]));
+  const chip = (s: string) => document.querySelector<HTMLButtonElement>(`[data-state="${s}"]`)!;
+  expect(document.querySelectorAll('[data-state]')).toHaveLength(6);
+  expect(chip(':focus').getAttribute('aria-pressed')).toBe('true');
+  expect(chip(':hover').getAttribute('aria-pressed')).toBe('false');
+  chip(':hover').click();
+  await vi.waitFor(() => expect(sent('set_forced_states')).toEqual([[[':hover', ':focus']]]));
 });
 
 it('reads like DevTools: wrappers in grey above `selector {`, and the filter hides other rules', () => {

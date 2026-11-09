@@ -79,7 +79,7 @@ const sent = (f: Fake, type: string) =>
 const flush = () => new Promise((r) => setTimeout(r, 0));
 
 beforeEach(async () => {
-  await fakeBrowser.storage.local.clear();
+  await Promise.all([fakeBrowser.storage.local.clear(), fakeBrowser.storage.sync.clear()]);
   vi.spyOn(console, 'error').mockImplementation(() => {});
   vi.spyOn(HTMLIFrameElement.prototype, 'contentWindow', 'get').mockImplementation(function (
     this: HTMLIFrameElement,

@@ -47,7 +47,7 @@ const payload = (paySeq: number): RulePayload => ({
   rules: [],
   inline: [],
   availableStates: [],
-  forcedState: null,
+  forcedStates: [],
   paySeq,
   crossOriginMissing: 0,
 });

@@ -29,6 +29,17 @@ export function stateForcer(): StateForcer {
   return (forcer ??= new StateForcer(browser.runtime.id));
 }
 
+/** Forced states belong to one selection: a new selection or none drops them. Returns the stop. */
+export function clearForcedOnDeselect(): () => void {
+  return $effect.root(() => {
+    $effect(() => {
+      const sel = state.selected;
+      const f = forcer;
+      if (f?.target && f.target !== sel) f.clear();
+    });
+  });
+}
+
 /** Any HTML or CSS edit: persist, panel refresh (Tasks 8, 9). Returns the unsubscribe fn. */
 export function onEditChange(fn: () => void): () => void {
   changeListeners.push(fn);

@@ -26,7 +26,7 @@ let shadow: ShadowRoot;
 let detach: () => void;
 
 beforeEach(async () => {
-  await fakeBrowser.storage.local.clear();
+  await Promise.all([fakeBrowser.storage.local.clear(), fakeBrowser.storage.sync.clear()]);
   vi.spyOn(console, 'error').mockImplementation(() => {});
   fakeWin.postMessage.mockClear();
   vi.spyOn(HTMLIFrameElement.prototype, 'contentWindow', 'get').mockReturnValue(
@@ -149,7 +149,7 @@ it('reset asks, then keeps only the first frame', async () => {
 it('three changes within 400ms make one storage write', async () => {
   await enter();
   vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
-  const set = vi.spyOn(browser.storage.local, 'set');
+  const set = vi.spyOn(browser.storage.sync, 'set');
   bar('zoom-in').click();
   bar('frame-layout').click();
   bar('sync-scroll').click();

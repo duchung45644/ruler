@@ -87,7 +87,13 @@
     "pin": "Ghim theo màn hình",
     "pinTitle": "Ảnh đứng yên khi cuộn trang",
     "remove": "Xoá ảnh",
-    "hint": "Bấm vào ảnh (hoặc ảnh nhỏ ở trên) để chọn. Kéo giữa ảnh để di chuyển, kéo góc để co giãn. Phím mũi tên dịch ảnh đang chọn 1px (giữ Shift: 10px)."
+    "hint": "Bấm vào ảnh (hoặc ảnh nhỏ ở trên) để chọn. Kéo giữa ảnh để di chuyển, kéo góc để co giãn. Phím mũi tên dịch ảnh đang chọn 1px (giữ Shift: 10px).",
+    "onion": "Onion skin (xuyên lớp)",
+    "invert": "Đảo màu",
+    "twoTone": "Hai tông màu",
+    "split": "Chia đôi trước/sau",
+    "splitSide": "Ảnh thiết kế bên trái",
+    "splitHint": "Kéo thanh chia để so sánh ảnh thiết kế (một bên) với trang thật (bên kia)."
   },
   "find": {
     "title": "Tìm Phần tử",
@@ -334,10 +340,11 @@
     "overriddenHidden": "Bị ghi đè bởi một stylesheet PixelLens không đọc được",
     "overriddenHiddenGrant": "Bị ghi đè bởi một stylesheet PixelLens không đọc được. Cho phép truy cập mọi trang để xem.",
     "crossOriginMissing": "Một số kiểu có thể bị thiếu.",
-    "stateDefault": "Mặc định",
     "filter": "Lọc",
     "showClasses": "Class",
-    "toggleDecl": "Bật/tắt thuộc tính này"
+    "toggleDecl": "Bật/tắt thuộc tính này",
+    "forceState": "Ép trạng thái",
+    "stateNoRules": "Không có quy tắc nào dùng trạng thái này cho phần tử"
   },
   "changes": {
     "elementsOne": "1 phần tử",
@@ -417,9 +424,10 @@
     "mcpOutdatedBody": "Máy chủ MCP của bạn là phiên bản $1, nhưng tiện ích này yêu cầu $2 hoặc mới hơn. Cập nhật gói npm hoặc khởi động lại ứng dụng AI.",
     "mcpVersionUnknown": "không xác định",
     "tourTitle": "Hướng dẫn nhanh",
-    "tourSecondary": "Phần giới thiệu thanh công cụ hiện ra ở lần đầu bạn mở iodob.",
+    "tourSecondary": "Phần giới thiệu thanh công cụ hiện ra ở lần đầu bạn mở PixelLens.",
     "tourShow": "Xem lại",
-    "tourQueued": "Sẽ hiện lần tới"
+    "tourQueued": "Sẽ hiện lần tới",
+    "syncNote": "Tuỳ chọn của bạn được đồng bộ giữa các thiết bị đăng nhập cùng tài khoản trình duyệt. Các chỉnh sửa đã lưu, ảnh overlay và mã MCP chỉ nằm trên thiết bị này."
   },
   "mcp": {
     "dockTitle": "MCP",

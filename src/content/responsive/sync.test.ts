@@ -134,7 +134,7 @@ describe('shell integration', () => {
   let shadow: ShadowRoot;
 
   beforeEach(async () => {
-    await fakeBrowser.storage.local.clear();
+    await Promise.all([fakeBrowser.storage.local.clear(), fakeBrowser.storage.sync.clear()]);
     happy.setURL('https://site.test/page');
     vi.spyOn(console, 'error').mockImplementation(() => {});
     vi.mocked(sendToBackground).mockClear();
@@ -211,7 +211,7 @@ describe('shell integration', () => {
     flushSync();
     expect(shadow.querySelector('[data-sync-off-toast]')).toBeNull();
     // saved
-    const saved = (await browser.storage.local.get(null)) as Record<string, unknown>;
+    const saved = (await browser.storage.sync.get(null)) as Record<string, unknown>;
     expect(JSON.stringify(saved)).toContain('"syncScrollEnabled":false');
     toggleSyncScroll();
     await vi.advanceTimersByTimeAsync(0);

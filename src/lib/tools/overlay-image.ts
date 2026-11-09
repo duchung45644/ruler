@@ -6,7 +6,7 @@ export type OverlayImage = {
   y: number;
   scale: number;
   opacity: number;
-  mode: 'normal' | 'difference';
+  mode: 'normal' | 'difference' | 'onion';
   visible: boolean;
   fixed: boolean;
 };
@@ -82,4 +82,73 @@ export function nudgeDelta(
   if (!d || e.ctrlKey || e.metaKey || e.altKey) return null;
   const s = e.shiftKey ? 10 : 1;
   return { dx: d[0] * s, dy: d[1] * s };
+}
+
+export type OnionTint = 'none' | 'invert' | 'twoTone';
+/** Tool-wide comparison options, remembered across sessions (settings `overlayPrefs`). */
+export interface OverlayPrefs {
+  /** Blend mode new images start with: the last one picked. */
+  mode: OverlayImage['mode'];
+  onionTint: OnionTint;
+  split: boolean;
+  /** Divider position, % of the viewport width. */
+  splitPos: number;
+  /** Which side of the divider shows the design. */
+  designLeft: boolean;
+}
+export const DEFAULT_OVERLAY_PREFS: OverlayPrefs = {
+  mode: 'normal',
+  onionTint: 'none',
+  split: false,
+  splitPos: 50,
+  designLeft: true,
+};
+const MODES: readonly string[] = ['normal', 'difference', 'onion'];
+const TINTS: readonly string[] = ['none', 'invert', 'twoTone'];
+
+export const clampPos = (pct: number): number => Math.min(100, Math.max(0, pct));
+
+/** Stored prefs made safe: unknown values fall back to the defaults. */
+export function normalizeOverlayPrefs(p: Partial<OverlayPrefs> | null | undefined): OverlayPrefs {
+  const d = DEFAULT_OVERLAY_PREFS;
+  const pos = Number(p?.splitPos);
+  const bool = (v: unknown, fb: boolean) => (typeof v === 'boolean' ? v : fb);
+  return {
+    mode: p?.mode && MODES.includes(p.mode) ? p.mode : d.mode,
+    onionTint: p?.onionTint && TINTS.includes(p.onionTint) ? p.onionTint : d.onionTint,
+    split: bool(p?.split, d.split),
+    splitPos: p?.splitPos != null && Number.isFinite(pos) ? clampPos(pos) : d.splitPos,
+    designLeft: bool(p?.designLeft, d.designLeft),
+  };
+}
+
+/** Onion skin never covers the page fully, so the page always shows through. */
+export const ONION_MAX_OPACITY = 60;
+
+/** Opacity (0–1), CSS blend mode and filter for one image. */
+export function imageLook(
+  o: Pick<OverlayImage, 'mode' | 'opacity'>,
+  tint: OnionTint,
+): { opacity: number; blend: 'normal' | 'difference'; filter: string } {
+  if (o.mode === 'difference') return { opacity: 1, blend: 'difference', filter: 'none' };
+  if (o.mode === 'normal') return { opacity: o.opacity / 100, blend: 'normal', filter: 'none' };
+  const filter =
+    tint === 'invert'
+      ? 'invert(1)'
+      : tint === 'twoTone'
+        ? 'grayscale(1) sepia(1) saturate(6) hue-rotate(280deg)'
+        : 'none';
+  return { opacity: Math.min(o.opacity, ONION_MAX_OPACITY) / 100, blend: 'normal', filter };
+}
+
+/** clip-path so an image at viewport `left`/`width` only shows on its side of the divider at `divider`. */
+export function splitClip(
+  left: number,
+  width: number,
+  divider: number,
+  designLeft: boolean,
+): string {
+  const cut = designLeft ? left + width - divider : divider - left;
+  const px = Math.round(Math.min(width, Math.max(0, cut)));
+  return designLeft ? `inset(0 ${px}px 0 0)` : `inset(0 0 0 ${px}px)`;
 }

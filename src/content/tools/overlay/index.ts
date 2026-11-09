@@ -1,12 +1,18 @@
 import Images from '@lucide/svelte/icons/images';
 import {
   cornerAt,
+  DEFAULT_OVERLAY_PREFS,
+  imageLook,
   initialPlacement,
+  normalizeOverlayPrefs,
   nudgeDelta,
   resizeFromCorner,
+  splitClip,
   togglePinned,
   type OverlayImage,
+  type OverlayPrefs,
 } from '../../../lib/tools/overlay-image';
+import { overlayPrefsItem } from '../../../lib/ext/settings';
 import { CURSORS } from '../../../lib/capture/capture';
 import { panelToggle } from '../../../ui/mount';
 import { isDragging, startDrag } from '../../core/drag';
@@ -18,12 +24,14 @@ import { onStop, sessionSignal } from '../../core/session';
 import { state } from '../../core/state.svelte';
 import { overlay } from './images.svelte';
 import OverlayPanel from './OverlayPanel.svelte';
+import { paintSplit, removeSplit } from './split';
 
 /** Design overlay (3.13–3.15), port of unpacked/scripts/bd/overlay.js. Images live in the page DOM
  * so mix-blend-mode: difference blends with the page (the host is its own stacking context). */
 type Entry = { o: OverlayImage; img: HTMLImageElement };
 let list: Entry[] = [];
 let dragCursor = false;
+let prefsLoaded = false;
 
 const live = () => state.overlayOn && !state.paused;
 const nat = (img: HTMLImageElement) => ({
@@ -41,6 +49,39 @@ export function edit(patch: (o: OverlayImage) => Partial<OverlayImage>): void {
   const e = list[overlay.sel];
   if (!e) return;
   Object.assign(e.o, patch(e.o));
+  requestPaint();
+}
+
+const savePrefs = () => void overlayPrefsItem.setValue({ ...overlay.prefs }).catch(() => {});
+/** Changes made while the stored prefs are still loading: applied over them, then saved. */
+let early: Partial<OverlayPrefs> | null = null;
+
+/** Changes the tool-wide comparison prefs and remembers them. */
+export function setPrefs(patch: Partial<OverlayPrefs>): void {
+  Object.assign(overlay.prefs, patch);
+  if (early) Object.assign(early, patch);
+  else savePrefs();
+  requestPaint();
+}
+
+/** Blend mode of the selected image; new images start with the last one picked. */
+export function setMode(mode: OverlayImage['mode']): void {
+  edit(() => ({ mode }));
+  setPrefs({ mode });
+}
+
+/** Stored prefs, read once per session when the tool first opens. */
+async function loadPrefs(): Promise<void> {
+  if (prefsLoaded) return;
+  prefsLoaded = true;
+  const signal = sessionSignal();
+  const mine = (early = {});
+  const saved = normalizeOverlayPrefs(await overlayPrefsItem.getValue().catch(() => null));
+  if (early !== mine) return; // a stop (and maybe a new session) came in between
+  early = null;
+  if (signal.aborted) return;
+  Object.assign(overlay.prefs, saved, mine);
+  if (Object.keys(mine).length) savePrefs();
   requestPaint();
 }
 
@@ -117,7 +158,7 @@ export function addImage(
     src,
     ...initialPlacement(size, view),
     opacity: 50,
-    mode: 'normal',
+    mode: overlay.prefs.mode,
     visible: true,
     fixed: false,
   };
@@ -150,30 +191,47 @@ export function loadFiles(files: Iterable<File> | null | undefined): void {
   }
 }
 
-/** Legacy positionOverlay :115. */
+/** The divider's viewport x while the split is shown, else null. */
+function dividerX(): number | null {
+  const { split, splitPos } = overlay.prefs;
+  return live() && split && list.some((e) => e.o.visible) ? (splitPos / 100) * innerWidth : null;
+}
+
+/** Legacy positionOverlay :115, plus blend looks and the split clip. Reads first, then writes. */
 function position(): void {
   const many = list.length > 1;
+  const divider = dividerX();
+  const { onionTint, designLeft } = overlay.prefs;
+  const sx = scrollX;
+  const sy = scrollY;
   list.forEach(({ o, img }, i) => {
     if (!live() || !o.visible) {
       img.style.display = 'none';
       return;
     }
     if (!img.isConnected) document.documentElement.append(img);
-    const left = o.fixed ? o.x : o.x - scrollX;
-    const top = o.fixed ? o.y : o.y - scrollY;
+    const left = o.fixed ? o.x : o.x - sx;
+    const top = o.fixed ? o.y : o.y - sy;
     const w = img.naturalWidth ? (img.naturalWidth * o.scale) / 100 : 0;
-    const diff = o.mode === 'difference';
-    const shadow = diff ? 'none' : '0 4px 24px rgba(0,0,0,.35), 0 1px 3px rgba(0,0,0,.25)';
+    const look = imageLook(o, onionTint);
+    const shadow =
+      look.blend === 'difference' || divider !== null
+        ? 'none'
+        : '0 4px 24px rgba(0,0,0,.35), 0 1px 3px rgba(0,0,0,.25)';
     const outline = many && i === overlay.sel ? '2px solid #5B5BF0' : 'none';
     const cursor = img.style.cursor || 'move';
-    img.style.cssText = `all:initial;position:fixed;left:${left}px;top:${top}px;z-index:2147483646;pointer-events:auto;cursor:${cursor};width:${w ? `${w}px` : 'auto'};max-width:none;box-shadow:${shadow};outline:${outline};opacity:${diff ? 1 : o.opacity / 100};mix-blend-mode:${o.mode};display:block;`;
+    const clip = divider === null ? 'none' : splitClip(left, w, divider, designLeft);
+    img.style.cssText = `all:initial;position:fixed;left:${left}px;top:${top}px;z-index:2147483646;pointer-events:auto;cursor:${cursor};width:${w ? `${w}px` : 'auto'};max-width:none;box-shadow:${shadow};outline:${outline};opacity:${look.opacity};mix-blend-mode:${look.blend};filter:${look.filter};clip-path:${clip};display:block;`;
   });
+  if (divider === null) removeSplit();
+  else paintSplit(divider, savePrefs);
 }
 
 const showPanel = panelToggle(OverlayPanel);
 
 export function setOn(next: boolean): void {
   state.overlayOn = next;
+  if (next) void loadPrefs();
   showPanel(next);
   requestPaint();
 }
@@ -217,6 +275,10 @@ export function initOverlay(): void {
     list = [];
     overlay.images = [];
     overlay.sel = -1;
+    removeSplit();
+    prefsLoaded = false;
+    early = null;
+    overlay.prefs = { ...DEFAULT_OVERLAY_PREFS };
     if (dragCursor) document.documentElement.style.cursor = '';
     dragCursor = false;
   });

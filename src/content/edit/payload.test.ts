@@ -1,7 +1,32 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import { collectRules, sheetsOf } from '../../lib/css/matched';
 import { buildPayload, scheduleExtras, watchMedia, unwatchMedia } from './payload';
-import { availableStates, StateForcer } from './states';
+import { availableStates, rewriteForStates, StateForcer } from './states';
+
+it('forces several states at once and clears them all', () => {
+  page(
+    '.btn:hover:focus{color:red} .btn:active{color:blue} .btn:focus-visible{color:green}',
+    '<button class="btn">x</button>',
+  );
+  const btn = document.querySelector('button')!;
+  const f = new StateForcer('test');
+  f.setStates(btn, [':focus', ':hover', ':bogus']);
+  expect(f.forcedStates).toEqual([':hover', ':focus']);
+  const css = document.getElementById('sr-force-state-test')!.textContent!.replace(/\s/g, '');
+  expect(css).toContain('.btn[data-sr-force-hover-test][data-sr-force-focus-test]{color:red;}');
+  expect(css).not.toContain('blue');
+  expect(css).not.toContain('green');
+  f.clear();
+  expect(btn.getAttributeNames().filter((n) => n.startsWith('data-sr-force'))).toEqual([]);
+  expect(f.forcedStates).toEqual([]);
+});
+
+it('rewriteForStates keeps unforced states and skips selectors without any', () => {
+  expect(rewriteForStates('a:hover:active', [':hover'], 'x')).toBe(
+    'a[data-sr-force-hover-x]:active',
+  );
+  expect(rewriteForStates('a:focus-visible', [':focus'], 'x')).toBeNull();
+});
 
 afterEach(() => {
   unwatchMedia();

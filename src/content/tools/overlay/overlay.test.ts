@@ -61,3 +61,23 @@ it('arrow keys do not nudge an image while capturing (3.25)', async () => {
   state.capturing = false;
   expect(overlay.images[0]!.x).toBe(x);
 });
+
+it('split shows a divider that clips the image and goes away on stop', async () => {
+  const { overlay } = await import('./images.svelte');
+  const { setPrefs } = await import('.');
+  initOverlay();
+  items.find((i) => i.id === 'overlay')!.run();
+  addImage('data:image/png;base64,x', { width: 400, height: 300 });
+  setPrefs({ split: true, splitPos: 50 });
+  await new Promise((r) => requestAnimationFrame(r));
+  await vi.waitFor(() =>
+    expect(document.querySelector('[role=separator][data-pixellens]')).not.toBeNull(),
+  );
+  expect(overlay.prefs.split).toBe(true);
+  expect(document.querySelector<HTMLImageElement>('img[data-pixellens]')!.style.clipPath).toMatch(
+    /inset/,
+  );
+  stopSession();
+  expect(document.querySelector('[role=separator][data-pixellens]')).toBeNull();
+  expect(ownNodes.size).toBe(0);
+});

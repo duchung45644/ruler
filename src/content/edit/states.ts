@@ -25,36 +25,65 @@ export function availableStates(el: Element, rules: KnownRule[]): string[] {
   return FORCEABLE_STATES.filter((s) => out.has(s));
 }
 
+/** `alt` with every forced state it uses swapped for its attribute, or null when it uses none. */
+export function rewriteForStates(
+  alt: string,
+  states: readonly string[],
+  extId: string,
+): string | null {
+  let out: string | null = null;
+  for (const st of states) out = rewriteForState(out ?? alt, st, extId) ?? out;
+  return out;
+}
+
+/** Forces any set of states on one element at a time (the panel chips; MCP forces one). */
 export class StateForcer {
   private el: Element | null = null;
-  private state: string | null = null;
+  private states: string[] = [];
   private style: HTMLStyleElement | null = null;
 
   constructor(private extId: string) {}
 
+  /** The forced states, in FORCEABLE_STATES order; empty once the element left the page. */
+  get forcedStates(): string[] {
+    return this.el?.isConnected ? [...this.states] : [];
+  }
+
+  /** The first forced state (MCP replies with one). */
   get forced(): string | null {
-    return this.el?.isConnected ? this.state : null;
+    return this.forcedStates[0] ?? null;
+  }
+
+  /** The element the states are forced on, if any. */
+  get target(): Element | null {
+    return this.el;
   }
 
   get styleId(): string {
     return `sr-force-state-${this.extId}`;
   }
 
+  /** Forces exactly `state` (null clears). */
   forceState(el: Element | null, state: string | null): void {
+    this.setStates(el, state ? [state] : []);
+  }
+
+  /** Forces exactly `states` on `el`; unknown states are ignored, an empty list clears. */
+  setStates(el: Element | null, states: readonly string[]): void {
     this.clear();
-    if (!el || !state) return;
+    const list = FORCEABLE_STATES.filter((s) => states.includes(s));
+    if (!el || !list.length) return;
     this.el = el;
-    this.state = state;
-    el.setAttribute(forceAttr(state, this.extId), '');
+    this.states = list;
+    for (const st of list) el.setAttribute(forceAttr(st, this.extId), '');
     const root = rootOf(el);
     const css: string[] = [];
     for (const k of rulesOf(root).rules) {
       const sel = splitTop(k.rule.selectorText, ',')
-        .map((alt) => rewriteForState(alt, state, this.extId))
+        .map((alt) => rewriteForStates(alt, list, this.extId))
         .filter((s): s is string => !!s && safeMatches(el, s))
         .join(', ');
-      if (!sel) continue;
-      css.push(wrapRule(sel, k.rule.style.cssText, k.wrappers));
+      if (sel) css.push(wrapRule(sel, k.rule.style.cssText, k.wrappers));
     }
     const style = document.createElement('style');
     style.id = this.styleId;
@@ -64,8 +93,9 @@ export class StateForcer {
   }
 
   clear(): void {
-    if (this.el && this.state) this.el.removeAttribute(forceAttr(this.state, this.extId));
+    for (const st of this.states) this.el?.removeAttribute(forceAttr(st, this.extId));
     this.style?.remove();
-    this.el = this.state = this.style = null;
+    this.el = this.style = null;
+    this.states = [];
   }
 }

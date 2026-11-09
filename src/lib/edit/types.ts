@@ -32,7 +32,8 @@ export interface RulePayload {
   rules: EditableRule[];
   inline: Decl[];
   availableStates: string[];
-  forcedState: string | null;
+  /** Forced pseudo-classes on the element (FORCEABLE_STATES order). */
+  forcedStates: string[];
   /** Lets the panel drop edit_payload_extras that belong to an older payload. */
   paySeq: number;
   crossOriginMissing: number;

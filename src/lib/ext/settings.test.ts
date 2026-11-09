@@ -22,13 +22,20 @@ describe('settings', () => {
     await fakeBrowser.storage.local.set({ settings: { inspectIsOn: true, extra: 1 } });
     expect(await getSettings()).toEqual({ ...DEFAULT_SETTINGS, inspectIsOn: true, extra: 1 });
   });
-  it('update preserves other keys', async () => {
+  it('update preserves other keys and writes to sync', async () => {
     await fakeBrowser.storage.local.set({ settings: { extra: 1 } });
     await updateSettings({ inspectIsOn: true });
-    expect((await fakeBrowser.storage.local.get('settings')).settings).toEqual({
+    expect((await fakeBrowser.storage.sync.get('settings')).settings).toEqual({
       extra: 1,
       inspectIsOn: true,
     });
+    expect(await fakeBrowser.storage.local.get('settings')).toEqual({});
+  });
+  it('moves old local prefs to sync on first read, leaving per-device data local', async () => {
+    await fakeBrowser.storage.local.set({ theme: 'dark', mcpToken: 'secret' });
+    expect(await themePref.getValue()).toBe('dark');
+    expect(await fakeBrowser.storage.sync.get(null)).toEqual({ theme: 'dark' });
+    expect(await fakeBrowser.storage.local.get(null)).toEqual({ mcpToken: 'secret' });
   });
   it('theme defaults to system', async () => {
     expect(await themePref.getValue()).toBe('system');

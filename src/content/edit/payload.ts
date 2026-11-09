@@ -67,7 +67,7 @@ export function buildPayload(el: Element, forcer: StateForcer): RulePayload {
     rules: editable(el, rootCtx(root, rules)),
     inline: parseDecls(el.getAttribute('style') ?? ''),
     availableStates: availableStates(el, rules),
-    forcedState: forcer.forced,
+    forcedStates: forcer.forcedStates,
     paySeq: ++paySeq,
     crossOriginMissing: blocked.size,
   };

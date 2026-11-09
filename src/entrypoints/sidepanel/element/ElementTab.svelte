@@ -16,6 +16,8 @@
   import { clearHighlights } from './actions';
   import CssRulesSection from '../edit/CssRulesSection.svelte';
   import EditToolbar from '../edit/EditToolbar.svelte';
+  import StateChips from '../edit/StateChips.svelte';
+  import { edit } from '../edit/edit-store.svelte';
 
   let { el }: { el: ElementDetails } = $props();
   const issues = $derived(panel.issues ?? el.issues);
@@ -28,6 +30,7 @@
 <!-- Order: tools, what it is (and where), its box, what is wrong, editing, look, content, code. -->
 <div data-element-tab role="presentation" onmouseleave={clearHighlights}>
   <EditToolbar />
+  {#if edit.payload}<StateChips payload={edit.payload} />{/if}
   <Header {el} />
   <BoxModel {el} />
   {#if issues.length}<IssuesSection {issues} />{/if}

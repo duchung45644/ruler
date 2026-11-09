@@ -7,7 +7,18 @@
   import Trash2 from '@lucide/svelte/icons/trash-2';
   import ToolPanel from '../../../ui/ToolPanel.svelte';
   import { state as app } from '../../core/state.svelte';
-  import { edit, MAX_IMAGES, loadFiles, removeSelected, select, setOn, togglePin } from '.';
+  import { ONION_MAX_OPACITY, type OnionTint } from '../../../lib/tools/overlay-image';
+  import {
+    edit,
+    MAX_IMAGES,
+    loadFiles,
+    removeSelected,
+    select,
+    setMode,
+    setOn,
+    setPrefs,
+    togglePin,
+  } from '.';
   import { overlay } from './images.svelte';
 
   // Port of openOverlayPanel (unpacked/scripts/bd/overlay.js:183).
@@ -20,8 +31,32 @@
   const modes = [
     ['normal', 'overlay.normal'],
     ['difference', 'overlay.difference'],
+    ['onion', 'overlay.onion'],
   ] as const;
+  const tints = [
+    ['none', 'overlay.normal'],
+    ['invert', 'overlay.invert'],
+    ['twoTone', 'overlay.twoTone'],
+  ] as const satisfies readonly (readonly [OnionTint, string])[];
+  const prefs = $derived(overlay.prefs);
+  const shownOpacity = $derived(
+    !cur
+      ? 0
+      : cur.mode === 'difference'
+        ? 100
+        : cur.mode === 'onion'
+          ? Math.min(cur.opacity, ONION_MAX_OPACITY)
+          : cur.opacity,
+  );
+  const segBtn = (on: boolean) =>
+    `rounded-md py-1 ${on ? 'bg-accent text-white' : 'text-fg-muted hover:bg-line'}`;
 </script>
+
+{#snippet toggle(on: boolean, label: string, onclick: () => void, attr: string)}
+  <label class="flex cursor-pointer items-center gap-2 text-[12px]">
+    <input type="checkbox" checked={on} onchange={onclick} data-overlay={attr} />{label}
+  </label>
+{/snippet}
 
 {#snippet num(k: NumKey, label: string)}
   <label class="flex min-w-0 flex-col gap-1">
@@ -86,7 +121,7 @@
         <div class="flex flex-col gap-1">
           <div class="flex justify-between text-[11px] text-fg-muted">
             <span>{i18n.t('overlay.opacity')}</span>
-            <span class="font-mono">{cur.mode === 'difference' ? 100 : cur.opacity}%</span>
+            <span class="font-mono">{shownOpacity}%</span>
           </div>
           <input
             type="range"
@@ -100,18 +135,47 @@
         </div>
         <div class="flex flex-col gap-1">
           <span class="text-[11px] text-fg-muted">{i18n.t('overlay.blend')}</span>
-          <div class="grid grid-cols-2 gap-0.5 rounded-btn border border-line p-0.5">
+          <div class="grid grid-cols-3 gap-0.5 rounded-btn border border-line p-0.5">
             {#each modes as [m, label] (m)}
               <button
                 type="button"
-                class="rounded-md py-1 {cur.mode === m
-                  ? 'bg-accent text-white'
-                  : 'text-fg-muted hover:bg-line'}"
+                class={segBtn(cur.mode === m)}
                 aria-pressed={cur.mode === m}
-                onclick={() => edit(() => ({ mode: m }))}>{i18n.t(label)}</button
+                data-mode={m}
+                onclick={() => setMode(m)}>{i18n.t(label)}</button
               >
             {/each}
           </div>
+          {#if cur.mode === 'onion'}
+            <div class="grid grid-cols-3 gap-0.5 rounded-btn border border-line p-0.5">
+              {#each tints as [t, label] (t)}
+                <button
+                  type="button"
+                  class={segBtn(prefs.onionTint === t)}
+                  aria-pressed={prefs.onionTint === t}
+                  data-tint={t}
+                  onclick={() => setPrefs({ onionTint: t })}>{i18n.t(label)}</button
+                >
+              {/each}
+            </div>
+          {/if}
+        </div>
+        <div class="flex flex-col gap-1.5">
+          {@render toggle(
+            prefs.split,
+            i18n.t('overlay.split'),
+            () => setPrefs({ split: !prefs.split }),
+            'split',
+          )}
+          {#if prefs.split}
+            {@render toggle(
+              prefs.designLeft,
+              i18n.t('overlay.splitSide'),
+              () => setPrefs({ designLeft: !prefs.designLeft }),
+              'side',
+            )}
+            <p class="text-[11px] leading-snug text-fg-muted">{i18n.t('overlay.splitHint')}</p>
+          {/if}
         </div>
         <div class="grid grid-cols-3 gap-2">
           {@render num('x', 'X')}{@render num('y', 'Y')}{@render num(

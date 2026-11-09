@@ -294,9 +294,9 @@ it('drops select_element while switching', async () => {
 
 it('follows a theme change without reopening', async () => {
   await open();
-  await fakeBrowser.storage.local.set({ theme: 'light' });
+  await fakeBrowser.storage.sync.set({ theme: 'light' });
   await vi.waitFor(() => expect(document.documentElement.dataset.theme).toBe('light'));
-  await fakeBrowser.storage.local.set({ theme: 'dark' });
+  await fakeBrowser.storage.sync.set({ theme: 'dark' });
   await vi.waitFor(() => expect(document.documentElement.dataset.theme).toBe('dark'));
 });
 

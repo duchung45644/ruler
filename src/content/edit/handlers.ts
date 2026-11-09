@@ -191,10 +191,10 @@ export const editHandlers: Handlers<ContentApi> = {
   },
   clear_elements_by_ids: (ids, scope) => withEngine((e) => e.clearByIds(ids, scope)),
   clear_changes: () => withEngine((e) => e.clearAll()),
-  force_element_state(s) {
+  set_forced_states(states) {
     const el = state.selected;
     if (!el) return fail('No element selected');
-    stateForcer().forceState(el, s);
+    stateForcer().setStates(el, Array.isArray(states) ? states : []);
     sendElement(el);
     return ok();
   },

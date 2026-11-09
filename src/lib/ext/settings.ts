@@ -1,4 +1,5 @@
 import { storage } from './storage';
+import type { OverlayPrefs } from '../tools/overlay-image';
 import type { ColorFormat } from '../style/color';
 import { defaultViewports, type ResponsiveSettings } from '../responsive/viewports';
 import { ZOOM_DEFAULT } from '../responsive/zoom';
@@ -46,7 +47,7 @@ export const DEFAULT_SETTINGS: Settings = {
   },
 };
 
-const settingsItem = storage.defineItem<Partial<Settings>>('local:settings', { fallback: {} });
+const settingsItem = storage.defineSyncItem<Partial<Settings>>('settings', { fallback: {} });
 
 export async function getSettings(): Promise<Settings> {
   return { ...DEFAULT_SETTINGS, ...(await settingsItem.getValue()) };
@@ -56,20 +57,20 @@ export async function updateSettings(patch: Partial<Settings>): Promise<void> {
   await settingsItem.setValue({ ...(await settingsItem.getValue()), ...patch });
 }
 
-export const themePref = storage.defineItem<'system' | 'light' | 'dark'>('local:theme', {
+export const themePref = storage.defineSyncItem<'system' | 'light' | 'dark'>('theme', {
   fallback: 'system',
 });
-export const pinHintDone = storage.defineItem<boolean>('local:inspectorPinHintDone', {
+export const pinHintDone = storage.defineSyncItem<boolean>('inspectorPinHintDone', {
   fallback: false,
 });
 /** First-run dock tour finished or skipped; the options page can clear it to show it again. */
-export const tourDone = storage.defineItem<boolean>('local:onboardingTourDone', {
+export const tourDone = storage.defineSyncItem<boolean>('onboardingTourDone', {
   fallback: false,
 });
-export const measureColor = storage.defineItem<string>('local:bdMeasureColor', {
+export const measureColor = storage.defineSyncItem<string>('bdMeasureColor', {
   fallback: '#FF3B6B',
 });
-export const measureGuides = storage.defineItem<boolean>('local:bdMeasureGuides', {
+export const measureGuides = storage.defineSyncItem<boolean>('bdMeasureGuides', {
   fallback: false,
 });
 
@@ -112,10 +113,15 @@ export const DEFAULT_PANEL_PREFS: SidePanelPrefs = {
   socialPreviewType: 'facebook',
 };
 
-export const panelPrefsItem = storage.defineItem<Partial<SidePanelPrefs>>(
-  'local:sidePanelPreferences',
+export const panelPrefsItem = storage.defineSyncItem<Partial<SidePanelPrefs>>(
+  'sidePanelPreferences',
   { fallback: {} },
 );
+
+/** Design overlay comparison options (blend, onion tint, split); validated on read. */
+export const overlayPrefsItem = storage.defineSyncItem<Partial<OverlayPrefs>>('overlayPrefs', {
+  fallback: {},
+});
 
 /** Port of legacy vi (sidepanel.js:12826): stored values win, missing sections get defaults. */
 export function mergePanelPrefs(p: Partial<SidePanelPrefs> | null | undefined): SidePanelPrefs {
@@ -140,6 +146,10 @@ export async function updatePanelPrefs(patch: Partial<SidePanelPrefs>): Promise<
   await panelPrefsItem.setValue({ ...(await panelPrefsItem.getValue()), ...patch });
 }
 
+/*
+ * Kept in storage.local on purpose (per device or too big for sync): the MCP pairing below, saved
+ * CSS edits (lib/edit/persist-key), detached panel bounds, overlay images (never stored).
+ */
 /** MCP opt-in (9.34): nothing connects until the user presses Connect. */
 export const mcpIntent = storage.defineItem<boolean>('local:mcpIntent', { fallback: false });
 /** Pairing token for the local MCP server (see lib/mcp/protocol.ts); never logged or sent to pages. */

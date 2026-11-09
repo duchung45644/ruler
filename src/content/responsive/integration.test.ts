@@ -106,7 +106,7 @@ describe('shell', () => {
   let detach: () => void;
 
   beforeEach(async () => {
-    await fakeBrowser.storage.local.clear();
+    await Promise.all([fakeBrowser.storage.local.clear(), fakeBrowser.storage.sync.clear()]);
     happy.setURL('https://site.test/page');
     vi.mocked(sendToBackground).mockClear();
     vi.mocked(showToast).mockClear();

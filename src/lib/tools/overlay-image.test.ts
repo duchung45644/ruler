@@ -1,7 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import {
   cornerAt,
+  DEFAULT_OVERLAY_PREFS,
+  imageLook,
   initialPlacement,
+  normalizeOverlayPrefs,
+  splitClip,
   nudgeDelta,
   resizeFromCorner,
   togglePinned,
@@ -76,5 +80,36 @@ describe('overlay-image', () => {
     expect(cornerAt(s, 2, 2)).toBe('tl');
     expect(cornerAt(s, 95, 95)).toBe('br');
     expect(cornerAt(s, 50, 50)).toBeNull();
+  });
+});
+
+describe('comparison', () => {
+  it('normalizes stored prefs', () => {
+    expect(normalizeOverlayPrefs(null)).toEqual(DEFAULT_OVERLAY_PREFS);
+    expect(
+      normalizeOverlayPrefs({
+        mode: 'onion',
+        onionTint: 'bad' as never,
+        splitPos: 140,
+        split: 1 as never,
+      }),
+    ).toEqual({ ...DEFAULT_OVERLAY_PREFS, mode: 'onion', splitPos: 100 });
+  });
+  it('looks: difference is opaque, onion is capped and tinted', () => {
+    expect(imageLook({ mode: 'difference', opacity: 20 }, 'none')).toEqual({
+      opacity: 1,
+      blend: 'difference',
+      filter: 'none',
+    });
+    expect(imageLook({ mode: 'normal', opacity: 80 }, 'invert').filter).toBe('none');
+    const o = imageLook({ mode: 'onion', opacity: 90 }, 'invert');
+    expect([o.opacity, o.filter]).toEqual([0.6, 'invert(1)']);
+    expect(imageLook({ mode: 'onion', opacity: 30 }, 'twoTone').filter).toContain('sepia');
+  });
+  it('clips each side of the divider', () => {
+    expect(splitClip(100, 400, 300, true)).toBe('inset(0 200px 0 0)');
+    expect(splitClip(100, 400, 300, false)).toBe('inset(0 0 0 200px)');
+    expect(splitClip(100, 400, 50, true)).toBe('inset(0 400px 0 0)');
+    expect(splitClip(100, 400, 900, true)).toBe('inset(0 0px 0 0)');
   });
 });

@@ -10,7 +10,6 @@
   import Undo2 from '@lucide/svelte/icons/undo-2';
   import { onMount } from 'svelte';
   import { toPage } from '../store.svelte';
-  import StateSelect from './StateSelect.svelte';
   import { command, edit } from './edit-store.svelte';
 
   // seed the undo state once; later states ride on every edit reply and edit_state
@@ -73,7 +72,6 @@
     >
   {/each}
   <span class="flex-1"></span>
-  {#if edit.payload}<StateSelect payload={edit.payload} />{/if}
   {#each [['dock.undo', 'edit_undo', edit.editState.canUndo, Undo2], ['dock.redo', 'edit_redo', edit.editState.canRedo, Redo2]] as const as [label, cmd, ok, Icon] (cmd)}
     <button
       type="button"

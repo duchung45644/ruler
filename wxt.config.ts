@@ -2,6 +2,10 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'wxt';
 import { shadowDomCss } from './build/shadow-dom-css';
 
+/** Edge Add-ons public key: unpacked builds get the store ID bkgdfebicmlicjnkgbemlidlnpbnaofh. */
+const EDGE_PUBLIC_KEY =
+  'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAigqbGGwV5LSV7WrmnQyrs772qGciPjHyStDHdQ4/t81aNCCJfSGsCiDld3l++PK1nRJ2VqxNG9e9eREMcDV/5ZFOK+vzCaY8mAjEqpUlgG/BYumKqOtrVZMs+TZ4BGDqdH8XXShg9SOqWRf1LtAGULIEWaT2uDtYREp/g0eyAygTL4sh8s/16FX7fesYigr0N7n+ca88fpcz+/PcUQOX7RTtmcXw2SDsl9Z0RpxY69jqA70azGFzT/Pa9+5SJClfrAQF3tZKEJ3e1UeNB6wddMy1wgqk0tzzeUTq2nmJTtg8g5PaEb2uUyXBrQHL26MJ/yY/rTPLpWHrG04Rw4MBowIDAQAB';
+
 export default defineConfig({
   srcDir: 'src',
   modules: ['@wxt-dev/module-svelte', '@wxt-dev/i18n/module'],
@@ -11,6 +15,8 @@ export default defineConfig({
     name: '__MSG_extName__',
     description: '__MSG_extDescription__',
     default_locale: 'en',
+    // store packages must not carry `key` (pnpm zip sets PIXELLENS_STORE)
+    ...(!process.env.PIXELLENS_STORE && { key: EDGE_PUBLIC_KEY }),
     minimum_chrome_version: '116',
     action: {
       default_title: '__MSG_extNameShort__',

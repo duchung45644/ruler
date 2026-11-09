@@ -16,6 +16,8 @@ corepack pnpm dev          # bản dev, tự reload: .output/chrome-mv3-dev
 
 Nạp vào Edge/Chrome: `edge://extensions` → bật Developer mode → **Load unpacked** → chọn `.output/chrome-mv3`.
 
+Bản build có `key` của Edge Add-ons nên ID luôn là `bkgdfebicmlicjnkgbemlidlnpbnaofh` (trùng bản trên store). Gói nộp store: `corepack pnpm zip` (bỏ `key`), nội dung đăng ở `docs/store/`.
+
 ## Kiểm tra
 
 ```sh
@@ -65,7 +67,7 @@ Extension nối tới server trên máy (`ws://127.0.0.1:47347/pixellens`) chỉ
 corepack pnpm --filter @pixellens/mcp-server build
 ```
 
-Cấu hình AI agent (ví dụ `.mcp.json`); `<id>` và `<token>` lấy từ đoạn hướng dẫn ở nút MCP trên dock:
+Cấu hình AI agent (ví dụ `.mcp.json`); `<id>` là `bkgdfebicmlicjnkgbemlidlnpbnaofh`; `<token>` lấy từ đoạn hướng dẫn ở nút MCP trên dock:
 
 ```json
 {

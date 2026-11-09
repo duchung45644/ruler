@@ -187,7 +187,7 @@ it('audit and measure isActive follow reactive state', async () => {
   }
 });
 
-it('the dock is laid out by purpose, buttons keyed 1-9, 0', async () => {
+it('the dock is laid out by purpose, buttons keyed 1-9, 0 in dock order', async () => {
   const { dockGroups } = await import('../core/registry.svelte');
   await initTools();
   const groups = dockGroups().map((g) => g.map((i) => i.id));
@@ -221,7 +221,7 @@ it('the dock is laid out by purpose, buttons keyed 1-9, 0', async () => {
   const keyOf = (id: string) => items.find((i) => i.id === id)?.key;
   // dock buttons take numbers left to right; menu tools and breakpoints keep letters
   const dockIds = ['inspect', 'find', 'xray', 'grid', 'responsive', 'ruler', 'measure', 'capture'];
-  expect([...dockIds, 'sidepanel', 'more'].map(keyOf)).toEqual([
+  expect([...dockIds, 'more', 'sidepanel'].map(keyOf)).toEqual([
     '1',
     '2',
     '3',

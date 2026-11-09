@@ -1,5 +1,5 @@
 {
-  "extName": "PixelLens — Soi như designer, chỉnh như developer",
+  "extName": "PixelLens — Bộ công cụ tất cả trong một để kiểm tra và thiết kế web",
   "extNameShort": "PixelLens",
   "extDescription": "Rê chuột lên một phần tử để thấy nó được dựng ra sao, từ kích thước, khoảng cách đến style và màu, rồi chỉnh ngay trên trang.",
   "cmdSelectParent": "Chuyển vùng chọn lên phần tử cha.",

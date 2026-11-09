@@ -1,5 +1,5 @@
 {
-  "extName": "PixelLens — See How Any Web Page Is Built, Then Fine-Tune It Live",
+  "extName": "PixelLens — Inspect Any Web Page Like a Designer, Edit It Like a Developer",
   "extNameShort": "PixelLens",
   "extDescription": "Hover any element to see how it's built, from size and spacing to styles and colors, then fine-tune it right on the page.",
   "cmdSelectParent": "Move selection to parent element.",

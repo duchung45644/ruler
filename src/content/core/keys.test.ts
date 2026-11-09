@@ -239,13 +239,21 @@ describe('runShortcut (side panel keyboard_shortcut)', () => {
 describe('palette keys', () => {
   afterEach(() => Object.assign(state, { palette: false, paused: false, inFrame: false }));
 
-  it('Ctrl+K and ? open the palette, even paused', () => {
-    state.paused = true;
+  it('Ctrl+K and ? open the palette', () => {
     routeKey(keyFrom(document.body, { key: 'k', ctrlKey: true }));
     expect(state.palette).toBe(true);
     state.palette = false;
     routeKey(keyFrom(document.body, { key: '?', shiftKey: true }));
     expect(state.palette).toBe(true);
+  });
+
+  it('paused, both go to the page', () => {
+    state.paused = true;
+    const k = keyFrom(document.body, { key: 'k', ctrlKey: true, cancelable: true });
+    routeKey(k);
+    routeKey(keyFrom(document.body, { key: '?', shiftKey: true }));
+    expect(state.palette).toBe(false);
+    expect(k.defaultPrevented).toBe(false);
   });
 
   it('not while typing in a page input, nor in a responsive frame', () => {

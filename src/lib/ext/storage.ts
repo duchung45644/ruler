@@ -76,13 +76,22 @@ function defineSyncItem<T>(name: string, { fallback }: { fallback: T }): Item<T>
       await sync.remove(name).catch(() => {});
     }
   }
-  async function getValue(): Promise<T> {
+  /**
+   * A local copy is always the newer one: it is only written when sync was refused, and a refused
+   * write may also leave its stale sync value behind (the remove can fail too).
+   */
+  async function effective(): Promise<T> {
+    const own = await read(local);
+    if (own !== undefined) return own;
     const synced = await read(sync);
-    if (synced !== undefined) return synced;
-    const old = await read(local);
-    if (old === undefined) return fallback;
-    if (fitsSync(name, old)) await write(old); // one-time migration
-    return old;
+    return synced === undefined ? fallback : synced;
+  }
+  async function getValue(): Promise<T> {
+    const own = await read(local);
+    if (own === undefined) return effective();
+    // move it (back) to sync: one-time migration, or a retry after a refused write
+    if (fitsSync(name, own)) await write(own).catch(() => {});
+    return own;
   }
   return {
     getValue,
@@ -92,13 +101,13 @@ function defineSyncItem<T>(name: string, { fallback }: { fallback: T }): Item<T>
       // a move between areas fires two events: report the effective value once it settles
       // (reads are chained so they compare in order)
       let last = JSON.stringify(fallback);
-      let queue = getValue()
+      let queue = effective()
         .then((v) => void (last = JSON.stringify(v)))
         .catch(() => {});
       const l = (changes: Record<string, unknown>, area: string) => {
         if ((area !== 'sync' && area !== 'local') || !(name in changes)) return;
         queue = queue
-          .then(getValue)
+          .then(effective)
           .then((v) => {
             const raw = JSON.stringify(v);
             const prev = last;

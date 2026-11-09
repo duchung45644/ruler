@@ -11,11 +11,12 @@
     if (!bg || !fg) return null;
     const size = parseFloat(s.fontSize);
     const large = size >= 18 || (size >= 14 && parseInt(s.fontWeight) >= 700);
-    const opacity = parseFloat(s.opacity);
-    const painted = { ...fg, a: fg.a * (isNaN(opacity) ? 1 : opacity) };
+    const o = parseFloat(s.opacity);
+    const opacity = isNaN(o) ? 1 : o;
+    const painted = { ...fg, a: fg.a * opacity };
     const ratio = contrastRatio(painted, bg);
     const level = wcagLevel(ratio, large);
-    const fix = level === 'AAA' ? null : suggestTextFixes(painted, bg, large);
+    const fix = level === 'AAA' ? null : suggestTextFixes(fg, bg, large, opacity);
     return {
       fg: toHex(fg),
       bg: toHex(bg),

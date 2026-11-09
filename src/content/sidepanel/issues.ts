@@ -58,7 +58,8 @@ function check(
   const fg = paint && paint !== 'none' ? parseColor(paint) : null;
   const bg = fg && fg.a > 0 ? backgroundOf(el, at, memo) : null;
   if (!fg || !bg) return null;
-  const painted = { ...fg, a: fg.a * opacityOf(s) };
+  const opacity = opacityOf(s);
+  const painted = { ...fg, a: fg.a * opacity };
   const ratio = roundRatio(contrastRatio(painted, bg));
   const base = {
     elementId: id,
@@ -75,7 +76,7 @@ function check(
     const verdict = iconContrastIssue(ratio, Math.max(r.width, r.height));
     if (!verdict) return null;
     base.metadata.requiredRatio = verdict.required;
-    const aa = hexOrNone(suggestForeground(painted, bg, verdict.required));
+    const aa = hexOrNone(suggestForeground(fg, bg, verdict.required, opacity));
     if (aa) Object.assign(base.metadata, { suggestedAA: aa });
     return { ...base, type: 'icon-contrast', verdict, ...localise(verdict) };
   }
@@ -84,7 +85,7 @@ function check(
   const large = isLargeText(fontSize, fontWeight);
   const verdict = contrastIssue(ratio, large);
   if (!verdict) return null;
-  const fix = suggestTextFixes(painted, bg, large);
+  const fix = suggestTextFixes(fg, bg, large, opacity);
   return {
     ...base,
     type: 'contrast-failure',

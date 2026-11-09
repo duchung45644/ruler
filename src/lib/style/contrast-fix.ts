@@ -34,14 +34,16 @@ function fromHsl({ h, s, l }: Hsl): Rgba {
   return { r: ch(r), g: ch(g), b: ch(b), a: 1 };
 }
 
+type Shown = (c: Rgba) => Rgba;
+
 /** Closest lightness on one side (towards `end`) reaching `target`; null when even `end` can't. */
-function search(hsl: Hsl, bg: Rgba, target: number, end: 0 | 1): Rgba | null {
-  if (contrastRatio(fromHsl({ ...hsl, l: end }), bg) < target) return null;
+function search(hsl: Hsl, bg: Rgba, target: number, end: 0 | 1, shown: Shown): Rgba | null {
+  if (contrastRatio(shown(fromHsl({ ...hsl, l: end })), bg) < target) return null;
   let near = hsl.l; // fails
   let far: number = end; // passes
   for (let i = 0; i < 24; i++) {
     const mid = (near + far) / 2;
-    if (contrastRatio(fromHsl({ ...hsl, l: mid }), bg) >= target) far = mid;
+    if (contrastRatio(shown(fromHsl({ ...hsl, l: mid })), bg) >= target) far = mid;
     else near = mid;
   }
   return fromHsl({ ...hsl, l: far });
@@ -50,16 +52,19 @@ function search(hsl: Hsl, bg: Rgba, target: number, end: 0 | 1): Rgba | null {
 /**
  * Nearest foreground to `fg` (same hue and saturation, lightness moved the least) whose contrast
  * on the opaque `bg` reaches `target`. A translucent fg is judged as painted (blended over bg);
- * the suggestion is opaque. Returns fg itself (opaque) when it already passes, null when no
- * lightness can reach the target.
+ * the suggestion is opaque. `opacity` (the element's) still applies to the suggestion, so it is
+ * judged dimmed by it. Returns fg itself (opaque) when it already passes, null when no lightness
+ * can reach the target.
  */
-export function suggestForeground(fg: Rgba, bg: Rgba, target: number): Rgba | null {
+export function suggestForeground(fg: Rgba, bg: Rgba, target: number, opacity = 1): Rgba | null {
+  const shown: Shown = (c) => blend({ ...c, a: opacity }, bg);
   const painted = blend(fg, bg);
-  if (contrastRatio(painted, bg) >= target) return painted;
+  if (contrastRatio(shown(painted), bg) >= target) return painted;
   const hsl = toHsl(painted);
-  const options = [search(hsl, bg, target, 0), search(hsl, bg, target, 1)].filter(
-    (c): c is Rgba => !!c,
-  );
+  const sides = [0, 1] as const;
+  const options = sides
+    .map((end) => search(hsl, bg, target, end, shown))
+    .filter((c): c is Rgba => !!c);
   const dist = (c: Rgba) => Math.abs(toHsl(c).l - hsl.l);
   return options.sort((a, b) => dist(a) - dist(b))[0] ?? null;
 }
@@ -69,9 +74,10 @@ export function suggestTextFixes(
   fg: Rgba,
   bg: Rgba,
   large: boolean,
+  opacity = 1,
 ): { aa: Rgba | null; aaa: Rgba | null } {
   return {
-    aa: suggestForeground(fg, bg, large ? 3 : 4.5),
-    aaa: suggestForeground(fg, bg, large ? 4.5 : 7),
+    aa: suggestForeground(fg, bg, large ? 3 : 4.5, opacity),
+    aaa: suggestForeground(fg, bg, large ? 4.5 : 7, opacity),
   };
 }

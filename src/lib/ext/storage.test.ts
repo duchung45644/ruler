@@ -35,6 +35,21 @@ describe('defineSyncItem', () => {
     expect(await item.getValue()).toBe(3);
   });
 
+  it('reads the local copy when the refused write also left a stale sync value', async () => {
+    const item = storage.defineSyncItem<number>('n', { fallback: 0 });
+    await item.setValue(1);
+    const set = vi.spyOn(fakeBrowser.storage.sync, 'set').mockRejectedValue(new Error('quota'));
+    const rm = vi.spyOn(fakeBrowser.storage.sync, 'remove').mockRejectedValue(new Error('quota'));
+    await item.setValue(2);
+    expect(await fakeBrowser.storage.sync.get('n')).toEqual({ n: 1 });
+    expect(await item.getValue()).toBe(2);
+    set.mockRestore();
+    rm.mockRestore();
+    expect(await item.getValue()).toBe(2); // and now moved back to sync
+    expect(await fakeBrowser.storage.sync.get('n')).toEqual({ n: 2 });
+    expect(await fakeBrowser.storage.local.get('n')).toEqual({});
+  });
+
   it('watch reports a migration-free change once, across both areas', async () => {
     const item = storage.defineSyncItem<string>('theme', { fallback: 'system' });
     await fakeBrowser.storage.local.set({ theme: 'dark' });

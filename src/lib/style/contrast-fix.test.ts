@@ -37,6 +37,13 @@ describe('suggestForeground', () => {
     expect(contrastRatio(s, white)).toBeGreaterThanOrEqual(4.5);
   });
 
+  it('accounts for element opacity, which still dims the suggestion', () => {
+    const s = suggestForeground(c('#aaaaaa'), white, 4.5, 0.8)!;
+    expect(contrastRatio({ ...s, a: 0.8 }, white)).toBeGreaterThanOrEqual(4.5);
+    // too faint for any colour to reach AA
+    expect(suggestForeground(c('#aaaaaa'), white, 4.5, 0.3)).toBeNull();
+  });
+
   it('is null when no lightness can reach the target', () => {
     expect(suggestForeground(c('#777777'), c('#777777'), 22)).toBeNull();
   });

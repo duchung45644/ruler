@@ -106,9 +106,10 @@ export function routeKey(e: KeyboardEvent): void {
     }
   }
   if (state.dialog) return;
-  // opens while paused too (locked items show dimmed); frames have no dock to list
+  // frames have no dock to list; paused, the page keeps its own Ctrl+K and ?
   if (
     !state.inFrame &&
+    !state.paused &&
     (isPaletteKey(e) || isCheatSheetKey(e)) &&
     !shouldIgnoreKey(e, NOT_PAUSED)
   ) {

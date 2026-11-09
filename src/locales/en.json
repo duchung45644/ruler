@@ -35,7 +35,8 @@
     "responsive": "Responsive Mode · B: breakpoints",
     "vision": "Vision simulator",
     "tabOrder": "Tab focus order",
-    "vitals": "Core Web Vitals"
+    "vitals": "Core Web Vitals",
+    "palette": "Commands & shortcuts"
   },
   "inspect": {
     "layout": "Box Model",
@@ -414,7 +415,11 @@
     "mcpOutdatedTooltip": "MCP server outdated. Update via your AI client.",
     "mcpOutdatedTitle": "MCP Server Outdated",
     "mcpOutdatedBody": "Your MCP server is version $1, but this extension expects $2 or newer. Update the npm package or restart your AI client to refetch.",
-    "mcpVersionUnknown": "unknown"
+    "mcpVersionUnknown": "unknown",
+    "tourTitle": "Welcome tour",
+    "tourSecondary": "The short dock tour shown the first time you open iodob.",
+    "tourShow": "Show again",
+    "tourQueued": "Shows next time"
   },
   "mcp": {
     "dockTitle": "MCP",
@@ -438,5 +443,24 @@
     "suggested": "Suggested:",
     "copy": "Click to copy",
     "copied": "Copied"
+  },
+  "palette": {
+    "title": "Commands",
+    "placeholder": "Search tools…",
+    "empty": "No matching tool",
+    "hint": "↑↓ to move · Enter to run · Esc to close"
+  },
+  "tour": {
+    "dockTitle": "Your toolbar",
+    "dockBody": "Every tool lives in this dock. Hover a button to see its name and shortcut.",
+    "keysTitle": "Number keys",
+    "keysBody": "Press 1–9 and 0 to switch dock tools without the mouse. O, A, C, H and B work too.",
+    "menuTitle": "More tools",
+    "menuBody": "The ⋯ button holds the less used tools: overlay, audit, color picker, AI agent (MCP) and pause.",
+    "paletteTitle": "Ctrl+K anywhere",
+    "paletteBody": "Press Ctrl+K (or ?) to search every tool by name and run one with Enter.",
+    "next": "Next",
+    "skip": "Skip",
+    "done": "Got it"
   }
 }

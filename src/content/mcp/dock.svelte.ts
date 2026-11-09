@@ -8,6 +8,9 @@ import { state } from '../core/state.svelte';
 import McpIcon from './McpIcon.svelte';
 import McpPopover from './McpPopover.svelte';
 
+/** Same green as McpIcon's connected dot. */
+export const CONNECTED_DOT = '#22C55E';
+
 export const mcp = $state({ status: IDLE_STATUS as McpStatus });
 
 /** Tooltip per dock state; the agent's name shows in the popover (Q7 b: no logos). */
@@ -43,6 +46,8 @@ export function initMcpDock(): void {
     label: LABELS[dockState(mcp.status)],
     popover: McpPopover,
     run: () => togglePopover('mcp'), // one popover at a time (1.50)
+    // shown on the ⋯ button (McpIcon draws its own dot in the menu)
+    badge: () => (dockState(mcp.status) === 'connected' ? CONNECTED_DOT : null),
   });
   setStatus(mcp.status);
   void refreshStatus();

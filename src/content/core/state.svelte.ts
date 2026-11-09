@@ -40,6 +40,8 @@ export const state = $state({
   /** Edit mode (dock Inspect / Edit switch) and its text-editing sub-mode. */
   editOn: false,
   textEditOn: false,
+  /** Command palette / cheat sheet open (Ctrl+K, ?). */
+  palette: false,
 });
 
 /** Element the inspector panel describes: live hover wins, else the selection. */

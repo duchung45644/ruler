@@ -62,6 +62,10 @@ export const themePref = storage.defineItem<'system' | 'light' | 'dark'>('local:
 export const pinHintDone = storage.defineItem<boolean>('local:inspectorPinHintDone', {
   fallback: false,
 });
+/** First-run dock tour finished or skipped; the options page can clear it to show it again. */
+export const tourDone = storage.defineItem<boolean>('local:onboardingTourDone', {
+  fallback: false,
+});
 export const measureColor = storage.defineItem<string>('local:bdMeasureColor', {
   fallback: '#FF3B6B',
 });

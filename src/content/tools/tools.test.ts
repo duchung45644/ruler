@@ -220,6 +220,7 @@ it('the dock is laid out by purpose, buttons keyed 1-9, 0 in dock order', async 
     'vitals',
     'mcp',
     'pause',
+    'palette',
   ]);
   expect(['vision', 'taborder', 'vitals'].map((id) => items.find((i) => i.id === id)?.key)).toEqual(
     ['y', 't', 'w'],

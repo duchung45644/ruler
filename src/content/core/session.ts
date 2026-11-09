@@ -109,6 +109,7 @@ export function stopSession(): void {
     dockNotice: null,
     capturing: false,
     dialog: false,
+    palette: false,
   });
   ctxRef = null;
 }

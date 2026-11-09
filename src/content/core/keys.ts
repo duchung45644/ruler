@@ -1,3 +1,4 @@
+import { isCheatSheetKey, isPaletteKey } from './palette';
 import { itemLocked, items, type DockItem } from './registry.svelte';
 import { state } from './state.svelte';
 
@@ -49,16 +50,21 @@ function hookName(e: KeyboardEvent): string | null {
   return null;
 }
 
-const runnable = (i: DockItem): boolean => !itemLocked(i) && !i.isDisabled?.();
+export const runnable = (i: DockItem): boolean => !itemLocked(i) && !i.isDisabled?.();
+
+/** Runs `item` the way its key does (runKey, else run). Returns whether it ran. */
+export function runEntry(item: DockItem): boolean {
+  if (!runnable(item)) return false;
+  if (item.runKey) item.runKey();
+  else item.run();
+  return true;
+}
 
 /** Runs dock item `id` like its key would (frame mode's run_item). Returns whether it ran. */
 export function runItem(id: string): boolean {
   if (state.paused || state.capturing || state.dialog) return false;
   const item = items.find((i) => i.id === id && runnable(i));
-  if (!item) return false;
-  if (item.runKey) item.runKey();
-  else item.run();
-  return true;
+  return !!item && runEntry(item);
 }
 
 /**
@@ -75,11 +81,10 @@ export function runShortcut(key: string): boolean {
     return true;
   }
   const item = items.find((i) => i.key === key.toLowerCase() && runnable(i));
-  if (!item) return false;
-  if (item.runKey) item.runKey();
-  else item.run();
-  return true;
+  return !!item && runEntry(item);
 }
+
+const NOT_PAUSED = { paused: false };
 
 export function routeKey(e: KeyboardEvent): void {
   if (isQuitKey(e)) {
@@ -100,7 +105,17 @@ export function routeKey(e: KeyboardEvent): void {
       return pause.run();
     }
   }
-  if (state.dialog || shouldIgnoreKey(e, state)) return;
+  if (state.dialog) return;
+  // opens while paused too (locked items show dimmed); frames have no dock to list
+  if (
+    !state.inFrame &&
+    (isPaletteKey(e) || isCheatSheetKey(e)) &&
+    !shouldIgnoreKey(e, NOT_PAUSED)
+  ) {
+    state.palette = true;
+    return e.preventDefault();
+  }
+  if (shouldIgnoreKey(e, state)) return;
   if (handlers.some((fn) => fn(e))) return e.preventDefault();
   if (e.key === 'Escape' || (!e.ctrlKey && !e.metaKey && !e.altKey)) {
     // responsive frame: the shell runs item keys so every frame and the dock stay in step

@@ -1,5 +1,6 @@
 import type { Component } from 'svelte';
 import type { GeneratedI18nStructure } from '#i18n';
+import Command from '@lucide/svelte/icons/command';
 import Pause from '@lucide/svelte/icons/pause';
 import Play from '@lucide/svelte/icons/play';
 import X from '@lucide/svelte/icons/x';
@@ -31,6 +32,8 @@ export interface DockItem {
   isDisabled?(): boolean;
   /** Dock button shown only while this is true (the key works either way). */
   shown?(): boolean;
+  /** Status dot colour (or null); a "more" menu item's dot also shows on the ⋯ button. */
+  badge?(): string | null;
   /** Stays usable while paused. */
   alwaysEnabled?: boolean;
   /** Drawn above the button while state.popover === id; destroyed on close (clean up in onDestroy). */
@@ -107,6 +110,7 @@ export const MORE_ITEMS = [
   'vitals',
   'mcp',
   'pause',
+  'palette',
 ];
 
 /** The dock button that stands for `id`: itself, or "more" for the items in its menu. */
@@ -162,6 +166,13 @@ registerItem({
   isActive: () => state.paused,
   // pause lives in the "more" menu; while paused, Resume sits on the dock
   shown: () => state.paused,
+});
+registerItem({
+  id: 'palette',
+  icon: Command,
+  label: 'dock.palette',
+  alwaysEnabled: true,
+  run: () => (state.palette = !state.palette),
 });
 registerItem({
   id: 'quit',

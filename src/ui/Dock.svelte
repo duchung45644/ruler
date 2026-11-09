@@ -3,6 +3,8 @@
   import { state as app } from '../content/core/state.svelte';
   import { cubicOut } from 'svelte/easing';
   import DockButton from './DockButton.svelte';
+  import Palette from './Palette.svelte';
+  import Tour from './Tour.svelte';
   import Popover from './Popover.svelte';
 
   let dock: HTMLElement = $state()!;
@@ -68,10 +70,13 @@
       {/if}
     </span>
   {/each}
+  {#if !app.inFrame}<Tour {dock} />{/if}
   {#if open?.popover}
     {#key open.id}<Popover id={open.id} {dock} body={open.popover} />{/key}
   {/if}
 </div>
+
+{#if app.palette}<Palette />{/if}
 
 {#if size}
   <div

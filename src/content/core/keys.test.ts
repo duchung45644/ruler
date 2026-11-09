@@ -235,3 +235,25 @@ describe('runShortcut (side panel keyboard_shortcut)', () => {
     expect(runShortcut('Escape')).toBe(false);
   });
 });
+
+describe('palette keys', () => {
+  afterEach(() => Object.assign(state, { palette: false, paused: false, inFrame: false }));
+
+  it('Ctrl+K and ? open the palette, even paused', () => {
+    state.paused = true;
+    routeKey(keyFrom(document.body, { key: 'k', ctrlKey: true }));
+    expect(state.palette).toBe(true);
+    state.palette = false;
+    routeKey(keyFrom(document.body, { key: '?', shiftKey: true }));
+    expect(state.palette).toBe(true);
+  });
+
+  it('not while typing in a page input, nor in a responsive frame', () => {
+    const input = document.body.appendChild(document.createElement('input'));
+    routeKey(keyFrom(input, { key: 'k', ctrlKey: true }));
+    expect(state.palette).toBe(false);
+    state.inFrame = true;
+    routeKey(keyFrom(document.body, { key: '?' }));
+    expect(state.palette).toBe(false);
+  });
+});

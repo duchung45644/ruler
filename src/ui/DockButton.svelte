@@ -6,6 +6,7 @@
   let { item, disabled }: { item: DockItem; disabled: boolean } = $props();
   const active = $derived(item.isActive?.() ?? false);
   const Icon = $derived((active && item.activeIcon) || item.icon);
+  const badge = $derived(item.badge?.() ?? null);
   const label = $derived(i18n.t((active && item.activeLabel) || item.label));
   let tip: HTMLElement;
   // a tool in the "more" menu (eyedropper's copied colour) shows its notice on that button
@@ -45,6 +46,13 @@
   onmouseenter={clamp}
 >
   <Icon size={19} />
+  {#if badge}
+    <span
+      data-badge
+      class="pointer-events-none absolute right-1 bottom-1 size-2 rounded-full ring-2 ring-surface"
+      style:background={badge}
+    ></span>
+  {/if}
   <span
     bind:this={tip}
     class:hidden={app.popover === item.id}

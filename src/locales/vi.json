@@ -35,7 +35,8 @@
     "responsive": "Chế độ Responsive · B: breakpoint",
     "vision": "Mô phỏng thị lực",
     "tabOrder": "Thứ tự focus bằng Tab",
-    "vitals": "Core Web Vitals"
+    "vitals": "Core Web Vitals",
+    "palette": "Lệnh & phím tắt"
   },
   "inspect": {
     "layout": "Box Model",
@@ -414,7 +415,11 @@
     "mcpOutdatedTooltip": "Máy chủ MCP đã lỗi thời. Cập nhật qua ứng dụng AI của bạn.",
     "mcpOutdatedTitle": "Máy chủ MCP đã lỗi thời",
     "mcpOutdatedBody": "Máy chủ MCP của bạn là phiên bản $1, nhưng tiện ích này yêu cầu $2 hoặc mới hơn. Cập nhật gói npm hoặc khởi động lại ứng dụng AI.",
-    "mcpVersionUnknown": "không xác định"
+    "mcpVersionUnknown": "không xác định",
+    "tourTitle": "Hướng dẫn nhanh",
+    "tourSecondary": "Phần giới thiệu thanh công cụ hiện ra ở lần đầu bạn mở iodob.",
+    "tourShow": "Xem lại",
+    "tourQueued": "Sẽ hiện lần tới"
   },
   "mcp": {
     "dockTitle": "MCP",
@@ -438,5 +443,24 @@
     "suggested": "Gợi ý:",
     "copy": "Bấm để sao chép",
     "copied": "Đã sao chép"
+  },
+  "palette": {
+    "title": "Lệnh",
+    "placeholder": "Tìm công cụ…",
+    "empty": "Không có công cụ phù hợp",
+    "hint": "↑↓ để chọn · Enter để chạy · Esc để đóng"
+  },
+  "tour": {
+    "dockTitle": "Thanh công cụ",
+    "dockBody": "Mọi công cụ đều nằm trên thanh này. Rê chuột lên một nút để xem tên và phím tắt.",
+    "keysTitle": "Phím số",
+    "keysBody": "Nhấn 1–9 và 0 để đổi công cụ trên thanh mà không cần chuột. Các phím O, A, C, H và B cũng dùng được.",
+    "menuTitle": "Thêm công cụ",
+    "menuBody": "Nút ⋯ chứa các công cụ ít dùng hơn: lớp phủ thiết kế, kiểm tra trang, chọn màu, tác tử AI (MCP) và tạm dừng.",
+    "paletteTitle": "Ctrl+K ở bất cứ đâu",
+    "paletteBody": "Nhấn Ctrl+K (hoặc ?) để tìm mọi công cụ theo tên rồi nhấn Enter để chạy.",
+    "next": "Tiếp",
+    "skip": "Bỏ qua",
+    "done": "Đã hiểu"
   }
 }

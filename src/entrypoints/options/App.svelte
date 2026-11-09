@@ -15,6 +15,7 @@
     mergePanelPrefs,
     panelPrefsItem,
     themePref,
+    tourDone,
     updatePanelPrefs,
   } from '../../lib/ext/settings';
   import { applyDocTheme, type ThemePref } from '../../lib/style/theme';
@@ -28,6 +29,7 @@
   let mcp = $state<McpStatus>(IDLE_STATUS);
   let prompt = $state<string | null>(null);
   let outdatedOpen = $state(false);
+  let tourQueued = $state(false);
   /** The prompt is shown while waiting for the agent (or after a reject): it carries the token. */
   const showPrompt = $derived(mcp.intent && !mcp.connected);
 
@@ -157,6 +159,17 @@
       i18n.t('options.colorFormatSecondary'),
       formatSelect,
     )}
+    {#snippet tourButton()}
+      <button
+        type="button"
+        class="rounded-btn border border-line px-3 py-1 font-medium hover:bg-line disabled:opacity-50"
+        data-action="show-tour"
+        disabled={tourQueued}
+        onclick={() => void tourDone.setValue(false).then(() => (tourQueued = true))}
+        >{tourQueued ? i18n.t('options.tourQueued') : i18n.t('options.tourShow')}</button
+      >
+    {/snippet}
+    {@render row(i18n.t('options.tourTitle'), i18n.t('options.tourSecondary'), tourButton)}
     {@render row(
       i18n.t('options.savedEditsTitle'),
       i18n.t('options.savedEditsSecondary'),

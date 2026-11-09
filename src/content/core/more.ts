@@ -10,6 +10,11 @@ export function initMore(): void {
     label: 'dock.more',
     key: '9',
     popover: MorePopover,
+    // first status dot of its tools (MCP connected), so the state shows with the menu closed
+    badge: () => {
+      for (const i of items) if (MORE_ITEMS.includes(i.id) && i.badge?.()) return i.badge();
+      return null;
+    },
     run: () => togglePopover('more'),
     // lit while one of its tools is on (overlay, audit…), so the state stays visible
     // (pause excluded: while paused, Resume sits on the dock itself)

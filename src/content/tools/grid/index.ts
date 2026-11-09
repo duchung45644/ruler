@@ -40,10 +40,16 @@ export async function initGrid(): Promise<void> {
     label: 'dock.grid',
     key: 'g',
     popover: GridPopover,
+    // the button is the switch (no checkbox in the panel): off -> on + panel; on -> panel;
+    // panel open -> off. Settings you can't see are useless, so opening shows the grid.
     run: () => {
-      togglePopover('grid');
-      // settings you can't see are useless: opening the panel shows the grid
-      if (state.popover === 'grid' && !state.grid.isOn) setGrid({ isOn: true });
+      if (state.popover === 'grid') {
+        state.popover = null;
+        setGrid({ isOn: false });
+      } else {
+        togglePopover('grid');
+        if (!state.grid.isOn) setGrid({ isOn: true });
+      }
     },
     runKey: () => setGrid({ isOn: !state.grid.isOn }), // 3.03
     isActive: () => state.grid.isOn,

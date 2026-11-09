@@ -30,13 +30,6 @@
   <div class="flex items-center justify-between gap-2">
     <span class="font-semibold">{i18n.t('dock.grid')}</span>
     <div class="flex items-center gap-1">
-      <input
-        type="checkbox"
-        role="switch"
-        aria-label={i18n.t('dock.grid')}
-        checked={g.isOn}
-        onchange={(e) => setGrid({ isOn: e.currentTarget.checked })}
-      />
       <button
         type="button"
         aria-label={i18n.t('common.close')}

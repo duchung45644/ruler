@@ -63,6 +63,13 @@ it('opening the panel shows the grid', async () => {
   items.find((i) => i.id === 'grid')!.run();
   expect(state.popover).toBe('grid');
   expect(state.grid.isOn).toBe(true);
+  // the button is the switch: with the panel open it turns the grid off
+  items.find((i) => i.id === 'grid')!.run();
+  expect([state.popover, state.grid.isOn]).toEqual([null, false]);
+  // on without the panel (key G): the button opens the panel, grid stays on
+  setGrid({ isOn: true });
+  items.find((i) => i.id === 'grid')!.run();
+  expect([state.popover, state.grid.isOn]).toEqual(['grid', true]);
   state.popover = null;
 });
 

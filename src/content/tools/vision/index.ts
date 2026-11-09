@@ -11,11 +11,11 @@ import { state } from '../../core/state.svelte';
 import VisionPopover from './VisionPopover.svelte';
 
 const SVG = 'http://www.w3.org/2000/svg';
-const filterId = (mode: VisionMode) => `iodob-vision-${mode}`;
+const filterId = (mode: VisionMode) => `pixellens-vision-${mode}`;
 
 /**
  * Filters live in the page's light DOM (url(#id) resolves against the document), wrapped in an
- * `iodob-` element so page scans skip it. Built with createElementNS: no innerHTML (Trusted Types).
+ * `pixellens-` element so page scans skip it. Built with createElementNS: no innerHTML (Trusted Types).
  */
 let defs: HTMLElement | null = null;
 /** The page's own inline `filter` on <html>, put back exactly on off. */
@@ -23,7 +23,7 @@ let saved: { value: string; priority: string } | null = null;
 
 function ensureDefs(): void {
   if (defs?.isConnected) return;
-  defs = document.createElement('iodob-vision');
+  defs = document.createElement('pixellens-vision');
   defs.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden';
   const svg = document.createElementNS(SVG, 'svg');
   svg.setAttribute('aria-hidden', 'true');

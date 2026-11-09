@@ -34,6 +34,6 @@ export async function initTools(): Promise<void> {
   initAudit(); // designTools: after measure (legacy dock order)
   await initSidePanel();
   initEdit(); // after the bridge: edit mode reuses its element ids
-  initMcpDock(); // last group, before Quit (1.46)
+  initMcpDock(); // in the "more" menu
   initMore();
 }

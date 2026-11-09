@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Component } from 'svelte';
   import { popoverLeft } from '../lib/dom/geometry';
+  import { dockButtonOf } from '../content/core/registry.svelte';
 
   let { id, dock, body: Body }: { id: string; dock: HTMLElement; body: Component } = $props();
   let el: HTMLElement;
@@ -8,7 +9,8 @@
 
   // Measured once on open (legacy positionPopover :38491).
   $effect(() => {
-    const btn = dock.querySelector(`[data-item="${id}"]`);
+    // an item from the "more" menu (MCP) anchors on that button
+    const btn = dock.querySelector(`[data-item="${dockButtonOf(id)}"]`);
     if (btn)
       left = popoverLeft(btn.getBoundingClientRect(), dock.getBoundingClientRect(), el.offsetWidth);
   });

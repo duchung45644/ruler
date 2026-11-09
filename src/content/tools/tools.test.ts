@@ -194,7 +194,7 @@ it('the dock is laid out by purpose with mnemonic keys', async () => {
   expect(groups.find((g) => g.includes('ruler'))).toEqual(['ruler', 'measure']);
   expect(groups.find((g) => g.includes('capture'))).toEqual(['capture', 'more']);
   // pause lives in the more menu; parent/child wait for a selection
-  expect(groups.at(-1)).toEqual(['sidepanel', 'mcp', 'quit']);
+  expect(groups.at(-1)).toEqual(['sidepanel', 'quit']);
   expect(groups[0]).toEqual(['inspect', 'find']);
   const { state } = await import('../core/state.svelte');
   state.selected = document.body;
@@ -211,7 +211,7 @@ it('the dock is laid out by purpose with mnemonic keys', async () => {
   state.paused = false;
   // the "more" menu holds the less used tools and lights up while one is on
   const { MORE_ITEMS } = await import('../core/registry.svelte');
-  expect(MORE_ITEMS).toEqual(['overlay', 'audit', 'eyedropper', 'pause']);
+  expect(MORE_ITEMS).toEqual(['overlay', 'audit', 'eyedropper', 'mcp', 'pause']);
   const more = items.find((i) => i.id === 'more')!;
   expect(more.isActive!()).toBe(false);
   items.find((i) => i.id === 'audit')!.run();

@@ -94,11 +94,11 @@ export const DOCK_LAYOUT = [
   ['xray', 'grid', 'responsive'],
   ['ruler', 'measure'],
   ['capture', 'more'],
-  ['sidepanel', 'pause', 'mcp', 'quit'], // MCP last before Quit (1.46)
+  ['sidepanel', 'pause', 'quit'],
 ];
 
 /** Less used tools behind the "more" button (owner's call, 2026-11-09); their keys still work. */
-export const MORE_ITEMS = ['overlay', 'audit', 'eyedropper', 'pause'];
+export const MORE_ITEMS = ['overlay', 'audit', 'eyedropper', 'mcp', 'pause'];
 
 /** The dock button that stands for `id`: itself, or "more" for the items in its menu. */
 export const dockButtonOf = (id: string): string => (MORE_ITEMS.includes(id) ? 'more' : id);

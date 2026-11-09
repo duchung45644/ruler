@@ -13,11 +13,13 @@ import { childrenOf } from '../../lib/element/assets';
 import type { Issue } from '../../lib/element/types';
 import { sendToSidePanel } from '../../lib/ext/messaging';
 import { displaySelector } from '../../lib/dom/selector';
+import { suggestForeground, suggestTextFixes } from '../../lib/style/contrast-fix';
 import { backgroundOf, isTextHeavy, type LayerMemo } from '../core/contrast';
 import { canHighlight } from './highlight';
 
 const MAX_DEPTH = 100;
 const hex = (c: Rgba) => formatColor(c, 'HEX');
+const hexOrNone = (c: Rgba | null) => (c ? hex(c) : undefined);
 
 /** Findings of the current selection, kept so off-screen ones can be re-checked. */
 let instances: Instance[] = [];
@@ -56,7 +58,8 @@ function check(
   const fg = paint && paint !== 'none' ? parseColor(paint) : null;
   const bg = fg && fg.a > 0 ? backgroundOf(el, at, memo) : null;
   if (!fg || !bg) return null;
-  const ratio = roundRatio(contrastRatio({ ...fg, a: fg.a * opacityOf(s) }, bg));
+  const painted = { ...fg, a: fg.a * opacityOf(s) };
+  const ratio = roundRatio(contrastRatio(painted, bg));
   const base = {
     elementId: id,
     selector: displaySelector(el),
@@ -72,6 +75,8 @@ function check(
     const verdict = iconContrastIssue(ratio, Math.max(r.width, r.height));
     if (!verdict) return null;
     base.metadata.requiredRatio = verdict.required;
+    const aa = hexOrNone(suggestForeground(painted, bg, verdict.required));
+    if (aa) Object.assign(base.metadata, { suggestedAA: aa });
     return { ...base, type: 'icon-contrast', verdict, ...localise(verdict) };
   }
   const fontSize = parseFloat(s.fontSize);
@@ -79,6 +84,7 @@ function check(
   const large = isLargeText(fontSize, fontWeight);
   const verdict = contrastIssue(ratio, large);
   if (!verdict) return null;
+  const fix = suggestTextFixes(painted, bg, large);
   return {
     ...base,
     type: 'contrast-failure',
@@ -90,6 +96,9 @@ function check(
       fontSize,
       fontWeight,
       isLargeText: large,
+      // an AAA-only verdict already passes AA: only AAA is suggested
+      suggestedAA: verdict.severity === 'warning' ? hexOrNone(fix.aa) : undefined,
+      suggestedAAA: hexOrNone(fix.aaa),
     },
   };
 }

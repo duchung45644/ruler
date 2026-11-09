@@ -5,7 +5,7 @@
   "cmdSelectParent": "Move selection to parent element.",
   "cmdSelectChild": "Move selection to child element.",
   "dock": {
-    "more": "More Tools",
+    "more": "More tools",
     "pause": "Pause",
     "resume": "Resume",
     "quit": "Quit",
@@ -32,7 +32,10 @@
     "delete": "Delete",
     "undo": "Undo",
     "redo": "Redo",
-    "responsive": "Responsive Mode · B: breakpoints"
+    "responsive": "Responsive Mode · B: breakpoints",
+    "vision": "Vision simulator",
+    "tabOrder": "Tab focus order",
+    "vitals": "Core Web Vitals"
   },
   "inspect": {
     "layout": "Box Model",
@@ -422,5 +425,18 @@
     "connectHint": "Paste this into your AI agent to connect it:",
     "unknownAgent": "AI agent",
     "waitingForAgent": "Waiting for your agent…"
+  },
+  "vision": {
+    "none": "Normal vision",
+    "protanopia": "Protanopia (no red)",
+    "deuteranopia": "Deuteranopia (no green)",
+    "tritanopia": "Tritanopia (no blue)",
+    "achromatopsia": "Achromatopsia (no color)",
+    "blurred": "Blurred vision"
+  },
+  "contrastFix": {
+    "suggested": "Suggested:",
+    "copy": "Click to copy",
+    "copied": "Copied"
   }
 }

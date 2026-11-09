@@ -8,6 +8,7 @@
   import type { Issue } from '../../../lib/element/types';
   import Section from '../Section.svelte';
   import { panel } from '../store.svelte';
+  import ContrastFix from '../../../ui/ContrastFix.svelte';
   import Swatch from './Swatch.svelte';
   import { clearHighlights, hover, onPage } from './actions';
 
@@ -93,6 +94,13 @@
               >
             </div>
           {/if}
+        </div>
+        <div class="mt-1.5 pl-5.5">
+          <ContrastFix
+            aa={issue.metadata.suggestedAA}
+            aaa={issue.metadata.suggestedAAA}
+            format={fmt}
+          />
         </div>
         <div
           class="mt-1 truncate pl-5.5 font-mono text-[10.5px] text-fg-muted"

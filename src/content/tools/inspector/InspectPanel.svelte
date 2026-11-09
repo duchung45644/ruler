@@ -1,5 +1,6 @@
 <script module lang="ts">
   import { contrastRatio, parseColor, toHex, wcagLevel } from '../../../lib/style/color';
+  import { suggestTextFixes } from '../../../lib/style/contrast-fix';
   import { backgroundOf, isTextHeavy } from '../../core/contrast';
 
   /** Port of getTextColorWithAccessibility (:43944) + renderAccessibilityInfo (:43350). */
@@ -11,12 +12,17 @@
     const size = parseFloat(s.fontSize);
     const large = size >= 18 || (size >= 14 && parseInt(s.fontWeight) >= 700);
     const opacity = parseFloat(s.opacity);
-    const ratio = contrastRatio({ ...fg, a: fg.a * (isNaN(opacity) ? 1 : opacity) }, bg);
+    const painted = { ...fg, a: fg.a * (isNaN(opacity) ? 1 : opacity) };
+    const ratio = contrastRatio(painted, bg);
+    const level = wcagLevel(ratio, large);
+    const fix = level === 'AAA' ? null : suggestTextFixes(painted, bg, large);
     return {
       fg: toHex(fg),
       bg: toHex(bg),
       ratio: Math.round(ratio * 100) / 100,
-      level: wcagLevel(ratio, large),
+      level,
+      fixAA: level === 'fail' && fix?.aa ? toHex(fix.aa) : null,
+      fixAAA: fix?.aaa ? toHex(fix.aaa) : null,
     };
   }
 
@@ -58,6 +64,7 @@
   import { i18n } from '#i18n';
   import Copy from '@lucide/svelte/icons/copy';
   import { copyText } from '../../../lib/ext/clipboard';
+  import ContrastFix from '../../../ui/ContrastFix.svelte';
   import { cssSnippet, inspectGroups, renderedFont } from '../../../lib/css/inspect';
   import Info from '@lucide/svelte/icons/info';
   import { pinHintDone } from '../../../lib/ext/settings';
@@ -160,6 +167,9 @@
               {c.level === 'fail' ? 'AA' : c.level}
             </span>
           </span>
+        </div>
+        <div class="mt-1">
+          <ContrastFix aa={c.fixAA} aaa={c.fixAAA} format={core.colorFormat} />
         </div>
       </section>
     {/if}

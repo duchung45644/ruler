@@ -211,7 +211,19 @@ it('the dock is laid out by purpose, buttons keyed 1-9, 0 in dock order', async 
   state.paused = false;
   // the "more" menu holds the less used tools and lights up while one is on
   const { MORE_ITEMS } = await import('../core/registry.svelte');
-  expect(MORE_ITEMS).toEqual(['overlay', 'audit', 'eyedropper', 'mcp', 'pause']);
+  expect(MORE_ITEMS).toEqual([
+    'overlay',
+    'audit',
+    'eyedropper',
+    'vision',
+    'taborder',
+    'vitals',
+    'mcp',
+    'pause',
+  ]);
+  expect(['vision', 'taborder', 'vitals'].map((id) => items.find((i) => i.id === id)?.key)).toEqual(
+    ['y', 't', 'w'],
+  );
   const more = items.find((i) => i.id === 'more')!;
   expect(more.isActive!()).toBe(false);
   items.find((i) => i.id === 'audit')!.run();

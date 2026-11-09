@@ -5,7 +5,7 @@
   "cmdSelectParent": "Chuyển vùng chọn lên phần tử cha.",
   "cmdSelectChild": "Chuyển vùng chọn xuống phần tử con.",
   "dock": {
-    "more": "Công cụ khác",
+    "more": "Thêm công cụ",
     "pause": "Tạm dừng",
     "resume": "Tiếp tục",
     "quit": "Thoát",
@@ -32,7 +32,10 @@
     "delete": "Xóa",
     "undo": "Hoàn tác",
     "redo": "Làm lại",
-    "responsive": "Chế độ Responsive · B: breakpoint"
+    "responsive": "Chế độ Responsive · B: breakpoint",
+    "vision": "Mô phỏng thị lực",
+    "tabOrder": "Thứ tự focus bằng Tab",
+    "vitals": "Core Web Vitals"
   },
   "inspect": {
     "layout": "Box Model",
@@ -422,5 +425,18 @@
     "connectHint": "Dán đoạn này vào AI agent để kết nối:",
     "unknownAgent": "AI agent",
     "waitingForAgent": "Đang chờ agent kết nối…"
+  },
+  "vision": {
+    "none": "Thị lực bình thường",
+    "protanopia": "Mù màu đỏ (Protanopia)",
+    "deuteranopia": "Mù màu xanh lá (Deuteranopia)",
+    "tritanopia": "Mù màu xanh lam (Tritanopia)",
+    "achromatopsia": "Mù màu hoàn toàn (Achromatopsia)",
+    "blurred": "Nhìn mờ"
+  },
+  "contrastFix": {
+    "suggested": "Gợi ý:",
+    "copy": "Bấm để sao chép",
+    "copied": "Đã sao chép"
   }
 }

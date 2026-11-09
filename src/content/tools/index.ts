@@ -12,6 +12,9 @@ import { initSidePanel } from '../sidepanel';
 import { initEdit } from '../edit';
 import { initResponsive } from '../responsive';
 import { initXray } from './xray';
+import { initVision } from './vision';
+import { initTabOrder } from './taborder';
+import { initVitals } from './vitals';
 import { initMcpDock } from '../mcp/dock.svelte';
 
 /**
@@ -32,6 +35,9 @@ export async function initTools(): Promise<void> {
   initOverlay(); // designTools: before measure so its arrow keys win (legacy load order)
   await initMeasure();
   initAudit(); // designTools: after measure (legacy dock order)
+  initVision();
+  initTabOrder();
+  initVitals();
   await initSidePanel();
   initEdit(); // after the bridge: edit mode reuses its element ids
   initMcpDock(); // in the "more" menu

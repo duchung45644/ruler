@@ -1,3 +1,4 @@
+import type { VisionMode } from '../../lib/style/vision';
 import type { ColorFormat } from '../../lib/style/color';
 import { DEFAULT_SETTINGS } from '../../lib/ext/settings';
 
@@ -23,6 +24,10 @@ export const state = $state({
   auditOn: false,
   overlayOn: false,
   measureOn: false,
+  /** Vision deficiency simulated on the page (filter on <html>). */
+  vision: 'none' as VisionMode,
+  tabOrderOn: false,
+  vitalsOn: false,
   /** Capture bar / editor open: page tools pause, only the capture key handler runs. */
   capturing: false,
   /** Alert dialog up: tool keys stop (9.24). */

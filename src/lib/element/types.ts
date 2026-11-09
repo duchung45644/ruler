@@ -30,6 +30,9 @@ export interface Issue {
     fontSize?: number;
     fontWeight?: number;
     isLargeText?: boolean;
+    /** Nearest foreground (same hue, HEX) reaching AA / AAA; absent when none can. */
+    suggestedAA?: string;
+    suggestedAAA?: string;
   };
 }
 

@@ -28,7 +28,7 @@ it('setGrid merges and saves the whole layoutGrid', async () => {
   expect(layoutGrid.color).toBe('#FC48FF');
 });
 
-it('key 4 toggles the grid without opening the popover', async () => {
+it('key 4 turns the grid on (and saves it)', async () => {
   await initGrid();
   routeKey(new KeyboardEvent('keydown', { key: '4' }));
   await new Promise((r) => setTimeout(r, 350));
@@ -56,7 +56,7 @@ it('paints N columns with padding and max-width', async () => {
   layer.remove();
 });
 
-it('the dock button switches grid + panel; key 4 only the grid', async () => {
+it('the dock button switches grid + panel; key 4 does the same', async () => {
   const { items } = await import('../../core/registry.svelte');
   await initGrid();
   const btn = items.find((i) => i.id === 'grid')!;
@@ -66,13 +66,19 @@ it('the dock button switches grid + panel; key 4 only the grid', async () => {
   expect(state.popover).toBeNull(); // a side panel now, not a dock popover
   btn.run();
   expect(state.grid.isOn).toBe(false);
-  // key 4: grid without the panel; the button then opens the panel, grid stays on
+  // key 4 does what the button does: on (with its panel), then off
+  const panel = () => !!document.querySelector('[role="dialog"]');
   routeKey(new KeyboardEvent('keydown', { key: '4' }));
   expect(state.grid.isOn).toBe(true);
-  btn.run();
-  expect(state.grid.isOn).toBe(true);
-  btn.run();
+  routeKey(new KeyboardEvent('keydown', { key: '4' }));
   expect(state.grid.isOn).toBe(false);
+  // inside a responsive frame the forwarded toggle switches the grid only
+  state.inFrame = true;
+  btn.runKey!();
+  expect([state.grid.isOn, panel()]).toEqual([true, false]);
+  btn.runKey!();
+  expect(state.grid.isOn).toBe(false);
+  state.inFrame = false;
 });
 
 it('a pending save is written when the session stops', async () => {

@@ -59,7 +59,10 @@ export async function initGrid(): Promise<void> {
     // the button is the switch: on -> grid + settings panel (top right, like the other tools);
     // off -> both go. Settings you can't see are useless, so the panel comes with the grid.
     run: () => (panelOpen ? closeGrid() : openGrid()),
-    runKey: () => (state.grid.isOn ? closeGrid() : setGrid({ isOn: true })), // 3.03: no panel
+    // key 4 = the button. Inside a responsive frame (forwarded toggle) only the grid switches:
+    // the panel lives on the top page.
+    runKey: () =>
+      state.inFrame ? setGrid({ isOn: !state.grid.isOn }) : panelOpen ? closeGrid() : openGrid(),
     isActive: () => state.grid.isOn,
   });
   const signal = sessionSignal();

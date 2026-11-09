@@ -29,7 +29,6 @@ export default defineConfig({
       'activeTab',
       'contextMenus',
       'storage',
-      'declarativeContent',
       'sidePanel',
       'declarativeNetRequestWithHostAccess',
       'debugger',

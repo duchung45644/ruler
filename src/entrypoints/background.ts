@@ -180,7 +180,7 @@ async function fullCapture(tabId: number, o: FullCaptureOpts): Promise<FullCaptu
   }
 }
 
-// Port legacy-src/background.js:4560 (menu), :4618 (declarativeContent)
+// Port legacy-src/background.js:4560 (menu); the legacy declarativeContent ShowAction is dropped: the action is always enabled
 async function setup() {
   await setupPanels().catch(() => {});
   await browser.contextMenus.removeAll();
@@ -190,19 +190,6 @@ async function setup() {
     contexts: ['page', 'frame', 'selection', 'link', 'editable', 'image', 'video', 'audio'],
   });
   createOptionsMenu();
-  const dc = browser.declarativeContent;
-  if (!dc) return;
-  await browser.action.enable();
-  dc.onPageChanged.removeRules(undefined, () =>
-    dc.onPageChanged.addRules([
-      {
-        conditions: [
-          new dc.PageStateMatcher({ pageUrl: { schemes: ['http', 'https', 'file', 'ftp'] } }),
-        ],
-        actions: [new dc.ShowAction()],
-      },
-    ]),
-  );
 }
 
 export default defineBackground(() => {

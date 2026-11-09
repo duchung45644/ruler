@@ -84,3 +84,34 @@ export function isColorValue(
 
 /** Valid custom property name (what setProperty accepts). */
 export const isVarName = (name: string): boolean => /^--[\w-]+$/.test(name);
+
+const CLOSE: Record<string, string> = { '(': ')', '[': ']', '{': '}' };
+
+/**
+ * A value that stays one declaration inside a `style` attribute: brackets balanced, strings and
+ * comments closed, no `;` or `!` outside a string or
+ * parentheses. Rejected rather than rewritten, so a data URL or
+ * quoted `;` keeps its meaning.
+ */
+export function isVarValue(value: string): boolean {
+  const stack: string[] = [];
+  for (let i = 0; i < value.length; i++) {
+    const c = value[i]!;
+    if (c === '"' || c === "'") {
+      for (i++; i < value.length && value[i] !== c; i++) {
+        if (value[i] === '\\') i++;
+        else if (value[i] === '\n') return false;
+      }
+      if (i >= value.length) return false;
+    } else if (c === '/' && value[i + 1] === '*') {
+      const end = value.indexOf('*/', i + 2);
+      if (end < 0) return false;
+      i = end + 1;
+    } else if (c === '\\') i++;
+    else if (CLOSE[c]) stack.push(CLOSE[c]);
+    else if (c === ')' || c === ']' || c === '}') {
+      if (stack.pop() !== c) return false;
+    } else if ((c === ';' || c === '!') && stack.at(-1) !== ')') return false;
+  }
+  return stack.length === 0;
+}

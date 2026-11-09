@@ -20,13 +20,18 @@
   const groups = $derived(groupVars(shown.slice(0, MAX_ROWS)));
   const supports = (v: string) => CSS.supports('color', v);
 
-  async function set(v: CssVar, value: string) {
-    value = value.trim();
+  async function set(v: CssVar, input: HTMLInputElement) {
+    const value = input.value.trim();
     if (value === v.value) return;
     const r = await toPageData('set_root_variable', v.name, value);
-    if (!r?.ok) return;
+    if (!r?.ok) {
+      input.value = v.value; // rejected: show what still applies
+      return;
+    }
     takeState(r);
-    vars = (vars ?? []).map((x) => (x.name === v.name ? { ...x, value } : x));
+    const now = r.value ?? value;
+    input.value = now; // cleared: the sheet's value, even when it equals the old one
+    vars = (vars ?? []).map((x) => (x.name === v.name ? { ...x, value: now } : x));
   }
 
   function onkey(e: KeyboardEvent, v: CssVar) {
@@ -70,7 +75,7 @@
           value={v.value}
           spellcheck="false"
           aria-label={v.name}
-          onchange={(e) => set(v, e.currentTarget.value)}
+          onchange={(e) => set(v, e.currentTarget)}
           onkeydown={(e) => onkey(e, v)}
         />
       </label>

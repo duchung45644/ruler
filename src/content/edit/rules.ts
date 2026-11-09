@@ -313,6 +313,14 @@ export class RuleTracker {
 
   // ---- inline style ----
 
+  /** The inline declarations as last edited here, else the element's own `style` attribute. */
+  inlineText(el: HTMLElement): string {
+    const rec = [...this.recs.values()].find(
+      (r): r is InlineRecord => r.kind === 'inline' && r.el === el,
+    );
+    return rec ? rec.current : (el.getAttribute('style') ?? '');
+  }
+
   editInlineStyle(el: HTMLElement, declsText: string): RuleChange {
     let rec = [...this.recs.values()].find(
       (r): r is InlineRecord => r.kind === 'inline' && r.el === el,

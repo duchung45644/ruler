@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  isVarValue,
   customProps,
   filterVars,
   groupKey,
@@ -63,5 +64,14 @@ describe('css variables', () => {
     expect(isVarName('--a-b_1')).toBe(true);
     expect(isVarName('--a;b')).toBe(false);
     expect(isVarName('color')).toBe(false);
+  });
+});
+
+describe('isVarValue', () => {
+  it('keeps data URLs and quoted punctuation, rejects declaration breakout', () => {
+    for (const v of ['', '#fff', 'url(data:image/png;base64,AAA=)', '"a;b}"', 'calc(1px + (2px))'])
+      expect(isVarValue(v), v).toBe(true);
+    for (const v of ['red; color: blue', 'red}', '{', 'red !important', '"open', '/* x', '(]'])
+      expect(isVarValue(v), v).toBe(false);
   });
 });

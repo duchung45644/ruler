@@ -125,7 +125,8 @@ export interface ContentApi {
   merge_rule_styles(addr: RuleAddress, decls: Decl[]): EditResult;
   get_root_variables(): CssVar[];
   /** An empty value removes the inline override. */
-  set_root_variable(name: string, value: string): EditResult;
+  /** `value` is the computed value afterwards. */
+  set_root_variable(name: string, value: string): EditResult & { value?: string };
   rule_selector_edit(addr: RuleAddress, selector: string): EditResult;
   rule_add(selector?: string): EditResult;
   get_all_flattened_changes(): { rules: RuleChange[]; html: HtmlChange[] };

@@ -16,13 +16,14 @@ const filterId = (mode: VisionMode) => `pixellens-vision-${mode}`;
 /**
  * Filters live in the page's light DOM (url(#id) resolves against the document), wrapped in an
  * `pixellens-` element so page scans skip it. Built with createElementNS: no innerHTML (Trusted Types).
+ * The filter itself goes in a `<style>` there, never the inline style of <html>: inline edits of
+ * <html> (CSS variables) read and record that attribute.
  */
 let defs: HTMLElement | null = null;
-/** The page's own inline `filter` on <html>, put back exactly on off. */
-let saved: { value: string; priority: string } | null = null;
+let sheet: HTMLStyleElement | null = null;
 
-function ensureDefs(): void {
-  if (defs?.isConnected) return;
+function ensureDefs(): HTMLStyleElement {
+  if (defs?.isConnected && sheet) return sheet;
   defs = document.createElement('pixellens-vision');
   defs.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden';
   const svg = document.createElementNS(SVG, 'svg');
@@ -38,8 +39,10 @@ function ensureDefs(): void {
     filter.append(m);
     svg.append(filter);
   }
-  defs.append(svg);
+  sheet = document.createElement('style');
+  defs.append(svg, sheet);
   document.documentElement.append(defs);
+  return sheet;
 }
 
 /**
@@ -49,20 +52,12 @@ function ensureDefs(): void {
  */
 export function setVision(mode: VisionMode): void {
   state.vision = mode;
-  const html = document.documentElement.style;
   if (mode === 'none') {
-    if (saved) html.setProperty('filter', saved.value, saved.priority);
-    saved = null;
     defs?.remove();
-    defs = null;
+    defs = sheet = null;
     return;
   }
-  saved ??= {
-    value: html.getPropertyValue('filter'),
-    priority: html.getPropertyPriority('filter'),
-  };
-  if (colorMatrix(mode)) ensureDefs();
-  html.setProperty('filter', visionFilter(mode, filterId), 'important');
+  ensureDefs().textContent = `html{filter:${visionFilter(mode, filterId)} !important}`;
 }
 
 export function initVision(): void {

@@ -34,7 +34,7 @@ import {
 import { schedulePersist } from './persist';
 import { rootAt, type RuleError } from './rules';
 import { rootVariables } from './variables';
-import { isVarName } from '../../lib/css/variables';
+import { isVarName, isVarValue } from '../../lib/css/variables';
 
 const MAX_CLASSES = 2000;
 
@@ -155,11 +155,15 @@ export const editHandlers: Handlers<ContentApi> = {
   /** An inline edit on <html>, so it lands in Changes, undo and the export like any other. */
   set_root_variable(name, value) {
     if (!isVarName(name)) return fail('Invalid variable name');
+    if (!isVarValue(value)) return fail('Invalid variable value');
     const root = document.documentElement;
-    const merged = mergeDecls(parseDecls(root.getAttribute('style') ?? ''), [
-      { property: name, value: value.replace(/[;{}]/g, ''), important: false },
+    const tracker = ruleTracker();
+    const merged = mergeDecls(parseDecls(tracker.inlineText(root)), [
+      { property: name, value: value.trim(), important: false },
     ]);
-    return fromRule(ruleTracker().editInlineStyle(root, serializeDecls(merged)));
+    const r = fromRule(tracker.editInlineStyle(root, serializeDecls(merged)));
+    // cleared: the sheet's value shows through again
+    return { ...r, value: getComputedStyle(root).getPropertyValue(name).trim() };
   },
   merge_rule_styles(addr, decls) {
     const root = rootAt(addr.scopeAddress);

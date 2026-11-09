@@ -4,7 +4,7 @@ import { customProps, isRootSelector, type CssVar } from '../../lib/css/variable
 
 const MAX_VARS = 2000;
 
-/** Names declared on :root / html in readable sheets (inside @media / @layer too) and inline. */
+/** Names declared on :root / html in readable sheets (inside @media / @layer / @import too) and inline. */
 function rootVarNames(): Set<string> {
   const names = new Set<string>();
   const walk = (rules: CSSRuleList | null) => {
@@ -14,6 +14,7 @@ function rootVarNames(): Set<string> {
       if (r instanceof CSSStyleRule && isRootSelector(r.selectorText))
         for (const n of customProps(r.style)) names.add(n);
       if ('cssRules' in r) walk((r as CSSGroupingRule).cssRules);
+      else if ('styleSheet' in r && r.styleSheet) walk(cssRulesOf(r.styleSheet as CSSStyleSheet));
     }
   };
   for (const { sheet } of sheetsOf(document)) walk(cssRulesOf(sheet));

@@ -1,7 +1,7 @@
 {
-  "extName": "PixelLens — Đo, soi và chỉnh trang web",
+  "extName": "PixelLens — Rõ đến từng pixel",
   "extNameShort": "PixelLens",
-  "extDescription": "Đo khoảng cách, sửa CSS trực tiếp, kiểm tra tương phản, so với bản thiết kế và chụp trang, tất cả trong một thanh công cụ.",
+  "extDescription": "Rê chuột lên một phần tử để thấy nó được dựng ra sao, từ kích thước, khoảng cách đến style và màu, rồi chỉnh ngay trên trang.",
   "cmdSelectParent": "Chuyển vùng chọn lên phần tử cha.",
   "cmdSelectChild": "Chuyển vùng chọn xuống phần tử con.",
   "dock": {

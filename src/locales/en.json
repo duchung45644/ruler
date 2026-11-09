@@ -1,7 +1,7 @@
 {
-  "extName": "PixelLens — Measure, Inspect & Tweak Any Page",
+  "extName": "PixelLens — Every Pixel in Focus",
   "extNameShort": "PixelLens",
-  "extDescription": "See every pixel: measure spacing, edit CSS live, check contrast, compare with your design and capture pages, all from one dock.",
+  "extDescription": "Hover any element to see how it's built, from size and spacing to styles and colors, then fine-tune it right on the page.",
   "cmdSelectParent": "Move selection to parent element.",
   "cmdSelectChild": "Move selection to child element.",
   "dock": {

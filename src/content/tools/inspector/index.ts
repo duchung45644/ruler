@@ -124,6 +124,7 @@ registerItem({
   icon: ArrowUpToLine,
   label: 'dock.selectParent',
   run: selectParent,
+  shown: () => !!state.selected,
   isDisabled: () => !state.selected || !parentOf(state.selected),
 });
 registerItem({
@@ -132,6 +133,7 @@ registerItem({
   icon: ArrowDownToLine,
   label: 'dock.selectChild',
   run: selectChild,
+  shown: () => !!state.selected,
   isDisabled: () => !state.selected || (!stack.length && !firstChildOf(state.selected, isOwnHost)),
 });
 

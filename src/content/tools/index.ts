@@ -1,3 +1,4 @@
+import { initMore } from '../core/more';
 import { initAudit } from './audit';
 import { initBreakpoints } from './breakpoints';
 import { initCapture } from './capture';
@@ -34,4 +35,5 @@ export async function initTools(): Promise<void> {
   await initSidePanel();
   initEdit(); // after the bridge: edit mode reuses its element ids
   initMcpDock(); // last group, before Quit (1.46)
+  initMore();
 }

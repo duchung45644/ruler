@@ -1,6 +1,6 @@
 <script lang="ts">
   import { i18n } from '#i18n';
-  import type { DockItem } from '../content/core/registry.svelte';
+  import { dockButtonOf, type DockItem } from '../content/core/registry.svelte';
   import { state as app } from '../content/core/state.svelte';
 
   let { item, disabled }: { item: DockItem; disabled: boolean } = $props();
@@ -8,7 +8,10 @@
   const Icon = $derived((active && item.activeIcon) || item.icon);
   const label = $derived(i18n.t((active && item.activeLabel) || item.label));
   let tip: HTMLElement;
-  const notice = $derived(app.dockNotice?.id === item.id ? app.dockNotice : null);
+  // a tool in the "more" menu (eyedropper's copied colour) shows its notice on that button
+  const notice = $derived(
+    app.dockNotice && dockButtonOf(app.dockNotice.id) === item.id ? app.dockNotice : null,
+  );
   $effect(() => {
     const n = notice;
     if (!n) return;

@@ -5,6 +5,7 @@
   "cmdSelectParent": "Chuyển vùng chọn lên phần tử cha.",
   "cmdSelectChild": "Chuyển vùng chọn xuống phần tử con.",
   "dock": {
+    "more": "Công cụ khác",
     "pause": "Tạm dừng",
     "resume": "Tiếp tục",
     "quit": "Thoát",

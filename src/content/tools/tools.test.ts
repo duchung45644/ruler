@@ -191,8 +191,27 @@ it('the dock is laid out by purpose with mnemonic keys', async () => {
   const { dockGroups } = await import('../core/registry.svelte');
   await initTools();
   const groups = dockGroups().map((g) => g.map((i) => i.id));
-  expect(groups.find((g) => g.includes('ruler'))).toEqual(['ruler', 'measure', 'eyedropper']);
-  expect(groups.at(-1)).toEqual(['sidepanel', 'pause', 'mcp', 'quit']);
+  expect(groups.find((g) => g.includes('ruler'))).toEqual(['ruler', 'measure']);
+  expect(groups.find((g) => g.includes('capture'))).toEqual(['capture', 'more']);
+  // pause and MCP stay off the dock until used; parent/child until something is selected
+  expect(groups.at(-1)).toEqual(['sidepanel', 'quit']);
+  expect(groups[0]).toEqual(['inspect', 'find']);
+  const { state } = await import('../core/state.svelte');
+  state.selected = document.body;
+  state.paused = true;
+  const shown = dockGroups().map((g) => g.map((i) => i.id));
+  expect(shown[0]).toEqual(['select_parent', 'select_child', 'inspect', 'find']);
+  expect(shown.at(-1)).toEqual(['sidepanel', 'pause', 'quit']);
+  state.selected = null;
+  state.paused = false;
+  // the "more" menu holds the less used tools and lights up while one is on
+  const { MORE_ITEMS } = await import('../core/registry.svelte');
+  expect(MORE_ITEMS).toEqual(['overlay', 'audit', 'eyedropper', 'pause']);
+  const more = items.find((i) => i.id === 'more')!;
+  expect(more.isActive!()).toBe(false);
+  items.find((i) => i.id === 'audit')!.run();
+  expect(more.isActive!()).toBe(true);
+  items.find((i) => i.id === 'audit')!.run();
   expect(groups.flat()).not.toContain('breakpoints'); // key B only; the responsive toolbar has it
   const keyOf = (id: string) => items.find((i) => i.id === id)?.key;
   expect(['xray', 'grid', 'ruler', 'breakpoints', 'eyedropper', 'capture'].map(keyOf)).toEqual([

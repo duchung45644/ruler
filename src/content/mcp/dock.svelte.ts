@@ -43,6 +43,8 @@ export function initMcpDock(): void {
     label: LABELS[dockState(mcp.status)],
     popover: McpPopover,
     run: () => togglePopover('mcp'), // one popover at a time (1.50)
+    // only once MCP is in use: turned on (settings / earlier connect) or connected
+    shown: () => mcp.status.intent || mcp.status.connected || state.popover === 'mcp',
   });
   setStatus(mcp.status);
   void refreshStatus();

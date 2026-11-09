@@ -29,6 +29,8 @@ export interface DockItem {
   run(): void;
   isActive?(): boolean;
   isDisabled?(): boolean;
+  /** Dock button shown only while this is true (the key works either way). */
+  shown?(): boolean;
   /** Stays usable while paused. */
   alwaysEnabled?: boolean;
   /** Drawn above the button while state.popover === id; destroyed on close (clean up in onDestroy). */
@@ -60,7 +62,7 @@ export function setForwarder(f: Forwarder | null): void {
 export const localOf = new Map<string, { toggle(): void; isActive?(): boolean }>();
 
 function wrapForward(item: DockItem): DockItem {
-  const { id, run, runKey, isActive, isDisabled } = item;
+  const { id, run, runKey, isActive, isDisabled, shown } = item;
   const toggle = runKey ?? run;
   localOf.set(id, { toggle, isActive });
   const fwd = (local: () => void) => () => {
@@ -73,6 +75,7 @@ function wrapForward(item: DockItem): DockItem {
     ...(isActive && { isActive: () => (forwarder?.on() ? forwarder.isActive(id) : isActive()) }),
     // the parent has no selection: the frames decide (select_parent / select_child)
     ...(isDisabled && { isDisabled: () => !forwarder?.on() && isDisabled() }),
+    ...(shown && { shown: () => !!forwarder?.on() || shown() }),
   };
 }
 
@@ -88,17 +91,23 @@ const TEXT_EDIT_ITEMS = ['inspect', 'sidepanel', 'quit'];
 export const DOCK_LAYOUT = [
   ['select_parent', 'select_child', 'inspect', 'find'],
   ['xray', 'grid', 'responsive'],
-  ['ruler', 'measure', 'eyedropper'],
-  ['overlay', 'audit', 'capture'],
+  ['ruler', 'measure'],
+  ['capture', 'more'],
   ['sidepanel', 'pause', 'mcp', 'quit'], // MCP last before Quit (1.46)
 ];
+
+/** Less used tools behind the "more" button (owner's call, 2026-11-09); their keys still work. */
+export const MORE_ITEMS = ['overlay', 'audit', 'eyedropper', 'pause'];
+
+/** The dock button that stands for `id`: itself, or "more" for the items in its menu. */
+export const dockButtonOf = (id: string): string => (MORE_ITEMS.includes(id) ? 'more' : id);
 
 /** Dock groups in display order; empty groups are dropped. */
 export function dockGroups(): DockItem[][] {
   const byId = (id: string) => items.find((i) => i.id === id);
-  return DOCK_LAYOUT.map((ids) => ids.map(byId).filter((i): i is DockItem => !!i)).filter(
-    (g) => g.length,
-  );
+  return DOCK_LAYOUT.map((ids) =>
+    ids.map(byId).filter((i): i is DockItem => !!i && (i.shown?.() ?? true)),
+  ).filter((g) => g.length);
 }
 
 /** Paused or text editing: everything but a few items is locked. */
@@ -135,6 +144,8 @@ registerItem({
   alwaysEnabled: true,
   run: () => setPaused(!state.paused),
   isActive: () => state.paused,
+  // pause lives in the "more" menu; while paused, Resume sits on the dock
+  shown: () => state.paused,
 });
 registerItem({
   id: 'quit',

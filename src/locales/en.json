@@ -5,6 +5,7 @@
   "cmdSelectParent": "Move selection to parent element.",
   "cmdSelectChild": "Move selection to child element.",
   "dock": {
+    "more": "More Tools",
     "pause": "Pause",
     "resume": "Resume",
     "quit": "Quit",

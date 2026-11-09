@@ -56,21 +56,23 @@ it('paints N columns with padding and max-width', async () => {
   layer.remove();
 });
 
-it('opening the panel shows the grid', async () => {
+it('the dock button switches grid + panel; key G only the grid', async () => {
   const { items } = await import('../../core/registry.svelte');
   await initGrid();
+  const btn = items.find((i) => i.id === 'grid')!;
   state.grid.isOn = false;
-  items.find((i) => i.id === 'grid')!.run();
-  expect(state.popover).toBe('grid');
+  btn.run();
   expect(state.grid.isOn).toBe(true);
-  // the button is the switch: with the panel open it turns the grid off
-  items.find((i) => i.id === 'grid')!.run();
-  expect([state.popover, state.grid.isOn]).toEqual([null, false]);
-  // on without the panel (key G): the button opens the panel, grid stays on
-  setGrid({ isOn: true });
-  items.find((i) => i.id === 'grid')!.run();
-  expect([state.popover, state.grid.isOn]).toEqual(['grid', true]);
-  state.popover = null;
+  expect(state.popover).toBeNull(); // a side panel now, not a dock popover
+  btn.run();
+  expect(state.grid.isOn).toBe(false);
+  // key G: grid without the panel; the button then opens the panel, grid stays on
+  routeKey(new KeyboardEvent('keydown', { key: 'g' }));
+  expect(state.grid.isOn).toBe(true);
+  btn.run();
+  expect(state.grid.isOn).toBe(true);
+  btn.run();
+  expect(state.grid.isOn).toBe(false);
 });
 
 it('a pending save is written when the session stops', async () => {

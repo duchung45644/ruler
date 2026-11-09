@@ -1,11 +1,12 @@
 import LayoutGridIcon from '@lucide/svelte/icons/layout-grid';
 import { getSettings, updateSettings, type LayoutGrid } from '../../../lib/ext/settings';
 import { addPainter, draw, requestPaint } from '../../core/overlay';
-import { registerItem, togglePopover } from '../../core/registry.svelte';
+import { registerItem } from '../../core/registry.svelte';
 import { onStop, sessionSignal } from '../../core/session';
 import { state } from '../../core/state.svelte';
 import { forwardSetting } from '../../responsive/forward';
-import GridPopover from './GridPopover.svelte';
+import { panelToggle } from '../../../ui/mount';
+import GridPanel from './GridPanel.svelte';
 
 /** Port of updateMaxWidth (legacy-src/content.js:42695). */
 export function parseMaxWidth(v: string): 'auto' | number {
@@ -32,6 +33,22 @@ export function setGrid(patch: Partial<LayoutGrid>): void {
   saveTimer = window.setTimeout(saveNow, SAVE_DELAY);
 }
 
+const showPanel = panelToggle(GridPanel);
+let panelOpen = false;
+
+export function openGrid(): void {
+  setGrid({ isOn: true });
+  panelOpen = true;
+  showPanel(true);
+}
+
+/** Grid off and its panel closed (the panel's X, the dock button, key G). */
+export function closeGrid(): void {
+  setGrid({ isOn: false });
+  panelOpen = false;
+  showPanel(false);
+}
+
 export async function initGrid(): Promise<void> {
   registerItem({
     id: 'grid',
@@ -39,24 +56,17 @@ export async function initGrid(): Promise<void> {
     icon: LayoutGridIcon,
     label: 'dock.grid',
     key: 'g',
-    popover: GridPopover,
-    // the button is the switch (no checkbox in the panel): off -> on + panel; on -> panel;
-    // panel open -> off. Settings you can't see are useless, so opening shows the grid.
-    run: () => {
-      if (state.popover === 'grid') {
-        state.popover = null;
-        setGrid({ isOn: false });
-      } else {
-        togglePopover('grid');
-        if (!state.grid.isOn) setGrid({ isOn: true });
-      }
-    },
-    runKey: () => setGrid({ isOn: !state.grid.isOn }), // 3.03
+    // the button is the switch: on -> grid + settings panel (top right, like the other tools);
+    // off -> both go. Settings you can't see are useless, so the panel comes with the grid.
+    run: () => (panelOpen ? closeGrid() : openGrid()),
+    runKey: () => (state.grid.isOn ? closeGrid() : setGrid({ isOn: true })), // 3.03: no panel
     isActive: () => state.grid.isOn,
   });
   const signal = sessionSignal();
   onStop(() => {
     if (saveTimer) saveNow(); // a pending edit is not lost
+    panelOpen = false;
+    showPanel(false);
     state.grid.isOn = false; // not persisted: next session restores it (1.43)
   });
   // 3.04, port of toggleGrid (legacy-src/content.js:42389)

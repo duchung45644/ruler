@@ -97,6 +97,23 @@ it('ruler: drag a guide out of the top strip, swallow the click, drop back to re
   items.find((i) => i.id === 'ruler')!.run(); // back on: they come back
   expect(await currentGuides()).toEqual([{ axis: 'h', pos: 150 }]);
 
+  // click a guide to select it; Delete removes it, and never reaches other key handlers
+  const keySpy = vi.fn();
+  window.addEventListener('keydown', keySpy);
+  document.body.dispatchEvent(ev('pointerdown', 300, 150));
+  document.body.dispatchEvent(ev('pointerup', 300, 150));
+  const del = new KeyboardEvent('keydown', { key: 'Delete', bubbles: true, cancelable: true });
+  document.body.dispatchEvent(del);
+  expect(del.defaultPrevented).toBe(true);
+  expect(keySpy).not.toHaveBeenCalled();
+  expect(await currentGuides()).toEqual([]);
+  // nothing selected: Delete passes through
+  document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Delete', bubbles: true }));
+  expect(keySpy).toHaveBeenCalledTimes(1);
+  window.removeEventListener('keydown', keySpy);
+  document.body.dispatchEvent(ev('pointerdown', 5, 150));
+  document.body.dispatchEvent(ev('pointerup', 300, 150));
+
   // the corner makes both guides, crossing at the pointer
   document.body.dispatchEvent(ev('pointerdown', 5, 5));
   window.dispatchEvent(ev('pointermove', 400, 500));

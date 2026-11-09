@@ -22,6 +22,8 @@ const HOT = '#FF3B6B';
 let guides: Guide[] = [];
 /** Guides being dragged (two from the corner). */
 let hot: Guide[] = [];
+/** Clicked guide: Delete / Backspace removes it, Escape or a click elsewhere drops it. */
+let selected: Guide | null = null;
 let rulers: HTMLElement | null = null;
 let crossX: HTMLElement | null = null;
 let crossY: HTMLElement | null = null;
@@ -94,6 +96,7 @@ function apply(on: boolean): void {
     setCursor(false);
     if (hot.length) resetDrag(); // legacy core.js:44 ends the drag
     hot = [];
+    selected = null;
   }
   requestPaint();
 }
@@ -113,6 +116,7 @@ function onPointerDown(e: PointerEvent): void {
   if (!live() || e.button !== 0 || isOwnEvent(e, host())) return;
   const { clientX: cx, clientY: cy } = e;
   const near = nearestGuide(guides, cx, cy, scroll());
+  selected = near;
   let picked: Guide[] = near ? [near] : [];
   if (!near && (cy < RULER || cx < RULER)) {
     const v: Guide = { axis: 'v', pos: cx + scrollX };
@@ -133,6 +137,7 @@ function onPointerDown(e: PointerEvent): void {
       // dropped back on the strip it came from: remove
       const gone = drag.filter((g) => (g.axis === 'v' ? u.clientY < RULER : u.clientX < RULER));
       guides = guides.filter((x) => !gone.includes(x));
+      if (selected && gone.includes(selected)) selected = null;
       hot = [];
       requestPaint();
     },
@@ -176,7 +181,25 @@ export async function initRuler(): Promise<void> {
       e.preventDefault();
       e.stopImmediatePropagation();
       guides = guides.filter((x) => x !== g);
+      if (selected === g) selected = null;
       setCursor(false);
+      requestPaint();
+    },
+    opts,
+  );
+  // capture, before the session keys: Delete must not reach the element editor
+  window.addEventListener(
+    'keydown',
+    (e) => {
+      // typing in our own UI (panels, popovers) keeps its keys
+      if (!live() || !selected || isOwnEvent(e, host())) return;
+      if (e.key === 'Delete' || e.key === 'Backspace') {
+        const g = selected;
+        guides = guides.filter((x) => x !== g);
+      } else if (e.key !== 'Escape') return;
+      selected = null;
+      e.preventDefault();
+      e.stopImmediatePropagation();
       requestPaint();
     },
     opts,
@@ -186,6 +209,7 @@ export async function initRuler(): Promise<void> {
     apply(false); // not persisted: next session restores it (1.43)
     guides = [];
     hot = [];
+    selected = null;
   });
   addPainter('ruler', (box) => {
     // guides hide with the ruler (owner's call, 2026-11-09; legacy kept drawing them)
@@ -194,13 +218,14 @@ export async function initRuler(): Promise<void> {
     draw(box, `left:0;top:0;width:100%;height:${RULER}px;${zone}`);
     draw(box, `left:0;top:0;width:${RULER}px;height:100%;${zone}`);
     for (const g of guides) {
-      const c = hot.includes(g) ? HOT : GUIDE;
+      const c = hot.includes(g) || g === selected ? HOT : GUIDE;
+      const w = g === selected ? 2 : 1;
       const p = g.pos - (g.axis === 'h' ? scrollY : scrollX);
       draw(
         box,
         g.axis === 'h'
-          ? `left:0;right:0;top:${p}px;height:1px;background:${c}`
-          : `top:0;bottom:0;left:${p}px;width:1px;background:${c}`,
+          ? `left:0;right:0;top:${p}px;height:${w}px;background:${c}`
+          : `top:0;bottom:0;left:${p}px;width:${w}px;background:${c}`,
       );
       draw(
         box,

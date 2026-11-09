@@ -35,7 +35,8 @@ export function requestPaint(): void {
 
 /** Attach the layer to the session shadow root; returns the detach fn (for onStop). */
 export function mountLayer(shadow: ShadowRoot): () => void {
-  shadow.append(layer);
+  // first in the shadow root: overlays (grid, highlights, ruler) paint under the dock and panels
+  shadow.prepend(layer);
   return () => {
     if (raf) cancelAnimationFrame(raf);
     raf = 0;

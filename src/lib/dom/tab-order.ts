@@ -34,10 +34,37 @@ export function isTabbable(el: Element): boolean {
   return isVisible(el);
 }
 
-/** Focusable, tabbable elements under `root` in Tab order, skipping `isOwn` (our UI). */
+/**
+ * Focusable, tabbable elements under `root` in Tab order, skipping `isOwn` (our UI). An open shadow
+ * root is its own scope: sorted on its own and inserted where its host sits, ordered by the host's
+ * tabindex (after the host itself when the host is focusable). Slotted content keeps its light-DOM place.
+ */
 export function tabOrder(root: ParentNode, isOwn: (el: Element) => boolean): HTMLElement[] {
-  const els = [...root.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
-    (el) => !isOwn(el) && isTabbable(el),
-  );
-  return sortTabOrder(els, (el) => el.tabIndex);
+  const focusable = new Set(root.querySelectorAll(FOCUSABLE));
+  const entries: { n: number; els: HTMLElement[] }[] = [];
+  for (const el of root.querySelectorAll<HTMLElement>('*')) {
+    if (isOwn(el)) continue;
+    const self = focusable.has(el) && isTabbable(el) ? [el] : [];
+    const inner = el.shadowRoot ? tabOrder(el.shadowRoot, isOwn) : [];
+    if (!self.length && !inner.length) continue;
+    const n = self.length || el.hasAttribute('tabindex') ? el.tabIndex : 0;
+    entries.push({ n, els: [...self, ...inner] });
+  }
+  return sortTabOrder(entries, (e) => e.n).flatMap((e) => e.els);
+}
+
+/** The node itself or an ancestor is our UI (an own host, or a `data-pixellens` node). */
+function inOwn(node: Node, isOwn: (el: Element) => boolean): boolean {
+  for (let el = node instanceof Element ? node : node.parentElement; el; el = el.parentElement)
+    if (isOwn(el) || el.hasAttribute('data-pixellens')) return true;
+  return false;
+}
+
+/** True when some record touches the page rather than only our own nodes (overlay, split bar…). */
+export function touchesPage(records: MutationRecord[], isOwn: (el: Element) => boolean): boolean {
+  return records.some((r) => {
+    if (r.type !== 'childList') return !inOwn(r.target, isOwn);
+    if (inOwn(r.target, isOwn)) return false;
+    return [...r.addedNodes, ...r.removedNodes].some((n) => n.nodeType === 1 && !inOwn(n, isOwn));
+  });
 }

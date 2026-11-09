@@ -35,7 +35,7 @@ function makeBar(onDrop: () => void): HTMLDivElement {
   return el;
 }
 
-/** Draws the bar at the divider's viewport x (made on first use); `onDrop` runs after a drag. */
+/** Draws the bar at the divider's viewport x (made on first use); `onDrop` commits after a drag. */
 export function paintSplit(x: number, onDrop: () => void): void {
   bar ??= makeBar(onDrop);
   if (!bar.isConnected) document.documentElement.append(bar);

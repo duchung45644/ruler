@@ -1,6 +1,6 @@
 import ListOrdered from '@lucide/svelte/icons/list-ordered';
 import { isOwnHost } from '../../../lib/dom/dom';
-import { tabOrder } from '../../../lib/dom/tab-order';
+import { tabOrder, touchesPage } from '../../../lib/dom/tab-order';
 import { ownNodes } from '../../core/events';
 import { addPainter, draw, requestPaint, visibleRects } from '../../core/overlay';
 import { registerItem } from '../../core/registry.svelte';
@@ -21,7 +21,9 @@ function rescan(): void {
   requestPaint();
 }
 
-function scheduleRescan(): void {
+function scheduleRescan(records: MutationRecord[]): void {
+  // our overlay images / split bar restyle on every paint: reacting to them would loop
+  if (!touchesPage(records, isOwn)) return;
   clearTimeout(timer);
   timer = window.setTimeout(rescan, 250);
 }

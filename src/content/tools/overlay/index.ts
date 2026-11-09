@@ -224,7 +224,7 @@ function position(): void {
     img.style.cssText = `all:initial;position:fixed;left:${left}px;top:${top}px;z-index:2147483646;pointer-events:auto;cursor:${cursor};width:${w ? `${w}px` : 'auto'};max-width:none;box-shadow:${shadow};outline:${outline};opacity:${look.opacity};mix-blend-mode:${look.blend};filter:${look.filter};clip-path:${clip};display:block;`;
   });
   if (divider === null) removeSplit();
-  else paintSplit(divider, savePrefs);
+  else paintSplit(divider, () => setPrefs({ splitPos: overlay.prefs.splitPos }));
 }
 
 const showPanel = panelToggle(OverlayPanel);

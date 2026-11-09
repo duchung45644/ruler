@@ -193,15 +193,20 @@ it('the dock is laid out by purpose with mnemonic keys', async () => {
   const groups = dockGroups().map((g) => g.map((i) => i.id));
   expect(groups.find((g) => g.includes('ruler'))).toEqual(['ruler', 'measure']);
   expect(groups.find((g) => g.includes('capture'))).toEqual(['capture', 'more']);
-  // pause and MCP stay off the dock until used; parent/child until something is selected
-  expect(groups.at(-1)).toEqual(['sidepanel', 'quit']);
+  // pause lives in the more menu; parent/child wait for a selection
+  expect(groups.at(-1)).toEqual(['sidepanel', 'mcp', 'quit']);
   expect(groups[0]).toEqual(['inspect', 'find']);
   const { state } = await import('../core/state.svelte');
   state.selected = document.body;
+  expect(dockGroups()[0]!.map((i) => i.id)).toEqual([
+    'select_parent',
+    'select_child',
+    'inspect',
+    'find',
+  ]);
+  // paused: only the buttons that still work
   state.paused = true;
-  const shown = dockGroups().map((g) => g.map((i) => i.id));
-  expect(shown[0]).toEqual(['select_parent', 'select_child', 'inspect', 'find']);
-  expect(shown.at(-1)).toEqual(['sidepanel', 'pause', 'quit']);
+  expect(dockGroups().map((g) => g.map((i) => i.id))).toEqual([['pause', 'quit']]);
   state.selected = null;
   state.paused = false;
   // the "more" menu holds the less used tools and lights up while one is on
@@ -222,4 +227,17 @@ it('the dock is laid out by purpose with mnemonic keys', async () => {
     'c',
     's',
   ]);
+});
+
+it('key H pauses, and resumes while paused (other keys go to the page)', async () => {
+  const { routeKey } = await import('../core/keys');
+  const { state } = await import('../core/state.svelte');
+  await initTools();
+  const key = (k: string) => routeKey(new KeyboardEvent('keydown', { key: k, cancelable: true }));
+  key('h');
+  expect(state.paused).toBe(true);
+  key('g'); // locked while paused
+  expect(state.grid.isOn).toBe(false);
+  key('h');
+  expect(state.paused).toBe(false);
 });

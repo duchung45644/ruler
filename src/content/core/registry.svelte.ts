@@ -75,7 +75,8 @@ function wrapForward(item: DockItem): DockItem {
     ...(isActive && { isActive: () => (forwarder?.on() ? forwarder.isActive(id) : isActive()) }),
     // the parent has no selection: the frames decide (select_parent / select_child)
     ...(isDisabled && { isDisabled: () => !forwarder?.on() && isDisabled() }),
-    ...(shown && { shown: () => !!forwarder?.on() || shown() }),
+    // responsive parent: the selection lives in the frames, so these buttons stay off the dock
+    ...(shown && { shown: () => !forwarder?.on() && shown() }),
   };
 }
 
@@ -106,7 +107,12 @@ export const dockButtonOf = (id: string): string => (MORE_ITEMS.includes(id) ? '
 export function dockGroups(): DockItem[][] {
   const byId = (id: string) => items.find((i) => i.id === id);
   return DOCK_LAYOUT.map((ids) =>
-    ids.map(byId).filter((i): i is DockItem => !!i && (i.shown?.() ?? true)),
+    ids
+      .map(byId)
+      // paused: only what still works (resume, quit) stays on the dock
+      .filter(
+        (i): i is DockItem => !!i && (i.shown?.() ?? true) && !(state.paused && !i.alwaysEnabled),
+      ),
   ).filter((g) => g.length);
 }
 
@@ -141,6 +147,7 @@ registerItem({
   label: 'dock.pause',
   activeIcon: Play,
   activeLabel: 'dock.resume',
+  key: 'h', // hold; works while paused too (routeKey)
   alwaysEnabled: true,
   run: () => setPaused(!state.paused),
   isActive: () => state.paused,

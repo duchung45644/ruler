@@ -92,6 +92,14 @@ export function routeKey(e: KeyboardEvent): void {
     if (captureKey?.(e)) e.preventDefault();
     return;
   }
+  // paused: every key goes to the page except the pause key itself, which resumes
+  if (state.paused && !state.dialog && !shouldIgnoreKey(e, { paused: false })) {
+    const pause = items.find((i) => i.id === 'pause');
+    if (pause?.key && e.key.toLowerCase() === pause.key && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      e.preventDefault();
+      return pause.run();
+    }
+  }
   if (state.dialog || shouldIgnoreKey(e, state)) return;
   if (handlers.some((fn) => fn(e))) return e.preventDefault();
   if (e.key === 'Escape' || (!e.ctrlKey && !e.metaKey && !e.altKey)) {

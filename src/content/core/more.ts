@@ -11,6 +11,8 @@ export function initMore(): void {
     popover: MorePopover,
     run: () => togglePopover('more'),
     // lit while one of its tools is on (overlay, audit…), so the state stays visible
-    isActive: () => items.some((i) => MORE_ITEMS.includes(i.id) && i.isActive?.()),
+    // (pause excluded: while paused, Resume sits on the dock itself)
+    isActive: () =>
+      items.some((i) => i.id !== 'pause' && MORE_ITEMS.includes(i.id) && i.isActive?.()),
   });
 }

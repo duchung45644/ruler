@@ -306,7 +306,13 @@
     "pwFetch": "Fetch/XHR",
     "pwOther": "Other",
     "pwHidden": "$1 cross-origin resources hidden",
-    "pwBufferFull": "Resource buffer full, some entries may be missing"
+    "pwBufferFull": "Resource buffer full, some entries may be missing",
+    "cssVariables": "CSS Variables",
+    "loading": "Loading…",
+    "noCssVariables": "No CSS variables on :root",
+    "filterVariables": "Filter variables",
+    "otherVariables": "Other",
+    "variablesCapped": "Showing $1 of $2 — filter to narrow down"
   },
   "toast": {
     "editsRestoredOne": "1 saved edit restored",
@@ -336,7 +342,13 @@
     "rulesOther": "$1 Rules",
     "whitespaceOnly": "Whitespace-only changes",
     "none": "No changes found",
-    "clearChanges": "Clear All Changes"
+    "clearChanges": "Clear All Changes",
+    "copyAll": "Copy all",
+    "copyAllHint": "Copy all changes as code",
+    "exportFormat": "Export format",
+    "formatCss": "CSS",
+    "formatTailwind": "Tailwind",
+    "formatPrompt": "AI prompt"
   },
   "responsive": {
     "confirmPartialEdits": "Your CSS rule changes will be kept. Inline style, markup and class edits will be discarded.",

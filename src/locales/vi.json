@@ -306,7 +306,13 @@
     "pwFetch": "Fetch/XHR",
     "pwOther": "Khác",
     "pwHidden": "$1 tài nguyên cross-origin bị ẩn",
-    "pwBufferFull": "Bộ đệm tài nguyên đã đầy, một số mục có thể bị thiếu"
+    "pwBufferFull": "Bộ đệm tài nguyên đã đầy, một số mục có thể bị thiếu",
+    "cssVariables": "Biến CSS",
+    "loading": "Đang tải…",
+    "noCssVariables": "Không có biến CSS nào trên :root",
+    "filterVariables": "Lọc biến",
+    "otherVariables": "Khác",
+    "variablesCapped": "Đang hiện $1 trên $2 — lọc để thu hẹp"
   },
   "toast": {
     "editsRestoredOne": "Đã khôi phục 1 chỉnh sửa đã lưu",
@@ -336,7 +342,13 @@
     "rulesOther": "$1 quy tắc",
     "whitespaceOnly": "Chỉ thay đổi khoảng trắng",
     "none": "Không tìm thấy thay đổi",
-    "clearChanges": "Xóa Tất cả Thay đổi"
+    "clearChanges": "Xóa Tất cả Thay đổi",
+    "copyAll": "Sao chép tất cả",
+    "copyAllHint": "Sao chép mọi thay đổi dưới dạng code",
+    "exportFormat": "Định dạng xuất",
+    "formatCss": "CSS",
+    "formatTailwind": "Tailwind",
+    "formatPrompt": "Prompt cho AI"
   },
   "responsive": {
     "confirmPartialEdits": "Các thay đổi quy tắc CSS sẽ được giữ lại. Kiểu nội tuyến, chỉnh sửa mã và lớp sẽ bị loại bỏ.",

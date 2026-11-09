@@ -4,6 +4,7 @@ import type { ElementDetails, Issue, MatchedRule } from '../element/types';
 import type { HtmlChange } from '../edit/changes';
 import type { Decl } from '../edit/decls';
 import type { RuleAddress } from '../edit/rule-address';
+import type { CssVar } from '../css/variables';
 import type { SerializedEdit } from '../edit/serialize';
 import type {
   EditResult,
@@ -122,6 +123,9 @@ export interface ContentApi {
   rule_edit(addr: RuleAddress, declsText: string): EditResult;
   inline_style_edit(id: string, declsText: string): EditResult;
   merge_rule_styles(addr: RuleAddress, decls: Decl[]): EditResult;
+  get_root_variables(): CssVar[];
+  /** An empty value removes the inline override. */
+  set_root_variable(name: string, value: string): EditResult;
   rule_selector_edit(addr: RuleAddress, selector: string): EditResult;
   rule_add(selector?: string): EditResult;
   get_all_flattened_changes(): { rules: RuleChange[]; html: HtmlChange[] };

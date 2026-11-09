@@ -4,6 +4,7 @@
   import { toPage } from '../store.svelte';
   import ChangeGroup, { type Group } from './ChangeGroup.svelte';
   import ConfirmDialog, { askConfirm, showAlert } from './ConfirmDialog.svelte';
+  import ExportChanges from './ExportChanges.svelte';
   import { loadChanges, strict, takeState, type Changes } from './edit-store.svelte';
 
   let { changes }: { changes: Changes } = $props();
@@ -113,6 +114,7 @@
           ? i18n.t('changes.elementsOne')
           : i18n.t('changes.elementsOther', [String(n)])}</span
       >
+      <ExportChanges {changes} />
       <button
         type="button"
         class="rounded-btn border border-line px-2 py-1 font-medium text-fg-muted hover:border-red-500/50 hover:text-red-400"

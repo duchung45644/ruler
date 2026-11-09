@@ -33,6 +33,8 @@ import {
 } from './payload';
 import { schedulePersist } from './persist';
 import { rootAt, type RuleError } from './rules';
+import { rootVariables } from './variables';
+import { isVarName } from '../../lib/css/variables';
 
 const MAX_CLASSES = 2000;
 
@@ -148,6 +150,16 @@ export const editHandlers: Handlers<ContentApi> = {
     const el = elementById(id);
     if (!(el instanceof HTMLElement)) return fail('Element not found');
     return fromRule(ruleTracker().editInlineStyle(el, text));
+  },
+  get_root_variables: () => rootVariables(),
+  /** An inline edit on <html>, so it lands in Changes, undo and the export like any other. */
+  set_root_variable(name, value) {
+    if (!isVarName(name)) return fail('Invalid variable name');
+    const root = document.documentElement;
+    const merged = mergeDecls(parseDecls(root.getAttribute('style') ?? ''), [
+      { property: name, value: value.replace(/[;{}]/g, ''), important: false },
+    ]);
+    return fromRule(ruleTracker().editInlineStyle(root, serializeDecls(merged)));
   },
   merge_rule_styles(addr, decls) {
     const root = rootAt(addr.scopeAddress);

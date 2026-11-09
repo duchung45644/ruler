@@ -4,29 +4,26 @@
   import { state as app } from '../../core/state.svelte';
   import { parseMaxWidth, setGrid } from '.';
 
-  // 3.03, port of the legacy grid popover (legacy-src/content.js:30552)
-  const COLUMNS = [2, 3, 4, 6, 8, 12, 16, 24];
+  // 3.03, port of the legacy grid popover (legacy-src/content.js:30552), reworked to apply live
   const g = app.grid;
   let maxWidth = $state(String(g.maxWidth));
-  let hex = $state(g.color.replace('#', ''));
+  let hex = $state(g.color.replace('#', '').toUpperCase());
 
-  function blurMaxWidth() {
-    const v = parseMaxWidth(maxWidth);
-    maxWidth = String(v);
-    setGrid({ maxWidth: v });
+  const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
+  /** Live while typing: a valid number applies at once; blur shows the value in use. */
+  function live(e: Event, key: 'columns' | 'gutter' | 'margin', min: number, max: number) {
+    const raw = (e.currentTarget as HTMLInputElement).value;
+    if (raw === '' || isNaN(+raw)) return;
+    setGrid({ [key]: clamp(Math.round(+raw), min, max) });
+  }
+  function settle(e: Event, key: 'columns' | 'gutter' | 'margin') {
+    (e.currentTarget as HTMLInputElement).value = String(g[key]);
   }
   function setColor(c: string) {
     hex = c.replace('#', '').toUpperCase();
     setGrid({ color: `#${hex}` });
   }
-  const num = (e: Event) => Number((e.currentTarget as HTMLInputElement).value);
-  /** Clamp to [min,max]; an empty field keeps (and shows) the previous value. */
-  function clamped(e: Event, min: number, max: number, prev: number): number {
-    const el = e.currentTarget as HTMLInputElement;
-    const v = el.value === '' || isNaN(+el.value) ? prev : Math.min(max, Math.max(min, +el.value));
-    el.value = String(v);
-    return v;
-  }
+  const opacityPct = $derived(Math.round(g.opacity * 100));
 </script>
 
 <div class="flex w-55 flex-col gap-2 font-sans text-[12px]">
@@ -50,13 +47,27 @@
   </div>
   <label class="flex items-center justify-between gap-2"
     >{i18n.t('grid.columns')}
-    <select class="field" value={g.columns} onchange={(e) => setGrid({ columns: num(e) })}>
-      {#each COLUMNS as c (c)}<option value={c}>{c}</option>{/each}
-    </select>
+    <input
+      type="number"
+      min="1"
+      max="24"
+      class="field w-20"
+      data-grid="columns"
+      value={g.columns}
+      oninput={(e) => live(e, 'columns', 1, 24)}
+      onblur={(e) => settle(e, 'columns')}
+    />
   </label>
   <label class="flex items-center justify-between gap-2"
     >{i18n.t('grid.maxWidth')}
-    <input type="text" class="field w-20" bind:value={maxWidth} onblur={blurMaxWidth} />
+    <input
+      type="text"
+      class="field w-20"
+      data-grid="maxWidth"
+      bind:value={maxWidth}
+      oninput={() => setGrid({ maxWidth: parseMaxWidth(maxWidth) })}
+      onblur={() => (maxWidth = String(g.maxWidth))}
+    />
   </label>
   <label class="flex items-center justify-between gap-2"
     >{i18n.t('grid.gutter')}
@@ -65,8 +76,10 @@
       min="0"
       max="100"
       class="field w-20"
+      data-grid="gutter"
       value={g.gutter}
-      onchange={(e) => setGrid({ gutter: clamped(e, 0, 100, g.gutter) })}
+      oninput={(e) => live(e, 'gutter', 0, 100)}
+      onblur={(e) => settle(e, 'gutter')}
     />
   </label>
   <label class="flex items-center justify-between gap-2"
@@ -76,8 +89,10 @@
       min="0"
       max="350"
       class="field w-20"
+      data-grid="margin"
       value={g.margin}
-      onchange={(e) => setGrid({ margin: clamped(e, 0, 350, g.margin) })}
+      oninput={(e) => live(e, 'margin', 0, 350)}
+      onblur={(e) => settle(e, 'margin')}
     />
   </label>
   <label class="flex items-center justify-between gap-2"
@@ -89,19 +104,25 @@
         maxlength="6"
         class="field w-16"
         bind:value={hex}
-        onchange={() => /^[0-9a-f]{6}$/i.test(hex) && setColor(hex)}
+        oninput={() => /^[0-9a-f]{6}$/i.test(hex) && setColor(hex)}
+        onblur={() => (hex = g.color.replace('#', '').toUpperCase())}
       />
     </span>
   </label>
   <label class="flex items-center justify-between gap-2"
     >{i18n.t('grid.opacity')}
-    <input
-      type="range"
-      min="0.1"
-      max="0.9"
-      step="0.1"
-      value={g.opacity}
-      oninput={(e) => setGrid({ opacity: num(e) })}
-    />
+    <span class="flex items-center gap-2">
+      <input
+        type="range"
+        min="0.05"
+        max="1"
+        step="0.05"
+        class="w-24"
+        data-grid="opacity"
+        value={g.opacity}
+        oninput={(e) => setGrid({ opacity: +e.currentTarget.value })}
+      />
+      <span class="w-8 text-right font-mono text-fg-muted tabular-nums">{opacityPct}%</span>
+    </span>
   </label>
 </div>

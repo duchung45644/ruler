@@ -18,8 +18,12 @@ it('parseMaxWidth', () => {
 it('setGrid merges and saves the whole layoutGrid', async () => {
   await initGrid();
   setGrid({ columns: 12 });
+  setGrid({ gutter: 24 }); // a burst saves once, after a pause
   await flush();
+  expect((await getSettings()).layoutGrid.columns).not.toBe(12);
+  await new Promise((r) => setTimeout(r, 350));
   const { layoutGrid } = await getSettings();
+  expect(layoutGrid.gutter).toBe(24);
   expect(layoutGrid.columns).toBe(12);
   expect(layoutGrid.color).toBe('#FC48FF');
 });
@@ -27,7 +31,7 @@ it('setGrid merges and saves the whole layoutGrid', async () => {
 it('key G toggles the grid without opening the popover', async () => {
   await initGrid();
   routeKey(new KeyboardEvent('keydown', { key: 'g' }));
-  await flush();
+  await new Promise((r) => setTimeout(r, 350));
   expect((await getSettings()).layoutGrid.isOn).toBe(true);
   expect(state.grid.isOn).toBe(true);
   expect(state.popover).toBeNull();
@@ -50,4 +54,22 @@ it('paints N columns with padding and max-width', async () => {
   await frame();
   expect(grid().style.maxWidth).toBe('1200px');
   layer.remove();
+});
+
+it('opening the panel shows the grid', async () => {
+  const { items } = await import('../../core/registry.svelte');
+  await initGrid();
+  state.grid.isOn = false;
+  items.find((i) => i.id === 'grid')!.run();
+  expect(state.popover).toBe('grid');
+  expect(state.grid.isOn).toBe(true);
+  state.popover = null;
+});
+
+it('a pending save is written when the session stops', async () => {
+  await initGrid();
+  setGrid({ margin: 77 });
+  stopSession();
+  await flush();
+  expect((await getSettings()).layoutGrid.margin).toBe(77);
 });

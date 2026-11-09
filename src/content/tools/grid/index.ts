@@ -13,12 +13,23 @@ export function parseMaxWidth(v: string): 'auto' | number {
   return isNaN(n) || n <= 0 ? 'auto' : n;
 }
 
-/** Merge, persist the whole layoutGrid (settings merge shallowly), repaint. */
+/** Saving waits for a pause: a dragged slider or colour must not write storage every frame. */
+const SAVE_DELAY = 300;
+let saveTimer = 0;
+function saveNow(): void {
+  clearTimeout(saveTimer);
+  saveTimer = 0;
+  void updateSettings({ layoutGrid: { ...state.grid } });
+}
+
+/** Merge, repaint now, persist the whole layoutGrid shortly after (settings merge shallowly). */
 export function setGrid(patch: Partial<LayoutGrid>): void {
   Object.assign(state.grid, patch);
   forwardSetting('layoutGrid', patch); // responsive parent: the frames draw it
-  if (!state.inFrame) void updateSettings({ layoutGrid: { ...state.grid } });
   requestPaint();
+  if (state.inFrame) return;
+  clearTimeout(saveTimer);
+  saveTimer = window.setTimeout(saveNow, SAVE_DELAY);
 }
 
 export async function initGrid(): Promise<void> {
@@ -29,12 +40,19 @@ export async function initGrid(): Promise<void> {
     label: 'dock.grid',
     key: 'g',
     popover: GridPopover,
-    run: () => togglePopover('grid'),
+    run: () => {
+      togglePopover('grid');
+      // settings you can't see are useless: opening the panel shows the grid
+      if (state.popover === 'grid' && !state.grid.isOn) setGrid({ isOn: true });
+    },
     runKey: () => setGrid({ isOn: !state.grid.isOn }), // 3.03
     isActive: () => state.grid.isOn,
   });
   const signal = sessionSignal();
-  onStop(() => (state.grid.isOn = false)); // not persisted: next session restores it (1.43)
+  onStop(() => {
+    if (saveTimer) saveNow(); // a pending edit is not lost
+    state.grid.isOn = false; // not persisted: next session restores it (1.43)
+  });
   // 3.04, port of toggleGrid (legacy-src/content.js:42389)
   addPainter('grid', (box) => {
     const g = state.grid;

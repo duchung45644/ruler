@@ -121,7 +121,7 @@ export const responsiveCommands: Commands = {
     return described();
   },
   /**
-   * Hide every iodob UI for one settled frame, grab the visible tab (frames included when
+   * Hide every PixelLens UI for one settled frame, grab the visible tab (frames included when
    * responsive), show it again — also when the grab fails.
    */
   async get_screenshot() {

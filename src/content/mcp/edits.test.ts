@@ -30,7 +30,7 @@ beforeEach(async () => {
   );
   fakeBrowser.reset();
   fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
-  const host = document.body.appendChild(document.createElement('iodob-ui'));
+  const host = document.body.appendChild(document.createElement('pixellens-ui'));
   host.attachShadow({ mode: 'open' }).append(layer);
   state.active = true;
   sessionSignal();
@@ -70,7 +70,7 @@ it('refuses state / media / pseudo with the legacy message', async () => {
   ).toEqual({
     ok: false,
     error:
-      'state/media/pseudo are no longer supported by apply_styles. Update the iodob MCP server.',
+      'state/media/pseudo are no longer supported by apply_styles. Update the PixelLens MCP server.',
   });
 });
 

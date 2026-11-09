@@ -38,22 +38,22 @@ const onCall: McpSocketOptions['onCall'] = (c, reply) =>
     reply({ ok: false, error: String((e as Error)?.message ?? e) }),
   );
 
-/** Is iodob on in this tab's top frame? Only those tabs see MCP at all (Q4 a). */
-export async function isIodobTab(tabId: number): Promise<boolean> {
+/** Is PixelLens on in this tab's top frame? Only those tabs see MCP at all (Q4 a). */
+export async function isPixelLensTab(tabId: number): Promise<boolean> {
   const r = await sendToFrame(tabId, 0, 'ping').catch(() => undefined);
   return r?.active === true;
 }
 
-/** Tabs with iodob on, in tab order. */
-export async function iodobTabs(): Promise<Browser.tabs.Tab[]> {
+/** Tabs with PixelLens on, in tab order. */
+export async function pixelLensTabs(): Promise<Browser.tabs.Tab[]> {
   const tabs = (await browser.tabs.query({})).filter(
     (t) => t.id !== undefined && !t.discarded && isInjectable(t.url),
   );
-  const on = await Promise.all(tabs.map((t) => isIodobTab(t.id!)));
+  const on = await Promise.all(tabs.map((t) => isPixelLensTab(t.id!)));
   return tabs.filter((_, i) => on[i]);
 }
 
-/** Status → every iodob tab and the settings page (10.03). The token is never in it. */
+/** Status → every PixelLens tab and the settings page (10.03). The token is never in it. */
 async function broadcast(s: McpStatus): Promise<void> {
   void sendToOptions('mcp_status', s).catch(() => {});
   const tabs = await browser.tabs.query({}).catch(() => []);
@@ -107,14 +107,14 @@ export async function disconnect(): Promise<McpStatus> {
 
 /**
  * Prompt with the token (Q3 a), only for our own pages: the settings page (no tab) or the top
- * frame of a tab where iodob is on (the dock popover).
+ * frame of a tab where PixelLens is on (the dock popover).
  */
 export async function prompt(sender: Browser.runtime.MessageSender): Promise<string | null> {
   if (sender.id !== browser.runtime.id) return null;
   const tabId = sender.tab?.id;
   if (tabId === undefined) {
     if (!sender.url?.startsWith(browser.runtime.getURL('/'))) return null;
-  } else if (sender.frameId !== 0 || !(await isIodobTab(tabId))) return null;
+  } else if (sender.frameId !== 0 || !(await isPixelLensTab(tabId))) return null;
   const token = (await mcpToken.getValue()) ?? (await ensureToken());
   return connectPrompt(token, browser.runtime.id);
 }
@@ -152,7 +152,7 @@ const reloading = new Map<number, number>();
 
 const fail = (error: string): CallOutcome => ({ ok: false, error });
 
-/** Wait for iodob to come back in a tab that is reloading after exit_responsive_mode. */
+/** Wait for PixelLens to come back in a tab that is reloading after exit_responsive_mode. */
 async function waitForReload(tabId: number): Promise<boolean> {
   const at = reloading.get(tabId);
   if (at === undefined || Date.now() - at > RELOAD_WINDOW_MS) {
@@ -162,7 +162,7 @@ async function waitForReload(tabId: number): Promise<boolean> {
   const end = Date.now() + RELOAD_WAIT_MS;
   while (Date.now() < end) {
     await new Promise((r) => setTimeout(r, POLL_MS));
-    if (await isIodobTab(tabId)) return true;
+    if (await isPixelLensTab(tabId)) return true;
   }
   return false;
 }
@@ -175,7 +175,8 @@ export async function forwardToTab(
   const { tabId } = payload;
   const tab = await browser.tabs.get(tabId).catch(() => undefined);
   if (!tab) return fail(`No tab with id ${tabId}.`);
-  if (!(await isIodobTab(tabId)) && !(await waitForReload(tabId))) return fail(ERR.tabInactiveHint);
+  if (!(await isPixelLensTab(tabId)) && !(await waitForReload(tabId)))
+    return fail(ERR.tabInactiveHint);
   if (type === 'exit_responsive_mode') reloading.set(tabId, Date.now());
   const ms = SLOW_TYPES.includes(type) ? SLOW_TIMEOUT_MS : CALL_TIMEOUT_MS;
   return withTimeout(
@@ -189,7 +190,7 @@ export async function forwardToTab(
 }
 
 async function listTabs(): Promise<CallOutcome> {
-  const tabs = await iodobTabs();
+  const tabs = await pixelLensTabs();
   return {
     ok: true,
     data: {
@@ -204,7 +205,7 @@ async function listTabs(): Promise<CallOutcome> {
 }
 
 async function focusTab({ tabId }: McpPayloads['focus_tab']): Promise<CallOutcome> {
-  if (!(await isIodobTab(tabId))) return fail(ERR.tabInactive);
+  if (!(await isPixelLensTab(tabId))) return fail(ERR.tabInactive);
   try {
     await activateTab(tabId);
     return { ok: true, data: { success: true } };

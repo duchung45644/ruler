@@ -102,7 +102,7 @@ export async function ensureCapture(): Promise<boolean> {
 /** Mounts the capture host showing CaptureRoot; capture state is already set. */
 async function mountCapture(): Promise<boolean> {
   const signal = sessionSignal();
-  const mounted = await mountUi(sessionCtx(), CaptureRoot, {}, { name: 'iodob-capture' });
+  const mounted = await mountUi(sessionCtx(), CaptureRoot, {}, { name: 'pixellens-capture' });
   if (signal.aborted || !state.capturing) {
     mounted.remove();
     return false;

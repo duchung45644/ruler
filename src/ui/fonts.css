@@ -1,6 +1,6 @@
 /* Extension page, not the host page: plain @font-face is fine here (no hoisting, no page CSP). */
 @font-face {
-  font-family: 'iodob Geist';
+  font-family: 'PixelLens Geist';
   src: url('/fonts/geist-latin-ext.woff2') format('woff2');
   font-weight: 300 700;
   font-display: swap;
@@ -10,13 +10,13 @@
     U+A720-A7FF;
 }
 @font-face {
-  font-family: 'iodob Geist';
+  font-family: 'PixelLens Geist';
   src: url('/fonts/geist-latin.woff2') format('woff2');
   font-weight: 300 700;
   font-display: swap;
 }
 @font-face {
-  font-family: 'iodob Geist Mono';
+  font-family: 'PixelLens Geist Mono';
   src: url('/fonts/geistmono-latin-ext.woff2') format('woff2');
   font-weight: 300 700;
   font-display: swap;
@@ -26,7 +26,7 @@
     U+A720-A7FF;
 }
 @font-face {
-  font-family: 'iodob Geist Mono';
+  font-family: 'PixelLens Geist Mono';
   src: url('/fonts/geistmono-latin.woff2') format('woff2');
   font-weight: 300 700;
   font-display: swap;

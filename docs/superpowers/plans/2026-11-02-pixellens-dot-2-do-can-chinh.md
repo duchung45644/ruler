@@ -1,4 +1,4 @@
-# iodob — Đợt 2: Đo & căn chỉnh — Kế hoạch triển khai
+# PixelLens — Đợt 2: Đo & căn chỉnh — Kế hoạch triển khai
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -16,7 +16,7 @@
 
 **Tech Stack:** Giữ nguyên stack Đợt 1: WXT 0.21.5, Svelte 5, Tailwind 4, `@lucide/svelte`, `@wxt-dev/i18n`, Vitest + happy-dom 21.0.3. **Không thêm dependency.**
 
-**Spec:** `docs/superpowers/specs/2026-11-01-iodob-rewrite-design.md`. Các mục liên quan:
+**Spec:** `docs/superpowers/specs/2026-11-01-pixellens-rewrite-design.md`. Các mục liên quan:
 - §3 Ràng buộc
 - §4.1 (phím số, X-Ray, tìm, hút màu), §4.2 Đo và căn chỉnh
 - §6.3 DRY, §6.4 Đường chạy liên tục
@@ -269,7 +269,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 11 tách các phầ
     - mức `i` (0…10) dùng màu `XRAY_COLORS[min(i + depth, 10)]`;
     - selector `scope > * > …` (`i + 1` lần), riêng mức cuối là `scope *`;
     - `outline: 1px solid <màu> !important` (bỏ `--ui-scale`, đợt 6);
-    - kèm khối loại trừ: svg con, ẩn, `head`, … và node của extension (`iodob-ui`, `[data-iodob]`) → `outline:none!important`.
+    - kèm khối loại trừ: svg con, ẩn, `head`, … và node của extension (`pixellens-ui`, `[data-pixellens]`) → `outline:none!important`.
   - `xrayDepth(host: Element): number`: số tổ tiên tới `body`, đi xuyên shadow host (`xrayDepthOfHost`).
   - `type Breakpoint = { width: number; kind: 'min' | 'max' | 'both' }`
   - `parseBreakpoints(conditions: string[]): Breakpoint[]`. Port `getPageBreakpoints` (`:48891`):
@@ -283,7 +283,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 11 tách các phầ
 
 | id | key | group | icon Lucide | label | Hành vi |
 | --- | --- | --- | --- | --- | --- |
-| `xray` | `2` | inspectTools | `ScanEye` | `dock.xray` | 3.02: chèn một `<style data-iodob>` vào `document.head` (scope `body`) và vào mỗi shadow root mở (scope `:host`, `depth = xrayDepth(host)`); lưu `xrayModeIsOn`; `onStop` gỡ hết |
+| `xray` | `2` | inspectTools | `ScanEye` | `dock.xray` | 3.02: chèn một `<style data-pixellens>` vào `document.head` (scope `body`) và vào mỗi shadow root mở (scope `:host`, `depth = xrayDepth(host)`); lưu `xrayModeIsOn`; `onStop` gỡ hết |
 | `breakpoints` | `5` | inspectTools | `RulerDimensionLine` | `dock.breakpoints` | 3.06: painter vẽ vạch dọc 1px ở `left = width - scrollX`, độ mờ 0.6, nhãn chip trắng chữ ở `top: 8px`; màu `min` `#008C21`, `max` `#0891B2`, `both` `#E8A23D`; lưu `breakpointsIsOn`. Quét lại mỗi lần bật |
 | `eyedropper` | `6` | utilities | `Pipette` | `dock.eyedropper` | 3.07: không có `EyeDropper` thì bỏ qua; ẩn host (`visibility:hidden`) và hover; đợi 2 rAF rồi `open()`; chọn xong thì hiện lại host, `copyText(hex)` (HEX in hoa như `toHex` cũ), `state.dockNotice` 1500ms; huỷ (Esc) thì chỉ hiện lại host. Sau 300ms, `pointerdown`/`keydown` đầu tiên cũng hiện lại host (port `:34586`) |
 
@@ -299,7 +299,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 11 tách các phầ
   - `xray.test.ts`:
     - `xraySheet('body', 0)` chứa `body > *{outline:1px solid #FF3F25!important;}` và `body *{outline:1px solid #0D4F8F!important;}`;
     - `xraySheet(':host', 3)` có mức 0 màu `#999999`;
-    - bật X-Ray trên trang có một shadow root mở → 2 thẻ `style[data-iodob]`; `stopSession()` → 0 (Review Focus 5).
+    - bật X-Ray trên trang có một shadow root mở → 2 thẻ `style[data-pixellens]`; `stopSession()` → 0 (Review Focus 5).
   - `breakpoints.test.ts`:
     - `parseBreakpoints(['(min-width: 768px)', '(max-width: 767.98px)', '(min-width: 48em)'])` → `[{width:767,kind:'max'},{width:768,kind:'min'}]`;
     - `'(min-width: 600px) and (max-width: 600px)'` → `[{width:600,kind:'both'}]`;
@@ -500,7 +500,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 11 tách các phầ
     - đọc bằng `FileReader` ra data URL như bản cũ;
     - ảnh mới thành ảnh đang chọn.
   - **`<img>` nằm trong DOM trang:**
-    - thêm vào `document.documentElement`, có `data-iodob`, nằm trong `ownNodes`;
+    - thêm vào `document.documentElement`, có `data-pixellens`, nằm trong `ownNodes`;
     - `position:fixed`, `z-index: 2147483646` (dưới host), `pointer-events:auto`, `all:initial` rồi các style của `positionOverlay` (`:115`);
     - bóng đổ khi `normal`; Difference thì `opacity: 1` và bỏ bóng;
     - nhiều ảnh thì ảnh đang chọn có `outline: 2px solid #5B5BF0`;
@@ -538,7 +538,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 11 tách các phầ
   - `togglePinned({x:100,y:1500,fixed:false,…}, {x:0,y:1000})` → `{x:100,y:500,fixed:true}`; gọi lại → về `{x:100,y:1500,fixed:false}`;
   - `nudgeDelta({key:'ArrowRight',shiftKey:true})` → `{dx:10,dy:0}`; `{key:'ArrowLeft',altKey:true,shiftKey:true}` → `null` (spec §9);
   - `resizeFromCorner` góc `br` kéo tới rộng 10px → `scale` ứng với rộng 20 (tối thiểu);
-  - tích hợp: thêm ảnh rồi `stopSession()` → không còn `img[data-iodob]`, `ownNodes.size === 0` (Review Focus 5).
+  - tích hợp: thêm ảnh rồi `stopSession()` → không còn `img[data-pixellens]`, `ownNodes.size === 0` (Review Focus 5).
   - Run: `pnpm vitest run src/lib/overlay-image.test.ts src/content/tools/overlay`. Expected: FAIL.
 - [ ] **Step 2: Viết code** theo Interfaces.
 - [ ] **Step 3: Chạy test.** Expected: PASS. `pnpm check && pnpm build` PASS.
@@ -672,7 +672,7 @@ Theo quy tắc "Dòng gộp" của `docs/inventory.md`, Task 11 tách các phầ
   11. Phím `O`: dán một ảnh @2x thì hiện 50% giữa màn hình. Kéo, co góc, mũi tên dịch, Difference, ẩn/hiện, xoá. Ghim theo màn hình rồi cuộn: ảnh đứng yên, bỏ ghim không nhảy.
   12. Phím `A`: panel 3 tab có số đếm; bấm dòng thì highlight và cuộn tới; copy và "Tất cả" dán ra được; spacing lệch 4px tô đỏ.
   13. Bật X-Ray, grid, thước, breakpoints rồi tải lại trang và bật extension: cả bốn tự bật lại.
-  14. Ctrl+Q khi mọi công cụ đang bật: DevTools không còn `style[data-iodob]`, `img[data-iodob]`; `<html>` không có `cursor`.
+  14. Ctrl+Q khi mọi công cụ đang bật: DevTools không còn `style[data-pixellens]`, `img[data-pixellens]`; `<html>` không có `cursor`.
   15. Trang tối và `document.documentElement.style.fontSize = '10px'`: panel, popover và thước không co, theme đúng.
 - [ ] **Step 3: Commit nhãn mới.** `git commit -am "docs: retag deferred phase-2 inventory lines" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"`
 

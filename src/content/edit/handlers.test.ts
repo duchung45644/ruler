@@ -24,7 +24,7 @@ const sender = {} as never;
 const tick = () => new Promise((r) => setTimeout(r, 0));
 
 beforeEach(async () => {
-  const host = document.body.appendChild(document.createElement('iodob-ui'));
+  const host = document.body.appendChild(document.createElement('pixellens-ui'));
   host.attachShadow({ mode: 'open' }).append(layer);
   state.active = true;
   sessionSignal();

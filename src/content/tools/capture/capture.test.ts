@@ -26,8 +26,8 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-const capHost = () => document.querySelector('iodob-capture');
-const mainHost = () => document.querySelector('iodob-ui') as HTMLElement;
+const capHost = () => document.querySelector('pixellens-capture');
+const mainHost = () => document.querySelector('pixellens-ui') as HTMLElement;
 const bar = (kind: string) => capHost()?.shadowRoot?.querySelector(`[data-bar="${kind}"]`);
 const esc = () => routeKey(new KeyboardEvent('keydown', { key: 'Escape' }));
 

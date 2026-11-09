@@ -50,7 +50,7 @@ it('a named frame starts in frame mode: no dock, persist off, ready sent', async
   startFrameMode();
   expect(state.inFrame).toBe(true);
   await startSession(new ContentScriptContext('content'));
-  const host = document.querySelector('iodob-ui')!;
+  const host = document.querySelector('pixellens-ui')!;
   expect(host.shadowRoot!.querySelector('[data-dock], .dock, button')).toBeNull();
   expect(eligible()).toBe(false);
   expect(sent()[0]).toMatchObject({ dir: 'ruler-iframe', type: 'ready_for_state_sync' });
@@ -114,6 +114,6 @@ it('update_ui_scale sets --ui-scale on the overlay host (1.28)', async () => {
   expect(sent().some((m) => m.type === 'request_ui_scale')).toBe(true);
   fromParent('update_ui_scale', [2]);
   await flush();
-  const host = document.querySelector<HTMLElement>('iodob-ui')!;
+  const host = document.querySelector<HTMLElement>('pixellens-ui')!;
   expect(host.style.getPropertyValue('--ui-scale')).toBe('2');
 });

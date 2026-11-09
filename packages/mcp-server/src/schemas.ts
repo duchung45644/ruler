@@ -25,7 +25,7 @@ const elementIdS = (description = 'Element id like "v-abc123", from a previous r
   pattern: ELEMENT_ID_PATTERN,
   description,
 });
-const tabId = int('Tab id from list_tabs (only tabs where iodob is on).');
+const tabId = int('Tab id from list_tabs (only tabs where PixelLens is on).');
 const viewportId = int(
   'Responsive mode: run in this viewport frame instead of the one holding the selection.',
 );
@@ -71,14 +71,14 @@ type Spec = [string, Record<string, Schema>?, string[]?];
 const EL: Spec[1] = { elementId: elementIdS(), viewportId };
 const SPECS: Record<McpType, Spec> = {
   list_tabs: [
-    'List the tabs where the user turned iodob on: {tabs: [{tabId, title, url, active}]}.',
+    'List the tabs where the user turned PixelLens on: {tabs: [{tabId, title, url, active}]}.',
   ],
-  focus_tab: ['Bring a iodob tab to the front.'],
+  focus_tab: ['Bring a PixelLens tab to the front.'],
   get_page_info: [
     'Page summary: url, title, lang, meta, h1, viewport, page size, scroll, devicePixelRatio.',
   ],
   get_selected_element: [
-    "Summary of the element the user selected in iodob's inspector.",
+    "Summary of the element the user selected in PixelLens's inspector.",
     { viewportId },
   ],
   get_element_details: ['Full details of one element.', EL, ['elementId']],
@@ -136,7 +136,7 @@ const SPECS: Record<McpType, Spec> = {
   get_a11y_issues: ['Accessibility issues, warnings first, lowest contrast first.', { limit }],
   get_tailwind: ['Tailwind classes for an element.', EL, ['elementId']],
   fetch_stylesheet: [
-    'Fetch a public http(s) stylesheet (needs the optional all-sites grant in iodob).',
+    'Fetch a public http(s) stylesheet (needs the optional all-sites grant in PixelLens).',
     { url: str(LIMITS.url, 'Stylesheet URL.', 1) },
     ['url'],
   ],
@@ -207,7 +207,7 @@ const SPECS: Record<McpType, Spec> = {
     },
     ['elementId', 'html', 'position'],
   ],
-  select_element: ["Select an element in iodob's inspector.", EL, ['elementId']],
+  select_element: ["Select an element in PixelLens's inspector.", EL, ['elementId']],
   get_screenshot: ['Screenshot of the visible tab (PNG, longest side ≤ 2000 px).'],
   apply_styles: [
     'Set CSS: with ruleRef edits that rule, else the inline style of elementId. Joins undo and is saved per site.',
@@ -263,6 +263,6 @@ export const COMMAND_TOOLS: ToolDef[] = MCP_TYPES.map((name) => {
 
 export const PING_TOOL: ToolDef = {
   name: 'ping',
-  description: 'Check the link to the iodob extension: whether it is connected and its version.',
+  description: 'Check the link to the PixelLens extension: whether it is connected and its version.',
   inputSchema: { type: 'object', properties: {} },
 };

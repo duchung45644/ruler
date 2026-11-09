@@ -5,7 +5,7 @@ import { themePref } from '../../lib/ext/settings';
 import { onKey } from './keys';
 import { onStop, sessionSignal, startSession, stopSession } from './session';
 
-const count = () => document.querySelectorAll('iodob-ui').length;
+const count = () => document.querySelectorAll('pixellens-ui').length;
 
 describe('session', () => {
   afterEach(() => stopSession());
@@ -39,7 +39,7 @@ describe('session', () => {
     await startSession(new ContentScriptContext('content'));
     const run = vi.fn(() => true);
     onStop(onKey('Space', run));
-    const shadow = document.querySelector('iodob-ui')!.shadowRoot!;
+    const shadow = document.querySelector('pixellens-ui')!.shadowRoot!;
     const press = (el: Element) =>
       el.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
     press(shadow.appendChild(document.createElement('button')));
@@ -51,7 +51,7 @@ describe('session', () => {
   it('pressing a button in our UI does not move focus to it', async () => {
     await startSession(new ContentScriptContext('content'));
     const b = document
-      .querySelector('iodob-ui')!
+      .querySelector('pixellens-ui')!
       .shadowRoot!.appendChild(document.createElement('button'));
     const e = new MouseEvent('mousedown', { bubbles: true, composed: true, cancelable: true });
     b.dispatchEvent(e);

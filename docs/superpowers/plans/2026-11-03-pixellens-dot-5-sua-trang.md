@@ -1,4 +1,4 @@
-# iodob — Đợt 5: Sửa trang — Kế hoạch triển khai
+# PixelLens — Đợt 5: Sửa trang — Kế hoạch triển khai
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -35,7 +35,7 @@
 - Danh sách thuộc tính CSS cho gợi ý lấy lúc chạy từ `getComputedStyle(document.documentElement)` (xem D7).
 - Test chạy trên happy-dom. CSSOM của happy-dom hỗ trợ `insertRule` / `deleteRule` / `selectorText` / `style.cssText`, nhưng **không** tính cascade. Vì vậy test phần cascade dùng `KnownRule` giả, như Đợt 4.
 
-**Spec:** `docs/superpowers/specs/2026-11-01-iodob-rewrite-design.md`. Các mục liên quan:
+**Spec:** `docs/superpowers/specs/2026-11-01-pixellens-rewrite-design.md`. Các mục liên quan:
 - §3 Ràng buộc: không có `host_permissions` cố định; `<all_urls>` optional;
 - §4.3 Sửa trực tiếp; §6.2 bố cục repo; §6.3 DRY; §7 token giao diện; §8 Đợt 5;
 - §9 Checklist chống tái phát: mục "Inspector / chọn" (gõ trong ô không kích hoạt phím, sự kiện panel không lọt xuống trang) và "Giao diện trong trang".

@@ -2,7 +2,7 @@
 
 ## transform-to-tailwindcss-core
 
-`src/lib/css/tailwind.ts` is a port of the CSS → Tailwind generator that legacy iodob bundled
+`src/lib/css/tailwind.ts` is a port of the CSS → Tailwind generator that legacy PixelLens bundled
 (`legacy-src/content.js:17948–19737`), which is transform-to-tailwindcss-core by Simon He
 (https://github.com/Simon-He95/transform-to-tailwindcss-core), MIT licensed.
 
@@ -29,10 +29,10 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 
 ## Library-Detector-for-Chrome
 
-`src/lib/tech/signatures.ts` is a port of the technology signatures that legacy iodob bundled
+`src/lib/tech/signatures.ts` is a port of the technology signatures that legacy PixelLens bundled
 (`legacy-src/detect-technologies.js`), which come from Library-Detector-for-Chrome
 (https://github.com/johnmichel/Library-Detector-for-Chrome), MIT licensed. The logos in
-`public/logos/` were shipped by legacy iodob (`unpacked/sidepanel/logos/`) and match that
+`public/logos/` were shipped by legacy PixelLens (`unpacked/sidepanel/logos/`) and match that
 project's icon set; each logo remains a trademark of its owner.
 
 ```

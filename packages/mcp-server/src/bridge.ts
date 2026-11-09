@@ -1,5 +1,5 @@
 /**
- * WebSocket side: accepts the iodob extension on ws://127.0.0.1:<port>/iodob and relays calls.
+ * WebSocket side: accepts the PixelLens extension on ws://127.0.0.1:<port>/pixellens and relays calls.
  * Wire format and security rules: protocol.gen.ts (copied from src/lib/mcp/protocol.ts) and
  * docs/mcp-protocol.md.
  */
@@ -52,7 +52,7 @@ interface Pending {
 }
 
 export const NOT_CONNECTED =
-  'The iodob extension is not connected. Ask the user to open iodob and press Connect (MCP).';
+  'The PixelLens extension is not connected. Ask the user to open PixelLens and press Connect (MCP).';
 
 /** Constant-time token comparison (equal-length buffers, no early exit). */
 export function tokenMatches(expected: string, got: unknown): boolean {
@@ -121,7 +121,7 @@ export class Bridge {
         reject(
           e.code === 'EADDRINUSE'
             ? new Error(
-                `Port ${this.#o.port} on ${this.#o.host} is already in use (another iodob MCP server?). Stop it and try again.`,
+                `Port ${this.#o.port} on ${this.#o.host} is already in use (another PixelLens MCP server?). Stop it and try again.`,
               )
             : e,
         ),
@@ -237,7 +237,7 @@ export class Bridge {
     this.#send(ws, { type: 'welcome', serverVersion: this.#o.serverVersion, client: this.#client });
     clearInterval(this.#ping);
     this.#ping = setInterval(() => this.#send(this.#ext, { type: 'ping' }), this.#o.pingMs);
-    this.#o.log?.(`extension connected (iodob ${info.extVersion})`);
+    this.#o.log?.(`extension connected (PixelLens ${info.extVersion})`);
   }
 
   #failAll(error: string): void {

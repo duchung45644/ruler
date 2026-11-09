@@ -1,4 +1,4 @@
-# iodob — Đợt 6: Responsive mode — Kế hoạch triển khai
+# PixelLens — Đợt 6: Responsive mode — Kế hoạch triển khai
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -25,7 +25,7 @@
   - `bridge.ts`: postMessage có kiểu giữa cha và khung;
   - `forward.ts`: chuyển tiếp lệnh dock, pause, find, sửa xuống khung.
 - **Phía khung (frame mode):**
-  - content script trong iframe nhận ra mình qua `window.name` = `iodob-rv-<extId>-<n>`;
+  - content script trong iframe nhận ra mình qua `window.name` = `pixellens-rv-<extId>-<n>`;
   - chạy công cụ và overlay tại chỗ; không có dock, không mở side panel;
   - trả lời cha qua `bridge.ts`; đặt `inResponsiveFrame = true` trong `src/content/edit/persist.ts`.
 - **Kênh cha↔khung (§6.3):**

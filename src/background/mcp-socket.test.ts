@@ -36,7 +36,7 @@ describe('handshake', () => {
     const s = make();
     s.start();
     await flush();
-    expect(last().url).toBe('ws://127.0.0.1:47347/iodob');
+    expect(last().url).toBe('ws://127.0.0.1:47347/pixellens');
     last().open();
     expect(last().sentFrames()).toEqual([
       { type: 'hello', protocol: 1, token: TOKEN, extVersion: '2.0.0' },

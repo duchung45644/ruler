@@ -15,7 +15,7 @@ import type { RuleTracker } from './rules';
 
 const DELAY = 800;
 /** sessionStorage flag set by the responsive exit hand-off: the reload that follows restores quietly (5.26). */
-export const HANDOFF_FLAG = 'iodob-responsive-handoff';
+export const HANDOFF_FLAG = 'pixellens-responsive-handoff';
 
 function takeHandoffFlag(): boolean {
   try {

@@ -25,7 +25,7 @@ vi.mock('../../lib/ext/messaging', async (orig) => ({
 const ids = (el: Element) => `v-${el.localName}`;
 
 beforeEach(async () => {
-  const host = document.body.appendChild(document.createElement('iodob-ui'));
+  const host = document.body.appendChild(document.createElement('pixellens-ui'));
   host.attachShadow({ mode: 'open' }).append(layer);
   state.active = true;
   sessionSignal();
@@ -95,7 +95,7 @@ describe('AI data (10.09)', () => {
 
   it('queries with a limit, skipping scaffolding and our UI', () => {
     document.body.insertAdjacentHTML('beforeend', '<i>1</i><i>2</i><i>3</i>');
-    const r = queryBySelector('i, body, iodob-ui', ids, { limit: 2 });
+    const r = queryBySelector('i, body, pixellens-ui', ids, { limit: 2 });
     expect(r.count).toBe(3);
     expect(r.truncated).toBe(1);
     expect(r.matches).toHaveLength(2);
@@ -115,7 +115,7 @@ describe('mcp_call entry', () => {
     expect(fromBackground({ id: 'other' })).toBe(false);
   });
 
-  it('refuses when iodob is off', async () => {
+  it('refuses when PixelLens is off', async () => {
     state.active = false;
     expect(await runMcp('get_page_info', { tabId: 1 })).toEqual({
       ok: false,

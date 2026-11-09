@@ -33,7 +33,7 @@ const highlightCount = async () => {
 };
 
 beforeEach(async () => {
-  const host = document.body.appendChild(document.createElement('iodob-ui'));
+  const host = document.body.appendChild(document.createElement('pixellens-ui'));
   shadow = host.attachShadow({ mode: 'open' });
   shadow.append(layer);
   state.active = true;

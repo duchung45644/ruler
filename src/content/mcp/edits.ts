@@ -71,7 +71,7 @@ export const editCommands: Commands = {
   apply_styles({ elementId: id, ruleRef, styles, state: st, media, pseudo }) {
     if (st || media || pseudo)
       return fail(
-        'state/media/pseudo are no longer supported by apply_styles. Update the iodob MCP server.',
+        'state/media/pseudo are no longer supported by apply_styles. Update the PixelLens MCP server.',
       );
     if (ruleRef)
       return done(editHandlers.merge_rule_styles!(ruleRef, decls(styles), sender) as EditResult);

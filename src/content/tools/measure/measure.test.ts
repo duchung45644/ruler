@@ -17,7 +17,7 @@ const ev = (type: string, x: number, y: number) =>
   new PointerEvent(type, { clientX: x, clientY: y, button: 0, bubbles: true, cancelable: true });
 
 it('draws, moves, ignores arrows typed in the panel, clears on Esc and on toggle off', async () => {
-  const host = document.createElement('iodob-ui');
+  const host = document.createElement('pixellens-ui');
   document.body.append(host);
   const shadow = host.attachShadow({ mode: 'open' });
   shadow.append(layer);

@@ -30,7 +30,7 @@ import {
   openOptions,
   optionsHandlers,
 } from '../background/options';
-import { initMcp, isIodobTab, mcpHandlers } from '../background/mcp';
+import { initMcp, isPixelLensTab, mcpHandlers } from '../background/mcp';
 
 /** Toolbar icon: brand indigo while on, neutral grey while off (no red/blue pair). */
 export const ICON_ON = { 16: 'images/icon16.png', 32: 'images/icon32.png' } as const;
@@ -116,7 +116,7 @@ async function captureTab(
 
 /** 10.05 / 10.14: the visible tab for an agent, PNG scaled down to ≤ 2000 px (Q6 a). */
 async function captureForAi(tab?: { id?: number; windowId?: number }): Promise<AiCapture> {
-  if (tab?.id === undefined || !(await isIodobTab(tab.id)))
+  if (tab?.id === undefined || !(await isPixelLensTab(tab.id)))
     return { ok: false, reason: 'script_inactive' };
   try {
     const dataUrl = await captureVisible(tab.windowId ?? browser.windows.WINDOW_ID_CURRENT);

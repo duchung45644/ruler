@@ -6,7 +6,7 @@ export async function mountUi(
   ctx: ContentScriptContext,
   component: Component,
   props?: Record<string, unknown>,
-  { name = 'iodob-ui' }: { name?: string } = {},
+  { name = 'pixellens-ui' }: { name?: string } = {},
 ): Promise<{ host: HTMLElement; shadow: ShadowRoot; remove(): void }> {
   const ui = await createShadowRootUi(ctx, {
     name,
@@ -28,7 +28,7 @@ export async function mountUi(
   ui.mount();
   // Host stacking (fixed, max z-index) lives in theme.css as :host: WXT's shadow reset would beat inline styles.
   const host = ui.shadowHost;
-  host.dataset.iodob = ''; // X-Ray skips [data-iodob]
+  host.dataset.pixellens = ''; // X-Ray skips [data-pixellens]
   // Buttons never take focus, so Space/keys after a click still reach the shortcuts (not the button).
   ui.shadow.addEventListener('mousedown', (e) => {
     if ((e.target as Element).closest?.('button')) e.preventDefault();

@@ -1,14 +1,14 @@
 {
-  "name": "@iodob/mcp-server",
+  "name": "@pixellens/mcp-server",
   "version": "1.0.0",
-  "description": "Local MCP server for the iodob browser extension (stdio MCP <-> WebSocket on 127.0.0.1).",
+  "description": "Local MCP server for the PixelLens browser extension (stdio MCP <-> WebSocket on 127.0.0.1).",
   "license": "UNLICENSED",
   "publishConfig": {
     "access": "public"
   },
   "type": "module",
   "bin": {
-    "iodob-mcp": "dist/cli.js"
+    "pixellens-mcp": "dist/cli.js"
   },
   "files": [
     "dist"

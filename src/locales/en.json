@@ -1,7 +1,7 @@
 {
-  "extName": "iodob - Measure and Inspect the Web",
-  "extNameShort": "iodob",
-  "extDescription": "Web inspector for designers & developers. Measure elements, extract CSS & colors, capture screenshots & more.",
+  "extName": "PixelLens — Measure, Inspect & Tweak Any Page",
+  "extNameShort": "PixelLens",
+  "extDescription": "See every pixel: measure spacing, edit CSS live, check contrast, compare with your design and capture pages, all from one dock.",
   "cmdSelectParent": "Move selection to parent element.",
   "cmdSelectChild": "Move selection to child element.",
   "dock": {
@@ -103,7 +103,7 @@
     "rescan": "Rescan",
     "all": "All",
     "allTitle": "Copy all rows in this tab",
-    "empty": "Nothing found."
+    "empty": "Nothing to show here."
   },
   "capture": {
     "area": "Capture area",
@@ -136,7 +136,7 @@
     "tabPage": "Page",
     "undock": "Open in a window",
     "dock": "Move to side panel",
-    "emptyInspect": "Click an Element to Select",
+    "emptyInspect": "Pick an element on the page to see its details",
     "shortcutToggleRuler": "Toggle Extension",
     "shortcutParent": "Select Parent",
     "shortcutChild": "Select Child",
@@ -197,12 +197,12 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "clearElementTitle": "Clear Element",
-    "clearElement": "Are you sure you want to clear changes for this element?",
+    "clearElement": "Discard every change on this element?",
     "clearAllTitle": "Clear All Changes",
-    "clearAll": "Are you sure you want to clear all changes on this page?",
+    "clearAll": "Discard every change on this page?",
     "noSelectedElement": "Couldn't find the target element.",
     "tabUnavailableTitle": "Tab Unavailable",
-    "tabUnavailable": "Couldn't communicate with the tab. Make sure iodob is active on the current tab."
+    "tabUnavailable": "Can't reach this tab. Turn PixelLens on here and try again."
   },
   "issue": {
     "contrastAaMessage": "Text has insufficient contrast ratio of $1:1 (requires $2:1 for $3 text)",
@@ -321,8 +321,8 @@
     "invalidValue": "Invalid value",
     "overriddenBy": "Overridden by $1",
     "notInherited": "Not inherited by this element",
-    "overriddenHidden": "Overridden by a stylesheet iodob can't see",
-    "overriddenHiddenGrant": "Overridden by a stylesheet iodob can't see. Grant cross-origin access to reveal it.",
+    "overriddenHidden": "Overridden by a stylesheet PixelLens can't read",
+    "overriddenHiddenGrant": "Overridden by a stylesheet PixelLens can't read. Allow access to all sites to see it.",
     "crossOriginMissing": "Some styles may be missing.",
     "stateDefault": "Default",
     "filter": "Filter",
@@ -387,13 +387,13 @@
     "rowColorFormat": "Color Format",
     "colorFormatSecondary": "Used by the inspector and color picker",
     "savedEditsTitle": "Saved edits",
-    "savedEditsSecondary": "CSS edits are remembered per site and restored when you activate iodob there.",
+    "savedEditsSecondary": "PixelLens remembers your CSS edits for each site and brings them back next time.",
     "savedEditsClear": "Clear",
     "savedEditsConfirmTitle": "Clear saved edits?",
     "savedEditsConfirmBody": "This removes remembered CSS edits for every site.",
     "sectionTerminalAi": "Terminal AI",
     "rowMcpServer": "MCP Server",
-    "mcpServerSecondary": "Allow AI agents to inspect or make edits.",
+    "mcpServerSecondary": "Let AI agents look at and edit pages through PixelLens.",
     "mcpConnect": "Connect",
     "mcpDisconnect": "Disconnect",
     "mcpOutdatedTooltip": "MCP server outdated. Update via your AI client.",
@@ -407,8 +407,8 @@
     "connectAgent": "Connect Agent",
     "outdated": "MCP out of date",
     "waiting": "Waiting for agent",
-    "connectHint": "Copy this prompt and paste it to your AI agent:",
+    "connectHint": "Paste this into your AI agent to connect it:",
     "unknownAgent": "AI agent",
-    "waitingForAgent": "Waiting for your agent to connect..."
+    "waitingForAgent": "Waiting for your agent…"
   }
 }

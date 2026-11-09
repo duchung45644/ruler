@@ -47,14 +47,14 @@ export function fullPagePlan(p: {
  * a CSS variable: theme.css's `:host { top: 0 !important }` would beat an inline top.
  */
 export const beforeScript = (ih: number): string =>
-  `(() => { const s = document.documentElement.style; window.__bdT = [s.getPropertyValue("transform"), s.getPropertyPriority("transform")]; s.setProperty("transform", "translateY(${ih}px)", "important"); const c = document.querySelector("iodob-cover"); c && c.style.setProperty("--bd-cover-top", "-${ih}px"); })()`;
+  `(() => { const s = document.documentElement.style; window.__bdT = [s.getPropertyValue("transform"), s.getPropertyPriority("transform")]; s.setProperty("transform", "translateY(${ih}px)", "important"); const c = document.querySelector("pixellens-cover"); c && c.style.setProperty("--bd-cover-top", "-${ih}px"); })()`;
 
 export const afterScript = (): string =>
-  `(() => { const s = document.documentElement.style, t = window.__bdT || ["", ""]; s.setProperty("transform", t[0], t[1]); const c = document.querySelector("iodob-cover"); c && c.style.setProperty("--bd-cover-top", "0px"); })()`;
+  `(() => { const s = document.documentElement.style, t = window.__bdT || ["", ""]; s.setProperty("transform", t[0], t[1]); const c = document.querySelector("pixellens-cover"); c && c.style.setProperty("--bd-cover-top", "0px"); })()`;
 
 export const restoreScript = (o: { x: number; y: number } | { scrollTop: number }): string =>
   'scrollTop' in o
-    ? `(document.querySelector("[data-iodob-scroll]") || {}).scrollTop = ${o.scrollTop}`
+    ? `(document.querySelector("[data-pixellens-scroll]") || {}).scrollTop = ${o.scrollTop}`
     : `scrollTo({ left: ${o.x}, top: ${o.y}, behavior: "instant" })`;
 
 export const stitchHeight = (ih: number, VH: number, total: number, k: number): number =>

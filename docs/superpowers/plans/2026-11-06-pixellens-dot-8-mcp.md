@@ -1,8 +1,8 @@
-# iodob — Đợt 8: MCP — Kế hoạch triển khai
+# PixelLens — Đợt 8: MCP — Kế hoạch triển khai
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** cho AI agent (Claude Code, Cursor, Codex…) điều khiển iodob qua MCP server cục bộ, theo spec §4.8, §5 (chốt 5), §8 Đợt 8:
+**Goal:** cho AI agent (Claude Code, Cursor, Codex…) điều khiển PixelLens qua MCP server cục bộ, theo spec §4.8, §5 (chốt 5), §8 Đợt 8:
 
 - Chuyển 47 lệnh MCP của bản cũ (10.15) sang API có kiểu.
 - **Thiết kế lại kênh** extension ↔ MCP server cục bộ (bản cũ đã gỡ, xem dưới).
@@ -21,7 +21,7 @@
 
 **Architecture:**
 
-- **Transport (Q1 đề xuất a):** background mở **WebSocket client** tới `ws://127.0.0.1:<port>/iodob` (Q2). Server MCP (stdio phía agent) mở WebSocket server chỉ bind `127.0.0.1`.
+- **Transport (Q1 đề xuất a):** background mở **WebSocket client** tới `ws://127.0.0.1:<port>/pixellens` (Q2). Server MCP (stdio phía agent) mở WebSocket server chỉ bind `127.0.0.1`.
   - Không cần quyền mới: WebSocket không chịu `host_permissions` và CSP mặc định MV3 không chặn `connect-src`.
   - Chrome ≥ 116 (đã ghim `minimum_chrome_version`) giữ service worker sống khi WebSocket có lưu lượng. Server gửi `ping` mỗi 20s.
 - **Giao thức** `src/lib/mcp/protocol.ts` (JSON, phiên bản `protocol: 1`):
@@ -33,8 +33,8 @@
 - **Xác thực và giới hạn nguồn** (bắt buộc, xem Review Focus 1):
   - **Token cặp:** extension sinh 32 byte ngẫu nhiên (`crypto.getRandomValues`, base64url) lần đầu bật MCP, lưu `local:mcpToken`. Lời nhắc copy chứa token (Q3). Server so token bằng so sánh thời gian hằng; sai → `reject` + đóng. Nút "tạo lại token" không có ở đợt này.
   - **Origin:** trình duyệt tự gắn `Origin: chrome-extension://<id>` vào handshake WebSocket, trang web không giả được. Server chỉ nhận đúng origin đó (id lấy từ token-prompt hoặc `--extension-id`); trang web mở `ws://127.0.0.1` sẽ bị từ chối ở bước upgrade. Ghi rõ vào đặc tả giao thức gửi cho phía server.
-  - **Phía extension:** chỉ nối `ws://127.0.0.1` (không `localhost`, tránh DNS); không nhận lệnh trước `welcome`; mọi `call` qua validator thủ công theo từng lệnh (không thêm zod); khung > 1 MB bị bỏ; lệnh lạ → lỗi "Unknown action. Update the iodob extension to the latest version.".
-  - **Phạm vi tab (Q4 đề xuất a):** lệnh theo tab chỉ chạy trên tab người dùng **đã bật** iodob (content `ping().active`); `list_tabs` chỉ liệt kê các tab đó. Không tự inject vào tab chưa bật.
+  - **Phía extension:** chỉ nối `ws://127.0.0.1` (không `localhost`, tránh DNS); không nhận lệnh trước `welcome`; mọi `call` qua validator thủ công theo từng lệnh (không thêm zod); khung > 1 MB bị bỏ; lệnh lạ → lỗi "Unknown action. Update the PixelLens extension to the latest version.".
+  - **Phạm vi tab (Q4 đề xuất a):** lệnh theo tab chỉ chạy trên tab người dùng **đã bật** PixelLens (content `ping().active`); `list_tabs` chỉ liệt kê các tab đó. Không tự inject vào tab chưa bật.
   - **Opt-in:** `mcpIntent` mặc định false; chỉ nối khi người dùng bấm Connect (dock hoặc trang cài đặt). Disconnect đóng socket ngay.
   - `fetch_stylesheet` giữ chặn private/localhost (`background.js:2632`); HTML chèn vẫn qua sanitizer có sẵn (5.15).
 - **Bố cục mã:**
@@ -76,7 +76,7 @@
 | 9.17, 10.01 | `runtime.onMessage` `target: "mcp"` nhận lệnh từ bất kỳ trang extension nào | Bỏ đường này; lệnh chỉ vào qua socket đã xác thực. Không còn `target` chuỗi (kênh có kiểu D3) |
 | 10.03, 10.04 | `request_mcp_connect/disconnect/status`, `mcp_status_changed` | `mcp_connect` / `mcp_disconnect` / `mcp_status` trên `BackgroundApi`; phát `mcp_status` tới tab đang bật và trang cài đặt |
 | 10.05, 10.14 | `capture_tab_for_ai` → `He` rỗng | `capture_for_ai` dùng hàng đợi chụp có sẵn; trả dataUrl PNG, thu nhỏ cạnh dài ≤ 2000 px (Q6) |
-| 10.12, 5.28 | Lỗi "Editor not active." khi chưa vào chế độ sửa | **Không còn chế độ sửa**: lệnh sửa chạy khi script bật; lỗi chỉ còn "iodob is not active on this page." và "Cannot edit <tag>. Target a child element instead." |
+| 10.12, 5.28 | Lỗi "Editor not active." khi chưa vào chế độ sửa | **Không còn chế độ sửa**: lệnh sửa chạy khi script bật; lỗi chỉ còn "PixelLens is not active on this page." và "Cannot edit <tag>. Target a child element instead." |
 | 10.11 | `select_element` → `select_edited_element` cần edit mode | `select_edited_element` chọn qua inspector (2.16), không bật chế độ nào |
 | 10.12 | Sửa từ MCP chỉ sống trong phiên | Sửa đi qua engine nên **được lưu theo site** như sửa tay (inline + rule, đợt 5); `revert_all_edits` xoá cả bản lưu |
 | 10.12 | `apply_styles` từ chối state/media/pseudo | Giữ nguyên văn lỗi (`content.js:21565`) |
@@ -84,7 +84,7 @@
 | 10.14 | Ẩn UI 32ms trước khi chụp | Ẩn shadow host của overlay (dock, panel, shell toolbar) đúng một khung hình rồi chụp; không đụng `ToolPanel.svelte` |
 | 10.06, 9.41 | Icon agent (antigravity/claude/cursor/windsurf/cline/codex/gemini/vs-code) từ `scripts/patterns/*` qua web_accessible_resources | Q7 |
 | 10.07 | Popover dock: lời nhắc copy `npx -y @screen-ruler/mcp` | Giữ, thêm token theo Q3; chuỗi nguyên văn `MCP_CONNECT_HINT` |
-| 9.05 | `OPTIONS_MCP_SERVER_SECONDARY` có link "Setup guide" `www.iodob.com` | **Đã chốt (đợt 7 Q4a):** bỏ `<a>`, chỉ giữ câu "Allow AI agents to inspect or make edits." |
+| 9.05 | `OPTIONS_MCP_SERVER_SECONDARY` có link "Setup guide" `www.pixellens.com` | **Đã chốt (đợt 7 Q4a):** bỏ `<a>`, chỉ giữ câu "Allow AI agents to inspect or make edits." |
 | 1.46, 10.06 | Quit nằm cuối nhóm MCP | Dock 5 nhóm đã chốt: MCP là nút cuối nhóm cuối, Quit ngay sau (sửa `Dock.svelte` + registry, không đụng `DockButton.svelte`) |
 | — | Phím số; không có phím cho MCP | Không thêm phím chữ cho MCP |
 
@@ -107,7 +107,7 @@
 1. **Bề mặt bảo mật:**
    - không có đường nào ngoài socket đã `welcome` gọi được lệnh MCP (không còn `target: 'mcp'` trong `runtime.onMessage`);
    - token đúng, origin do server kiểm (ghi trong đặc tả cho server); extension chỉ nối `127.0.0.1`;
-   - lệnh chỉ tới tab đã bật iodob; `focus_tab` cũng vậy;
+   - lệnh chỉ tới tab đã bật PixelLens; `focus_tab` cũng vậy;
    - validator chặn payload sai kiểu, `limit` kẹp 1–200, selector độ dài ≤ 1000, html ≤ 200 KB.
 2. **Không treo:** mọi `call` có timeout và luôn trả `result`; socket đóng giữa chừng → các lời gọi đang chờ bị huỷ; tab đóng → lỗi rõ.
 3. **Đồng nhất với sửa tay:** sửa từ MCP lưu theo site, hiện trong side panel (`refresh_changes`). Chỉ sửa HTML (text, innerHTML, insert, class, xoá, nhân bản) vào lịch sử undo/redo của engine (Ctrl+Z); sửa rule và inline style không vào lịch sử đó, hoàn tác từ danh sách Changes hoặc `revert_css_change` / `revert_all_edits` (xem `editState()` trong `src/content/edit/mode.svelte.ts`).
@@ -133,7 +133,7 @@
 **Files:** `src/background/mcp-socket.ts`, `src/lib/settings.ts` (+ test)
 
 - [ ] `mcpIntent`, `mcpToken` trong `settings.ts` (9.34); `ensureToken()` sinh 32 byte base64url nếu null.
-- [ ] `McpSocket.start()`: mở `ws://127.0.0.1:${MCP_PORT}/iodob`; `open` → gửi `hello`; chờ `welcome` tối đa 5s, không có → đóng, backoff.
+- [ ] `McpSocket.start()`: mở `ws://127.0.0.1:${MCP_PORT}/pixellens`; `open` → gửi `hello`; chờ `welcome` tối đa 5s, không có → đóng, backoff.
 - [ ] Backoff 1s, 2s, 4s… tối đa 30s khi `mcpIntent` vẫn true; `stop()` huỷ timer + đóng socket.
 - [ ] Trước `welcome` mọi `call` bị bỏ (không trả lời). `reject` → dừng tự nối lại tới khi người dùng bấm Connect lại; trạng thái `rejected` (popover hiện lại lời nhắc).
 - [ ] `pong` cho `ping`.
@@ -156,7 +156,7 @@
 **Files:** `src/background/mcp.ts`, `src/lib/messaging.ts` (+ test)
 
 - [ ] `handleCall(type, payload)`: validate → nhánh nền (`list_tabs`, `focus_tab`, `fetch_stylesheet`, `get_screenshot`) hoặc `forwardToTab`.
-- [ ] `list_tabs`: chỉ tab đang bật (Q4): `{tabId, title, url, active}`. `focus_tab`: tab không bật → lỗi "iodob is not active on this tab.".
+- [ ] `list_tabs`: chỉ tab đang bật (Q4): `{tabId, title, url, active}`. `focus_tab`: tab không bật → lỗi "PixelLens is not active on this tab.".
 - [ ] `fetch_stylesheet`: dùng `stylesheet-fetch.ts`, giữ lỗi nguyên văn chặn private/localhost.
 - [ ] `forwardToTab`: `ContentApi.mcp_call(type, payload)` ở frame 0; timeout 40s cho `get_screenshot`/`enter_responsive_mode`/`exit_responsive_mode`/`set_viewport`, 12s cho lệnh khác; trang đang reload sau responsive → chờ `complete` tối đa 10s (10.02).
 - [ ] `select_element` → `select_edited_element` (10.15).
@@ -168,7 +168,7 @@
 
 **Files:** `src/content/mcp/index.ts`, `src/content/mcp/page.ts`, `src/content/mcp/ai-data.ts` (+ test)
 
-- [ ] Cổng `mcp_call` trong content: script tắt → "iodob is not active on this page."; lệnh cấp trang chỉ khung top; lệnh lạ → "Unknown action. Update the iodob extension to the latest version.".
+- [ ] Cổng `mcp_call` trong content: script tắt → "PixelLens is not active on this page."; lệnh cấp trang chỉ khung top; lệnh lạ → "Unknown action. Update the PixelLens extension to the latest version.".
 - [ ] `buildPageInfo`, `extractAiAttributes` (data-* ≤5, aria-* ≤8), `buildOutlineTree`, `buildElementSummary`, `queryBySelector` (1–200, mặc định 50) theo 10.09.
 - [ ] `get_page_info`, `get_page_classes`, `get_breakpoints`, `get_seo_issues`, `get_meta_tags`, `get_page_weight`, `get_css_custom_properties`, `get_typography`, `calculate_specificity`, `get_colors`, `get_assets`, `get_layout`, `get_tailwind`, `detect_technologies`, `get_a11y_issues` (gộp nhóm, warning trước info, tương phản thấp trước): gọi `sidepanel/page.ts`, `lib/a11y.ts`, `lib/breakpoints.ts`, `lib/selector.ts`… không viết lại.
 - [ ] Test happy-dom cho từng hàm dựng dữ liệu; thứ tự a11y.
@@ -236,7 +236,7 @@
 ### Task 13: Kiểm kê và thử tay trên Edge
 
 - [ ] `[x]` cho 1.46, 1.50, 5.28, 9.05, 9.30, 9.34, 9.41 (hoặc ghi bỏ theo Q7), 10.01–10.16; ghi chú đổi theo bảng Phạm vi; 11.11 giữ "bỏ".
-- [ ] Thử tay với server cục bộ (bản dựng theo đặc tả, Q8): connect từ dock và trang cài đặt; trang web thử `new WebSocket('ws://127.0.0.1:<port>/iodob')` bị server từ chối; token sai bị từ chối; agent đọc trang, sửa style (thấy trong side panel, reload vẫn còn), responsive, chụp ảnh; disconnect cắt ngay; vi/en.
+- [ ] Thử tay với server cục bộ (bản dựng theo đặc tả, Q8): connect từ dock và trang cài đặt; trang web thử `new WebSocket('ws://127.0.0.1:<port>/pixellens')` bị server từ chối; token sai bị từ chối; agent đọc trang, sửa style (thấy trong side panel, reload vẫn còn), responsive, chụp ảnh; disconnect cắt ngay; vi/en.
 - [ ] Commit: `docs(inventory): dot 8 mcp`
 
 ## Xong khi
@@ -259,12 +259,12 @@
   - c) Người dùng nhập cổng ở trang cài đặt.
   - **Đề xuất:** a; server báo lỗi rõ khi cổng bận.
 - **Q3 — Token cặp.**
-  - a) Extension sinh token, nhét vào lời nhắc copy (`npx -y @screen-ruler/mcp`, env `IODOB_MCP_TOKEN=…`, `--extension-id`); không cần chuỗi mới (lời nhắc tiếng Anh nguyên văn + tham số);
+  - a) Extension sinh token, nhét vào lời nhắc copy (`npx -y @screen-ruler/mcp`, env `PIXELLENS_MCP_TOKEN=…`, `--extension-id`); không cần chuỗi mới (lời nhắc tiếng Anh nguyên văn + tham số);
   - b) Server sinh token, người dùng dán vào trang cài đặt (cần chuỗi + ô nhập mới);
   - c) Không token, chỉ dựa Origin.
   - **Đề xuất:** a. c không đủ: tiến trình cục bộ khác có thể chiếm cổng trước và giả server.
 - **Q4 — Phạm vi tab.**
-  - a) Chỉ tab đã bật iodob;
+  - a) Chỉ tab đã bật PixelLens;
   - b) Mọi tab thường; MCP tự inject content khi cần (activeTab không đủ, cần `<all_urls>` optional đã có).
   - **Đề xuất:** a — người dùng kiểm soát rõ agent chạm được tab nào.
 - **Q5 — Nối lại khi server chưa chạy.**
@@ -291,7 +291,7 @@
 
 ## Quyết định đã chốt (2026-11-06)
 
-Chủ dự án chọn theo đề xuất: Q1 a (WebSocket 127.0.0.1); Q2 a (một cổng cố định); Q3 a (extension tạo token, gắn vào prompt); Q4 a (chỉ tab đang bật iodob); Q5 a (backoff setTimeout); Q6 a (PNG cạnh dài ≤ 2000px); Q7 b (chỉ tên agent, bỏ 9.41); Q9 a (lưu sửa theo site).
+Chủ dự án chọn theo đề xuất: Q1 a (WebSocket 127.0.0.1); Q2 a (một cổng cố định); Q3 a (extension tạo token, gắn vào prompt); Q4 a (chỉ tab đang bật PixelLens); Q5 a (backoff setTimeout); Q6 a (PNG cạnh dài ≤ 2000px); Q7 b (chỉ tên agent, bỏ 9.41); Q9 a (lưu sửa theo site).
 
 **Q8 đổi thành b:** viết server trong repo, package riêng `packages/mcp-server` (stdio MCP server + WebSocket server theo giao thức của plan). Dependency của server (`@modelcontextprotocol/sdk`, `ws`) chỉ thuộc package đó, không vào bundle extension. Thêm sau Task 12:
 

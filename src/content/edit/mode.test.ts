@@ -45,7 +45,7 @@ const key = (k: string, init: KeyboardEventInit = {}) =>
   routeKey(new KeyboardEvent('keydown', { key: k, cancelable: true, ...init }));
 
 beforeEach(async () => {
-  const host = document.body.appendChild(document.createElement('iodob-ui'));
+  const host = document.body.appendChild(document.createElement('pixellens-ui'));
   host.attachShadow({ mode: 'open' }).append(layer);
   state.active = true;
   sessionSignal();
@@ -123,7 +123,7 @@ it('edit keys do nothing while typing in an input inside a page shadow root (§9
 });
 
 it('text editing leaves clicks and input in the extension UI alone', async () => {
-  const ui = document.querySelector('iodob-ui')!;
+  const ui = document.querySelector('pixellens-ui')!;
   const button = ui.shadowRoot!.appendChild(document.createElement('button'));
   await setEditMode(true);
   toggleTextEdit();

@@ -7,7 +7,7 @@ export const host = (): HTMLElement =>
 export const scroll = () => ({ x: scrollX, y: scrollY });
 /** Label chip shared by ruler and measure painters. */
 export const CHIP =
-  "font:600 11px/1 'iodob Geist Mono',ui-monospace,monospace;color:#fff;padding:3px 5px;border-radius:4px;white-space:nowrap;transform:translate(-50%,-50%)";
+  "font:600 11px/1 'PixelLens Geist Mono',ui-monospace,monospace;color:#fff;padding:3px 5px;border-radius:4px;white-space:nowrap;transform:translate(-50%,-50%)";
 
 const painters = new Map<string, { box: HTMLElement; paint: (layer: HTMLElement) => void }>();
 let raf = 0;
@@ -116,7 +116,7 @@ export function drawNumber(
 ): void {
   draw(
     parent,
-    `left:${x}px;top:${y}px;transform:translate(${tx},${ty});font:700 10px/1 'iodob Geist Mono',ui-monospace,monospace;color:${color};white-space:nowrap`,
+    `left:${x}px;top:${y}px;transform:translate(${tx},${ty});font:700 10px/1 'PixelLens Geist Mono',ui-monospace,monospace;color:${color};white-space:nowrap`,
     String(Math.round(value)),
   );
 }

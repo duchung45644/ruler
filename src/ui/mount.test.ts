@@ -23,8 +23,8 @@ describe('mountUi', () => {
 
 it('mounts a named host marked as ours', async () => {
   const ctx = { onInvalidated: () => () => {}, isInvalid: false } as never;
-  const ui = await mountUi(ctx, Empty, {}, { name: 'iodob-capture' });
-  expect(ui.host.localName).toBe('iodob-capture');
-  expect(ui.host.hasAttribute('data-iodob')).toBe(true);
+  const ui = await mountUi(ctx, Empty, {}, { name: 'pixellens-capture' });
+  expect(ui.host.localName).toBe('pixellens-capture');
+  expect(ui.host.hasAttribute('data-pixellens')).toBe(true);
   ui.remove();
 });

@@ -1,4 +1,4 @@
-# iodob
+# PixelLens
 
 Extension Chromium (MV3) để đo và kiểm tra trang web: inspector, thước, đo khoảng cách, grid, X-Ray, tìm phần tử, audit, chụp ảnh, sửa CSS/HTML ngay trên trang, chế độ responsive nhiều khung, và điều khiển qua MCP từ AI agent.
 
@@ -35,7 +35,7 @@ corepack pnpm exec vitest run src
 | `src/lib/`             | logic thuần dùng chung, chia theo nhóm (xem bảng dưới)                   |
 | `src/ui/`              | component và theme dùng chung                                            |
 | `src/locales/`         | chuỗi `en` / `vi`                                                        |
-| `packages/mcp-server/` | MCP server cục bộ (`@iodob/mcp-server`)                                  |
+| `packages/mcp-server/` | MCP server cục bộ (`@pixellens/mcp-server`)                              |
 | `docs/`                | spec, plan từng đợt, kiểm kê hành vi (`inventory.md`), giao thức MCP     |
 
 `src/lib/`:
@@ -59,10 +59,10 @@ Manifest không có `host_permissions` hay `content_scripts`: content script đ�
 
 ## MCP
 
-Extension nối tới server trên máy (`ws://127.0.0.1:47347/iodob`) chỉ khi người dùng bật, xác thực bằng token và Origin của extension. Chi tiết: [docs/mcp-protocol.md](docs/mcp-protocol.md).
+Extension nối tới server trên máy (`ws://127.0.0.1:47347/pixellens`) chỉ khi người dùng bật, xác thực bằng token và Origin của extension. Chi tiết: [docs/mcp-protocol.md](docs/mcp-protocol.md).
 
 ```sh
-corepack pnpm --filter @iodob/mcp-server build
+corepack pnpm --filter @pixellens/mcp-server build
 ```
 
 Cấu hình AI agent (ví dụ `.mcp.json`); `<id>` và `<token>` lấy từ đoạn hướng dẫn ở nút MCP trên dock:
@@ -70,10 +70,10 @@ Cấu hình AI agent (ví dụ `.mcp.json`); `<id>` và `<token>` lấy từ đo
 ```json
 {
   "mcpServers": {
-    "iodob": {
+    "PixelLens": {
       "command": "node",
       "args": ["<repo>/packages/mcp-server/dist/cli.js", "--extension-id", "<id>"],
-      "env": { "IODOB_MCP_TOKEN": "<token>" }
+      "env": { "PIXELLENS_MCP_TOKEN": "<token>" }
     }
   }
 }

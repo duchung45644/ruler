@@ -1,4 +1,4 @@
-# iodob — Đợt 0: Khung + gỡ build — Kế hoạch triển khai
+# PixelLens — Đợt 0: Khung + gỡ build — Kế hoạch triển khai
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -8,7 +8,7 @@
 
 **Tech Stack:** pnpm 11.7.0, Node ≥ 22.12, TypeScript 6.0.3, WXT 0.21.5 + Vite 8.3.5, Svelte 5.57.3, Tailwind CSS 4.3.3, @lucide/svelte 1.66.0, Vitest 5.0.5, ESLint 10 + typescript-eslint + eslint-plugin-svelte, Prettier 3.9.10, wakaru 1.15.0 (chỉ chạy một lần).
 
-**Spec:** `docs/superpowers/specs/2026-11-01-iodob-rewrite-design.md` — mục 3 (ràng buộc), 6 (kiến trúc), 8 (Đợt 0), 9 (Giao diện trong trang).
+**Spec:** `docs/superpowers/specs/2026-11-01-pixellens-rewrite-design.md` — mục 3 (ràng buộc), 6 (kiến trúc), 8 (Đợt 0), 9 (Giao diện trong trang).
 
 **Phạm vi:** chỉ Đợt 0. Mỗi đợt sau có plan riêng, viết khi đợt trước xong, dựa trên `docs/inventory.md`.
 
@@ -100,7 +100,7 @@ Nguyên nhân: helper Babel đã bị đổi tên khi minify. Plan này không v
 
 ```json
 {
-  "name": "iodob",
+  "name": "pixellens",
   "version": "2.0.0",
   "private": true,
   "type": "module",
@@ -171,7 +171,7 @@ export default defineConfig({
 });
 ```
 
-**Hook `build:manifestGenerated`:** nếu `manifest.host_permissions` hoặc `manifest.content_scripts` có phần tử, ném lỗi với đúng nội dung `iodob: manifest không được có host_permissions/content_scripts — inject bằng scripting.executeScript (spec §3)`.
+**Hook `build:manifestGenerated`:** nếu `manifest.host_permissions` hoặc `manifest.content_scripts` có phần tử, ném lỗi với đúng nội dung `PixelLens: manifest không được có host_permissions/content_scripts — inject bằng scripting.executeScript (spec §3)`.
 
 **Các file còn lại:**
 
@@ -190,8 +190,8 @@ export default defineConfig({
 
 | Khoá | en | vi |
 | --- | --- | --- |
-| `extName` | iodob - Measure and Inspect the Web | iodob - Đo và Kiểm tra Web |
-| `extNameShort` | iodob | iodob |
+| `extName` | PixelLens - Measure and Inspect the Web | PixelLens - Đo và Kiểm tra Web |
+| `extNameShort` | PixelLens | PixelLens |
 | `extDescription` | Web inspector for designers & developers. Measure elements, extract CSS & colors, capture screenshots & more. | Công cụ kiểm tra web cho nhà thiết kế và lập trình viên. Đo phần tử, trích xuất CSS và màu sắc, chụp ảnh màn hình và nhiều hơn nữa. |
 | `cmdSelectParent` | Move selection to parent element. | Chuyển vùng chọn lên phần tử cha. |
 | `cmdSelectChild` | Move selection to child element. | Chuyển vùng chọn xuống phần tử con. |
@@ -246,7 +246,7 @@ Expected:
 - `.output/chrome-mv3/_locales/` chỉ có `en/` và `vi/`.
 
 - [ ] **Step 7: Thử hook chặn.**
-  - Thêm tạm `host_permissions: ['<all_urls>']` vào `manifest`, chạy `pnpm build`. Expected: FAIL với thông báo "iodob: manifest không được có host_permissions/content_scripts…".
+  - Thêm tạm `host_permissions: ['<all_urls>']` vào `manifest`, chạy `pnpm build`. Expected: FAIL với thông báo "PixelLens: manifest không được có host_permissions/content_scripts…".
   - Xoá dòng tạm, chạy lại `pnpm build`. Expected: PASS.
 
 - [ ] **Step 8: Commit.**
@@ -363,7 +363,7 @@ git commit -m "chore: add svelte-check, ESLint, Prettier and pnpm check" -m "Co-
 - Produces:
   - `shadowDomCss(): Plugin` (postcss) trong `build/shadow-dom-css.ts`, gắn vào Vite qua `css.postcss.plugins`.
   - Content script build ra `/content-scripts/content.js` và `/content-scripts/content.css`; background inject nó khi bấm icon.
-  - Host shadow là thẻ `<iodob-ui>`.
+  - Host shadow là thẻ `<pixellens-ui>`.
   - Đợt 1 thay `Smoke.svelte` bằng dock thật, giữ nguyên cách gắn.
 
 - [ ] **Step 1: Cài dependency.**
@@ -430,7 +430,7 @@ describe('shadowDomCss', () => {
   - Expected: FAIL với `Failed to resolve import "./shadow-dom-css"`.
 
 - [ ] **Step 4: Viết `shadowDomCss(): Plugin` trong `build/shadow-dom-css.ts`.**
-  - `postcssPlugin: 'iodob-shadow-dom-css'`.
+  - `postcssPlugin: 'pixellens-shadow-dom-css'`.
   - **Trạng thái theo từng file:** dùng `prepare()`, vì Vite dùng một instance plugin cho mọi file CSS.
   - **`Declaration`:** thay mọi khớp `/(-?\d*\.?\d+)rem\b/g` trong `decl.value` bằng `${Number((n * 16).toFixed(4))}px`. Không đụng params của `@media`.
   - **`AtRule` tên `property`:**
@@ -461,8 +461,8 @@ describe('shadowDomCss', () => {
 - Không có `matches`. Import `./style.css`.
 - Ghi chú trong code: `// ponytail: UI thử của Đợt 0 — Đợt 1 thay bằng dock + vòng đời thật`.
 - `main`:
-  - Nếu trang đã có `<iodob-ui>`: xoá nó và dừng (bấm icon lần 2 = tắt).
-  - Nếu chưa: gọi `createShadowRootUi(ctx, { name: 'iodob-ui', position: 'inline', anchor: 'body', onMount: (container) => mount(Smoke, { target: container }), onRemove: (app) => app && unmount(app) })`, rồi `ui.mount()`.
+  - Nếu trang đã có `<pixellens-ui>`: xoá nó và dừng (bấm icon lần 2 = tắt).
+  - Nếu chưa: gọi `createShadowRootUi(ctx, { name: 'pixellens-ui', position: 'inline', anchor: 'body', onMount: (container) => mount(Smoke, { target: container }), onRemove: (app) => app && unmount(app) })`, rồi `ui.mount()`.
 
 `src/entrypoints/content/Smoke.svelte` — các class này là vật thử của Review Focus 1–2, giữ nguyên:
 
@@ -507,11 +507,11 @@ Expected:
   1. Mở `edge://extensions`, bật Developer mode, Load unpacked, chọn `.output/chrome-mv3`. Expected:
      - không có lỗi đỏ;
      - phiên bản `2.0.0`;
-     - tên là "iodob - Đo và Kiểm tra Web" (Edge tiếng Việt) hoặc bản tiếng Anh.
+     - tên là "PixelLens - Đo và Kiểm tra Web" (Edge tiếng Việt) hoặc bản tiếng Anh.
   2. Mở `https://example.com`. Trong DevTools Console chạy `document.documentElement.style.fontSize = '10px'`.
-  3. Bấm icon iodob (bản mới). Expected:
-     - góc trên phải hiện viên tối có icon thước và chữ "iodob";
-     - trong DevTools chọn `<iodob-ui>` → `#shadow-root` → `div`; tab Computed có `font-size: 14px`, `padding: 8px 12px`, và `box-shadow` khác `none`.
+  3. Bấm icon PixelLens (bản mới). Expected:
+     - góc trên phải hiện viên tối có icon thước và chữ "PixelLens";
+     - trong DevTools chọn `<pixellens-ui>` → `#shadow-root` → `div`; tab Computed có `font-size: 14px`, `padding: 8px 12px`, và `box-shadow` khác `none`.
   4. Trong Console chạy `document.querySelector('style[wxt-shadow-root-document-styles]')`. Expected: `null` — không có `@property` nào bị đưa lên trang.
   5. Bấm icon lần nữa. Expected: viên tối biến mất.
   6. Nếu bản cũ đang giữ Alt+Shift+S: Edge không gán phím trùng, nên bản mới không có phím tắt. Đó là bình thường.
@@ -842,7 +842,7 @@ git commit -m "docs: start legacy behaviour inventory with coverage test" -m "Co
 ## Ghi chú cho các đợt sau (phát hiện khi lập plan)
 
 - **Font trong shadow DOM (Đợt 1).** `createShadowRootUi` của WXT đưa `@property` và `@font-face` từ CSS của shadow root lên `<head>` của trang. `shadowDomCss` đã bỏ `@property`, nhưng `@font-face` (font Geist) vẫn sẽ lên trang. Vì vậy:
-  - đặt tên họ font riêng (ví dụ `Iodob Geist`, `Iodob Geist Mono`), để không đè font Geist của chính trang (các site Vercel dùng Geist);
+  - đặt tên họ font riêng (ví dụ `PixelLens Geist`, `PixelLens Geist Mono`), để không đè font Geist của chính trang (các site Vercel dùng Geist);
   - thêm `fonts/*.woff2` vào `web_accessible_resources`.
 - **Sự kiện không lọt xuống inspector (Đợt 1).** `createShadowRootUi` có tuỳ chọn `isolateEvents` — ứng viên cho quy tắc "sự kiện trong panel không lọt xuống inspector".
 - **Test cần `browser`.** Dùng `wxt/testing/wxt-vitest-plugin` (`WxtVitest`) và `wxt/testing/fake-browser`. Thêm khi có test đầu tiên cần đến.

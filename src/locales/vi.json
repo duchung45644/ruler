@@ -1,7 +1,7 @@
 {
-  "extName": "iodob - Đo và Kiểm tra Web",
-  "extNameShort": "iodob",
-  "extDescription": "Công cụ kiểm tra web cho nhà thiết kế và lập trình viên. Đo phần tử, trích xuất CSS và màu sắc, chụp ảnh màn hình và nhiều hơn nữa.",
+  "extName": "PixelLens — Đo, soi và chỉnh trang web",
+  "extNameShort": "PixelLens",
+  "extDescription": "Đo khoảng cách, sửa CSS trực tiếp, kiểm tra tương phản, so với bản thiết kế và chụp trang, tất cả trong một thanh công cụ.",
   "cmdSelectParent": "Chuyển vùng chọn lên phần tử cha.",
   "cmdSelectChild": "Chuyển vùng chọn xuống phần tử con.",
   "dock": {
@@ -103,7 +103,7 @@
     "rescan": "Quét lại",
     "all": "Tất cả",
     "allTitle": "Copy toàn bộ danh sách của tab này",
-    "empty": "Không tìm thấy."
+    "empty": "Chưa có gì để hiển thị."
   },
   "capture": {
     "area": "Chụp vùng",
@@ -136,7 +136,7 @@
     "tabPage": "Trang",
     "undock": "Mở trong cửa sổ",
     "dock": "Chuyển về bảng bên",
-    "emptyInspect": "Nhấp vào một phần tử để chọn",
+    "emptyInspect": "Chọn một phần tử trên trang để xem chi tiết",
     "shortcutToggleRuler": "Bật/tắt tiện ích",
     "shortcutParent": "Chọn phần tử cha",
     "shortcutChild": "Chọn phần tử con",
@@ -197,12 +197,12 @@
     "cancel": "Hủy",
     "confirm": "Xác nhận",
     "clearElementTitle": "Xóa phần tử",
-    "clearElement": "Bạn có chắc muốn xóa các thay đổi cho phần tử này không?",
+    "clearElement": "Bỏ mọi thay đổi trên phần tử này?",
     "clearAllTitle": "Xóa tất cả thay đổi",
-    "clearAll": "Bạn có chắc muốn xóa tất cả thay đổi trên trang này không?",
+    "clearAll": "Bỏ mọi thay đổi trên trang này?",
     "noSelectedElement": "Không tìm thấy phần tử mục tiêu.",
     "tabUnavailableTitle": "Tab không khả dụng",
-    "tabUnavailable": "Không thể giao tiếp với tab. Hãy đảm bảo iodob đang hoạt động trên tab hiện tại."
+    "tabUnavailable": "Không kết nối được với tab này. Bật PixelLens ở đây rồi thử lại."
   },
   "issue": {
     "contrastAaMessage": "Văn bản có tỷ lệ tương phản không đủ $1:1 (yêu cầu $2:1 cho văn bản $3)",
@@ -321,8 +321,8 @@
     "invalidValue": "Giá trị không hợp lệ",
     "overriddenBy": "Bị ghi đè bởi $1",
     "notInherited": "Không được kế thừa bởi phần tử này",
-    "overriddenHidden": "Bị ghi đè bởi một stylesheet mà iodob không thể thấy",
-    "overriddenHiddenGrant": "Bị ghi đè bởi một stylesheet mà iodob không thể thấy. Cấp quyền truy cập cross-origin để xem.",
+    "overriddenHidden": "Bị ghi đè bởi một stylesheet PixelLens không đọc được",
+    "overriddenHiddenGrant": "Bị ghi đè bởi một stylesheet PixelLens không đọc được. Cho phép truy cập mọi trang để xem.",
     "crossOriginMissing": "Một số kiểu có thể bị thiếu.",
     "stateDefault": "Mặc định",
     "filter": "Lọc",
@@ -387,13 +387,13 @@
     "rowColorFormat": "Định dạng màu",
     "colorFormatSecondary": "Được dùng bởi trình kiểm tra và bộ chọn màu",
     "savedEditsTitle": "Chỉnh sửa đã lưu",
-    "savedEditsSecondary": "Các chỉnh sửa CSS được ghi nhớ theo từng trang và khôi phục khi bạn kích hoạt iodob ở đó.",
+    "savedEditsSecondary": "PixelLens nhớ các sửa CSS theo từng trang và áp lại vào lần sau.",
     "savedEditsClear": "Xóa",
     "savedEditsConfirmTitle": "Xóa các chỉnh sửa đã lưu?",
     "savedEditsConfirmBody": "Thao tác này xóa các chỉnh sửa CSS đã ghi nhớ của mọi trang.",
     "sectionTerminalAi": "AI Terminal",
     "rowMcpServer": "Máy chủ MCP",
-    "mcpServerSecondary": "Cho phép tác nhân AI kiểm tra hoặc chỉnh sửa.",
+    "mcpServerSecondary": "Cho phép AI agent xem và sửa trang qua PixelLens.",
     "mcpConnect": "Kết nối",
     "mcpDisconnect": "Ngắt kết nối",
     "mcpOutdatedTooltip": "Máy chủ MCP đã lỗi thời. Cập nhật qua ứng dụng AI của bạn.",
@@ -407,8 +407,8 @@
     "connectAgent": "Kết nối agent",
     "outdated": "MCP đã lỗi thời",
     "waiting": "Đang chờ agent",
-    "connectHint": "Sao chép lời nhắc này và dán vào AI agent của bạn:",
+    "connectHint": "Dán đoạn này vào AI agent để kết nối:",
     "unknownAgent": "AI agent",
-    "waitingForAgent": "Đang chờ agent kết nối..."
+    "waitingForAgent": "Đang chờ agent kết nối…"
   }
 }

@@ -21,7 +21,7 @@ const data = async (type: Parameters<typeof runMcp>[0], payload: object) => {
 };
 
 beforeEach(async () => {
-  const host = document.body.appendChild(document.createElement('iodob-ui'));
+  const host = document.body.appendChild(document.createElement('pixellens-ui'));
   host.attachShadow({ mode: 'open' }).append(layer);
   state.active = true;
   sessionSignal();

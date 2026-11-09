@@ -91,10 +91,21 @@ it('ruler: drag a guide out of the top strip, swallow the click, drop back to re
   document.body.dispatchEvent(ev('pointerup', 300, 150));
   expect(await currentGuides()).toEqual([{ axis: 'h', pos: 150 }]);
   window.dispatchEvent(new MouseEvent('mousemove', { clientX: 300, clientY: 151 }));
-  items.find((i) => i.id === 'ruler')!.run(); // off: the guide stays painted (legacy)
+  items.find((i) => i.id === 'ruler')!.run(); // off: guides hide with the ruler
   expect(state.rulerOn).toBe(false);
-  await flush();
-  expect(layer.textContent).toContain('150');
+  expect(await currentGuides()).toEqual([]);
+  items.find((i) => i.id === 'ruler')!.run(); // back on: they come back
+  expect(await currentGuides()).toEqual([{ axis: 'h', pos: 150 }]);
+
+  // the corner makes both guides, crossing at the pointer
+  document.body.dispatchEvent(ev('pointerdown', 5, 5));
+  window.dispatchEvent(ev('pointermove', 400, 500));
+  document.body.dispatchEvent(ev('pointerup', 400, 500));
+  expect(await currentGuides()).toEqual([
+    { axis: 'h', pos: 150 },
+    { axis: 'v', pos: 400 },
+    { axis: 'h', pos: 500 },
+  ]);
   stopSession();
   expect(document.documentElement.style.cursor).toBe('');
   expect(await currentGuides()).toEqual([]);

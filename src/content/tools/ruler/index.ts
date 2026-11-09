@@ -18,9 +18,10 @@ import { state } from '../../core/state.svelte';
 const GUIDE = '#00B3FF';
 const HOT = '#FF3B6B';
 
-/** Page guides: kept and drawn for the session; created/dragged only while the ruler is on (3.05 / 3.16). */
+/** Page guides: kept for the session, shown and created/dragged only while the ruler is on (3.05 / 3.16). */
 let guides: Guide[] = [];
-let hot: Guide | null = null;
+/** Guides being dragged (two from the corner). */
+let hot: Guide[] = [];
 let rulers: HTMLElement | null = null;
 let crossX: HTMLElement | null = null;
 let crossY: HTMLElement | null = null;
@@ -91,8 +92,8 @@ function apply(on: boolean): void {
     rulers?.remove();
     rulers = crossX = crossY = null;
     setCursor(false);
-    if (hot) resetDrag(); // legacy core.js:44 ends the drag
-    hot = null;
+    if (hot.length) resetDrag(); // legacy core.js:44 ends the drag
+    hot = [];
   }
   requestPaint();
 }
@@ -111,25 +112,28 @@ function snap(g: Guide, cx: number, cy: number): void {
 function onPointerDown(e: PointerEvent): void {
   if (!live() || e.button !== 0 || isOwnEvent(e, host())) return;
   const { clientX: cx, clientY: cy } = e;
-  let g = nearestGuide(guides, cx, cy, scroll());
-  if (!g && (cy < RULER || cx < RULER)) {
-    // the top strip makes a vertical guide, the left strip a horizontal one
-    g = cy < RULER ? { axis: 'v', pos: cx + scrollX } : { axis: 'h', pos: cy + scrollY };
-    guides.push(g);
+  const near = nearestGuide(guides, cx, cy, scroll());
+  let picked: Guide[] = near ? [near] : [];
+  if (!near && (cy < RULER || cx < RULER)) {
+    const v: Guide = { axis: 'v', pos: cx + scrollX };
+    const h: Guide = { axis: 'h', pos: cy + scrollY };
+    // the top strip makes a vertical guide, the left strip a horizontal one, the corner both
+    picked = cy < RULER && cx < RULER ? [v, h] : cy < RULER ? [v] : [h];
+    guides.push(...picked);
   }
-  if (!g) return;
-  const g0 = (hot = g);
+  if (!picked.length) return;
+  const drag = (hot = picked);
   startDrag(
     e,
     (m) => {
-      snap(g0, m.clientX, m.clientY);
+      for (const g of drag) snap(g, m.clientX, m.clientY);
       requestPaint();
     },
     (u) => {
       // dropped back on the strip it came from: remove
-      if (g0.axis === 'v' ? u.clientY < RULER : u.clientX < RULER)
-        guides = guides.filter((x) => x !== g0);
-      hot = null;
+      const gone = drag.filter((g) => (g.axis === 'v' ? u.clientY < RULER : u.clientX < RULER));
+      guides = guides.filter((x) => !gone.includes(x));
+      hot = [];
       requestPaint();
     },
   );
@@ -181,17 +185,16 @@ export async function initRuler(): Promise<void> {
   onStop(() => {
     apply(false); // not persisted: next session restores it (1.43)
     guides = [];
-    hot = null;
+    hot = [];
   });
   addPainter('ruler', (box) => {
-    // legacy measure-guides.js:30-57: only the zone tint follows the ruler; guides always draw
-    if (state.rulerOn) {
-      const zone = 'background:rgba(0,179,255,.08)';
-      draw(box, `left:0;top:0;width:100%;height:${RULER}px;${zone}`);
-      draw(box, `left:0;top:0;width:${RULER}px;height:100%;${zone}`);
-    }
+    // guides hide with the ruler (owner's call, 2026-11-09; legacy kept drawing them)
+    if (!state.rulerOn) return;
+    const zone = 'background:rgba(0,179,255,.08)';
+    draw(box, `left:0;top:0;width:100%;height:${RULER}px;${zone}`);
+    draw(box, `left:0;top:0;width:${RULER}px;height:100%;${zone}`);
     for (const g of guides) {
-      const c = g === hot ? HOT : GUIDE;
+      const c = hot.includes(g) ? HOT : GUIDE;
       const p = g.pos - (g.axis === 'h' ? scrollY : scrollX);
       draw(
         box,

@@ -32,7 +32,10 @@ describe('toggleTab', () => {
       target: { tabId: 7 },
       files: ['/content-scripts/content.js'],
     });
-    expect(icon).toHaveBeenCalledWith({ tabId: 7, path: 'images/icon32_active.png' });
+    expect(icon).toHaveBeenCalledWith({
+      tabId: 7,
+      path: { 16: 'images/icon16.png', 32: 'images/icon32.png' },
+    });
   });
 
   it('does not inject when content answers inactive', async () => {
@@ -40,7 +43,10 @@ describe('toggleTab', () => {
     vi.spyOn(fakeBrowser.tabs, 'sendMessage').mockResolvedValue({ active: false } as never);
     await toggleTab(7);
     expect(exec).not.toHaveBeenCalled();
-    expect(icon).toHaveBeenCalledWith({ tabId: 7, path: 'images/icon32.png' });
+    expect(icon).toHaveBeenCalledWith({
+      tabId: 7,
+      path: { 16: 'images/icon16_off.png', 32: 'images/icon32_off.png' },
+    });
   });
 });
 
@@ -52,7 +58,10 @@ describe('tabs.onUpdated', () => {
     vi.spyOn(fakeBrowser.commands.onCommand, 'addListener').mockImplementation(() => {});
     background.main();
     await fakeBrowser.tabs.onUpdated.trigger(3, { status: 'loading' }, {} as never);
-    expect(icon).toHaveBeenCalledWith({ tabId: 3, path: 'images/icon32.png' });
+    expect(icon).toHaveBeenCalledWith({
+      tabId: 3,
+      path: { 16: 'images/icon16_off.png', 32: 'images/icon32_off.png' },
+    });
   });
 });
 
@@ -68,7 +77,10 @@ describe('close_extension', () => {
     const msg = { target: 'background', type: 'close_extension', data: [] };
     await fakeBrowser.runtime.onMessage.trigger(msg, { tab: { id: 5 } as never }, () => {});
     await vi.waitFor(() =>
-      expect(icon).toHaveBeenCalledWith({ tabId: 5, path: 'images/icon32.png' }),
+      expect(icon).toHaveBeenCalledWith({
+        tabId: 5,
+        path: { 16: 'images/icon16_off.png', 32: 'images/icon32_off.png' },
+      }),
     );
     expect(send).toHaveBeenCalledTimes(1);
     expect(send.mock.calls[0]![0]).toBe(5);

@@ -32,10 +32,12 @@ import {
 } from '../background/options';
 import { initMcp, isIodobTab, mcpHandlers } from '../background/mcp';
 
+/** Toolbar icon: brand indigo while on, neutral grey while off (no red/blue pair). */
+export const ICON_ON = { 16: 'images/icon16.png', 32: 'images/icon32.png' } as const;
+export const ICON_OFF = { 16: 'images/icon16_off.png', 32: 'images/icon32_off.png' } as const;
+
 const icon = (tabId: number, active: boolean) =>
-  browser.action
-    .setIcon({ tabId, path: active ? 'images/icon32_active.png' : 'images/icon32.png' })
-    .catch(() => {}); // tab đã đóng
+  browser.action.setIcon({ tabId, path: active ? ICON_ON : ICON_OFF }).catch(() => {}); // tab đã đóng
 
 export async function toggleTab(tabId: number): Promise<void> {
   let active: boolean;

@@ -12,7 +12,11 @@ export default defineConfig({
     description: '__MSG_extDescription__',
     default_locale: 'en',
     minimum_chrome_version: '116',
-    action: { default_title: '__MSG_extNameShort__' },
+    action: {
+      default_title: '__MSG_extNameShort__',
+      // off until turned on in a tab (background sets the indigo icon per tab)
+      default_icon: { 16: 'images/icon16_off.png', 32: 'images/icon32_off.png' },
+    },
     icons: {
       16: 'images/icon16.png',
       24: 'images/icon24.png',

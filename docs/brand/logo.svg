@@ -3,9 +3,9 @@
     <stop offset="0" stop-color="#818cf8"/><stop offset="1" stop-color="#4f46e5"/>
   </linearGradient></defs>
   <rect x="4" y="4" width="120" height="120" rx="28" fill="url(#g)"/>
-  <path d="M30 30 h14 v54 h54 v14 H30 Z" fill="#fff"/>
+  <path d="M24 28 h14 v68 h70 v14 H24 Z" fill="#fff"/>
   <g stroke="#4f46e5" stroke-width="5" stroke-linecap="round">
-    <path d="M37 44 h5 M37 58 h7 M37 72 h5"/><path d="M58 91 v-5 M72 91 v-7 M86 91 v-5"/>
+    <path d="M31 46 h5 M31 62 h7 M31 78 h5"/><path d="M58 103 v-5 M74 103 v-7 M90 103 v-5"/>
   </g>
   <circle cx="80" cy="48" r="15" fill="none" stroke="#fff" stroke-width="8"/>
   <path d="M80 24 v10 M80 62 v10 M56 48 h10 M94 48 h10" stroke="#fff" stroke-width="8" stroke-linecap="round"/>

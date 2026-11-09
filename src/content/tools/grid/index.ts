@@ -55,7 +55,7 @@ export async function initGrid(): Promise<void> {
     forward: true,
     icon: LayoutGridIcon,
     label: 'dock.grid',
-    key: 'g',
+    key: '4',
     // the button is the switch: on -> grid + settings panel (top right, like the other tools);
     // off -> both go. Settings you can't see are useless, so the panel comes with the grid.
     run: () => (panelOpen ? closeGrid() : openGrid()),

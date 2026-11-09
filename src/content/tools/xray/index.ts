@@ -33,7 +33,7 @@ export async function initXray(): Promise<void> {
     forward: true,
     icon: ScanEye,
     label: 'dock.xray',
-    key: 'x',
+    key: '3',
     run: () => {
       setXray(!state.xrayOn);
       if (!state.inFrame) void updateSettings({ xrayModeIsOn: state.xrayOn });

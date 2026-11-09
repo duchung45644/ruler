@@ -72,7 +72,7 @@ export function initFind(): void {
     id: 'find',
     icon: TextSearch,
     label: 'dock.find',
-    key: 'f',
+    key: '2',
     popover: FindPopover,
     run: () => togglePopover('find'),
     isActive: () => state.findOn,

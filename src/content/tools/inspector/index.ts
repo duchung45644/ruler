@@ -114,7 +114,7 @@ registerItem({
   forward: true,
   icon: SquareDashedMousePointer,
   label: 'dock.inspect',
-  key: 'i',
+  key: '1',
   run: () => setInspect(!state.inspectOn),
   isActive: () => state.inspectOn,
 });

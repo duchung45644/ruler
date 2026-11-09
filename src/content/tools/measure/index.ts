@@ -102,7 +102,7 @@ export async function initMeasure(): Promise<void> {
     forward: true,
     icon: SquareDashed,
     label: 'dock.measure',
-    key: 'm',
+    key: '7',
     run: () => setOn(!state.measureOn),
     isActive: () => state.measureOn,
   });

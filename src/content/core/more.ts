@@ -8,6 +8,7 @@ export function initMore(): void {
     id: 'more',
     icon: Ellipsis,
     label: 'dock.more',
+    key: '0',
     popover: MorePopover,
     run: () => togglePopover('more'),
     // lit while one of its tools is on (overlay, audit…), so the state stays visible

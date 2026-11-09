@@ -12,7 +12,7 @@ export function initResponsive(): void {
     id: 'responsive',
     icon: MonitorSmartphone,
     label: 'dock.responsive',
-    key: 'v',
+    key: '5',
     run: () => {
       if (!state.inFrame) toggleResponsive(); // a frame forwards V to the shell
     },

@@ -129,22 +129,22 @@ const readable = (href: string | null) =>
     .spyOn(HTMLIFrameElement.prototype, 'contentDocument', 'get')
     .mockReturnValue(href === null ? null : ({ location: { href } } as unknown as Document));
 
-it('one dock button: responsive (V) replaces the breakpoints button, which keeps key B', () => {
+it('one dock button: responsive (5) replaces the breakpoints button, which keeps key B', () => {
   const all = dockGroups()
     .flat()
     .map((i) => i.id);
   expect(all).toContain('responsive');
   expect(all).not.toContain('breakpoints');
-  expect(items.find((i) => i.id === 'responsive')?.key).toBe('v');
+  expect(items.find((i) => i.id === 'responsive')?.key).toBe('5');
   expect(items.find((i) => i.id === 'breakpoints')?.key).toBe('b');
 });
 
-it('V toggles responsive mode', async () => {
-  routeKey(new KeyboardEvent('keydown', { key: 'v' }));
+it('5 toggles responsive mode', async () => {
+  routeKey(new KeyboardEvent('keydown', { key: '5' }));
   await flush();
   flushSync();
   expect(state.responsiveOn).toBe(true);
-  routeKey(new KeyboardEvent('keydown', { key: 'v' }));
+  routeKey(new KeyboardEvent('keydown', { key: '5' }));
   await vi.waitFor(() => expect(state.responsiveOn).toBe(false));
 });
 

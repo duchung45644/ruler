@@ -128,10 +128,10 @@ it('ruler: drag a guide out of the top strip, swallow the click, drop back to re
   expect(await currentGuides()).toEqual([]);
 });
 
-it('registers measure on M', async () => {
+it('registers measure on 7', async () => {
   await initTools();
   const m = items.find((i) => i.id === 'measure')!;
-  expect([m.key, m.label]).toEqual(['m', 'dock.measure']);
+  expect([m.key, m.label]).toEqual(['7', 'dock.measure']);
 });
 
 it('registers overlay on O, before measure (its arrow keys win)', async () => {
@@ -142,14 +142,14 @@ it('registers overlay on O, before measure (its arrow keys win)', async () => {
   expect([o.key, o.label]).toEqual(['o', 'dock.overlay']);
 });
 
-it('registers find on F after eyedropper; a match lights it, closing clears it', async () => {
+it('registers find on 2 after eyedropper; a match lights it, closing clears it', async () => {
   const { runFind, clearFind, find } = await import('./find');
   const { state } = await import('../core/state.svelte');
   await initTools();
   const ids = items.map((i) => i.id).filter((id) => ['eyedropper', 'find', 'capture'].includes(id));
   expect(ids.slice(ids.indexOf('eyedropper'))).toEqual(['eyedropper', 'find', 'capture']);
   const f = items.find((i) => i.id === 'find')!;
-  expect([f.key, f.label]).toEqual(['f', 'dock.find']);
+  expect([f.key, f.label]).toEqual(['2', 'dock.find']);
   f.run();
   expect(state.popover).toBe('find');
   document.body.innerHTML = '<p class=x></p>';
@@ -187,7 +187,7 @@ it('audit and measure isActive follow reactive state', async () => {
   }
 });
 
-it('the dock is laid out by purpose with mnemonic keys', async () => {
+it('the dock is laid out by purpose, buttons keyed 1-9, 0', async () => {
   const { dockGroups } = await import('../core/registry.svelte');
   await initTools();
   const groups = dockGroups().map((g) => g.map((i) => i.id));
@@ -219,13 +219,25 @@ it('the dock is laid out by purpose with mnemonic keys', async () => {
   items.find((i) => i.id === 'audit')!.run();
   expect(groups.flat()).not.toContain('breakpoints'); // key B only; the responsive toolbar has it
   const keyOf = (id: string) => items.find((i) => i.id === id)?.key;
-  expect(['xray', 'grid', 'ruler', 'breakpoints', 'eyedropper', 'capture'].map(keyOf)).toEqual([
-    'x',
-    'g',
-    'r',
+  // dock buttons take numbers left to right; menu tools and breakpoints keep letters
+  const dockIds = ['inspect', 'find', 'xray', 'grid', 'responsive', 'ruler', 'measure', 'capture'];
+  expect([...dockIds, 'sidepanel', 'more'].map(keyOf)).toEqual([
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '0',
+  ]);
+  expect(['breakpoints', 'overlay', 'audit', 'eyedropper'].map(keyOf)).toEqual([
     'b',
+    'o',
+    'a',
     'c',
-    's',
   ]);
 });
 

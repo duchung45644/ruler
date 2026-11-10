@@ -24,6 +24,7 @@ const en = {
     ai: 'AI agents',
     keys: 'Shortcuts',
     faq: 'FAQ',
+    docs: 'Docs',
     privacy: 'Privacy',
   },
   hero: {
@@ -303,6 +304,7 @@ const vi: Dict = {
     ai: 'AI agent',
     keys: 'Phím tắt',
     faq: 'Hỏi đáp',
+    docs: 'Tài liệu',
     privacy: 'Quyền riêng tư',
   },
   hero: {

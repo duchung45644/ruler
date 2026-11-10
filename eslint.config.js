@@ -17,6 +17,9 @@ export default defineConfig(
     files: ['**/*.svelte', '**/*.svelte.ts'],
     languageOptions: { parserOptions: { parser: ts.parser } },
   },
-  // renders our own docs/privacy-policy.md after escaping it
-  { files: ['packages/site/src/Privacy.svelte'], rules: { 'svelte/no-at-html-tags': 'off' } },
+  // render our own Markdown (docs/privacy-policy.md, packages/site/docs) after escaping it
+  {
+    files: ['packages/site/src/Privacy.svelte', 'packages/site/src/Docs.svelte'],
+    rules: { 'svelte/no-at-html-tags': 'off' },
+  },
 );

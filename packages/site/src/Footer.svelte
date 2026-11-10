@@ -15,6 +15,7 @@
     </div>
     <div class="flex gap-5 sm:ml-auto">
       <a class="hover:text-zinc-300" href="./index.html">{t().footer.home}</a>
+      <a class="hover:text-zinc-300" href="./docs.html">{t().nav.docs}</a>
       <a class="hover:text-zinc-300" href="./privacy.html">{t().nav.privacy}</a>
       <a class="hover:text-zinc-300" href={REPO_URL}>GitHub</a>
     </div>

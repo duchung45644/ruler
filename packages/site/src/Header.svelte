@@ -14,7 +14,7 @@
       <a class="hover:text-white" href="./index.html#ai">{t().nav.ai}</a>
       <a class="hover:text-white" href="./index.html#keys">{t().nav.keys}</a>
       <a class="hover:text-white" href="./index.html#faq">{t().nav.faq}</a>
-      <a class="hover:text-white" href="./privacy.html">{t().nav.privacy}</a>
+      <a class="hover:text-white" href="./docs.html">{t().nav.docs}</a>
     </div>
     <div
       class="ml-auto flex rounded-lg border border-white/10 p-0.5 text-xs md:ml-0"

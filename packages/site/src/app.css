@@ -23,6 +23,9 @@
   src: url('./fonts/geistmono-latin.woff2') format('woff2');
   font-weight: 100 900;
   font-display: swap;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @theme {
@@ -42,4 +45,58 @@ body {
   html {
     scroll-behavior: auto;
   }
+}
+
+/* rendered Markdown in the docs */
+.doc {
+  @apply leading-relaxed text-zinc-400;
+}
+.doc > * + * {
+  @apply mt-4;
+}
+.doc > h2:first-child {
+  @apply mt-0 border-t-0 pt-0;
+}
+.doc h2 {
+  @apply mt-12 scroll-mt-24 border-t border-white/5 pt-8 text-2xl font-semibold tracking-tight text-white;
+}
+.doc h3 {
+  @apply mt-8 scroll-mt-24 text-lg font-semibold text-zinc-100;
+}
+.doc a {
+  @apply text-indigo-300 underline decoration-indigo-300/30 underline-offset-2 hover:decoration-indigo-300;
+}
+.doc strong {
+  @apply font-semibold text-zinc-200;
+}
+.doc code {
+  @apply rounded bg-white/5 px-1.5 py-0.5 font-mono text-[0.85em] text-zinc-200;
+}
+.doc pre {
+  @apply overflow-x-auto rounded-xl border border-white/10 bg-zinc-900 p-4 text-[13px] leading-relaxed;
+}
+.doc pre code {
+  @apply bg-transparent p-0 text-zinc-300;
+}
+.doc ul {
+  @apply list-disc space-y-1.5 pl-5 marker:text-zinc-600;
+}
+.doc ol {
+  @apply list-decimal space-y-1.5 pl-5 marker:text-zinc-500;
+}
+.doc li > ul,
+.doc li > ol {
+  @apply mt-1.5;
+}
+.doc .table {
+  @apply overflow-x-auto rounded-xl border border-white/10;
+}
+.doc table {
+  @apply w-full text-left text-sm;
+}
+.doc th {
+  @apply bg-white/5 px-4 py-2.5 font-medium text-zinc-200;
+}
+.doc td {
+  @apply border-t border-white/5 px-4 py-2.5 align-top;
 }

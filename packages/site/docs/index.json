@@ -1,0 +1,16 @@
+[
+  { "slug": "getting-started", "group": "Basics" },
+  { "slug": "dock-and-shortcuts", "group": "Basics" },
+  { "slug": "inspect", "group": "Tools" },
+  { "slug": "measure", "group": "Tools" },
+  { "slug": "design-overlay", "group": "Tools" },
+  { "slug": "side-panel", "group": "Side panel and editing" },
+  { "slug": "editing", "group": "Side panel and editing" },
+  { "slug": "responsive", "group": "More tools" },
+  { "slug": "capture", "group": "More tools" },
+  { "slug": "quality", "group": "More tools" },
+  { "slug": "mcp", "group": "AI agents" },
+  { "slug": "settings", "group": "Reference" },
+  { "slug": "troubleshooting", "group": "Reference" },
+  { "slug": "privacy-permissions", "group": "Reference" }
+]

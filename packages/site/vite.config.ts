@@ -6,5 +6,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   base: './',
   plugins: [svelte(), tailwindcss()],
-  build: { rollupOptions: { input: { main: 'index.html', privacy: 'privacy.html' } } },
+  build: {
+    rollupOptions: { input: { main: 'index.html', privacy: 'privacy.html', docs: 'docs.html' } },
+  },
 });

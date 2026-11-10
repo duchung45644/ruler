@@ -1,4 +1,25 @@
-import{A as e,C as t,F as n,H as r,M as i,N as a,P as o,S as s,T as c,V as l,W as u,d,i as f,n as p,r as m,t as h,v as g,w as _}from"./app-CwaYE8Do.js";import{t as v}from"./markdown-SxH2cWR3.js";var y=`# PixelLens Privacy Policy
+import {
+  A as e,
+  C as t,
+  F as n,
+  H as r,
+  M as i,
+  N as a,
+  P as o,
+  S as s,
+  T as c,
+  V as l,
+  W as u,
+  d,
+  i as f,
+  n as p,
+  r as m,
+  t as h,
+  v as g,
+  w as _,
+} from './app-CwaYE8Do.js';
+import { t as v } from './markdown-SxH2cWR3.js';
+var y = `# PixelLens Privacy Policy
 
 _Last updated: 2026-11-10_
 
@@ -40,4 +61,34 @@ None of this data is sent to the developer or to any third party.
 ## Contact
 
 Questions: open an issue on the project's repository, or email the developer at the address shown on the store listing.
-`,b=c(`<!> <main class="mx-auto max-w-3xl px-4 py-16 sm:px-6"><p class="text-sm text-accent-fg"> </p> <h1 class="mt-2 text-3xl font-semibold tracking-tight text-strong sm:text-4xl"> </h1> <article class="doc mt-8"></article></main> <!>`,1);function x(s,c){r(c,!1);let m=v(y);d();var x=b(),S=a(x);h(S,{});var C=n(S,2),w=i(C),T=o(w,!0),E=n(w,2),D=o(E,!0),O=n(E,2);g(O,()=>m.html,!0),u(O),u(C);var k=n(C,2);p(k,{}),e(e=>{t(T,e),t(D,m.title)},[()=>f().nav.privacy]),_(s,x),l()}document.documentElement.lang=m.code,s(x,{target:document.getElementById(`app`)});
+`,
+  b = c(
+    `<!> <main class="mx-auto max-w-3xl px-4 py-16 sm:px-6"><p class="text-sm text-accent-fg"> </p> <h1 class="mt-2 text-3xl font-semibold tracking-tight text-strong sm:text-4xl"> </h1> <article class="doc mt-8"></article></main> <!>`,
+    1,
+  );
+function x(s, c) {
+  r(c, !1);
+  let m = v(y);
+  d();
+  var x = b(),
+    S = a(x);
+  h(S, {});
+  var C = n(S, 2),
+    w = i(C),
+    T = o(w, !0),
+    E = n(w, 2),
+    D = o(E, !0),
+    O = n(E, 2);
+  (g(O, () => m.html, !0), u(O), u(C));
+  var k = n(C, 2);
+  (p(k, {}),
+    e(
+      (e) => {
+        (t(T, e), t(D, m.title));
+      },
+      [() => f().nav.privacy],
+    ),
+    _(s, x),
+    l());
+}
+((document.documentElement.lang = m.code), s(x, { target: document.getElementById(`app`) }));

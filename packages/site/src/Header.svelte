@@ -9,9 +9,11 @@
       PixelLens
     </a>
     <div class="ml-auto hidden items-center gap-6 text-sm text-zinc-400 md:flex">
+      <a class="hover:text-white" href="./index.html#how">{t().nav.how}</a>
       <a class="hover:text-white" href="./index.html#features">{t().nav.features}</a>
       <a class="hover:text-white" href="./index.html#ai">{t().nav.ai}</a>
       <a class="hover:text-white" href="./index.html#keys">{t().nav.keys}</a>
+      <a class="hover:text-white" href="./index.html#faq">{t().nav.faq}</a>
       <a class="hover:text-white" href="./privacy.html">{t().nav.privacy}</a>
     </div>
     <div

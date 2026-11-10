@@ -11,6 +11,7 @@
       <img src="./logo.svg" alt="" class="size-5" />
       <span class="text-zinc-300">PixelLens</span>
       <span>· {t().footer.made}</span>
+      <span class="text-zinc-600">{t().footer.version}</span>
     </div>
     <div class="flex gap-5 sm:ml-auto">
       <a class="hover:text-zinc-300" href="./index.html">{t().footer.home}</a>

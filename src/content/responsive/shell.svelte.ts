@@ -6,6 +6,7 @@ import { isSerializedEdit } from '../../lib/edit/serialize';
 import { sendToBackground, sendToSidePanel } from '../../lib/ext/messaging';
 import type { CallOutcome } from '../../lib/mcp/protocol';
 import type { FrameApi } from '../../lib/responsive/channel';
+import type { ForcedScheme } from '../../lib/responsive/color-scheme';
 import { frameName } from '../../lib/responsive/frame-name';
 import {
   breakpointViewports,
@@ -159,7 +160,7 @@ function replaceFrames(next: Viewport[]): void {
   shell.frames = next.map((vp) => {
     const f = byId.get(vp.id);
     if (!f) return newFrame(vp);
-    f.vp = vp;
+    setVp(f, vp);
     return f;
   });
 }
@@ -236,11 +237,20 @@ function applyViewports(next: Viewport[]): void {
   shell.frames = next.flatMap((vp) => {
     const f = byId.get(vp.id);
     if (!f) return [];
-    f.vp = vp;
+    setVp(f, vp);
     return [f];
   });
   scheduleSave();
 }
+/** A viewport's scheme as the frame takes it: null follows the system. */
+const forcedScheme = (vp: Viewport | undefined): ForcedScheme =>
+  vp?.scheme === 'light' || vp?.scheme === 'dark' ? vp.scheme : null;
+/** Kept frame takes its new viewport; a changed scheme goes to the frame (it also gets it on ready). */
+function setVp(f: ShellFrame, vp: Viewport): void {
+  if (f.vp.scheme !== vp.scheme) readyChannel(vp.id)?.send('set_color_scheme', forcedScheme(vp));
+  f.vp = vp;
+}
+
 function vps(): Viewport[] {
   return shell.frames.map((f) => f.vp);
 }
@@ -561,6 +571,7 @@ export function attachFrame(iframe: HTMLIFrameElement, id: number): () => void {
           uiScale: 1 / shell.zoom,
           ruleEdits: edits.last,
           inlineStyles: edits.inline,
+          scheme: forcedScheme(frameOf(id)?.vp),
         });
         ch.send('shared_history_state', historyFlags(edits.history));
       },

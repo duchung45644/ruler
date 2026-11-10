@@ -479,6 +479,41 @@ describe('frame header', () => {
     expect(iframeOf(1).style.colorScheme).toBe('dark');
   });
 
+  it('a ready frame is told its new scheme; system sends null', async () => {
+    await enterResponsive();
+    flushSync();
+    window.dispatchEvent(
+      new MessageEvent('message', {
+        data: {
+          __bd: browser.runtime.id,
+          dir: 'ruler-iframe',
+          type: 'ready_for_state_sync',
+          data: [],
+        },
+        source: fakeWin as unknown as Window,
+        origin: location.origin,
+      }),
+    );
+    await vi.waitFor(() =>
+      expect(fakeWin.postMessage).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'ready_ack',
+          data: [expect.objectContaining({ scheme: null })],
+        }),
+        location.origin,
+      ),
+    );
+    const schemes = () =>
+      fakeWin.postMessage.mock.calls
+        .map((c) => c[0] as Envelope)
+        .filter((m) => m.type === 'set_color_scheme')
+        .map((m) => m.data[0]);
+    action(0, 'scheme').click();
+    action(0, 'scheme').click();
+    action(0, 'scheme').click();
+    expect(schemes()).toEqual(['light', 'dark', null]);
+  });
+
   it('remove asks first; Cancel keeps the frame, confirm removes it', async () => {
     await enterResponsive();
     flushSync();

@@ -1,6 +1,7 @@
 import type { SerializedEdit } from '../edit/serialize';
 import type { EditState } from '../edit/types';
 import type { CallOutcome } from '../mcp/protocol';
+import type { ForcedScheme } from './color-scheme';
 import type { ElementLocator } from './element-locator';
 import type { FindCursor } from './find-agg';
 
@@ -31,7 +32,11 @@ export interface FrameApi {
     settings: Record<string, unknown>;
     /** Running find query ('' = none): the frame reports its count back. */
     findQuery: string;
+    /** This frame's forced color scheme (null = system). */
+    scheme?: ForcedScheme;
   }): void;
+  /** Emulate this color scheme in the frame's page; null puts the page's own back. */
+  set_color_scheme(scheme: ForcedScheme): void;
   apply_rule_edits(edits: SerializedEdit[]): void;
   apply_inline_styles(list: InlineStyleEdit[]): void;
   collect_rule_edits(): SerializedEdit[];

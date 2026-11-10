@@ -20,6 +20,7 @@ import {
   takeSharedHistory,
 } from './edits';
 import { createFrameSync } from './sync';
+import { setFrameScheme } from './scheme';
 import type { McpPageType } from '../../lib/mcp/protocol';
 import { runMcp } from '../mcp';
 import { applyReadyAck, applySetting, frameFind, frameFindGoto } from './forward';
@@ -49,6 +50,7 @@ export function startFrameMode(): void {
         applyFrameRuleEdits(s?.ruleEdits);
         applyFrameInlineStyles(s?.inlineStyles);
         applyUiScale(s?.uiScale);
+        setFrameScheme(s?.scheme ?? null);
         const n = applyReadyAck(s);
         if (n !== null) channel?.send('report_find_count', n);
       },
@@ -58,6 +60,7 @@ export function startFrameMode(): void {
       collect_rule_edits: () => ruleTracker().serialize(),
       get_current_url: () => location.href,
       update_ui_scale: (scale) => applyUiScale(scale),
+      set_color_scheme: (scheme) => setFrameScheme(scheme ?? null),
       apply_scroll_sync: (r) => sync.apply_scroll_sync(r),
       reset_scroll_conflict: () => sync.reset_scroll_conflict(),
       apply_spa_navigation: (url) => sync.apply_spa_navigation(url),
@@ -137,5 +140,6 @@ export function stopFrameMode(): void {
   setForwardKey(null);
   setSelectionHook(null);
   setSharedHistoryState(null);
+  setFrameScheme(null);
   state.inFrame = false;
 }

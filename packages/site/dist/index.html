@@ -8,7 +8,8 @@
       name="description"
       content="Hover any element to see how it's built, from size and spacing to styles and colors, then fine-tune it right on the page."
     />
-    <meta name="theme-color" content="#09090b" />
+    <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <link rel="icon" href="./logo.svg" type="image/svg+xml" />
     <meta
       property="og:title"
@@ -19,10 +20,15 @@
       content="Hover any element to see how it's built, then fine-tune it right on the page."
     />
     <meta property="og:image" content="https://duchung45644.github.io/ruler/img/og.png" />
-    <script type="module" crossorigin src="./assets/main-CXMjj76M.js"></script>
-    <link rel="modulepreload" crossorigin href="./assets/app-BxGTEtgW.js">
-    <link rel="modulepreload" crossorigin href="./assets/Icon-DcD_P4nL.js">
-    <link rel="stylesheet" crossorigin href="./assets/app-BcMD969x.css">
+    <script>
+      try {
+        const t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+    <script type="module" crossorigin src="./assets/main-CF45yUiI.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/app-CwaYE8Do.js">
+    <link rel="stylesheet" crossorigin href="./assets/app-JCtntyjU.css">
   </head>
   <body>
     <div id="app"></div>

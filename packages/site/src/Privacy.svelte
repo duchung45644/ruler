@@ -11,8 +11,8 @@
 <Header />
 
 <main class="mx-auto max-w-3xl px-4 py-16 sm:px-6">
-  <p class="text-sm text-indigo-300">{t().nav.privacy}</p>
-  <h1 class="mt-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">{doc.title}</h1>
+  <p class="text-sm text-accent-fg">{t().nav.privacy}</p>
+  <h1 class="mt-2 text-3xl font-semibold tracking-tight text-strong sm:text-4xl">{doc.title}</h1>
   <article class="doc mt-8">
     {@html doc.html}
   </article>

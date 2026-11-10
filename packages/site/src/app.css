@@ -34,12 +34,97 @@
   --color-accent: #6366f1;
 }
 
+/* Semantic colors; values swap per theme below. */
+@theme inline {
+  --color-page: var(--page);
+  --color-band: var(--band);
+  --color-surface: var(--surface);
+  --color-strong: var(--strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-line-strong: var(--line-strong);
+  --color-tint: var(--tint);
+  --color-tint-strong: var(--tint-strong);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-fg-strong: var(--accent-fg-strong);
+  --color-code-str: var(--code-str);
+  --color-ok: var(--ok);
+  --color-shade: var(--shade);
+}
+
+:root {
+  color-scheme: dark;
+  --page: #09090b;
+  --band: rgb(24 24 27 / 0.4);
+  --surface: #18181b;
+  --strong: #fff;
+  --fg: #d4d4d8;
+  --muted: #a1a1aa;
+  --subtle: #71717a;
+  --line: rgb(255 255 255 / 0.1);
+  --line-soft: rgb(255 255 255 / 0.05);
+  --line-strong: rgb(255 255 255 / 0.18);
+  --tint: rgb(255 255 255 / 0.05);
+  --tint-strong: rgb(255 255 255 / 0.1);
+  --accent-fg: #a5b4fc;
+  --accent-fg-strong: #c7d2fe;
+  --code-str: #6ee7b7;
+  --ok: #34d399;
+  --shade: rgb(0 0 0 / 0.4);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    color-scheme: light;
+    --page: #ffffff;
+    --band: #f8f8fa;
+    --surface: #f4f4f5;
+    --strong: #09090b;
+    --fg: #3f3f46;
+    --muted: #52525b;
+    --subtle: #71717a;
+    --line: rgb(9 9 11 / 0.1);
+    --line-soft: rgb(9 9 11 / 0.06);
+    --line-strong: rgb(9 9 11 / 0.18);
+    --tint: rgb(9 9 11 / 0.04);
+    --tint-strong: rgb(9 9 11 / 0.08);
+    --accent-fg: #4f46e5;
+    --accent-fg-strong: #4338ca;
+    --code-str: #047857;
+    --ok: #059669;
+    --shade: rgb(24 24 27 / 0.12);
+  }
+}
+:root[data-theme='light'] {
+  color-scheme: light;
+  --page: #ffffff;
+  --band: #f8f8fa;
+  --surface: #f4f4f5;
+  --strong: #09090b;
+  --fg: #3f3f46;
+  --muted: #52525b;
+  --subtle: #71717a;
+  --line: rgb(9 9 11 / 0.1);
+  --line-soft: rgb(9 9 11 / 0.06);
+  --line-strong: rgb(9 9 11 / 0.18);
+  --tint: rgb(9 9 11 / 0.04);
+  --tint-strong: rgb(9 9 11 / 0.08);
+  --accent-fg: #4f46e5;
+  --accent-fg-strong: #4338ca;
+  --code-str: #047857;
+  --ok: #059669;
+  --shade: rgb(24 24 27 / 0.12);
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
 }
 body {
-  @apply bg-zinc-950 font-sans text-zinc-300 antialiased;
+  @apply bg-page font-sans text-fg antialiased;
 }
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -49,7 +134,7 @@ body {
 
 /* rendered Markdown in the docs */
 .doc {
-  @apply leading-relaxed text-zinc-400;
+  @apply leading-relaxed text-muted;
 }
 .doc > * + * {
   @apply mt-4;
@@ -58,45 +143,45 @@ body {
   @apply mt-0 border-t-0 pt-0;
 }
 .doc h2 {
-  @apply mt-12 scroll-mt-24 border-t border-white/5 pt-8 text-2xl font-semibold tracking-tight text-white;
+  @apply mt-12 scroll-mt-24 border-t border-line-soft pt-8 text-2xl font-semibold tracking-tight text-strong;
 }
 .doc h3 {
-  @apply mt-8 scroll-mt-24 text-lg font-semibold text-zinc-100;
+  @apply mt-8 scroll-mt-24 text-lg font-semibold text-strong;
 }
 .doc a {
-  @apply text-indigo-300 underline decoration-indigo-300/30 underline-offset-2 hover:decoration-indigo-300;
+  @apply text-accent-fg underline decoration-accent-fg/30 underline-offset-2 hover:decoration-accent-fg;
 }
 .doc strong {
-  @apply font-semibold text-zinc-200;
+  @apply font-semibold text-fg;
 }
 .doc code {
-  @apply rounded bg-white/5 px-1.5 py-0.5 font-mono text-[0.85em] text-zinc-200;
+  @apply rounded bg-tint px-1.5 py-0.5 font-mono text-[0.85em] text-fg;
 }
 .doc pre {
-  @apply overflow-x-auto rounded-xl border border-white/10 bg-zinc-900 p-4 text-[13px] leading-relaxed;
+  @apply overflow-x-auto rounded-xl border border-line bg-surface p-4 text-[13px] leading-relaxed;
 }
 .doc pre code {
-  @apply bg-transparent p-0 text-zinc-300;
+  @apply bg-transparent p-0 text-fg;
 }
 .doc ul {
-  @apply list-disc space-y-1.5 pl-5 marker:text-zinc-600;
+  @apply list-disc space-y-1.5 pl-5 marker:text-subtle;
 }
 .doc ol {
-  @apply list-decimal space-y-1.5 pl-5 marker:text-zinc-500;
+  @apply list-decimal space-y-1.5 pl-5 marker:text-subtle;
 }
 .doc li > ul,
 .doc li > ol {
   @apply mt-1.5;
 }
 .doc .table {
-  @apply overflow-x-auto rounded-xl border border-white/10;
+  @apply overflow-x-auto rounded-xl border border-line;
 }
 .doc table {
   @apply w-full text-left text-sm;
 }
 .doc th {
-  @apply bg-white/5 px-4 py-2.5 font-medium text-zinc-200;
+  @apply bg-tint px-4 py-2.5 font-medium text-fg;
 }
 .doc td {
-  @apply border-t border-white/5 px-4 py-2.5 align-top;
+  @apply border-t border-line-soft px-4 py-2.5 align-top;
 }

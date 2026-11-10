@@ -142,23 +142,23 @@
 <div class="mx-auto flex max-w-7xl gap-10 px-4 sm:px-6">
   <!-- sidebar -->
   <aside
-    class="fixed inset-x-0 top-16 bottom-0 z-10 overflow-y-auto bg-zinc-950 px-4 pt-6 pb-10 lg:sticky lg:top-16 lg:block lg:h-[calc(100vh-4rem)] lg:w-60 lg:shrink-0 lg:bg-transparent lg:px-0 {navOpen
+    class="fixed inset-x-0 top-16 bottom-0 z-10 overflow-y-auto bg-page px-4 pt-6 pb-10 lg:sticky lg:top-16 lg:block lg:h-[calc(100vh-4rem)] lg:w-60 lg:shrink-0 lg:bg-transparent lg:px-0 {navOpen
       ? 'block'
       : 'hidden'}"
   >
     <label class="relative block">
-      <Search size={15} class="pointer-events-none absolute top-2.5 left-3 text-zinc-500" />
+      <Search size={15} class="pointer-events-none absolute top-2.5 left-3 text-subtle" />
       <input
         bind:value={query}
         type="search"
         placeholder={label.search}
-        class="w-full rounded-lg border border-white/10 bg-zinc-900 py-2 pr-3 pl-9 text-sm text-zinc-200 placeholder:text-zinc-500 focus:border-indigo-400/50 focus:outline-none"
+        class="w-full rounded-lg border border-line bg-surface py-2 pr-3 pl-9 text-sm text-fg placeholder:text-subtle focus:border-indigo-400/50 focus:outline-none"
       />
     </label>
     <nav class="mt-6 space-y-6 text-sm">
       {#each groups as g (g.name)}
         <div>
-          <h3 class="mb-2 text-xs font-medium tracking-wide text-zinc-500 uppercase">
+          <h3 class="mb-2 text-xs font-medium tracking-wide text-subtle uppercase">
             {groupName(g.name)}
           </h3>
           <ul class="space-y-0.5">
@@ -167,18 +167,17 @@
                 <a
                   href="#{item.slug}"
                   class="block rounded-md px-2.5 py-1.5 transition-colors {item.slug === current
-                    ? 'bg-indigo-500/10 font-medium text-indigo-200'
-                    : 'text-zinc-400 hover:text-zinc-200'}">{item.title}</a
+                    ? 'bg-indigo-500/10 font-medium text-accent-fg-strong'
+                    : 'text-muted hover:text-fg'}">{item.title}</a
                 >
                 {#if item.hits.length}
-                  <ul class="mt-0.5 ml-3 border-l border-white/10">
+                  <ul class="mt-0.5 ml-3 border-l border-line">
                     {#each item.hits.slice(0, 5) as id (id)}
                       {@const h = page(lang.code, item.slug).headings.find((x) => x.id === id)}
                       <li>
                         <a
                           href="#{item.slug}/{id}"
-                          class="block px-3 py-1 text-xs text-zinc-500 hover:text-zinc-300"
-                          >{h?.text}</a
+                          class="block px-3 py-1 text-xs text-subtle hover:text-fg">{h?.text}</a
                         >
                       </li>
                     {/each}
@@ -189,7 +188,7 @@
           </ul>
         </div>
       {:else}
-        <p class="text-zinc-500">{label.none}</p>
+        <p class="text-subtle">{label.none}</p>
       {/each}
     </nav>
   </aside>
@@ -198,29 +197,29 @@
   <main class="min-w-0 flex-1 py-10 lg:py-14">
     <button
       type="button"
-      class="mb-6 flex items-center gap-2 rounded-lg border border-white/10 px-3 py-1.5 text-sm text-zinc-300 lg:hidden"
+      class="mb-6 flex items-center gap-2 rounded-lg border border-line px-3 py-1.5 text-sm text-fg lg:hidden"
       onclick={() => (navOpen = !navOpen)}
       aria-expanded={navOpen}
     >
       <Menu size={16} />
       {label.menu}
     </button>
-    <p class="text-sm text-indigo-300">{groupName(entries[index].group)}</p>
-    <h1 class="mt-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">{doc.title}</h1>
+    <p class="text-sm text-accent-fg">{groupName(entries[index].group)}</p>
+    <h1 class="mt-2 text-3xl font-semibold tracking-tight text-strong sm:text-4xl">{doc.title}</h1>
     <article bind:this={article} class="doc mt-8">
       {@html doc.html}
     </article>
 
-    <nav class="mt-16 grid gap-4 border-t border-white/10 pt-8 sm:grid-cols-2">
+    <nav class="mt-16 grid gap-4 border-t border-line pt-8 sm:grid-cols-2">
       {#if prev}
         <a
           href="#{prev.slug}"
-          class="group rounded-xl border border-white/10 p-4 hover:border-white/20"
+          class="group rounded-xl border border-line p-4 hover:border-line-strong"
         >
-          <span class="flex items-center gap-1 text-xs text-zinc-500"
+          <span class="flex items-center gap-1 text-xs text-subtle"
             ><ChevronLeft size={14} />{label.prev}</span
           >
-          <span class="mt-1 block font-medium text-zinc-200 group-hover:text-white"
+          <span class="mt-1 block font-medium text-fg group-hover:text-strong"
             >{page(lang.code, prev.slug).title}</span
           >
         </a>
@@ -230,12 +229,12 @@
       {#if next}
         <a
           href="#{next.slug}"
-          class="group rounded-xl border border-white/10 p-4 text-right hover:border-white/20"
+          class="group rounded-xl border border-line p-4 text-right hover:border-line-strong"
         >
-          <span class="flex items-center justify-end gap-1 text-xs text-zinc-500"
+          <span class="flex items-center justify-end gap-1 text-xs text-subtle"
             >{label.next}<ChevronRight size={14} /></span
           >
-          <span class="mt-1 block font-medium text-zinc-200 group-hover:text-white"
+          <span class="mt-1 block font-medium text-fg group-hover:text-strong"
             >{page(lang.code, next.slug).title}</span
           >
         </a>
@@ -248,11 +247,11 @@
     class="sticky top-16 hidden h-[calc(100vh-4rem)] w-52 shrink-0 overflow-y-auto py-14 xl:block"
   >
     {#if doc.headings.length}
-      <h3 class="text-xs font-medium tracking-wide text-zinc-500 uppercase">{label.onPage}</h3>
+      <h3 class="text-xs font-medium tracking-wide text-subtle uppercase">{label.onPage}</h3>
       <ul class="mt-3 space-y-1.5 text-sm">
         {#each doc.headings as h (h.id)}
           <li class={h.level === 3 ? 'pl-3' : ''}>
-            <a href={headingHref(h.id)} class="text-zinc-400 hover:text-zinc-200">{h.text}</a>
+            <a href={headingHref(h.id)} class="text-muted hover:text-fg">{h.text}</a>
           </li>
         {/each}
       </ul>

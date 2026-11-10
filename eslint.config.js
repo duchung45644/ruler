@@ -6,13 +6,7 @@ import ts from 'typescript-eslint';
 
 export default defineConfig(
   {
-    ignores: [
-      '.output/',
-      '.wxt/',
-      '.superpowers/',
-      'packages/*/dist/',
-      'packages/*/src/*.gen.ts',
-    ],
+    ignores: ['.output/', '.wxt/', '.superpowers/', 'packages/*/dist/', 'packages/*/src/*.gen.ts'],
   },
   js.configs.recommended,
   ts.configs.recommended,
@@ -23,4 +17,6 @@ export default defineConfig(
     files: ['**/*.svelte', '**/*.svelte.ts'],
     languageOptions: { parserOptions: { parser: ts.parser } },
   },
+  // renders our own docs/privacy-policy.md after escaping it
+  { files: ['packages/site/src/Privacy.svelte'], rules: { 'svelte/no-at-html-tags': 'off' } },
 );

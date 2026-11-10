@@ -353,6 +353,7 @@
     "rulesOther": "$1 quy tắc",
     "whitespaceOnly": "Chỉ thay đổi khoảng trắng",
     "none": "Không tìm thấy thay đổi",
+    "revertChange": "Hoàn tác thay đổi này",
     "clearChanges": "Xóa Tất cả Thay đổi",
     "copyAll": "Sao chép tất cả",
     "copyAllHint": "Sao chép mọi thay đổi dưới dạng code",
@@ -427,7 +428,7 @@
     "tourSecondary": "Phần giới thiệu thanh công cụ hiện ra ở lần đầu bạn mở PixelLens.",
     "tourShow": "Xem lại",
     "tourQueued": "Sẽ hiện lần tới",
-    "syncNote": "Tuỳ chọn của bạn được đồng bộ giữa các thiết bị đăng nhập cùng tài khoản trình duyệt. Các chỉnh sửa đã lưu, ảnh overlay và mã MCP chỉ nằm trên thiết bị này."
+    "syncNote": "Tuỳ chọn của bạn được đồng bộ giữa các thiết bị đăng nhập cùng tài khoản trình duyệt. Các chỉnh sửa đã lưu và mã MCP chỉ nằm trên thiết bị này; ảnh overlay không bao giờ được lưu."
   },
   "mcp": {
     "dockTitle": "MCP",
@@ -462,7 +463,7 @@
     "dockTitle": "Thanh công cụ",
     "dockBody": "Mọi công cụ đều nằm trên thanh này. Rê chuột lên một nút để xem tên và phím tắt.",
     "keysTitle": "Phím số",
-    "keysBody": "Nhấn 1–9 và 0 để đổi công cụ trên thanh mà không cần chuột. Các phím O, A, C, H và B cũng dùng được.",
+    "keysBody": "Nhấn 1–9 và 0 để đổi công cụ trên thanh mà không cần chuột. Phím chữ gọi các công cụ còn lại (O, A, C, B, Y, T, W, và H để tạm dừng).",
     "menuTitle": "Thêm công cụ",
     "menuBody": "Nút ⋯ chứa các công cụ ít dùng hơn: lớp phủ thiết kế, kiểm tra trang, chọn màu, tác tử AI (MCP) và tạm dừng.",
     "paletteTitle": "Ctrl+K ở bất cứ đâu",

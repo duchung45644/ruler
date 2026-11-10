@@ -353,6 +353,7 @@
     "rulesOther": "$1 Rules",
     "whitespaceOnly": "Whitespace-only changes",
     "none": "No changes found",
+    "revertChange": "Revert this change",
     "clearChanges": "Clear All Changes",
     "copyAll": "Copy all",
     "copyAllHint": "Copy all changes as code",
@@ -427,7 +428,7 @@
     "tourSecondary": "The short dock tour shown the first time you open PixelLens.",
     "tourShow": "Show again",
     "tourQueued": "Shows next time",
-    "syncNote": "Your preferences sync across devices signed in to the same browser account. Saved edits, overlay images and the MCP token stay on this device."
+    "syncNote": "Your preferences sync across devices signed in to the same browser account. Saved edits and the MCP token stay on this device; overlay images are never stored."
   },
   "mcp": {
     "dockTitle": "MCP",
@@ -462,7 +463,7 @@
     "dockTitle": "Your toolbar",
     "dockBody": "Every tool lives in this dock. Hover a button to see its name and shortcut.",
     "keysTitle": "Number keys",
-    "keysBody": "Press 1–9 and 0 to switch dock tools without the mouse. O, A, C, H and B work too.",
+    "keysBody": "Press 1–9 and 0 to switch dock tools without the mouse. Letter keys reach the rest (O, A, C, B, Y, T, W, and H to pause).",
     "menuTitle": "More tools",
     "menuBody": "The ⋯ button holds the less used tools: overlay, audit, color picker, AI agent (MCP) and pause.",
     "paletteTitle": "Ctrl+K anywhere",

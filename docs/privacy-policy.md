@@ -1,13 +1,13 @@
 # PixelLens Privacy Policy
 
-_Last updated: 2026-11-09_
+_Last updated: 2026-11-10_
 
 PixelLens is a browser extension for inspecting and adjusting web pages. It does not collect, sell or share personal data.
 
 ## What PixelLens stores
 
 - **Preferences** (theme, tool settings, panel layout) are stored with the browser's extension storage. If you are signed in to your browser with sync turned on, the browser syncs them between your devices. PixelLens never sees or controls that sync.
-- **CSS edits you choose to save** for a site are stored locally on your device only.
+- **CSS edits** you make on a site (rule and inline style changes) are saved automatically for that site, locally on your device only, until you revert them.
 - **The MCP token** used to connect a local AI agent is stored locally on your device only.
 
 None of this data is sent to the developer or to any third party.
@@ -35,7 +35,7 @@ None of this data is sent to the developer or to any third party.
 | `debugger` | Full-page screenshots, only when you take one; detached right after |
 | `declarativeNetRequestWithHostAccess` | Responsive mode: let the current page load inside its own preview frames on that tab |
 | Optional `<all_urls>` | Requested only for responsive mode and reading cross-origin stylesheets |
-| Optional `downloads`, `clipboardWrite` | Save screenshots and assets, copy values, only when you ask |
+| Optional `downloads`, `clipboardWrite` | Download images and assets from the side panel, copy values and images, only when you ask |
 
 ## Contact
 

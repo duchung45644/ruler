@@ -10,7 +10,7 @@ PixelLens is a toolkit for inspecting, measuring and adjusting the layout and st
 
 - **activeTab:** Runs the toolkit on the current tab only after the user clicks the toolbar button.
 - **scripting:** Injects the toolkit into the tab the user turned it on for. There are no content scripts in the manifest.
-- **storage:** Saves the user's preferences and the CSS edits they choose to keep.
+- **storage:** Saves the user's preferences and the CSS edits they make on a site (saved per site, locally).
 - **sidePanel:** Shows element and page details (box model, CSS rules, fonts, colors) in the side panel.
 - **contextMenus:** Adds a right-click entry to turn the toolkit on and open its options.
 - **debugger:** Used only when the user takes a full-page screenshot. It resizes the viewport to capture the whole page, then detaches right away.

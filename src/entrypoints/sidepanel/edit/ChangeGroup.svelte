@@ -95,8 +95,8 @@
           <button
             type="button"
             class="grid size-5 place-items-center rounded text-fg-muted hover:bg-line hover:text-fg"
-            title={i18n.t('changes.clearChanges')}
-            aria-label={i18n.t('changes.clearChanges')}
+            title={i18n.t('changes.revertChange')}
+            aria-label={i18n.t('changes.revertChange')}
             data-revert
             onclick={() => onrevert(c.recordId)}><RotateCcw class="size-3" /></button
           >

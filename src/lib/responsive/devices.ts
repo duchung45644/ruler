@@ -60,3 +60,17 @@ export const CUSTOM_PRESET: DevicePreset = {
   width: 390,
   height: 844,
 };
+
+/** Hardware look drawn around a frame: screen cutout + bezel shape. */
+export type Bezel = 'island' | 'notch' | 'punch' | 'home' | 'tablet';
+
+/** Bezel for a preset key; undefined (no bezel) for laptops, desktops, custom sizes. */
+export function bezelFor(key: string | undefined): Bezel | undefined {
+  if (!key) return undefined;
+  if (key === 'iphone-se') return 'home';
+  if (['iphone-12-15', 'iphone-13-mini', 'iphone-11-xr'].includes(key)) return 'notch';
+  if (key.startsWith('iphone')) return 'island';
+  if (key.startsWith('ipad') || key === 'galaxy-tab-s') return 'tablet';
+  if (/^(galaxy|pixel|xiaomi|oppo|android)/.test(key)) return 'punch';
+  return undefined;
+}

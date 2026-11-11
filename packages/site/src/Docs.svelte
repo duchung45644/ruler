@@ -167,7 +167,7 @@
                 <a
                   href="#{item.slug}"
                   class="block rounded-md px-2.5 py-1.5 transition-colors {item.slug === current
-                    ? 'bg-indigo-500/10 font-medium text-accent-fg-strong'
+                    ? 'bg-tint-strong font-medium text-strong'
                     : 'text-muted hover:text-fg'}">{item.title}</a
                 >
                 {#if item.hits.length}

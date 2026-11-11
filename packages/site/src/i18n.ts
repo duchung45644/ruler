@@ -293,6 +293,18 @@ const en = {
     version: `Version ${VERSION}`,
   },
   shotAlt: 'PixelLens screenshot',
+  more: {
+    allFeatures: 'See all features',
+    aiTeaser:
+      'Let Claude Code, Cursor and other agents inspect, edit and capture the page you have open, through a local MCP server.',
+    aiLink: 'How it works with AI agents',
+    faqLink: 'Read the FAQ',
+  },
+  pages: {
+    features: 'Every tool in PixelLens, what it does and how to reach it.',
+    ai: 'Connect your coding agent to the page in front of you.',
+    faq: 'Answers to the questions people ask most.',
+  },
 };
 
 export type Dict = typeof en;
@@ -576,6 +588,18 @@ const vi: Dict = {
     version: `Phiên bản ${VERSION}`,
   },
   shotAlt: 'Ảnh chụp PixelLens',
+  more: {
+    allFeatures: 'Xem tất cả tính năng',
+    aiTeaser:
+      'Cho Claude Code, Cursor và các agent khác kiểm tra, sửa và chụp trang bạn đang mở, qua MCP server chạy trên máy.',
+    aiLink: 'Cách PixelLens làm việc với AI agent',
+    faqLink: 'Xem hỏi đáp',
+  },
+  pages: {
+    features: 'Mọi công cụ trong PixelLens, làm được gì và gọi ra thế nào.',
+    ai: 'Kết nối agent lập trình với đúng trang bạn đang xem.',
+    faq: 'Giải đáp những câu hỏi thường gặp nhất.',
+  },
 };
 
 export const dicts: Record<Lang, Dict> = { en, vi };

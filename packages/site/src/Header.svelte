@@ -23,12 +23,10 @@
       PixelLens
     </a>
     <div class="ml-auto hidden items-center gap-6 text-sm text-muted md:flex">
-      <a class="hover:text-strong" href="./index.html#how">{t().nav.how}</a>
-      <a class="hover:text-strong" href="./index.html#features">{t().nav.features}</a>
-      <a class="hover:text-strong" href="./index.html#ai">{t().nav.ai}</a>
-      <a class="hover:text-strong" href="./index.html#keys">{t().nav.keys}</a>
-      <a class="hover:text-strong" href="./index.html#faq">{t().nav.faq}</a>
+      <a class="hover:text-strong" href="./features.html">{t().nav.features}</a>
+      <a class="hover:text-strong" href="./ai.html">{t().nav.ai}</a>
       <a class="hover:text-strong" href="./docs.html">{t().nav.docs}</a>
+      <a class="hover:text-strong" href="./faq.html">{t().nav.faq}</a>
     </div>
     <button
       type="button"

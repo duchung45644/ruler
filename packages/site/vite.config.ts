@@ -7,6 +7,15 @@ export default defineConfig({
   base: './',
   plugins: [svelte(), tailwindcss()],
   build: {
-    rollupOptions: { input: { main: 'index.html', privacy: 'privacy.html', docs: 'docs.html' } },
+    rollupOptions: {
+      input: {
+        main: 'index.html',
+        privacy: 'privacy.html',
+        docs: 'docs.html',
+        features: 'features.html',
+        ai: 'ai.html',
+        faq: 'faq.html',
+      },
+    },
   },
 });

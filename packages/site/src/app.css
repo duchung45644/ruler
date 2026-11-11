@@ -74,6 +74,7 @@
   --code-str: #6ee7b7;
   --ok: #34d399;
   --shade: rgb(0 0 0 / 0.4);
+  --glow: rgb(255 255 255 / 0.06);
 }
 
 @media (prefers-color-scheme: light) {
@@ -96,6 +97,7 @@
     --code-str: #047857;
     --ok: #059669;
     --shade: rgb(24 24 27 / 0.12);
+    --glow: rgb(9 9 11 / 0.04);
   }
 }
 :root[data-theme='light'] {
@@ -117,6 +119,7 @@
   --code-str: #047857;
   --ok: #059669;
   --shade: rgb(24 24 27 / 0.12);
+  --glow: rgb(9 9 11 / 0.04);
 }
 
 html {

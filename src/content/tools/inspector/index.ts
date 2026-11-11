@@ -246,7 +246,8 @@ function placePanel(
   mouse: { x: number; y: number } | null,
 ): void {
   const t = panelTarget();
-  if (!t || !box.firstElementChild || panelHidden || state.paused || !state.inspectOn) {
+  // picking for another tool (capture's Element mode) shows only the outline, not the CSS panel
+  if (!t || !box.firstElementChild || panelHidden || picker || state.paused || !state.inspectOn) {
     box.style.visibility = 'hidden';
     return;
   }

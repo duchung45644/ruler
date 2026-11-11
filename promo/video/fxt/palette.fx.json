@@ -1,0 +1,2 @@
+{"plan":"fxt/palette.plan.json","captions":[{"t":0.2,"dur":2.6,"title":"Command palette","sub":"Every tool, one shortcut away"}],
+ "keys":[{"t":1.45,"dur":0.9,"k":["Ctrl","+","K"]},{"t":2.35,"dur":0.8,"k":["↓"]},{"t":4.0,"dur":1.2,"k":["Enter"]}]}

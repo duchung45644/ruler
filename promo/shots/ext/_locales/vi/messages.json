@@ -1,0 +1,1175 @@
+{
+  "extName": {
+    "message": "PixelLens — Bộ công cụ tất cả trong một để kiểm tra và thiết kế web"
+  },
+  "extNameShort": {
+    "message": "PixelLens"
+  },
+  "extDescription": {
+    "message": "Rê chuột lên một phần tử để thấy nó được dựng ra sao, từ kích thước, khoảng cách đến style và màu, rồi chỉnh ngay trên trang."
+  },
+  "cmdSelectParent": {
+    "message": "Chuyển vùng chọn lên phần tử cha."
+  },
+  "cmdSelectChild": {
+    "message": "Chuyển vùng chọn xuống phần tử con."
+  },
+  "dock_more": {
+    "message": "Thêm công cụ"
+  },
+  "dock_pause": {
+    "message": "Tạm dừng"
+  },
+  "dock_resume": {
+    "message": "Tiếp tục"
+  },
+  "dock_quit": {
+    "message": "Thoát"
+  },
+  "dock_inspect": {
+    "message": "Trình kiểm tra"
+  },
+  "dock_selectParent": {
+    "message": "Chọn Phần tử Cha"
+  },
+  "dock_selectChild": {
+    "message": "Chọn Phần tử Con"
+  },
+  "dock_xray": {
+    "message": "Chế độ X-Ray"
+  },
+  "dock_ruler": {
+    "message": "Thước Trang"
+  },
+  "dock_breakpoints": {
+    "message": "Breakpoints"
+  },
+  "dock_eyedropper": {
+    "message": "Chọn Màu"
+  },
+  "dock_grid": {
+    "message": "Lưới Bố cục"
+  },
+  "dock_measure": {
+    "message": "Kéo vùng để đo"
+  },
+  "dock_overlay": {
+    "message": "Đè ảnh thiết kế"
+  },
+  "dock_find": {
+    "message": "Tìm Phần tử"
+  },
+  "dock_audit": {
+    "message": "Màu & font của trang"
+  },
+  "dock_capture": {
+    "message": "Chụp Màn hình"
+  },
+  "dock_sidePanel": {
+    "message": "Bật/Tắt Bảng Bên"
+  },
+  "dock_sidePanelUnsupported": {
+    "message": "Bảng bên không được hỗ trợ trên trình duyệt này"
+  },
+  "dock_editText": {
+    "message": "Sửa văn bản"
+  },
+  "dock_copy": {
+    "message": "Sao chép"
+  },
+  "dock_cut": {
+    "message": "Cut"
+  },
+  "dock_paste": {
+    "message": "Dán"
+  },
+  "dock_duplicate": {
+    "message": "Nhân bản"
+  },
+  "dock_delete": {
+    "message": "Xóa"
+  },
+  "dock_undo": {
+    "message": "Hoàn tác"
+  },
+  "dock_redo": {
+    "message": "Làm lại"
+  },
+  "dock_responsive": {
+    "message": "Chế độ Responsive · B: breakpoint"
+  },
+  "dock_vision": {
+    "message": "Mô phỏng thị lực"
+  },
+  "dock_tabOrder": {
+    "message": "Thứ tự focus bằng Tab"
+  },
+  "dock_vitals": {
+    "message": "Core Web Vitals"
+  },
+  "dock_palette": {
+    "message": "Lệnh & phím tắt"
+  },
+  "inspect_layout": {
+    "message": "Box Model"
+  },
+  "inspect_appearance": {
+    "message": "Giao diện"
+  },
+  "inspect_text": {
+    "message": "Văn bản"
+  },
+  "inspect_accessibility": {
+    "message": "Trợ năng"
+  },
+  "inspect_image": {
+    "message": "Hình ảnh"
+  },
+  "inspect_copyCss": {
+    "message": "Copy CSS"
+  },
+  "inspect_copied": {
+    "message": "Đã copy!"
+  },
+  "inspect_contrast": {
+    "message": "Tương phản"
+  },
+  "inspect_natural": {
+    "message": "Kích thước gốc"
+  },
+  "inspect_fileSize": {
+    "message": "Dung lượng"
+  },
+  "inspect_format": {
+    "message": "Định dạng"
+  },
+  "inspect_pinHint": {
+    "message": "Nhấn Space để ghim"
+  },
+  "common_close": {
+    "message": "Đóng"
+  },
+  "grid_columns": {
+    "message": "Cột"
+  },
+  "grid_maxWidth": {
+    "message": "Chiều rộng Tối đa"
+  },
+  "grid_gutter": {
+    "message": "Khoảng cách"
+  },
+  "grid_margin": {
+    "message": "Margin"
+  },
+  "grid_color": {
+    "message": "Màu sắc"
+  },
+  "grid_opacity": {
+    "message": "Độ mờ"
+  },
+  "measure_title": {
+    "message": "Đo vùng"
+  },
+  "measure_leftTop": {
+    "message": "Trái / Trên"
+  },
+  "measure_toEdge": {
+    "message": "Cách mép phải / dưới"
+  },
+  "measure_boxColor": {
+    "message": "Màu khung đo"
+  },
+  "measure_edgeGuides": {
+    "message": "Đường gióng"
+  },
+  "measure_edgeGuidesTitle": {
+    "message": "Kéo dài các cạnh khung ra toàn trang"
+  },
+  "measure_clear": {
+    "message": "Xoá khung"
+  },
+  "measure_hint": {
+    "message": "Kéo chuột để vẽ. Mũi tên dịch 1px (Shift: 10px), Ctrl+mũi tên nới rộng, Ctrl+Alt+mũi tên thu hẹp. Trong ô số, Shift+↑/↓ tăng giảm 10. Esc để xoá."
+  },
+  "overlay_image": {
+    "message": "Ảnh $1"
+  },
+  "overlay_drop": {
+    "message": "Thả, dán (Ctrl+V) hoặc bấm để chọn ảnh thiết kế"
+  },
+  "overlay_addAnother": {
+    "message": "Thêm ảnh khác…"
+  },
+  "overlay_opacity": {
+    "message": "Độ mờ"
+  },
+  "overlay_blend": {
+    "message": "Chế độ"
+  },
+  "overlay_normal": {
+    "message": "Bình thường"
+  },
+  "overlay_difference": {
+    "message": "Difference"
+  },
+  "overlay_scale": {
+    "message": "Tỉ lệ %"
+  },
+  "overlay_visible": {
+    "message": "Đang hiện"
+  },
+  "overlay_hidden": {
+    "message": "Đang ẩn"
+  },
+  "overlay_pin": {
+    "message": "Ghim theo màn hình"
+  },
+  "overlay_pinTitle": {
+    "message": "Ảnh đứng yên khi cuộn trang"
+  },
+  "overlay_remove": {
+    "message": "Xoá ảnh"
+  },
+  "overlay_hint": {
+    "message": "Bấm vào ảnh (hoặc ảnh nhỏ ở trên) để chọn. Kéo giữa ảnh để di chuyển, kéo góc để co giãn. Phím mũi tên dịch ảnh đang chọn 1px (giữ Shift: 10px)."
+  },
+  "overlay_onion": {
+    "message": "Onion skin (xuyên lớp)"
+  },
+  "overlay_invert": {
+    "message": "Đảo màu"
+  },
+  "overlay_twoTone": {
+    "message": "Hai tông màu"
+  },
+  "overlay_split": {
+    "message": "Chia đôi trước/sau"
+  },
+  "overlay_splitSide": {
+    "message": "Ảnh thiết kế bên trái"
+  },
+  "overlay_splitHint": {
+    "message": "Kéo thanh chia để so sánh ảnh thiết kế (một bên) với trang thật (bên kia)."
+  },
+  "find_title": {
+    "message": "Tìm Phần tử"
+  },
+  "find_selector": {
+    "message": "Bộ chọn CSS"
+  },
+  "find_hidden": {
+    "message": "$1 bị ẩn"
+  },
+  "find_prev": {
+    "message": "Trước"
+  },
+  "find_next": {
+    "message": "Sau"
+  },
+  "audit_title": {
+    "message": "Màu & font của trang"
+  },
+  "audit_colors": {
+    "message": "Màu"
+  },
+  "audit_fonts": {
+    "message": "Font chữ"
+  },
+  "audit_spacing": {
+    "message": "Khoảng cách"
+  },
+  "audit_offGrid": {
+    "message": "$1 giá trị không phải bội số của 4px (tô đỏ)."
+  },
+  "audit_highlight": {
+    "message": "Bấm để highlight các phần tử dùng giá trị này"
+  },
+  "audit_copy": {
+    "message": "Copy"
+  },
+  "audit_rescan": {
+    "message": "Quét lại"
+  },
+  "audit_all": {
+    "message": "Tất cả"
+  },
+  "audit_allTitle": {
+    "message": "Copy toàn bộ danh sách của tab này"
+  },
+  "audit_empty": {
+    "message": "Chưa có gì để hiển thị."
+  },
+  "capture_area": {
+    "message": "Chụp vùng"
+  },
+  "capture_element": {
+    "message": "Phần tử"
+  },
+  "capture_visible": {
+    "message": "Chụp màn hình"
+  },
+  "capture_fullPage": {
+    "message": "Chụp cả trang"
+  },
+  "capture_fullPageResponsive": {
+    "message": "Không dùng được khi xem responsive"
+  },
+  "capture_close": {
+    "message": "Đóng (Esc)"
+  },
+  "capture_dragHint": {
+    "message": "Kéo chuột để chọn vùng · Esc để huỷ"
+  },
+  "capture_copy": {
+    "message": "Copy"
+  },
+  "capture_save": {
+    "message": "Lưu"
+  },
+  "capture_markupCapture": {
+    "message": "Vẽ chú thích"
+  },
+  "capture_copied": {
+    "message": "Đã copy"
+  },
+  "capture_saved": {
+    "message": "Đã lưu"
+  },
+  "capture_failed": {
+    "message": "Lỗi"
+  },
+  "capture_copyNeedsHttps": {
+    "message": "Copy cần HTTPS — hãy dùng Lưu"
+  },
+  "capture_markup": {
+    "message": "Vẽ chú thích"
+  },
+  "capture_pen": {
+    "message": "Bút"
+  },
+  "capture_arrow": {
+    "message": "Mũi tên"
+  },
+  "capture_rect": {
+    "message": "Khung"
+  },
+  "capture_highlight": {
+    "message": "Tô sáng"
+  },
+  "capture_text": {
+    "message": "Chữ"
+  },
+  "capture_undo": {
+    "message": "Hoàn tác (Ctrl+Z)"
+  },
+  "capture_fullPageBusy": {
+    "message": "Đang chụp cả trang…"
+  },
+  "capture_fastFailed": {
+    "message": "Không chụp nhanh được ($1), đã chuyển sang cuộn để chụp. Nếu đang mở DevTools ở tab này thì đóng lại rồi thử lại."
+  },
+  "capture_padding": {
+    "message": "Khoảng đệm"
+  },
+  "panel_tabElement": {
+    "message": "Phần tử"
+  },
+  "panel_tabPage": {
+    "message": "Trang"
+  },
+  "panel_undock": {
+    "message": "Mở trong cửa sổ"
+  },
+  "panel_dock": {
+    "message": "Chuyển về bảng bên"
+  },
+  "panel_emptyInspect": {
+    "message": "Chọn một phần tử trên trang để xem chi tiết"
+  },
+  "panel_shortcutToggleRuler": {
+    "message": "Bật/tắt tiện ích"
+  },
+  "panel_shortcutParent": {
+    "message": "Chọn phần tử cha"
+  },
+  "panel_shortcutChild": {
+    "message": "Chọn phần tử con"
+  },
+  "panel_shortcutTogglePanel": {
+    "message": "Bật/tắt bảng điều khiển"
+  },
+  "panel_shortcutDeselect": {
+    "message": "Bỏ chọn"
+  },
+  "panel_boxModel": {
+    "message": "Box Model"
+  },
+  "panel_margin": {
+    "message": "Margin"
+  },
+  "panel_border": {
+    "message": "Viền"
+  },
+  "panel_padding": {
+    "message": "Padding"
+  },
+  "panel_textContent": {
+    "message": "Nội dung Văn bản"
+  },
+  "panel_code": {
+    "message": "Mã"
+  },
+  "panel_computed": {
+    "message": "Đã tính"
+  },
+  "panel_source": {
+    "message": "Nguồn"
+  },
+  "panel_tailwind": {
+    "message": "Tailwind"
+  },
+  "panel_crossOriginHidden": {
+    "message": "$1 biểu định kiểu khác nguồn gốc bị ẩn."
+  },
+  "panel_enableCrossOrigin": {
+    "message": "Cấp quyền truy cập"
+  },
+  "panel_layout": {
+    "message": "Bố cục"
+  },
+  "panel_color": {
+    "message": "Màu sắc"
+  },
+  "panel_colors": {
+    "message": "Màu sắc"
+  },
+  "panel_text": {
+    "message": "Văn bản"
+  },
+  "panel_backgrounds": {
+    "message": "Nền"
+  },
+  "panel_borders": {
+    "message": "Viền"
+  },
+  "panel_gradient": {
+    "message": "Gradient"
+  },
+  "panel_gradients": {
+    "message": "Gradient"
+  },
+  "panel_typographyStyle": {
+    "message": "Kiểu Chữ"
+  },
+  "panel_typographyStyles": {
+    "message": "Kiểu Chữ"
+  },
+  "panel_boxShadow": {
+    "message": "Box Shadow"
+  },
+  "panel_boxShadows": {
+    "message": "Box Shadows"
+  },
+  "panel_animation": {
+    "message": "Hoạt ảnh"
+  },
+  "panel_animations": {
+    "message": "Hoạt ảnh"
+  },
+  "panel_transition": {
+    "message": "Hiệu ứng chuyển"
+  },
+  "panel_transitions": {
+    "message": "Hiệu ứng chuyển"
+  },
+  "panel_canvas": {
+    "message": "Canvas"
+  },
+  "panel_contextType": {
+    "message": "Kiểu Ngữ cảnh"
+  },
+  "panel_canvasDimensions": {
+    "message": "Kích thước Canvas"
+  },
+  "panel_pixelRatio": {
+    "message": "Tỷ lệ Pixel"
+  },
+  "panel_unknown": {
+    "message": "không xác định"
+  },
+  "panel_asset": {
+    "message": "Tài nguyên"
+  },
+  "panel_assets": {
+    "message": "Tài nguyên"
+  },
+  "panel_download": {
+    "message": "Tải về"
+  },
+  "panel_downloadAll": {
+    "message": "Tải Tất cả"
+  },
+  "panel_defaultSvgFilename": {
+    "message": "tainguyen.svg"
+  },
+  "panel_defaultAssetName": {
+    "message": "tainguyen"
+  },
+  "panel_defaultDownloadName": {
+    "message": "tap_tin_da_tai"
+  },
+  "panel_issue": {
+    "message": "Vấn đề"
+  },
+  "panel_issues": {
+    "message": "Vấn đề"
+  },
+  "panel_instances": {
+    "message": "Thể hiện"
+  },
+  "panel_copy": {
+    "message": "Sao chép"
+  },
+  "panel_copied": {
+    "message": "Đã sao chép"
+  },
+  "panel_previous": {
+    "message": "Trước"
+  },
+  "panel_next": {
+    "message": "Sau"
+  },
+  "panel_noMatchedRules": {
+    "message": "/* Không tìm thấy rule nào khớp */"
+  },
+  "dialog_ok": {
+    "message": "OK"
+  },
+  "dialog_elementNotFoundTitle": {
+    "message": "Không tìm thấy phần tử"
+  },
+  "dialog_issueElementNotFound": {
+    "message": "Không thể tìm thấy phần tử có vấn đề. Phần tử có thể đã bị xóa hoặc trang đã thay đổi."
+  },
+  "dialog_cancel": {
+    "message": "Hủy"
+  },
+  "dialog_confirm": {
+    "message": "Xác nhận"
+  },
+  "dialog_clearElementTitle": {
+    "message": "Xóa phần tử"
+  },
+  "dialog_clearElement": {
+    "message": "Bỏ mọi thay đổi trên phần tử này?"
+  },
+  "dialog_clearAllTitle": {
+    "message": "Xóa tất cả thay đổi"
+  },
+  "dialog_clearAll": {
+    "message": "Bỏ mọi thay đổi trên trang này?"
+  },
+  "dialog_noSelectedElement": {
+    "message": "Không tìm thấy phần tử mục tiêu."
+  },
+  "dialog_tabUnavailableTitle": {
+    "message": "Tab không khả dụng"
+  },
+  "dialog_tabUnavailable": {
+    "message": "Không kết nối được với tab này. Bật PixelLens ở đây rồi thử lại."
+  },
+  "issue_contrastAaMessage": {
+    "message": "Văn bản có tỷ lệ tương phản không đủ $1:1 (yêu cầu $2:1 cho văn bản $3)"
+  },
+  "issue_contrastAaRecommendation": {
+    "message": "Tăng tương phản lên ít nhất $1:1 để tuân thủ WCAG AA"
+  },
+  "issue_contrastAaaMessage": {
+    "message": "Tương phản văn bản $1:1 đạt AA nhưng không đạt AAA (yêu cầu $2:1 cho văn bản $3)"
+  },
+  "issue_contrastAaaRecommendation": {
+    "message": "Cân nhắc tăng tương phản lên $1:1 để tuân thủ WCAG AAA"
+  },
+  "issue_textSizeLarge": {
+    "message": "lớn"
+  },
+  "issue_textSizeNormal": {
+    "message": "thường"
+  },
+  "issue_iconContrastMessage": {
+    "message": "Biểu tượng có tỷ lệ tương phản không đủ $1:1 (yêu cầu $2:1 cho phần tử không phải văn bản)"
+  },
+  "issue_iconContrastRecommendation": {
+    "message": "Tăng tương phản lên ít nhất $1:1 để tuân thủ WCAG 1.4.11"
+  },
+  "seo_missingTitle_message": {
+    "message": "Thiếu thẻ title"
+  },
+  "seo_missingTitle_recommendation": {
+    "message": "Thêm phần tử <title> mô tả vào phần head của trang."
+  },
+  "seo_titleTooShort_message": {
+    "message": "Tiêu đề ngắn hơn 30 ký tự"
+  },
+  "seo_titleTooShort_recommendation": {
+    "message": "Hướng tới 50 đến 60 ký tự để tiêu đề có tính mô tả trong kết quả tìm kiếm."
+  },
+  "seo_titleTooLong_message": {
+    "message": "Tiêu đề dài hơn 60 ký tự"
+  },
+  "seo_titleTooLong_recommendation": {
+    "message": "Công cụ tìm kiếm có thể cắt bớt tiêu đề dài. Rút ngắn xuống 50 đến 60 ký tự."
+  },
+  "seo_missingDescription_message": {
+    "message": "Thiếu meta description"
+  },
+  "seo_missingDescription_recommendation": {
+    "message": "Thêm meta description để tóm tắt trang cho kết quả tìm kiếm."
+  },
+  "seo_descriptionTooShort_message": {
+    "message": "Mô tả ngắn hơn 70 ký tự"
+  },
+  "seo_descriptionTooShort_recommendation": {
+    "message": "Hướng tới 120 đến 160 ký tự cho đoạn mô tả có tính mô tả."
+  },
+  "seo_descriptionTooLong_message": {
+    "message": "Mô tả dài hơn 160 ký tự"
+  },
+  "seo_descriptionTooLong_recommendation": {
+    "message": "Công cụ tìm kiếm có thể cắt bớt mô tả dài. Cắt còn 120 đến 160 ký tự."
+  },
+  "seo_missingH1_message": {
+    "message": "Thiếu tiêu đề H1"
+  },
+  "seo_missingH1_recommendation": {
+    "message": "Mỗi trang nên có một H1 rõ ràng mô tả chủ đề chính."
+  },
+  "seo_multipleH1_message": {
+    "message": "Trang có nhiều hơn một H1"
+  },
+  "seo_multipleH1_recommendation": {
+    "message": "Sử dụng một H1 duy nhất cho mỗi trang và hạ các tiêu đề phụ xuống H2 hoặc H3."
+  },
+  "seo_missingCanonical_message": {
+    "message": "Thiếu link canonical"
+  },
+  "seo_missingCanonical_recommendation": {
+    "message": "Thêm <link rel=\"canonical\"> để khai báo URL ưu tiên cho trang này."
+  },
+  "seo_missingViewport_message": {
+    "message": "Thiếu meta tag viewport"
+  },
+  "seo_missingViewport_recommendation": {
+    "message": "Thêm <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> để hiển thị trên thiết bị di động."
+  },
+  "seo_missingLang_message": {
+    "message": "Thiếu thuộc tính lang trên <html>"
+  },
+  "seo_missingLang_recommendation": {
+    "message": "Đặt thuộc tính lang (ví dụ: lang=\"vi\") để giúp công cụ tìm kiếm và trình đọc màn hình."
+  },
+  "seo_robotsNoindex_message": {
+    "message": "Trang được đặt thành noindex"
+  },
+  "seo_robotsNoindex_recommendation": {
+    "message": "Công cụ tìm kiếm sẽ không lập chỉ mục trang này. Xóa noindex nếu điều này không có chủ ý."
+  },
+  "seo_missingAlt_message": {
+    "message": "Hình ảnh thiếu văn bản alt"
+  },
+  "seo_missingAlt_recommendation": {
+    "message": "Thêm thuộc tính alt cho mọi img. Sử dụng alt=\"\" cho hình ảnh thuần trang trí."
+  },
+  "seo_missingOgTitle_message": {
+    "message": "Thiếu og:title"
+  },
+  "seo_missingOgTitle_recommendation": {
+    "message": "Thêm <meta property=\"og:title\"> để các link được chia sẻ hiển thị tiêu đề rõ ràng."
+  },
+  "seo_missingOgDescription_message": {
+    "message": "Thiếu og:description"
+  },
+  "seo_missingOgDescription_recommendation": {
+    "message": "Thêm <meta property=\"og:description\"> để xem trước khi chia sẻ."
+  },
+  "seo_missingOgImage_message": {
+    "message": "Thiếu og:image"
+  },
+  "seo_missingOgImage_recommendation": {
+    "message": "Thêm <meta property=\"og:image\"> để các link được chia sẻ bao gồm hình ảnh xem trước."
+  },
+  "page_untitled": {
+    "message": "Trang Không có Tiêu đề"
+  },
+  "page_noInfo": {
+    "message": "Không tìm thấy thông tin trang"
+  },
+  "page_refresh": {
+    "message": "Tải lại"
+  },
+  "page_socialPreview": {
+    "message": "Xem trước Mạng Xã hội"
+  },
+  "page_facebook": {
+    "message": "Facebook"
+  },
+  "page_x": {
+    "message": "X"
+  },
+  "page_linkedin": {
+    "message": "LinkedIn"
+  },
+  "page_metaTags": {
+    "message": "Meta Tags"
+  },
+  "page_metaSeo": {
+    "message": "SEO"
+  },
+  "page_metaOg": {
+    "message": "Open Graph"
+  },
+  "page_metaTwitter": {
+    "message": "Twitter Card"
+  },
+  "page_technology": {
+    "message": "Công nghệ"
+  },
+  "page_technologies": {
+    "message": "Công nghệ"
+  },
+  "page_seoIssue": {
+    "message": "Vấn đề SEO"
+  },
+  "page_seoIssues": {
+    "message": "Vấn đề SEO"
+  },
+  "page_pageWeight": {
+    "message": "Dung lượng Trang"
+  },
+  "page_pwDocument": {
+    "message": "Tài liệu"
+  },
+  "page_pwScript": {
+    "message": "Scripts"
+  },
+  "page_pwCss": {
+    "message": "Stylesheets"
+  },
+  "page_pwImg": {
+    "message": "Hình ảnh"
+  },
+  "page_pwFont": {
+    "message": "Font"
+  },
+  "page_pwMedia": {
+    "message": "Phương tiện"
+  },
+  "page_pwFetch": {
+    "message": "Fetch/XHR"
+  },
+  "page_pwOther": {
+    "message": "Khác"
+  },
+  "page_pwHidden": {
+    "message": "$1 tài nguyên cross-origin bị ẩn"
+  },
+  "page_pwBufferFull": {
+    "message": "Bộ đệm tài nguyên đã đầy, một số mục có thể bị thiếu"
+  },
+  "page_cssVariables": {
+    "message": "Biến CSS"
+  },
+  "page_loading": {
+    "message": "Đang tải…"
+  },
+  "page_noCssVariables": {
+    "message": "Không có biến CSS nào trên :root"
+  },
+  "page_filterVariables": {
+    "message": "Lọc biến"
+  },
+  "page_otherVariables": {
+    "message": "Khác"
+  },
+  "page_variablesCapped": {
+    "message": "Đang hiện $1 trên $2 — lọc để thu hẹp"
+  },
+  "toast_editsRestoredOne": {
+    "message": "Đã khôi phục 1 chỉnh sửa đã lưu"
+  },
+  "toast_editsRestoredMany": {
+    "message": "Đã khôi phục $1 chỉnh sửa đã lưu"
+  },
+  "edit_css": {
+    "message": "CSS"
+  },
+  "edit_changes": {
+    "message": "Thay đổi"
+  },
+  "edit_inheritedFrom": {
+    "message": "Kế thừa từ $1"
+  },
+  "edit_addRule": {
+    "message": "Thêm quy tắc"
+  },
+  "edit_invalidProperty": {
+    "message": "Thuộc tính không xác định"
+  },
+  "edit_invalidValue": {
+    "message": "Giá trị không hợp lệ"
+  },
+  "edit_overriddenBy": {
+    "message": "Bị ghi đè bởi $1"
+  },
+  "edit_notInherited": {
+    "message": "Không được kế thừa bởi phần tử này"
+  },
+  "edit_overriddenHidden": {
+    "message": "Bị ghi đè bởi một stylesheet PixelLens không đọc được"
+  },
+  "edit_overriddenHiddenGrant": {
+    "message": "Bị ghi đè bởi một stylesheet PixelLens không đọc được. Cho phép truy cập mọi trang để xem."
+  },
+  "edit_crossOriginMissing": {
+    "message": "Một số kiểu có thể bị thiếu."
+  },
+  "edit_filter": {
+    "message": "Lọc"
+  },
+  "edit_showClasses": {
+    "message": "Class"
+  },
+  "edit_toggleDecl": {
+    "message": "Bật/tắt thuộc tính này"
+  },
+  "edit_forceState": {
+    "message": "Ép trạng thái"
+  },
+  "edit_stateNoRules": {
+    "message": "Không có quy tắc nào dùng trạng thái này cho phần tử"
+  },
+  "changes_elementsOne": {
+    "message": "1 phần tử"
+  },
+  "changes_elementsOther": {
+    "message": "$1 phần tử"
+  },
+  "changes_rulesOne": {
+    "message": "1 quy tắc"
+  },
+  "changes_rulesOther": {
+    "message": "$1 quy tắc"
+  },
+  "changes_whitespaceOnly": {
+    "message": "Chỉ thay đổi khoảng trắng"
+  },
+  "changes_none": {
+    "message": "Không tìm thấy thay đổi"
+  },
+  "changes_revertChange": {
+    "message": "Hoàn tác thay đổi này"
+  },
+  "changes_clearChanges": {
+    "message": "Xóa Tất cả Thay đổi"
+  },
+  "changes_copyAll": {
+    "message": "Sao chép tất cả"
+  },
+  "changes_copyAllHint": {
+    "message": "Sao chép mọi thay đổi dưới dạng code"
+  },
+  "changes_exportFormat": {
+    "message": "Định dạng xuất"
+  },
+  "changes_formatCss": {
+    "message": "CSS"
+  },
+  "changes_formatTailwind": {
+    "message": "Tailwind"
+  },
+  "changes_formatPrompt": {
+    "message": "Prompt cho AI"
+  },
+  "responsive_confirmPartialEdits": {
+    "message": "Các thay đổi quy tắc CSS sẽ được giữ lại. Kiểu nội tuyến, chỉnh sửa mã và lớp sẽ bị loại bỏ."
+  },
+  "responsive_moveLeft": {
+    "message": "Di Chuyển Sang Trái"
+  },
+  "responsive_moveRight": {
+    "message": "Di Chuyển Sang Phải"
+  },
+  "responsive_rotate": {
+    "message": "Xoay"
+  },
+  "responsive_colorScheme": {
+    "message": "Chế Độ Màu"
+  },
+  "responsive_schemeSystem": {
+    "message": "Hệ thống"
+  },
+  "responsive_schemeLight": {
+    "message": "Sáng"
+  },
+  "responsive_schemeDark": {
+    "message": "Tối"
+  },
+  "responsive_titleRemove": {
+    "message": "Gỡ Bỏ Khung Nhìn"
+  },
+  "responsive_bodyRemoveViewport": {
+    "message": "$1 sẽ bị gỡ bỏ."
+  },
+  "responsive_buttonRemove": {
+    "message": "Gỡ bỏ"
+  },
+  "responsive_moreActions": {
+    "message": "Thêm Tác Vụ"
+  },
+  "responsive_refresh": {
+    "message": "Tải lại"
+  },
+  "responsive_loading": {
+    "message": "..."
+  },
+  "responsive_frameTimeout": {
+    "message": "Trang này chưa tải xong."
+  },
+  "responsive_frameBlockedBody": {
+    "message": "Trang này chặn việc tải trong bản xem trước.{br}{grant} để hiển thị."
+  },
+  "responsive_frameBlockedGrant": {
+    "message": "Cấp quyền truy cập"
+  },
+  "responsive_frameBlockedStill": {
+    "message": "Trang này chặn việc tải trong bản xem trước.{br}Trang làm điều này bằng một tập lệnh hoặc chính sách trong trang mà không thể loại bỏ."
+  },
+  "responsive_warnOverflow": {
+    "message": "Nội dung tràn theo chiều ngang"
+  },
+  "responsive_zoomOut": {
+    "message": "Thu nhỏ"
+  },
+  "responsive_zoomIn": {
+    "message": "Phóng to"
+  },
+  "responsive_zoom": {
+    "message": "Thu phóng"
+  },
+  "responsive_titleResetViewports": {
+    "message": "Đặt Lại Khung Nhìn"
+  },
+  "responsive_dialogTitleResetViewports": {
+    "message": "Đặt Lại Khung Nhìn"
+  },
+  "responsive_bodyResetViewports": {
+    "message": "Các khung nhìn của bạn sẽ được đặt lại về mặc định."
+  },
+  "responsive_buttonReset": {
+    "message": "Đặt Lại"
+  },
+  "responsive_titleSyncScrolling": {
+    "message": "Đồng Bộ Cuộn"
+  },
+  "responsive_titleFrameLayout": {
+    "message": "Bố Cục Khung"
+  },
+  "responsive_labelAddViewport": {
+    "message": "Thêm Khung Nhìn"
+  },
+  "responsive_dialogTitleCustomViewport": {
+    "message": "Khung Nhìn Tùy Chỉnh"
+  },
+  "responsive_labelWidth": {
+    "message": "Chiều rộng"
+  },
+  "responsive_labelHeight": {
+    "message": "Chiều cao"
+  },
+  "responsive_toastScrollSyncOff": {
+    "message": "Đồng bộ cuộn đã tự tắt vì trang này liên tục cuộn ngược lại."
+  },
+  "responsive_dismiss": {
+    "message": "Đóng"
+  },
+  "theme_system": {
+    "message": "Hệ thống"
+  },
+  "theme_light": {
+    "message": "Sáng"
+  },
+  "theme_dark": {
+    "message": "Tối"
+  },
+  "options_pageTitle": {
+    "message": "Cài đặt"
+  },
+  "options_sectionAppearance": {
+    "message": "Giao diện"
+  },
+  "options_sectionExtension": {
+    "message": "Tiện ích"
+  },
+  "options_rowTheme": {
+    "message": "Chủ đề"
+  },
+  "options_rowColorFormat": {
+    "message": "Định dạng màu"
+  },
+  "options_colorFormatSecondary": {
+    "message": "Được dùng bởi trình kiểm tra và bộ chọn màu"
+  },
+  "options_savedEditsTitle": {
+    "message": "Chỉnh sửa đã lưu"
+  },
+  "options_savedEditsSecondary": {
+    "message": "PixelLens nhớ các sửa CSS theo từng trang và áp lại vào lần sau."
+  },
+  "options_savedEditsClear": {
+    "message": "Xóa"
+  },
+  "options_savedEditsConfirmTitle": {
+    "message": "Xóa các chỉnh sửa đã lưu?"
+  },
+  "options_savedEditsConfirmBody": {
+    "message": "Thao tác này xóa các chỉnh sửa CSS đã ghi nhớ của mọi trang."
+  },
+  "options_sectionTerminalAi": {
+    "message": "AI Terminal"
+  },
+  "options_rowMcpServer": {
+    "message": "Máy chủ MCP"
+  },
+  "options_mcpServerSecondary": {
+    "message": "Cho phép AI agent xem và sửa trang qua PixelLens."
+  },
+  "options_mcpConnect": {
+    "message": "Kết nối"
+  },
+  "options_mcpDisconnect": {
+    "message": "Ngắt kết nối"
+  },
+  "options_mcpOutdatedTooltip": {
+    "message": "Máy chủ MCP đã lỗi thời. Cập nhật qua ứng dụng AI của bạn."
+  },
+  "options_mcpOutdatedTitle": {
+    "message": "Máy chủ MCP đã lỗi thời"
+  },
+  "options_mcpOutdatedBody": {
+    "message": "Máy chủ MCP của bạn là phiên bản $1, nhưng tiện ích này yêu cầu $2 hoặc mới hơn. Cập nhật gói npm hoặc khởi động lại ứng dụng AI."
+  },
+  "options_mcpVersionUnknown": {
+    "message": "không xác định"
+  },
+  "options_tourTitle": {
+    "message": "Hướng dẫn nhanh"
+  },
+  "options_tourSecondary": {
+    "message": "Phần giới thiệu thanh công cụ hiện ra ở lần đầu bạn mở PixelLens."
+  },
+  "options_tourShow": {
+    "message": "Xem lại"
+  },
+  "options_tourQueued": {
+    "message": "Sẽ hiện lần tới"
+  },
+  "options_syncNote": {
+    "message": "Tuỳ chọn của bạn được đồng bộ giữa các thiết bị đăng nhập cùng tài khoản trình duyệt. Các chỉnh sửa đã lưu và mã MCP chỉ nằm trên thiết bị này; ảnh overlay không bao giờ được lưu."
+  },
+  "mcp_dockTitle": {
+    "message": "MCP"
+  },
+  "mcp_connected": {
+    "message": "Đã kết nối MCP"
+  },
+  "mcp_connectAgent": {
+    "message": "Kết nối agent"
+  },
+  "mcp_outdated": {
+    "message": "MCP đã lỗi thời"
+  },
+  "mcp_waiting": {
+    "message": "Đang chờ agent"
+  },
+  "mcp_connectHint": {
+    "message": "Dán đoạn này vào AI agent để kết nối:"
+  },
+  "mcp_unknownAgent": {
+    "message": "AI agent"
+  },
+  "mcp_waitingForAgent": {
+    "message": "Đang chờ agent kết nối…"
+  },
+  "vision_none": {
+    "message": "Thị lực bình thường"
+  },
+  "vision_protanopia": {
+    "message": "Mù màu đỏ (Protanopia)"
+  },
+  "vision_deuteranopia": {
+    "message": "Mù màu xanh lá (Deuteranopia)"
+  },
+  "vision_tritanopia": {
+    "message": "Mù màu xanh lam (Tritanopia)"
+  },
+  "vision_achromatopsia": {
+    "message": "Mù màu hoàn toàn (Achromatopsia)"
+  },
+  "vision_blurred": {
+    "message": "Nhìn mờ"
+  },
+  "contrastFix_suggested": {
+    "message": "Gợi ý:"
+  },
+  "contrastFix_copy": {
+    "message": "Bấm để sao chép"
+  },
+  "contrastFix_copied": {
+    "message": "Đã sao chép"
+  },
+  "palette_title": {
+    "message": "Lệnh"
+  },
+  "palette_placeholder": {
+    "message": "Tìm công cụ…"
+  },
+  "palette_empty": {
+    "message": "Không có công cụ phù hợp"
+  },
+  "palette_hint": {
+    "message": "↑↓ để chọn · Enter để chạy · Esc để đóng"
+  },
+  "tour_dockTitle": {
+    "message": "Thanh công cụ"
+  },
+  "tour_dockBody": {
+    "message": "Mọi công cụ đều nằm trên thanh này. Rê chuột lên một nút để xem tên và phím tắt."
+  },
+  "tour_keysTitle": {
+    "message": "Phím số"
+  },
+  "tour_keysBody": {
+    "message": "Nhấn 1–9 và 0 để đổi công cụ trên thanh mà không cần chuột. Phím chữ gọi các công cụ còn lại (O, A, C, B, Y, T, W, và H để tạm dừng)."
+  },
+  "tour_menuTitle": {
+    "message": "Thêm công cụ"
+  },
+  "tour_menuBody": {
+    "message": "Nút ⋯ chứa các công cụ ít dùng hơn: lớp phủ thiết kế, kiểm tra trang, chọn màu, tác tử AI (MCP) và tạm dừng."
+  },
+  "tour_paletteTitle": {
+    "message": "Ctrl+K ở bất cứ đâu"
+  },
+  "tour_paletteBody": {
+    "message": "Nhấn Ctrl+K (hoặc ?) để tìm mọi công cụ theo tên rồi nhấn Enter để chạy."
+  },
+  "tour_next": {
+    "message": "Tiếp"
+  },
+  "tour_skip": {
+    "message": "Bỏ qua"
+  },
+  "tour_done": {
+    "message": "Đã hiểu"
+  }
+}

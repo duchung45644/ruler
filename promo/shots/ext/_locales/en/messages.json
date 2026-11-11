@@ -1,0 +1,1175 @@
+{
+  "extName": {
+    "message": "PixelLens — The All-in-One Toolkit for Web Inspection and Design"
+  },
+  "extNameShort": {
+    "message": "PixelLens"
+  },
+  "extDescription": {
+    "message": "Hover any element to see how it's built, from size and spacing to styles and colors, then fine-tune it right on the page."
+  },
+  "cmdSelectParent": {
+    "message": "Move selection to parent element."
+  },
+  "cmdSelectChild": {
+    "message": "Move selection to child element."
+  },
+  "dock_more": {
+    "message": "More tools"
+  },
+  "dock_pause": {
+    "message": "Pause"
+  },
+  "dock_resume": {
+    "message": "Resume"
+  },
+  "dock_quit": {
+    "message": "Quit"
+  },
+  "dock_inspect": {
+    "message": "Inspector"
+  },
+  "dock_selectParent": {
+    "message": "Select Parent"
+  },
+  "dock_selectChild": {
+    "message": "Select Child"
+  },
+  "dock_xray": {
+    "message": "X-Ray Mode"
+  },
+  "dock_ruler": {
+    "message": "Page Rulers"
+  },
+  "dock_breakpoints": {
+    "message": "Breakpoints"
+  },
+  "dock_eyedropper": {
+    "message": "Color Picker"
+  },
+  "dock_grid": {
+    "message": "Layout Grid"
+  },
+  "dock_measure": {
+    "message": "Measure area (drag)"
+  },
+  "dock_overlay": {
+    "message": "Design overlay"
+  },
+  "dock_find": {
+    "message": "Find Element"
+  },
+  "dock_audit": {
+    "message": "Page colors & fonts"
+  },
+  "dock_capture": {
+    "message": "Capture Screenshot"
+  },
+  "dock_sidePanel": {
+    "message": "Toggle Side Panel"
+  },
+  "dock_sidePanelUnsupported": {
+    "message": "Side Panel Not Supported in This Browser"
+  },
+  "dock_editText": {
+    "message": "Edit Text"
+  },
+  "dock_copy": {
+    "message": "Copy"
+  },
+  "dock_cut": {
+    "message": "Cut"
+  },
+  "dock_paste": {
+    "message": "Paste"
+  },
+  "dock_duplicate": {
+    "message": "Duplicate"
+  },
+  "dock_delete": {
+    "message": "Delete"
+  },
+  "dock_undo": {
+    "message": "Undo"
+  },
+  "dock_redo": {
+    "message": "Redo"
+  },
+  "dock_responsive": {
+    "message": "Responsive Mode · B: breakpoints"
+  },
+  "dock_vision": {
+    "message": "Vision simulator"
+  },
+  "dock_tabOrder": {
+    "message": "Tab focus order"
+  },
+  "dock_vitals": {
+    "message": "Core Web Vitals"
+  },
+  "dock_palette": {
+    "message": "Commands & shortcuts"
+  },
+  "inspect_layout": {
+    "message": "Box Model"
+  },
+  "inspect_appearance": {
+    "message": "Appearance"
+  },
+  "inspect_text": {
+    "message": "Text"
+  },
+  "inspect_accessibility": {
+    "message": "Accessibility"
+  },
+  "inspect_image": {
+    "message": "Image"
+  },
+  "inspect_copyCss": {
+    "message": "Copy CSS"
+  },
+  "inspect_copied": {
+    "message": "Copied!"
+  },
+  "inspect_contrast": {
+    "message": "Contrast"
+  },
+  "inspect_natural": {
+    "message": "Natural size"
+  },
+  "inspect_fileSize": {
+    "message": "File size"
+  },
+  "inspect_format": {
+    "message": "Format"
+  },
+  "inspect_pinHint": {
+    "message": "Press Space to pin"
+  },
+  "common_close": {
+    "message": "Close"
+  },
+  "grid_columns": {
+    "message": "Columns"
+  },
+  "grid_maxWidth": {
+    "message": "Max Width"
+  },
+  "grid_gutter": {
+    "message": "Gutter"
+  },
+  "grid_margin": {
+    "message": "Margin"
+  },
+  "grid_color": {
+    "message": "Color"
+  },
+  "grid_opacity": {
+    "message": "Opacity"
+  },
+  "measure_title": {
+    "message": "Measure"
+  },
+  "measure_leftTop": {
+    "message": "Left / Top"
+  },
+  "measure_toEdge": {
+    "message": "To right / bottom edge"
+  },
+  "measure_boxColor": {
+    "message": "Box color"
+  },
+  "measure_edgeGuides": {
+    "message": "Edge guides"
+  },
+  "measure_edgeGuidesTitle": {
+    "message": "Extend the box edges across the page"
+  },
+  "measure_clear": {
+    "message": "Clear"
+  },
+  "measure_hint": {
+    "message": "Drag to draw. Arrows move 1px (Shift: 10px), Ctrl+arrows expand, Ctrl+Alt+arrows shrink. Shift+↑/↓ in a field steps 10. Esc clears."
+  },
+  "overlay_image": {
+    "message": "Image $1"
+  },
+  "overlay_drop": {
+    "message": "Drop, paste or click to choose design images"
+  },
+  "overlay_addAnother": {
+    "message": "Add another image…"
+  },
+  "overlay_opacity": {
+    "message": "Opacity"
+  },
+  "overlay_blend": {
+    "message": "Blend"
+  },
+  "overlay_normal": {
+    "message": "Normal"
+  },
+  "overlay_difference": {
+    "message": "Difference"
+  },
+  "overlay_scale": {
+    "message": "Scale %"
+  },
+  "overlay_visible": {
+    "message": "Visible"
+  },
+  "overlay_hidden": {
+    "message": "Hidden"
+  },
+  "overlay_pin": {
+    "message": "Pin to screen"
+  },
+  "overlay_pinTitle": {
+    "message": "Keep the image fixed while scrolling"
+  },
+  "overlay_remove": {
+    "message": "Remove"
+  },
+  "overlay_hint": {
+    "message": "Click an image (or its thumbnail) to select it. Drag the middle to move, a corner to resize. Arrow keys nudge the selected image 1px (Shift: 10px)."
+  },
+  "overlay_onion": {
+    "message": "Onion skin"
+  },
+  "overlay_invert": {
+    "message": "Invert"
+  },
+  "overlay_twoTone": {
+    "message": "Two-tone"
+  },
+  "overlay_split": {
+    "message": "Before/after split"
+  },
+  "overlay_splitSide": {
+    "message": "Design on the left"
+  },
+  "overlay_splitHint": {
+    "message": "Drag the divider to compare the design (one side) with the page (other side)."
+  },
+  "find_title": {
+    "message": "Find Element"
+  },
+  "find_selector": {
+    "message": "CSS Selector"
+  },
+  "find_hidden": {
+    "message": "$1 hidden"
+  },
+  "find_prev": {
+    "message": "Previous"
+  },
+  "find_next": {
+    "message": "Next"
+  },
+  "audit_title": {
+    "message": "Page styles"
+  },
+  "audit_colors": {
+    "message": "Colors"
+  },
+  "audit_fonts": {
+    "message": "Typography"
+  },
+  "audit_spacing": {
+    "message": "Spacing"
+  },
+  "audit_offGrid": {
+    "message": "$1 value(s) are not multiples of 4px (shown in red)."
+  },
+  "audit_highlight": {
+    "message": "Click to highlight elements"
+  },
+  "audit_copy": {
+    "message": "Copy"
+  },
+  "audit_rescan": {
+    "message": "Rescan"
+  },
+  "audit_all": {
+    "message": "All"
+  },
+  "audit_allTitle": {
+    "message": "Copy all rows in this tab"
+  },
+  "audit_empty": {
+    "message": "Nothing to show here."
+  },
+  "capture_area": {
+    "message": "Capture area"
+  },
+  "capture_element": {
+    "message": "Element"
+  },
+  "capture_visible": {
+    "message": "Capture visible area"
+  },
+  "capture_fullPage": {
+    "message": "Capture full page"
+  },
+  "capture_fullPageResponsive": {
+    "message": "Not available in responsive view"
+  },
+  "capture_close": {
+    "message": "Close (Esc)"
+  },
+  "capture_dragHint": {
+    "message": "Drag to select an area · Esc to cancel"
+  },
+  "capture_copy": {
+    "message": "Copy"
+  },
+  "capture_save": {
+    "message": "Save"
+  },
+  "capture_markupCapture": {
+    "message": "Markup capture"
+  },
+  "capture_copied": {
+    "message": "Copied"
+  },
+  "capture_saved": {
+    "message": "Saved"
+  },
+  "capture_failed": {
+    "message": "Failed"
+  },
+  "capture_copyNeedsHttps": {
+    "message": "Copy needs HTTPS — use Save"
+  },
+  "capture_markup": {
+    "message": "Markup"
+  },
+  "capture_pen": {
+    "message": "Pen"
+  },
+  "capture_arrow": {
+    "message": "Arrow"
+  },
+  "capture_rect": {
+    "message": "Rectangle"
+  },
+  "capture_highlight": {
+    "message": "Highlight"
+  },
+  "capture_text": {
+    "message": "Text"
+  },
+  "capture_undo": {
+    "message": "Undo (Ctrl+Z)"
+  },
+  "capture_fullPageBusy": {
+    "message": "Capturing full page…"
+  },
+  "capture_fastFailed": {
+    "message": "Fast capture failed ($1), used scroll & stitch instead. Close DevTools on this tab if it is open."
+  },
+  "capture_padding": {
+    "message": "Padding"
+  },
+  "panel_tabElement": {
+    "message": "Element"
+  },
+  "panel_tabPage": {
+    "message": "Page"
+  },
+  "panel_undock": {
+    "message": "Open in a window"
+  },
+  "panel_dock": {
+    "message": "Move to side panel"
+  },
+  "panel_emptyInspect": {
+    "message": "Pick an element on the page to see its details"
+  },
+  "panel_shortcutToggleRuler": {
+    "message": "Toggle Extension"
+  },
+  "panel_shortcutParent": {
+    "message": "Select Parent"
+  },
+  "panel_shortcutChild": {
+    "message": "Select Child"
+  },
+  "panel_shortcutTogglePanel": {
+    "message": "Toggle Panel"
+  },
+  "panel_shortcutDeselect": {
+    "message": "Deselect"
+  },
+  "panel_boxModel": {
+    "message": "Box Model"
+  },
+  "panel_margin": {
+    "message": "Margin"
+  },
+  "panel_border": {
+    "message": "Border"
+  },
+  "panel_padding": {
+    "message": "Padding"
+  },
+  "panel_textContent": {
+    "message": "Text Content"
+  },
+  "panel_code": {
+    "message": "Code"
+  },
+  "panel_computed": {
+    "message": "Computed"
+  },
+  "panel_source": {
+    "message": "Source"
+  },
+  "panel_tailwind": {
+    "message": "Tailwind"
+  },
+  "panel_crossOriginHidden": {
+    "message": "$1 cross-origin stylesheets hidden."
+  },
+  "panel_enableCrossOrigin": {
+    "message": "Grant access"
+  },
+  "panel_layout": {
+    "message": "Layout"
+  },
+  "panel_color": {
+    "message": "Color"
+  },
+  "panel_colors": {
+    "message": "Colors"
+  },
+  "panel_text": {
+    "message": "Text"
+  },
+  "panel_backgrounds": {
+    "message": "Backgrounds"
+  },
+  "panel_borders": {
+    "message": "Borders"
+  },
+  "panel_gradient": {
+    "message": "Gradient"
+  },
+  "panel_gradients": {
+    "message": "Gradients"
+  },
+  "panel_typographyStyle": {
+    "message": "Typography Style"
+  },
+  "panel_typographyStyles": {
+    "message": "Typography Styles"
+  },
+  "panel_boxShadow": {
+    "message": "Box Shadow"
+  },
+  "panel_boxShadows": {
+    "message": "Box Shadows"
+  },
+  "panel_animation": {
+    "message": "Animation"
+  },
+  "panel_animations": {
+    "message": "Animations"
+  },
+  "panel_transition": {
+    "message": "Transition"
+  },
+  "panel_transitions": {
+    "message": "Transitions"
+  },
+  "panel_canvas": {
+    "message": "Canvas"
+  },
+  "panel_contextType": {
+    "message": "Context Type"
+  },
+  "panel_canvasDimensions": {
+    "message": "Canvas Dimensions"
+  },
+  "panel_pixelRatio": {
+    "message": "Pixel Ratio"
+  },
+  "panel_unknown": {
+    "message": "unknown"
+  },
+  "panel_asset": {
+    "message": "Asset"
+  },
+  "panel_assets": {
+    "message": "Assets"
+  },
+  "panel_download": {
+    "message": "Download"
+  },
+  "panel_downloadAll": {
+    "message": "Download All"
+  },
+  "panel_defaultSvgFilename": {
+    "message": "asset.svg"
+  },
+  "panel_defaultAssetName": {
+    "message": "asset"
+  },
+  "panel_defaultDownloadName": {
+    "message": "downloaded_file"
+  },
+  "panel_issue": {
+    "message": "Issue"
+  },
+  "panel_issues": {
+    "message": "Issues"
+  },
+  "panel_instances": {
+    "message": "Instances"
+  },
+  "panel_copy": {
+    "message": "Copy"
+  },
+  "panel_copied": {
+    "message": "Copied"
+  },
+  "panel_previous": {
+    "message": "Previous"
+  },
+  "panel_next": {
+    "message": "Next"
+  },
+  "panel_noMatchedRules": {
+    "message": "/* No matched rules found */"
+  },
+  "dialog_ok": {
+    "message": "OK"
+  },
+  "dialog_elementNotFoundTitle": {
+    "message": "Element Not Found"
+  },
+  "dialog_issueElementNotFound": {
+    "message": "Unable to locate the issue element. It may have been removed or the page may have changed."
+  },
+  "dialog_cancel": {
+    "message": "Cancel"
+  },
+  "dialog_confirm": {
+    "message": "Confirm"
+  },
+  "dialog_clearElementTitle": {
+    "message": "Clear Element"
+  },
+  "dialog_clearElement": {
+    "message": "Discard every change on this element?"
+  },
+  "dialog_clearAllTitle": {
+    "message": "Clear All Changes"
+  },
+  "dialog_clearAll": {
+    "message": "Discard every change on this page?"
+  },
+  "dialog_noSelectedElement": {
+    "message": "Couldn't find the target element."
+  },
+  "dialog_tabUnavailableTitle": {
+    "message": "Tab Unavailable"
+  },
+  "dialog_tabUnavailable": {
+    "message": "Can't reach this tab. Turn PixelLens on here and try again."
+  },
+  "issue_contrastAaMessage": {
+    "message": "Text has insufficient contrast ratio of $1:1 (requires $2:1 for $3 text)"
+  },
+  "issue_contrastAaRecommendation": {
+    "message": "Increase contrast to at least $1:1 for WCAG AA compliance"
+  },
+  "issue_contrastAaaMessage": {
+    "message": "Text contrast $1:1 meets AA but not AAA (requires $2:1 for $3 text)"
+  },
+  "issue_contrastAaaRecommendation": {
+    "message": "Consider increasing contrast to $1:1 for WCAG AAA compliance"
+  },
+  "issue_textSizeLarge": {
+    "message": "large"
+  },
+  "issue_textSizeNormal": {
+    "message": "normal"
+  },
+  "issue_iconContrastMessage": {
+    "message": "Icon has insufficient contrast ratio of $1:1 (requires $2:1 for non-text elements)"
+  },
+  "issue_iconContrastRecommendation": {
+    "message": "Increase contrast to at least $1:1 for WCAG 1.4.11 compliance"
+  },
+  "seo_missingTitle_message": {
+    "message": "Missing title tag"
+  },
+  "seo_missingTitle_recommendation": {
+    "message": "Add a descriptive <title> element to the page head."
+  },
+  "seo_titleTooShort_message": {
+    "message": "Title is shorter than 30 characters"
+  },
+  "seo_titleTooShort_recommendation": {
+    "message": "Aim for 50 to 60 characters so the title is descriptive in search results."
+  },
+  "seo_titleTooLong_message": {
+    "message": "Title is longer than 60 characters"
+  },
+  "seo_titleTooLong_recommendation": {
+    "message": "Search engines may truncate long titles. Shorten to 50 to 60 characters."
+  },
+  "seo_missingDescription_message": {
+    "message": "Missing meta description"
+  },
+  "seo_missingDescription_recommendation": {
+    "message": "Add a meta description to summarize the page for search results."
+  },
+  "seo_descriptionTooShort_message": {
+    "message": "Description is shorter than 70 characters"
+  },
+  "seo_descriptionTooShort_recommendation": {
+    "message": "Aim for 120 to 160 characters for a descriptive snippet."
+  },
+  "seo_descriptionTooLong_message": {
+    "message": "Description is longer than 160 characters"
+  },
+  "seo_descriptionTooLong_recommendation": {
+    "message": "Search engines may truncate long descriptions. Trim to 120 to 160 characters."
+  },
+  "seo_missingH1_message": {
+    "message": "Missing H1 heading"
+  },
+  "seo_missingH1_recommendation": {
+    "message": "Every page should have one clear H1 that describes its main topic."
+  },
+  "seo_multipleH1_message": {
+    "message": "Page has more than one H1"
+  },
+  "seo_multipleH1_recommendation": {
+    "message": "Use a single H1 per page and demote secondary headings to H2 or H3."
+  },
+  "seo_missingCanonical_message": {
+    "message": "Missing canonical link"
+  },
+  "seo_missingCanonical_recommendation": {
+    "message": "Add <link rel=\"canonical\"> to declare the preferred URL for this page."
+  },
+  "seo_missingViewport_message": {
+    "message": "Missing viewport meta tag"
+  },
+  "seo_missingViewport_recommendation": {
+    "message": "Add <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> for mobile rendering."
+  },
+  "seo_missingLang_message": {
+    "message": "Missing lang attribute on <html>"
+  },
+  "seo_missingLang_recommendation": {
+    "message": "Set a lang attribute (e.g. lang=\"en\") to help search engines and screen readers."
+  },
+  "seo_robotsNoindex_message": {
+    "message": "Page is set to noindex"
+  },
+  "seo_robotsNoindex_recommendation": {
+    "message": "Search engines will not index this page. Remove noindex if this is unintentional."
+  },
+  "seo_missingAlt_message": {
+    "message": "Image is missing alt text"
+  },
+  "seo_missingAlt_recommendation": {
+    "message": "Add an alt attribute to every img. Use alt=\"\" for purely decorative images."
+  },
+  "seo_missingOgTitle_message": {
+    "message": "Missing og:title"
+  },
+  "seo_missingOgTitle_recommendation": {
+    "message": "Add <meta property=\"og:title\"> so shared links display a clear title."
+  },
+  "seo_missingOgDescription_message": {
+    "message": "Missing og:description"
+  },
+  "seo_missingOgDescription_recommendation": {
+    "message": "Add <meta property=\"og:description\"> for share previews."
+  },
+  "seo_missingOgImage_message": {
+    "message": "Missing og:image"
+  },
+  "seo_missingOgImage_recommendation": {
+    "message": "Add <meta property=\"og:image\"> so shared links include a preview image."
+  },
+  "page_untitled": {
+    "message": "Untitled Page"
+  },
+  "page_noInfo": {
+    "message": "No page info found"
+  },
+  "page_refresh": {
+    "message": "Refresh"
+  },
+  "page_socialPreview": {
+    "message": "Social Preview"
+  },
+  "page_facebook": {
+    "message": "Facebook"
+  },
+  "page_x": {
+    "message": "X"
+  },
+  "page_linkedin": {
+    "message": "LinkedIn"
+  },
+  "page_metaTags": {
+    "message": "Meta Tags"
+  },
+  "page_metaSeo": {
+    "message": "SEO"
+  },
+  "page_metaOg": {
+    "message": "Open Graph"
+  },
+  "page_metaTwitter": {
+    "message": "Twitter Card"
+  },
+  "page_technology": {
+    "message": "Technology"
+  },
+  "page_technologies": {
+    "message": "Technologies"
+  },
+  "page_seoIssue": {
+    "message": "SEO Issue"
+  },
+  "page_seoIssues": {
+    "message": "SEO Issues"
+  },
+  "page_pageWeight": {
+    "message": "Page Weight"
+  },
+  "page_pwDocument": {
+    "message": "Document"
+  },
+  "page_pwScript": {
+    "message": "Scripts"
+  },
+  "page_pwCss": {
+    "message": "Stylesheets"
+  },
+  "page_pwImg": {
+    "message": "Images"
+  },
+  "page_pwFont": {
+    "message": "Fonts"
+  },
+  "page_pwMedia": {
+    "message": "Media"
+  },
+  "page_pwFetch": {
+    "message": "Fetch/XHR"
+  },
+  "page_pwOther": {
+    "message": "Other"
+  },
+  "page_pwHidden": {
+    "message": "$1 cross-origin resources hidden"
+  },
+  "page_pwBufferFull": {
+    "message": "Resource buffer full, some entries may be missing"
+  },
+  "page_cssVariables": {
+    "message": "CSS Variables"
+  },
+  "page_loading": {
+    "message": "Loading…"
+  },
+  "page_noCssVariables": {
+    "message": "No CSS variables on :root"
+  },
+  "page_filterVariables": {
+    "message": "Filter variables"
+  },
+  "page_otherVariables": {
+    "message": "Other"
+  },
+  "page_variablesCapped": {
+    "message": "Showing $1 of $2 — filter to narrow down"
+  },
+  "toast_editsRestoredOne": {
+    "message": "1 saved edit restored"
+  },
+  "toast_editsRestoredMany": {
+    "message": "$1 saved edits restored"
+  },
+  "edit_css": {
+    "message": "CSS"
+  },
+  "edit_changes": {
+    "message": "Changes"
+  },
+  "edit_inheritedFrom": {
+    "message": "Inherited from $1"
+  },
+  "edit_addRule": {
+    "message": "Add Rule"
+  },
+  "edit_invalidProperty": {
+    "message": "Unknown property"
+  },
+  "edit_invalidValue": {
+    "message": "Invalid value"
+  },
+  "edit_overriddenBy": {
+    "message": "Overridden by $1"
+  },
+  "edit_notInherited": {
+    "message": "Not inherited by this element"
+  },
+  "edit_overriddenHidden": {
+    "message": "Overridden by a stylesheet PixelLens can't read"
+  },
+  "edit_overriddenHiddenGrant": {
+    "message": "Overridden by a stylesheet PixelLens can't read. Allow access to all sites to see it."
+  },
+  "edit_crossOriginMissing": {
+    "message": "Some styles may be missing."
+  },
+  "edit_filter": {
+    "message": "Filter"
+  },
+  "edit_showClasses": {
+    "message": "Classes"
+  },
+  "edit_toggleDecl": {
+    "message": "Turn this declaration on or off"
+  },
+  "edit_forceState": {
+    "message": "Force state"
+  },
+  "edit_stateNoRules": {
+    "message": "No rule uses this state on this element"
+  },
+  "changes_elementsOne": {
+    "message": "1 Element"
+  },
+  "changes_elementsOther": {
+    "message": "$1 Elements"
+  },
+  "changes_rulesOne": {
+    "message": "1 Rule"
+  },
+  "changes_rulesOther": {
+    "message": "$1 Rules"
+  },
+  "changes_whitespaceOnly": {
+    "message": "Whitespace-only changes"
+  },
+  "changes_none": {
+    "message": "No changes found"
+  },
+  "changes_revertChange": {
+    "message": "Revert this change"
+  },
+  "changes_clearChanges": {
+    "message": "Clear All Changes"
+  },
+  "changes_copyAll": {
+    "message": "Copy all"
+  },
+  "changes_copyAllHint": {
+    "message": "Copy all changes as code"
+  },
+  "changes_exportFormat": {
+    "message": "Export format"
+  },
+  "changes_formatCss": {
+    "message": "CSS"
+  },
+  "changes_formatTailwind": {
+    "message": "Tailwind"
+  },
+  "changes_formatPrompt": {
+    "message": "AI prompt"
+  },
+  "responsive_confirmPartialEdits": {
+    "message": "Your CSS rule changes will be kept. Inline style, markup and class edits will be discarded."
+  },
+  "responsive_moveLeft": {
+    "message": "Move Left"
+  },
+  "responsive_moveRight": {
+    "message": "Move Right"
+  },
+  "responsive_rotate": {
+    "message": "Rotate"
+  },
+  "responsive_colorScheme": {
+    "message": "Color Scheme"
+  },
+  "responsive_schemeSystem": {
+    "message": "System"
+  },
+  "responsive_schemeLight": {
+    "message": "Light"
+  },
+  "responsive_schemeDark": {
+    "message": "Dark"
+  },
+  "responsive_titleRemove": {
+    "message": "Remove Viewport"
+  },
+  "responsive_bodyRemoveViewport": {
+    "message": "$1 will be removed."
+  },
+  "responsive_buttonRemove": {
+    "message": "Remove"
+  },
+  "responsive_moreActions": {
+    "message": "More Actions"
+  },
+  "responsive_refresh": {
+    "message": "Refresh"
+  },
+  "responsive_loading": {
+    "message": "..."
+  },
+  "responsive_frameTimeout": {
+    "message": "This page did not finish loading."
+  },
+  "responsive_frameBlockedBody": {
+    "message": "This site blocks loading in the preview.{br}{grant} to show it."
+  },
+  "responsive_frameBlockedGrant": {
+    "message": "Grant access"
+  },
+  "responsive_frameBlockedStill": {
+    "message": "This site blocks loading in the preview.{br}It does this with a script or an in-page policy that can't be stripped."
+  },
+  "responsive_warnOverflow": {
+    "message": "Content overflows horizontally"
+  },
+  "responsive_zoomOut": {
+    "message": "Zoom Out"
+  },
+  "responsive_zoomIn": {
+    "message": "Zoom In"
+  },
+  "responsive_zoom": {
+    "message": "Zoom"
+  },
+  "responsive_titleResetViewports": {
+    "message": "Reset Viewports"
+  },
+  "responsive_dialogTitleResetViewports": {
+    "message": "Reset Viewports"
+  },
+  "responsive_bodyResetViewports": {
+    "message": "Your viewports will be reset to the defaults."
+  },
+  "responsive_buttonReset": {
+    "message": "Reset"
+  },
+  "responsive_titleSyncScrolling": {
+    "message": "Sync Scrolling"
+  },
+  "responsive_titleFrameLayout": {
+    "message": "Frame Layout"
+  },
+  "responsive_labelAddViewport": {
+    "message": "Add Viewport"
+  },
+  "responsive_dialogTitleCustomViewport": {
+    "message": "Custom Viewport"
+  },
+  "responsive_labelWidth": {
+    "message": "Width"
+  },
+  "responsive_labelHeight": {
+    "message": "Height"
+  },
+  "responsive_toastScrollSyncOff": {
+    "message": "Scroll sync turned itself off because this page keeps scrolling against it."
+  },
+  "responsive_dismiss": {
+    "message": "Dismiss"
+  },
+  "theme_system": {
+    "message": "System"
+  },
+  "theme_light": {
+    "message": "Light"
+  },
+  "theme_dark": {
+    "message": "Dark"
+  },
+  "options_pageTitle": {
+    "message": "Settings"
+  },
+  "options_sectionAppearance": {
+    "message": "Appearance"
+  },
+  "options_sectionExtension": {
+    "message": "Extension"
+  },
+  "options_rowTheme": {
+    "message": "Theme"
+  },
+  "options_rowColorFormat": {
+    "message": "Color Format"
+  },
+  "options_colorFormatSecondary": {
+    "message": "Used by the inspector and color picker"
+  },
+  "options_savedEditsTitle": {
+    "message": "Saved edits"
+  },
+  "options_savedEditsSecondary": {
+    "message": "PixelLens remembers your CSS edits for each site and brings them back next time."
+  },
+  "options_savedEditsClear": {
+    "message": "Clear"
+  },
+  "options_savedEditsConfirmTitle": {
+    "message": "Clear saved edits?"
+  },
+  "options_savedEditsConfirmBody": {
+    "message": "This removes remembered CSS edits for every site."
+  },
+  "options_sectionTerminalAi": {
+    "message": "Terminal AI"
+  },
+  "options_rowMcpServer": {
+    "message": "MCP Server"
+  },
+  "options_mcpServerSecondary": {
+    "message": "Let AI agents look at and edit pages through PixelLens."
+  },
+  "options_mcpConnect": {
+    "message": "Connect"
+  },
+  "options_mcpDisconnect": {
+    "message": "Disconnect"
+  },
+  "options_mcpOutdatedTooltip": {
+    "message": "MCP server outdated. Update via your AI client."
+  },
+  "options_mcpOutdatedTitle": {
+    "message": "MCP Server Outdated"
+  },
+  "options_mcpOutdatedBody": {
+    "message": "Your MCP server is version $1, but this extension expects $2 or newer. Update the npm package or restart your AI client to refetch."
+  },
+  "options_mcpVersionUnknown": {
+    "message": "unknown"
+  },
+  "options_tourTitle": {
+    "message": "Welcome tour"
+  },
+  "options_tourSecondary": {
+    "message": "The short dock tour shown the first time you open PixelLens."
+  },
+  "options_tourShow": {
+    "message": "Show again"
+  },
+  "options_tourQueued": {
+    "message": "Shows next time"
+  },
+  "options_syncNote": {
+    "message": "Your preferences sync across devices signed in to the same browser account. Saved edits and the MCP token stay on this device; overlay images are never stored."
+  },
+  "mcp_dockTitle": {
+    "message": "MCP"
+  },
+  "mcp_connected": {
+    "message": "MCP connected"
+  },
+  "mcp_connectAgent": {
+    "message": "Connect Agent"
+  },
+  "mcp_outdated": {
+    "message": "MCP out of date"
+  },
+  "mcp_waiting": {
+    "message": "Waiting for agent"
+  },
+  "mcp_connectHint": {
+    "message": "Paste this into your AI agent to connect it:"
+  },
+  "mcp_unknownAgent": {
+    "message": "AI agent"
+  },
+  "mcp_waitingForAgent": {
+    "message": "Waiting for your agent…"
+  },
+  "vision_none": {
+    "message": "Normal vision"
+  },
+  "vision_protanopia": {
+    "message": "Protanopia (no red)"
+  },
+  "vision_deuteranopia": {
+    "message": "Deuteranopia (no green)"
+  },
+  "vision_tritanopia": {
+    "message": "Tritanopia (no blue)"
+  },
+  "vision_achromatopsia": {
+    "message": "Achromatopsia (no color)"
+  },
+  "vision_blurred": {
+    "message": "Blurred vision"
+  },
+  "contrastFix_suggested": {
+    "message": "Suggested:"
+  },
+  "contrastFix_copy": {
+    "message": "Click to copy"
+  },
+  "contrastFix_copied": {
+    "message": "Copied"
+  },
+  "palette_title": {
+    "message": "Commands"
+  },
+  "palette_placeholder": {
+    "message": "Search tools…"
+  },
+  "palette_empty": {
+    "message": "No matching tool"
+  },
+  "palette_hint": {
+    "message": "↑↓ to move · Enter to run · Esc to close"
+  },
+  "tour_dockTitle": {
+    "message": "Your toolbar"
+  },
+  "tour_dockBody": {
+    "message": "Every tool lives in this dock. Hover a button to see its name and shortcut."
+  },
+  "tour_keysTitle": {
+    "message": "Number keys"
+  },
+  "tour_keysBody": {
+    "message": "Press 1–9 and 0 to switch dock tools without the mouse. Letter keys reach the rest (O, A, C, B, Y, T, W, and H to pause)."
+  },
+  "tour_menuTitle": {
+    "message": "More tools"
+  },
+  "tour_menuBody": {
+    "message": "The ⋯ button holds the less used tools: overlay, audit, color picker, AI agent (MCP) and pause."
+  },
+  "tour_paletteTitle": {
+    "message": "Ctrl+K anywhere"
+  },
+  "tour_paletteBody": {
+    "message": "Press Ctrl+K (or ?) to search every tool by name and run one with Enter."
+  },
+  "tour_next": {
+    "message": "Next"
+  },
+  "tour_skip": {
+    "message": "Skip"
+  },
+  "tour_done": {
+    "message": "Got it"
+  }
+}

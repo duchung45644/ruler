@@ -13,7 +13,7 @@ import { runShortcut } from '../core/keys';
 import { onStop, sessionSignal } from '../core/session';
 import { requestPaint } from '../core/overlay';
 import { state } from '../core/state.svelte';
-import { selectChild, selectElement, selectParent } from '../tools/inspector';
+import { hideFloatingPanel, selectChild, selectElement, selectParent } from '../tools/inspector';
 import { collectElementDetails, styleMap } from './details';
 import {
   canHighlight,
@@ -84,9 +84,13 @@ export async function toggleSidePanel(): Promise<void> {
 function onConnect(port: Browser.runtime.Port): void {
   if (!port.name.startsWith('sidepanel_')) return;
   bridge.panelOpen = true;
+  state.sidePanelOpen = true;
+  requestPaint();
   // the panel page going away replaces legacy side_panel_closed (6.14, 9.32)
   port.onDisconnect.addListener(() => {
     bridge.panelOpen = false;
+    state.sidePanelOpen = false;
+    requestPaint();
     clearHighlights();
   });
   void autoEnableCrossOrigin();
@@ -113,6 +117,7 @@ function withId(id: string | undefined, then: () => void): void {
   const el = id ? elementById(id) : null;
   if (el) selectElement(el);
   then();
+  hideFloatingPanel(); // the side panel shows this element's CSS; no floating copy on the page
 }
 
 const notFound = () =>

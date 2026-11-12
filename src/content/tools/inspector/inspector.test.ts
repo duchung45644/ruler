@@ -5,7 +5,7 @@ import { stopSession } from '../../core/session';
 import { state } from '../../core/state.svelte';
 import { routeKey } from '../../core/keys';
 import { setPaused } from '../../core/registry.svelte';
-import { initInspector, pickElement } from '.';
+import { hideFloatingPanel, initInspector, pickElement } from '.';
 import { pins } from './pins.svelte';
 import { installDragGuard, startDrag } from '../../core/drag';
 
@@ -137,7 +137,43 @@ it('keeps the panel hidden after pinning until the next page mousemove', async (
   expect(panel.style.visibility).toBe('hidden');
   move(p);
   await settle();
+  expect(panel.style.visibility).toBe('hidden'); // p has a pinned panel: no second, floating one
+  const q = document.createElement('p');
+  q.getBoundingClientRect = () => new DOMRect(10, 60, 100, 20);
+  document.body.append(q);
+  state.selected = q;
+  move(q);
+  await settle();
+  expect(panel.style.visibility).toBe(''); // another element shows it again
+});
+
+it('a side-panel parent/child selection hides the floating panel until the pointer is back', async () => {
+  const { p, panel, settle, move } = await setup();
   expect(panel.style.visibility).toBe('');
+  hideFloatingPanel();
+  requestPaint();
+  await settle();
+  expect(panel.style.visibility).toBe('hidden');
+  move(p);
+  await settle();
+  expect(panel.style.visibility).toBe('');
+});
+
+it('with the side panel open, the selection gets no floating panel; a live hover still does', async () => {
+  const { p, panel, settle } = await setup();
+  state.sidePanelOpen = true;
+  try {
+    state.hovered = null;
+    requestPaint();
+    await settle();
+    expect(panel.style.visibility).toBe('hidden');
+    state.hovered = p; // a live hover shows it again
+    requestPaint();
+    await settle();
+    expect(panel.style.visibility).toBe('');
+  } finally {
+    state.sidePanelOpen = false;
+  }
 });
 
 it('pause hides the floating panel and pins', async () => {
@@ -156,7 +192,7 @@ it('pause hides the floating panel and pins', async () => {
   setPaused(false);
   move(p);
   await settle();
-  expect(panel.style.visibility).toBe('');
+  expect(panel.style.visibility).toBe('hidden'); // still pinned: no floating duplicate
   expect(pinBox.textContent).toContain('inspect_copyCss'); // pins come back where they were
 });
 

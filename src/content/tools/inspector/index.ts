@@ -23,7 +23,7 @@ import { onStop, sessionSignal } from '../../core/session';
 import { panelTarget, state } from '../../core/state.svelte';
 import InspectPanel from './InspectPanel.svelte';
 import PinnedInspector from './PinnedInspector.svelte';
-import { addPin, clearPins, pinUi, signature } from './pins.svelte';
+import { addPin, clearPins, pins, pinUi, signature } from './pins.svelte';
 import { initDistance } from '../distance';
 
 /** Elements we came up from, so "child" walks back down the same branch (2.03, 2.04). */
@@ -87,6 +87,15 @@ export function setInspect(on: boolean): void {
 export function selectElement(el: Element, { scroll = false } = {}): void {
   if (scroll) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
   select(el);
+}
+
+/**
+ * Selection driven from the side panel (parent / child rows): the panel already shows the CSS,
+ * so the floating one stays hidden until the pointer is back on the page.
+ */
+export function hideFloatingPanel(): void {
+  panelHidden = true;
+  requestPaint();
 }
 
 /** Port of selectParent (legacy-src/content.js:46993). */
@@ -246,8 +255,12 @@ function placePanel(
   mouse: { x: number; y: number } | null,
 ): void {
   const t = panelTarget();
-  // picking for another tool (capture's Element mode) shows only the outline, not the CSS panel
-  if (!t || !box.firstElementChild || panelHidden || picker || state.paused || !state.inspectOn) {
+  // picking for another tool (capture's Element mode) shows only the outline, not the CSS panel;
+  // an element that already has a pinned panel doesn't get a second, floating one
+  const pinned = !!t && pins.some((p) => p.el === t);
+  // the side panel already shows the selection: the floating panel is only for live hover then
+  const selOnly = state.sidePanelOpen && !(state.inspectOn && state.hovered);
+  if (!t || !box.firstElementChild || panelHidden || pinned || selOnly || picker || state.paused || !state.inspectOn) {
     box.style.visibility = 'hidden';
     return;
   }

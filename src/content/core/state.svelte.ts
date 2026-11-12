@@ -42,6 +42,8 @@ export const state = $state({
   textEditOn: false,
   /** Command palette / cheat sheet open (Ctrl+K, ?). */
   palette: false,
+  /** This tab's side panel is connected (top frame only): it already shows the selection's CSS. */
+  sidePanelOpen: false,
 });
 
 /** Element the inspector panel describes: live hover wins, else the selection. */

@@ -31,15 +31,24 @@ def pill(path, parts, sz=34, pad=18):  # parts: [(text, kind)] kind 'key' | 'txt
         x += w + gap
     img.save(path); return img.size
 def caption(path, title, sub):
-    ft, fs = font(50, 'Bold'), font(26, 'Medium')
-    W = max(ft.getbbox(title)[2], fs.getbbox(sub)[2]) + 84; Hh = 136; P = 30
+    # light glass card: brand tile + title, muted subtitle; small and quiet
+    SS = 3; ft, fs = font(30 * SS, 'SemiBold'), font(19 * SS, 'Regular')
+    tw = ft.getlength(title); sw = fs.getlength(sub); I = 44 * SS; pad = 18 * SS
+    W = round(pad + I + 16 * SS + max(tw, sw) + 26 * SS); Hh = 80 * SS; P = 30 * SS
     img = Image.new('RGBA', (W + P * 2, Hh + P * 2), (0, 0, 0, 0))
-    sh = Image.new('RGBA', img.size, (0, 0, 0, 0)); ImageDraw.Draw(sh).rounded_rectangle([P, P + 10, P + W, P + Hh + 10], 24, fill=(0, 0, 0, 120))
-    img = Image.alpha_composite(img, sh.filter(ImageFilter.GaussianBlur(16))); d = ImageDraw.Draw(img)
-    d.rounded_rectangle([P, P, P + W, P + Hh], 24, fill=(15, 18, 26, 238), outline=(255, 255, 255, 36), width=2)
-    d.rounded_rectangle([P + 24, P + 26, P + 30, P + Hh - 26], 3, fill=(45, 212, 191))
-    d.text((P + 48, P + 22), title, font=ft, fill=(255, 255, 255)); d.text((P + 49, P + 84), sub, font=fs, fill=(170, 180, 198))
-    img.save(path); return img.size
+    sh = Image.new('RGBA', img.size, (0, 0, 0, 0)); ImageDraw.Draw(sh).rounded_rectangle([P, P + 8 * SS, P + W, P + Hh + 8 * SS], 20 * SS, fill=(15, 23, 42, 70))
+    img = Image.alpha_composite(img, sh.filter(ImageFilter.GaussianBlur(14 * SS))); d = ImageDraw.Draw(img)
+    d.rounded_rectangle([P, P, P + W, P + Hh], 20 * SS, fill=(255, 255, 255, 246), outline=(15, 23, 42, 22), width=SS)
+    # brand tile with teal->violet gradient
+    tile = Image.new('RGBA', (I, I)); td = ImageDraw.Draw(tile)
+    for i in range(I):
+        u = i / I; td.line([(i, 0), (i, I)], fill=(round(45 + (167 - 45) * u), round(212 + (139 - 212) * u), round(191 + (250 - 191) * u), 255))
+    m = Image.new('L', (I, I), 0); ImageDraw.Draw(m).rounded_rectangle([0, 0, I - 1, I - 1], 12 * SS, fill=255)
+    tx, ty = P + pad, P + (Hh - I) // 2; img.paste(tile, (tx, ty), m); d = ImageDraw.Draw(img)
+    d.rounded_rectangle([tx + 13 * SS, ty + 13 * SS, tx + I - 13 * SS, ty + I - 13 * SS], 4 * SS, outline=(255, 255, 255, 235), width=3 * SS)
+    x = tx + I + 16 * SS
+    d.text((x, P + 12 * SS), title, font=ft, fill=(15, 23, 42)); d.text((x, P + 48 * SS), sub, font=fs, fill=(100, 116, 139))
+    Z = 1.5; img = img.resize((round(img.width * Z / SS), round(img.height * Z / SS)), Image.LANCZOS); img.save(path); return img.size
 keys = json.load(open(take + '.keys'))  # (t, w, x, y) camera window, canvas px
 def cam(t):
     k = min(keys, key=lambda r: abs(r[0] - t)); return k

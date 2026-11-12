@@ -1,6 +1,6 @@
 <script lang="ts">
   import ChevronDown from '@lucide/svelte/icons/chevron-down';
-  import { REPO_URL } from '../i18n';
+  import { EDGE_URL } from '../i18n';
   import { t } from '../lang.svelte';
 </script>
 
@@ -18,8 +18,8 @@
         <p class="mt-3 text-sm leading-relaxed text-muted">
           {a}
           {#if i === t().faq.items.length - 1}
-            <a class="text-accent-fg hover:text-accent-fg-strong" href="{REPO_URL}/issues"
-              >github.com/duchung45644/ruler/issues</a
+            <a class="text-accent-fg hover:text-accent-fg-strong" href={EDGE_URL}
+              >{t().faq.storeLink}</a
             >
           {/if}
         </p>

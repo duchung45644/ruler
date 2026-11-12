@@ -1,9 +1,11 @@
 export type Lang = 'en' | 'vi';
 
-/** Edge Add-ons listing; empty until the store approves it (then the button turns into a link). */
-export const EDGE_URL = '';
-export const REPO_URL = 'https://github.com/duchung45644/ruler';
+/** Edge Add-ons listing (live since 2026-11-12); empty would show the 'coming soon' badge instead. */
+export const EDGE_URL =
+  'https://microsoftedge.microsoft.com/addons/detail/pixellens-%E2%80%94-the-allinon/bkgdfebicmlicjnkgbemlidlnpbnaofh';
 export const EXTENSION_ID = 'bkgdfebicmlicjnkgbemlidlnpbnaofh';
+/** Chrome Web Store listing; empty until it exists (Chrome visitors then see a 'coming soon' note). */
+export const CHROME_URL = '';
 export const VERSION = '1.0.0';
 
 /** Showcase rows: id → screenshot in public/img (null: no image, icon only). */
@@ -28,13 +30,15 @@ const en = {
     privacy: 'Privacy',
   },
   hero: {
-    badge: `Version ${VERSION} · Free`,
     title: 'The All-in-One Toolkit for Web Inspection and Design',
     lead: "Hover any element to see how it's built, from size and spacing to styles and colors, then fine-tune it right on the page.",
     cta: 'Get it for Microsoft Edge',
     soon: 'Coming soon to Edge Add-ons',
-    source: 'View source on GitHub',
-    meta: 'Works in Microsoft Edge and Chromium browsers 116+',
+    ctaChrome: 'Add to Chrome',
+    slides: ['Inspect', 'Measure', 'Edit live'],
+    chromeSoon: 'Coming soon to the Chrome Web Store',
+    edgeAlt: 'Using Microsoft Edge?',
+    edgeAltLink: 'Get it from Edge Add-ons',
   },
   stats: [
     ['30+', 'tools in one dock'],
@@ -253,6 +257,7 @@ const en = {
   },
   faq: {
     title: 'Frequently asked questions',
+    storeLink: 'PixelLens on Edge Add-ons',
     items: [
       ['Is PixelLens free?', 'Yes. All tools are free, with no account and no ads.'],
       [
@@ -279,7 +284,10 @@ const en = {
         'Does it work on localhost and local files?',
         'Yes on localhost. For file:// pages, turn on "Allow access to file URLs" for PixelLens in the extensions page.',
       ],
-      ['How do I report a bug or suggest a feature?', 'Open an issue on GitHub.'],
+      [
+        'How do I report a bug or suggest a feature?',
+        'Leave a review or use the support link on the PixelLens page in Edge Add-ons:',
+      ],
     ],
   },
   privacy: {
@@ -320,13 +328,15 @@ const vi: Dict = {
     privacy: 'Quyền riêng tư',
   },
   hero: {
-    badge: `Phiên bản ${VERSION} · Miễn phí`,
     title: 'Bộ công cụ tất cả trong một để kiểm tra và thiết kế web',
     lead: 'Rê chuột lên một phần tử để thấy nó được dựng ra sao, từ kích thước, khoảng cách đến style và màu, rồi chỉnh ngay trên trang.',
     cta: 'Cài cho Microsoft Edge',
     soon: 'Sắp có trên Edge Add-ons',
-    source: 'Xem mã nguồn trên GitHub',
-    meta: 'Chạy trên Microsoft Edge và trình duyệt Chromium 116 trở lên',
+    ctaChrome: 'Thêm vào Chrome',
+    slides: ['Soi CSS', 'Đo khoảng cách', 'Sửa trực tiếp'],
+    chromeSoon: 'Sắp có trên Chrome Web Store',
+    edgeAlt: 'Bạn dùng Microsoft Edge?',
+    edgeAltLink: 'Cài từ Edge Add-ons',
   },
   stats: [
     ['30+', 'công cụ trong một dock'],
@@ -545,6 +555,7 @@ const vi: Dict = {
   },
   faq: {
     title: 'Câu hỏi thường gặp',
+    storeLink: 'PixelLens trên Edge Add-ons',
     items: [
       [
         'PixelLens có miễn phí không?',
@@ -574,7 +585,10 @@ const vi: Dict = {
         'Dùng được với localhost và file trên máy không?',
         'Có với localhost. Với trang file://, bật "Allow access to file URLs" cho PixelLens trong trang quản lý extension.',
       ],
-      ['Báo lỗi hoặc góp ý tính năng ở đâu?', 'Tạo issue trên GitHub.'],
+      [
+        'Báo lỗi hoặc góp ý tính năng ở đâu?',
+        'Để lại đánh giá hoặc dùng mục hỗ trợ trên trang PixelLens ở Edge Add-ons:',
+      ],
     ],
   },
   privacy: {

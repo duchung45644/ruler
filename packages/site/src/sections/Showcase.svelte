@@ -25,6 +25,8 @@
   /** Rows without their own screenshot borrow a related one. */
   const FALLBACK_SHOT: Record<string, string> = { edit: 'shot-inspect', quality: 'shot-more' };
   const shotOf = (id: string) => SHOWCASE_IMAGES[id] ?? FALLBACK_SHOT[id];
+  /** Rows with a short looping clip (public/video/<id>.mp4 + <id>.jpg poster) instead of a still. */
+  const VIDEOS = new Set(['inspect', 'measure', 'edit']);
 </script>
 
 <!-- showcase -->
@@ -54,16 +56,34 @@
             {/each}
           </ul>
         </div>
-        <img
-          src="./img/{shotOf(row.id)}.png"
-          alt={t().shotAlt}
-          width="1280"
-          height="800"
-          loading="lazy"
-          class="h-auto w-full rounded-xl border border-line shadow-2xl shadow-shade {i % 2
-            ? 'lg:order-1'
-            : ''}"
-        />
+        {#if VIDEOS.has(row.id)}
+          <video
+            src="./video/{row.id}.mp4"
+            poster="./video/{row.id}.jpg"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-label={row.title}
+            width="1600"
+            height="900"
+            class="h-auto w-full rounded-xl border border-line shadow-2xl shadow-shade {i % 2
+              ? 'lg:order-1'
+              : ''}"
+          ></video>
+        {:else}
+          <img
+            src="./img/{shotOf(row.id)}.png"
+            alt={t().shotAlt}
+            width="1280"
+            height="800"
+            loading="lazy"
+            class="h-auto w-full rounded-xl border border-line shadow-2xl shadow-shade {i % 2
+              ? 'lg:order-1'
+              : ''}"
+          />
+        {/if}
       </article>
     {/each}
   </div>

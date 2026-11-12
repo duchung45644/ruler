@@ -22,31 +22,36 @@
       <img src="./logo.svg" alt="" class="size-7" />
       PixelLens
     </a>
-    <div class="ml-auto hidden items-center gap-6 text-sm text-muted md:flex">
+    <div
+      class="ml-auto hidden items-center gap-6 border-r border-line-soft pr-6 text-sm text-muted md:flex"
+    >
       <a class="hover:text-strong" href="./features.html">{t().nav.features}</a>
       <a class="hover:text-strong" href="./ai.html">{t().nav.ai}</a>
       <a class="hover:text-strong" href="./docs.html">{t().nav.docs}</a>
       <a class="hover:text-strong" href="./faq.html">{t().nav.faq}</a>
     </div>
-    <button
-      type="button"
-      class="ml-auto flex size-8 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:text-strong md:ml-0"
-      title={themeLabel}
-      aria-label={themeLabel}
-      onclick={cycleTheme}><ThemeIcon size={16} /></button
-    >
+    <!-- one quiet control group: theme + language, set off from the links by a hairline -->
     <div
-      class="flex rounded-lg border border-line p-0.5 text-xs"
+      class="ml-auto flex items-center gap-0.5 rounded-lg bg-tint p-0.5 text-xs md:ml-0"
       role="group"
-      aria-label="Language"
+      aria-label="Display"
     >
+      <button
+        type="button"
+        class="flex size-7 items-center justify-center rounded-md text-subtle transition-colors hover:bg-tint-strong hover:text-strong"
+        title={themeLabel}
+        aria-label={themeLabel}
+        onclick={cycleTheme}><ThemeIcon size={15} /></button
+      >
+      <span class="mx-0.5 h-4 w-px bg-line" aria-hidden="true"></span>
       {#each ['en', 'vi'] as const as code (code)}
         <button
           type="button"
-          class="rounded-md px-2.5 py-1 font-medium uppercase transition-colors {lang.code === code
-            ? 'bg-tint-strong text-strong'
+          class="h-7 rounded-md px-2 font-medium uppercase transition-colors {lang.code === code
+            ? 'bg-page text-strong shadow-sm'
             : 'text-subtle hover:text-fg'}"
           aria-pressed={lang.code === code}
+          aria-label={code === 'en' ? 'English' : 'Tiếng Việt'}
           onclick={() => setLang(code)}>{code}</button
         >
       {/each}

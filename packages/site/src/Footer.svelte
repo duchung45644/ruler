@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { REPO_URL } from './i18n';
   import { t } from './lang.svelte';
 </script>
 
@@ -17,7 +16,6 @@
       <a class="hover:text-fg" href="./index.html">{t().footer.home}</a>
       <a class="hover:text-fg" href="./docs.html">{t().nav.docs}</a>
       <a class="hover:text-fg" href="./privacy.html">{t().nav.privacy}</a>
-      <a class="hover:text-fg" href={REPO_URL}>GitHub</a>
     </div>
   </div>
 </footer>

@@ -2,13 +2,13 @@
   import { t } from '../lang.svelte';
 </script>
 
-<!-- stats -->
-<section class="border-y border-line-soft bg-band">
-  <dl class="mx-auto grid max-w-6xl grid-cols-2 px-4 sm:px-6 lg:grid-cols-4">
-    {#each t().stats as [value, label] (value)}
-      <div class="px-2 py-8 text-center">
-        <dt class="text-3xl font-semibold tracking-tight text-strong">{value}</dt>
-        <dd class="mt-1 text-sm text-muted">{label}</dd>
+<!-- stats: one ruled strip, numbers in mono like a read-out -->
+<section class="mx-auto max-w-6xl px-4 sm:px-6">
+  <dl class="grid grid-cols-2 overflow-hidden rounded-2xl border border-line bg-band lg:grid-cols-4">
+    {#each t().stats as [value, label], i (value)}
+      <div class="px-6 py-7 {i % 2 ? 'border-l border-line-soft' : ''} {i > 1 ? 'border-t border-line-soft lg:border-t-0' : ''} {i === 2 ? 'lg:border-l' : ''}">
+        <dt class="font-mono text-3xl font-semibold tracking-tight text-strong sm:text-4xl">{value}</dt>
+        <dd class="mt-2 text-sm leading-snug text-muted">{label}</dd>
       </div>
     {/each}
   </dl>

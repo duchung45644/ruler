@@ -31,6 +31,9 @@ const en = {
   },
   hero: {
     title: 'The All-in-One Toolkit for Web Inspection and Design',
+    titleParts: ['Inspect, measure and edit', 'any web page', 'right where it lives'],
+    eyebrow: 'Free browser extension for designers and front-end developers',
+    trust: ['Free', 'No account', 'Nothing leaves your browser'],
     lead: "Hover any element to see how it's built, from size and spacing to styles and colors, then fine-tune it right on the page.",
     cta: 'Get it for Microsoft Edge',
     soon: 'Coming soon to Edge Add-ons',
@@ -42,7 +45,7 @@ const en = {
   },
   stats: [
     ['30+', 'tools in one dock'],
-    ['47', 'MCP commands for AI agents'],
+    ['52', 'MCP commands for AI agents'],
     ['1.4 MB', 'total size, loads only when you turn it on'],
     ['0', 'trackers, accounts or servers'],
   ],
@@ -55,7 +58,7 @@ const en = {
       ],
       [
         'Turn it on',
-        'Click the toolbar icon or press Alt+Shift+S on any tab. A small dock appears at the bottom of the page.',
+        'Click the toolbar icon or press Ctrl+Shift+F on any tab. A small dock appears at the bottom of the page.',
       ],
       [
         'Hover and tweak',
@@ -201,7 +204,7 @@ const en = {
       'Open the More menu (9) → Connect agent to get your token and config',
       'Add the config to your agent, then ask it about the current page',
     ],
-    groupsTitle: '47 commands, grouped',
+    groupsTitle: '52 commands, grouped',
     groups: [
       ['Page', 'Tabs, page info, meta and SEO, page weight, CSS variables, technologies'],
       ['Elements', 'Selection, details, outline tree, query selector, matched rules, specificity'],
@@ -307,6 +310,11 @@ const en = {
       'Let Claude Code, Cursor and other agents inspect, edit and capture the page you have open, through a local MCP server.',
     aiLink: 'How it works with AI agents',
     faqLink: 'Read the FAQ',
+    alsoTitle: 'And the rest of the toolbox',
+    stepsEyebrow: 'Up and running in a minute',
+    featuresEyebrow: 'What you get',
+    ctaTitle: 'Stop digging through DevTools',
+    ctaBody: 'Install PixelLens, press Ctrl+Shift+F on any page, and start hovering.',
   },
   pages: {
     features: 'Every tool in PixelLens, what it does and how to reach it.',
@@ -329,6 +337,9 @@ const vi: Dict = {
   },
   hero: {
     title: 'Bộ công cụ tất cả trong một để kiểm tra và thiết kế web',
+    titleParts: ['Soi, đo và sửa', 'mọi trang web', 'ngay trên chính trang đó'],
+    eyebrow: 'Extension miễn phí cho designer và lập trình viên front-end',
+    trust: ['Miễn phí', 'Không cần tài khoản', 'Dữ liệu không rời trình duyệt'],
     lead: 'Rê chuột lên một phần tử để thấy nó được dựng ra sao, từ kích thước, khoảng cách đến style và màu, rồi chỉnh ngay trên trang.',
     cta: 'Cài cho Microsoft Edge',
     soon: 'Sắp có trên Edge Add-ons',
@@ -340,7 +351,7 @@ const vi: Dict = {
   },
   stats: [
     ['30+', 'công cụ trong một dock'],
-    ['47', 'lệnh MCP cho AI agent'],
+    ['52', 'lệnh MCP cho AI agent'],
     ['1,4 MB', 'tổng dung lượng, chỉ chạy khi bạn bật'],
     ['0', 'trình theo dõi, tài khoản hay máy chủ'],
   ],
@@ -353,7 +364,7 @@ const vi: Dict = {
       ],
       [
         'Bật lên',
-        'Bấm icon trên thanh công cụ hoặc nhấn Alt+Shift+S ở tab bất kỳ. Một dock nhỏ hiện ở cuối trang.',
+        'Bấm icon trên thanh công cụ hoặc nhấn Ctrl+Shift+F ở tab bất kỳ. Một dock nhỏ hiện ở cuối trang.',
       ],
       [
         'Rê chuột và chỉnh',
@@ -496,7 +507,7 @@ const vi: Dict = {
       'Mở menu Thêm (9) → Kết nối agent để lấy token và cấu hình',
       'Thêm cấu hình vào agent, rồi hỏi nó về trang đang mở',
     ],
-    groupsTitle: '47 lệnh, chia theo nhóm',
+    groupsTitle: '52 lệnh, chia theo nhóm',
     groups: [
       ['Trang', 'Tab, thông tin trang, meta và SEO, dung lượng, biến CSS, công nghệ'],
       [
@@ -608,6 +619,11 @@ const vi: Dict = {
       'Cho Claude Code, Cursor và các agent khác kiểm tra, sửa và chụp trang bạn đang mở, qua MCP server chạy trên máy.',
     aiLink: 'Cách PixelLens làm việc với AI agent',
     faqLink: 'Xem hỏi đáp',
+    alsoTitle: 'Và phần còn lại của bộ công cụ',
+    stepsEyebrow: 'Dùng được sau một phút',
+    featuresEyebrow: 'Bạn có gì',
+    ctaTitle: 'Thôi lục lọi trong DevTools',
+    ctaBody: 'Cài PixelLens, nhấn Ctrl+Shift+F ở trang bất kỳ, rồi rê chuột.',
   },
   pages: {
     features: 'Mọi công cụ trong PixelLens, làm được gì và gọi ra thế nào.',

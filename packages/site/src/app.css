@@ -188,3 +188,30 @@ body {
 .doc td {
   @apply border-t border-line-soft px-4 py-2.5 align-top;
 }
+
+/* landing: faint blueprint grid that fades out towards the edges */
+.blueprint {
+  background-image:
+    linear-gradient(var(--line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 75% 70% at 50% 30%, #000 30%, transparent 80%);
+}
+/* inspector-style selection box around a phrase */
+.inspected {
+  position: relative;
+  display: inline-block;
+  padding: 0 0.18em;
+  border-radius: 6px;
+  color: var(--accent-fg);
+  background: color-mix(in srgb, var(--color-accent) 9%, transparent);
+  outline: 1.5px solid color-mix(in srgb, var(--color-accent) 70%, transparent);
+}
+.inspected i {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: var(--page);
+  border: 1.5px solid var(--color-accent);
+  border-radius: 2px;
+}

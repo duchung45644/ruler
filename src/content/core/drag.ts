@@ -1,4 +1,5 @@
 import { state } from './state.svelte';
+import { agentEvents } from './events';
 
 /** Shared drag (spec §9): while dragging and ~50ms after, page clicks/hover-inspect are swallowed. */
 let drag: AbortController | null = null;
@@ -41,6 +42,7 @@ export function startDrag(
 let finish: ((u: Event) => void) | null = null;
 
 export function swallowAfterDrag(e: Event): boolean {
+  if (agentEvents.has(e)) return false; // the agent's clicks are never part of a drag
   if (e.type === 'pointerdown' || e.type === 'pointerup' || e.type === 'pointercancel') {
     if (!drag) return false; // only mid-drag, so a quick re-grab after a drop still works
     if (e.type !== 'pointerdown') finish?.(e);

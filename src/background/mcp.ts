@@ -24,7 +24,7 @@ import {
   type BackgroundApi,
   type Handlers,
 } from '../lib/ext/messaging';
-import { ensureToken, mcpIntent, mcpToken } from '../lib/ext/settings';
+import { ensureToken, mcpAutoEnable, mcpIntent, mcpToken } from '../lib/ext/settings';
 import { fetchStylesheet, isAllowedStylesheetUrl } from '../lib/ext/stylesheet-fetch';
 import { isInjectable } from '../lib/ext/tabs';
 import { McpSocket, type McpSocketOptions } from './mcp-socket';
@@ -44,13 +44,55 @@ export async function isPixelLensTab(tabId: number): Promise<boolean> {
   return r?.active === true;
 }
 
-/** Tabs with PixelLens on, in tab order. */
-export async function pixelLensTabs(): Promise<Browser.tabs.Tab[]> {
+/** Web-page tabs (PixelLens can run there) with whether it is on, in tab order. */
+async function injectableTabs(): Promise<{ tab: Browser.tabs.Tab; on: boolean }[]> {
   const tabs = (await browser.tabs.query({})).filter(
     (t) => t.id !== undefined && !t.discarded && isInjectable(t.url),
   );
   const on = await Promise.all(tabs.map((t) => isPixelLensTab(t.id!)));
-  return tabs.filter((_, i) => on[i]);
+  return tabs.map((tab, i) => ({ tab, on: on[i]! }));
+}
+
+/** Tabs with PixelLens on, in tab order. */
+export async function pixelLensTabs(): Promise<Browser.tabs.Tab[]> {
+  return (await injectableTabs()).filter((t) => t.on).map((t) => t.tab);
+}
+
+// ---------------------------------------------------------------- agent turns PixelLens on
+
+/** Turns PixelLens on in a tab the way the toolbar icon does (set by the background entry). */
+let enableTab: ((tabId: number) => Promise<void>) | null = null;
+export function setTabEnabler(fn: (tabId: number) => Promise<void>): void {
+  enableTab = fn;
+}
+
+/** The user's switch is on and `<all_urls>` is still granted (both are needed to inject anywhere). */
+export async function agentMayEnable(): Promise<boolean> {
+  if (!(await mcpAutoEnable.getValue().catch(() => false))) return false;
+  return browser.permissions.contains({ origins: ['<all_urls>'] }).catch(() => false);
+}
+
+const ENABLE_WAIT_MS = 5000;
+
+/** Turn PixelLens on in the tab (no-op when on); resolves once the page answers. */
+async function turnOn(tabId: number): Promise<CallOutcome> {
+  const tab = await browser.tabs.get(tabId).catch(() => undefined);
+  if (!tab) return fail(`No tab with id ${tabId}.`);
+  if (!isInjectable(tab.url)) return fail(ERR.notInjectable);
+  if (await isPixelLensTab(tabId)) return { ok: true, data: { success: true, alreadyOn: true } };
+  if (!(await agentMayEnable())) return fail(ERR.autoEnableOff);
+  if (!enableTab) return fail('PixelLens is starting up; try again.');
+  try {
+    await enableTab(tabId);
+  } catch (e) {
+    return fail(`Could not turn PixelLens on: ${String((e as Error)?.message ?? e)}`);
+  }
+  const end = Date.now() + ENABLE_WAIT_MS;
+  while (Date.now() < end) {
+    if (await isPixelLensTab(tabId)) return { ok: true, data: { success: true, alreadyOn: false } };
+    await new Promise((r) => setTimeout(r, POLL_MS));
+  }
+  return fail('PixelLens did not start on this tab in time; try again.');
 }
 
 /** Status → every PixelLens tab and the settings page (10.03). The token is never in it. */
@@ -175,8 +217,12 @@ export async function forwardToTab(
   const { tabId } = payload;
   const tab = await browser.tabs.get(tabId).catch(() => undefined);
   if (!tab) return fail(`No tab with id ${tabId}.`);
-  if (!(await isPixelLensTab(tabId)) && !(await waitForReload(tabId)))
-    return fail(ERR.tabInactiveHint);
+  if (!(await isPixelLensTab(tabId)) && !(await waitForReload(tabId))) {
+    // the user allowed it: turn PixelLens on instead of failing (e.g. after a click navigated)
+    if (!(await agentMayEnable())) return fail(ERR.tabInactiveHint);
+    const on = await turnOn(tabId);
+    if (!on.ok) return on;
+  }
   if (type === 'exit_responsive_mode') reloading.set(tabId, Date.now());
   const ms = SLOW_TYPES.includes(type) ? SLOW_TIMEOUT_MS : CALL_TIMEOUT_MS;
   return withTimeout(
@@ -190,16 +236,20 @@ export async function forwardToTab(
 }
 
 async function listTabs(): Promise<CallOutcome> {
-  const tabs = await pixelLensTabs();
+  const all = await agentMayEnable();
+  const tabs = (await injectableTabs()).filter((t) => all || t.on);
   return {
     ok: true,
     data: {
-      tabs: tabs.map((t) => ({
+      tabs: tabs.map(({ tab: t, on }) => ({
         tabId: t.id!,
         title: t.title ?? null,
         url: t.url ?? null,
         active: !!t.active,
+        enabled: on,
       })),
+      // tells the agent whether it may turn PixelLens on by itself
+      canEnable: all,
     },
   };
 }
@@ -235,6 +285,8 @@ export async function handleCall(type: string, payload: unknown): Promise<CallOu
       return focusTab(p as McpPayloads['focus_tab']);
     case 'fetch_stylesheet':
       return stylesheet(p as McpPayloads['fetch_stylesheet']);
+    case 'enable_tab':
+      return turnOn((p as McpPayloads['enable_tab']).tabId);
     case 'get_tailwind': {
       // the content script returns only `css`; the converter lives here, not in content.js
       const r = await forwardToTab('get_tailwind', p as { tabId: number });

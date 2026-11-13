@@ -1,9 +1,18 @@
 import { fakeBrowser } from 'wxt/testing/fake-browser';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { browser } from '#imports';
-import { mcpIntent, mcpToken } from '../lib/ext/settings';
+import { mcpAutoEnable, mcpIntent, mcpToken } from '../lib/ext/settings';
 import { ERR, timeoutError } from '../lib/mcp/protocol';
-import { connect, disconnect, handleCall, initMcp, mcpHandlers, prompt, resetMcp } from './mcp';
+import {
+  connect,
+  disconnect,
+  handleCall,
+  initMcp,
+  mcpHandlers,
+  prompt,
+  resetMcp,
+  setTabEnabler,
+} from './mcp';
 import { FakeWebSocket } from './mcp-fake-ws';
 import type { McpStatus } from '../lib/mcp/status';
 
@@ -147,7 +156,10 @@ describe('router', () => {
   it('lists PixelLens tabs only', async () => {
     expect(await handleCall('list_tabs', {})).toEqual({
       ok: true,
-      data: { tabs: [{ tabId: 1, title: 'A', url: 'https://a.test/', active: true }] },
+      data: {
+        tabs: [{ tabId: 1, title: 'A', url: 'https://a.test/', active: true, enabled: true }],
+        canEnable: false,
+      },
     });
   });
 
@@ -235,5 +247,97 @@ describe('router', () => {
     ])
       expect(listeners[0]!(msg, {}, reply)).toBe(false);
     expect(mcpCalls()).toHaveLength(0);
+  });
+});
+
+describe('agent turns PixelLens on', () => {
+  let on: Set<number>;
+  let granted: boolean;
+  const enabler = vi.fn(async (tabId: number) => void on.add(tabId));
+  beforeEach(() => {
+    on = new Set([1]);
+    granted = true;
+    enabler.mockClear();
+    setTabEnabler(enabler);
+    sendMessage.mockImplementation(async (tabId, msg) => {
+      if (!on.has(tabId as number)) throw new Error('Receiving end does not exist');
+      const type = (msg as { type: string }).type;
+      if (type === 'ping') return { active: true };
+      if (type === 'mcp_call') return { ok: true, data: { here: tabId } };
+      return undefined;
+    });
+    browser.tabs.get = vi.fn(async (id: number) => {
+      const t = [...tabs, { id: 3, url: 'chrome://settings/', title: 'S', active: false }].find(
+        (x) => x.id === id,
+      );
+      if (!t) throw new Error('No tab');
+      return t;
+    }) as never;
+    browser.permissions.contains = vi.fn(async () => granted) as never;
+  });
+
+  it('stays off until the user allows it', async () => {
+    expect(await handleCall('enable_tab', { tabId: 2 })).toEqual({
+      ok: false,
+      error: ERR.autoEnableOff,
+    });
+    expect(await handleCall('get_page_info', { tabId: 2 })).toEqual({
+      ok: false,
+      error: ERR.tabInactiveHint,
+    });
+    expect(enabler).not.toHaveBeenCalled();
+  });
+
+  it('needs <all_urls> too, even with the switch on', async () => {
+    await mcpAutoEnable.setValue(true);
+    granted = false;
+    expect(await handleCall('enable_tab', { tabId: 2 })).toEqual({
+      ok: false,
+      error: ERR.autoEnableOff,
+    });
+    expect((await handleCall('list_tabs', {})) as { data: { canEnable: boolean } }).toMatchObject({
+      data: { canEnable: false },
+    });
+  });
+
+  it('lists every web tab with enabled, and enable_tab turns one on', async () => {
+    await mcpAutoEnable.setValue(true);
+    expect(await handleCall('list_tabs', {})).toMatchObject({
+      data: {
+        canEnable: true,
+        tabs: [
+          { tabId: 1, enabled: true },
+          { tabId: 2, enabled: false },
+        ],
+      },
+    });
+    expect(await handleCall('enable_tab', { tabId: 2 })).toEqual({
+      ok: true,
+      data: { success: true, alreadyOn: false },
+    });
+    expect(enabler).toHaveBeenCalledWith(2);
+    expect(await handleCall('enable_tab', { tabId: 1 })).toEqual({
+      ok: true,
+      data: { success: true, alreadyOn: true },
+    });
+    expect(enabler).toHaveBeenCalledTimes(1);
+  });
+
+  it('turns PixelLens on before a command sent to a tab where it is off', async () => {
+    await mcpAutoEnable.setValue(true);
+    expect(await handleCall('get_page_info', { tabId: 2 })).toEqual({
+      ok: true,
+      data: { here: 2 },
+    });
+    expect(enabler).toHaveBeenCalledWith(2);
+  });
+
+  it('never touches pages PixelLens cannot run on', async () => {
+    await mcpAutoEnable.setValue(true);
+    expect(await handleCall('enable_tab', { tabId: 3 })).toEqual({
+      ok: false,
+      error: ERR.notInjectable,
+    });
+    expect(enabler).not.toHaveBeenCalled();
   });
 });

@@ -13,6 +13,7 @@ import { allFramesMcpCall, frameMcpCall } from '../responsive/shell.svelte';
 import { McpFail, type Commands } from './command';
 import { editCommands } from './edits';
 import { elementCommands } from './elements';
+import { interactCommands } from './interact';
 import { pageCommands } from './page';
 import { responsiveCommands } from './responsive';
 
@@ -21,6 +22,7 @@ const COMMANDS: Commands = {
   ...elementCommands,
   ...editCommands,
   ...responsiveCommands,
+  ...interactCommands,
 };
 
 /** Top page only (Ig + the screenshot). */

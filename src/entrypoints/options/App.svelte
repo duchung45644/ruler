@@ -1,5 +1,6 @@
 <script lang="ts">
   import { i18n } from '#i18n';
+  import { browser } from '#imports';
   import { onMount, type Snippet } from 'svelte';
   import TriangleAlert from '@lucide/svelte/icons/triangle-alert';
   import Dialog from '../../ui/Dialog.svelte';
@@ -11,6 +12,7 @@
   import { clearAllPersistedEdits } from '../../lib/edit/persist-key';
   import {
     getPanelPrefs,
+    mcpAutoEnable,
     mcpIntent,
     mergePanelPrefs,
     panelPrefsItem,
@@ -30,6 +32,31 @@
   let prompt = $state<string | null>(null);
   let outdatedOpen = $state(false);
   let tourQueued = $state(false);
+  /** "Let the agent turn PixelLens on": the stored switch, shown on only while <all_urls> is granted. */
+  let autoEnable = $state(false);
+  let autoDenied = $state(false);
+  const hasAllUrls = () =>
+    browser.permissions.contains({ origins: ['<all_urls>'] }).catch(() => false);
+  async function readAutoEnable() {
+    autoEnable = (await mcpAutoEnable.getValue().catch(() => false)) && (await hasAllUrls());
+  }
+  /** Runs in the click: permissions.request needs the user gesture, so it comes before any await. */
+  function toggleAutoEnable() {
+    autoDenied = false;
+    if (autoEnable) {
+      autoEnable = false;
+      void mcpAutoEnable.setValue(false);
+      return;
+    }
+    void browser.permissions
+      .request({ origins: ['<all_urls>'] })
+      .catch(() => false)
+      .then(async (granted) => {
+        autoDenied = !granted;
+        autoEnable = granted;
+        await mcpAutoEnable.setValue(granted);
+      });
+  }
   /** The prompt is shown while waiting for the agent (or after a reject): it carries the token. */
   const showPrompt = $derived(mcp.intent && !mcp.connected);
 
@@ -68,11 +95,13 @@
       onready?.();
     });
     void sendToBackground('mcp_status').then(setMcp, () => {});
+    void readAutoEnable();
     // the background pushes connection changes; it is the only one that knows them (9.07, 10.03)
     handleMessages('options', { mcp_status: (s) => setMcp(s) }, ac.signal);
     // changes made elsewhere (side panel, another tab) show up here (9.07)
     const unwatch = [
       mcpIntent.watch(() => void sendToBackground('mcp_status').then(setMcp, () => {})),
+      mcpAutoEnable.watch(() => void readAutoEnable()),
       themePref.watch((t) => (theme = t ?? 'system')),
       panelPrefsItem.watch((p) => (colorFormat = mergePanelPrefs(p).colorFormat)),
     ];
@@ -207,6 +236,29 @@
     {#if showPrompt && prompt}
       <div class="px-4 py-3"><McpPrompt {prompt} /></div>
     {/if}
+    {#snippet autoControl()}
+      <button
+        type="button"
+        role="switch"
+        aria-checked={autoEnable}
+        aria-label={i18n.t('options.rowMcpAutoEnable')}
+        data-setting="mcp-auto-enable"
+        class="relative h-5 w-9 rounded-full transition-colors {autoEnable
+          ? 'bg-accent'
+          : 'bg-line'}"
+        onclick={toggleAutoEnable}
+        ><span
+          class="absolute top-0.5 left-0.5 size-4 rounded-full bg-white shadow transition-transform {autoEnable
+            ? 'translate-x-4'
+            : ''}"
+        ></span></button
+      >
+    {/snippet}
+    {@render row(
+      i18n.t('options.rowMcpAutoEnable'),
+      autoDenied ? i18n.t('options.mcpAutoEnableDenied') : i18n.t('options.mcpAutoEnableSecondary'),
+      autoControl,
+    )}
   {/snippet}
   {@render section(i18n.t('options.sectionTerminalAi'), terminalAi)}
 </main>

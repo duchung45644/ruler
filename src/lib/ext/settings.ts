@@ -152,6 +152,13 @@ export async function updatePanelPrefs(patch: Partial<SidePanelPrefs>): Promise<
  */
 /** MCP opt-in (9.34): nothing connects until the user presses Connect. */
 export const mcpIntent = storage.defineItem<boolean>('local:mcpIntent', { fallback: false });
+/**
+ * The user lets the agent turn PixelLens on by itself (list every tab, enable_tab, auto-enable on a
+ * command). Only effective while `<all_urls>` is granted too; the settings switch asks for both.
+ */
+export const mcpAutoEnable = storage.defineItem<boolean>('local:mcpAutoEnable', {
+  fallback: false,
+});
 /** Pairing token for the local MCP server (see lib/mcp/protocol.ts); never logged or sent to pages. */
 export const mcpToken = storage.defineItem<string | null>('local:mcpToken', { fallback: null });
 

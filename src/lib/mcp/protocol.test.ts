@@ -24,9 +24,16 @@ const LEGACY_10_15 =
 const ruleRef = { stylesheet: 'a.css', selector: '.x', wrappers: [], occ: 0, scopeAddress: null };
 
 describe('commands', () => {
-  it('has the 47 legacy names', () => {
-    expect(MCP_TYPES).toHaveLength(47);
-    expect([...MCP_TYPES]).toEqual(LEGACY_10_15);
+  it('has the 47 legacy names first, then the agent-control commands', () => {
+    expect(MCP_TYPES).toHaveLength(52);
+    expect(MCP_TYPES.slice(0, 47)).toEqual(LEGACY_10_15);
+    expect(MCP_TYPES.slice(47)).toEqual([
+      'enable_tab',
+      'click_element',
+      'type_text',
+      'press_key',
+      'scroll_page',
+    ]);
     expect(isMcpType('get_page_info')).toBe(true);
     expect(isMcpType('toString')).toBe(false);
   });
@@ -210,6 +217,25 @@ describe('validateCall', () => {
       ok: false,
     });
   });
+  it('checks the agent-control payloads', () => {
+    expect(validateCall('click_element', { tabId: 1, elementId: 'v-a' })).toEqual({
+      ok: true,
+      payload: { tabId: 1, elementId: 'v-a', double: false },
+    });
+    expect(validateCall('type_text', { tabId: 1, elementId: 'v-a', text: '' })).toMatchObject({
+      ok: true,
+      payload: { clear: true, submit: false },
+    });
+    expect(validateCall('press_key', { tabId: 1, key: 'ArrowDown' })).toMatchObject({ ok: true });
+    expect(validateCall('press_key', { tabId: 1, key: 'a' })).toMatchObject({ ok: true });
+    expect(validateCall('press_key', { tabId: 1, key: 'rm -rf' })).toMatchObject({ ok: false });
+    expect(validateCall('scroll_page', { tabId: 1 })).toMatchObject({ ok: false });
+    expect(validateCall('scroll_page', { tabId: 1, to: 'middle' })).toMatchObject({ ok: false });
+    expect(validateCall('scroll_page', { tabId: 1, deltaY: 1e9 })).toMatchObject({
+      ok: true,
+      payload: { deltaY: 100_000 },
+    });
+  });
   it('accepts a valid payload for every command', () => {
     const base = { tabId: 1, elementId: 'v-a', selector: '.a', url: 'https://a.b/c.css' };
     const extra: Record<string, object> = {
@@ -226,6 +252,9 @@ describe('validateCall', () => {
       set_rule_selector: { ruleRef },
       revert_css_change: { changeId: 'r1' },
       set_element_classes: { classes: 'a b' },
+      type_text: { text: 'hi' },
+      press_key: { key: 'Enter' },
+      scroll_page: { deltaY: 300 },
     };
     for (const t of MCP_TYPES)
       expect(validateCall(t, { ...base, ...extra[t] }), t).toMatchObject({ ok: true });

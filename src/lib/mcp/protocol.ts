@@ -36,8 +36,11 @@
  *
  * ## Commands
  * {@link MCP_TYPES} lists every command; {@link validateCall} defines each payload exactly. Tab
- * commands need a numeric `tabId` from `list_tabs`, which only lists tabs where the user turned
- * PixelLens on; commands to any other tab fail. Element ids (`v-…`) come from command results.
+ * commands need a numeric `tabId` from `list_tabs`. By default it lists only tabs where the user
+ * turned PixelLens on and commands to any other tab fail. When the user allows it in the settings
+ * ("Let the agent turn PixelLens on", which also grants `<all_urls>`), `list_tabs` lists every
+ * open web page with `enabled`, `enable_tab` turns PixelLens on, and a command sent to a tab where
+ * it is off turns it on first. Element ids (`v-…`) come from command results.
  */
 
 export const PROTOCOL = 1;
@@ -191,7 +194,7 @@ export const isOutdated = (serverVersion: unknown): boolean =>
 
 // ---------------------------------------------------------------- commands
 
-/** The 47 commands of the legacy router (inventory 10.15), in legacy order. */
+/** The 47 commands of the legacy router (inventory 10.15) in legacy order, then the agent-control ones. */
 export const MCP_TYPES = [
   'list_tabs',
   'focus_tab',
@@ -240,13 +243,23 @@ export const MCP_TYPES = [
   'set_element_classes',
   'delete_element',
   'duplicate_element',
+  'enable_tab',
+  'click_element',
+  'type_text',
+  'press_key',
+  'scroll_page',
 ] as const;
 export type McpType = (typeof MCP_TYPES)[number];
 export const isMcpType = (v: unknown): v is McpType =>
   typeof v === 'string' && (MCP_TYPES as readonly string[]).includes(v);
 
 /** Commands answered by the background itself; every other command runs in a tab. */
-export const BACKGROUND_TYPES = ['list_tabs', 'focus_tab', 'fetch_stylesheet'] as const;
+export const BACKGROUND_TYPES = [
+  'list_tabs',
+  'focus_tab',
+  'fetch_stylesheet',
+  'enable_tab',
+] as const;
 /** Slow commands: 40s instead of 12s (legacy B, background.js:4022). */
 export const SLOW_TYPES: readonly McpType[] = [
   'get_screenshot',
@@ -262,7 +275,13 @@ export const ERR = {
   pageInactive: 'PixelLens is not active on this page.',
   tabInactive: 'PixelLens is not active on this tab.',
   tabInactiveHint:
-    'PixelLens is not active on this tab. Ask the user to click the PixelLens toolbar icon on that tab.',
+    'PixelLens is not active on this tab. Ask the user to click the PixelLens toolbar icon on that tab, ' +
+    'or to turn on "Let the agent turn PixelLens on" in the PixelLens settings so you can do it yourself.',
+  autoEnableOff:
+    'The user has not allowed the agent to turn PixelLens on. Ask them to click the PixelLens toolbar ' +
+    'icon on that tab, or to turn on "Let the agent turn PixelLens on" in the PixelLens settings.',
+  notInjectable:
+    'PixelLens cannot run on this tab (browser pages, the extension store and file:// are off limits).',
   stylesheetBlocked:
     'fetch_stylesheet rejected: URL must be http(s) and not a private/localhost host.',
   notResponsive: 'Not in responsive mode. Call enter_responsive_mode first.',
@@ -294,6 +313,10 @@ export const LIMITS = {
   limitDefault: 50,
   outlineDepth: 10,
   outlineChildren: 100,
+  /** press_key: a key name such as "Enter" or one character. */
+  key: 20,
+  /** scroll_page: pixels per call. */
+  scroll: 100_000,
 } as const;
 
 export const INSERT_POSITIONS = ['before', 'after', 'prepend', 'append'] as const;
@@ -393,6 +416,20 @@ export interface McpPayloads {
   set_element_classes: El & InFrame & { classes: string };
   delete_element: El & InFrame;
   duplicate_element: El & InFrame;
+  enable_tab: Tab;
+  click_element: El & InFrame & { double: boolean };
+  type_text: El & InFrame & { text: string; clear: boolean; submit: boolean };
+  press_key: Tab &
+    InFrame & {
+      key: string;
+      elementId?: string;
+      shift?: boolean;
+      ctrl?: boolean;
+      alt?: boolean;
+      meta?: boolean;
+    };
+  scroll_page: Tab &
+    InFrame & { elementId?: string; deltaX?: number; deltaY?: number; to?: 'top' | 'bottom' };
 }
 /** Commands that run in a tab (all but the background ones). */
 export type McpPageType = Exclude<McpType, (typeof BACKGROUND_TYPES)[number]>;
@@ -439,6 +476,7 @@ function reader(t: string, p: Record<string, unknown>) {
       if (typeof p[k] !== 'boolean') return bad(`${t} requires a boolean ${k}.`);
       return p[k] as boolean;
     },
+    optBool: (k: string) => (has(k) ? r.bool(k) : undefined),
     el(k = 'elementId'): string {
       if (!isElementId(p[k])) return bad(`${t} requires ${k} like "v-abc123" (from a result).`);
       return p[k] as string;
@@ -653,6 +691,56 @@ const RULES: { [K in McpType]: (r: Reader, p: Record<string, unknown>, t: K) => 
   }),
   delete_element: el,
   duplicate_element: el,
+  enable_tab: tab,
+  click_element: (r) => ({ ...el(r), double: r.optBool('double') ?? false }),
+  type_text: (r) => ({
+    ...el(r),
+    text: r.str('text', LIMITS.text, { empty: true }),
+    clear: r.optBool('clear') ?? true,
+    submit: r.optBool('submit') ?? false,
+  }),
+  press_key(r, p, t) {
+    const key = r.str('key', LIMITS.key);
+    if ([...key].length > 1 && !/^[A-Z][A-Za-z0-9]*$/.test(key))
+      return bad(
+        `${t} key must be one character or a key name like "Enter", "Escape", "ArrowDown".`,
+      );
+    return defined({
+      ...tab(r),
+      ...frame(r),
+      key,
+      elementId: r.optEl(),
+      shift: r.optBool('shift'),
+      ctrl: r.optBool('ctrl'),
+      alt: r.optBool('alt'),
+      meta: r.optBool('meta'),
+    });
+  },
+  scroll_page(r, p, t) {
+    const to = p.to ?? undefined;
+    if (to !== undefined && to !== 'top' && to !== 'bottom')
+      return bad(`${t} to must be "top" or "bottom".`);
+    const delta = (k: string) => {
+      const v = r.optNum(k);
+      return v === undefined ? undefined : Math.max(-LIMITS.scroll, Math.min(LIMITS.scroll, v));
+    };
+    const out = defined({
+      ...tab(r),
+      ...frame(r),
+      elementId: r.optEl(),
+      deltaX: delta('deltaX'),
+      deltaY: delta('deltaY'),
+      to: to as 'top' | 'bottom' | undefined,
+    });
+    if (
+      !out.elementId &&
+      out.to === undefined &&
+      out.deltaX === undefined &&
+      out.deltaY === undefined
+    )
+      return bad(`${t} requires elementId, to, deltaX or deltaY.`);
+    return out;
+  },
 };
 
 /**

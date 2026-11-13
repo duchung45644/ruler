@@ -3,7 +3,14 @@ export const ownNodes = new Set<Element>();
 
 const isOwnNode = (n: Element): boolean => [...ownNodes].some((o) => o.contains(n));
 
+/**
+ * Input events the agent dispatched (MCP click_element / type_text / press_key). PixelLens's own
+ * listeners (inspector, measure, ruler, shortcuts, drag guard) let them through to the page.
+ */
+export const agentEvents = new WeakSet<Event>();
+
 export function isOwnEvent(e: Event, host: Element): boolean {
+  if (agentEvents.has(e)) return true;
   return e.composedPath().some((n) => n === host || ownNodes.has(n as Element));
 }
 

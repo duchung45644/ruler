@@ -71,7 +71,8 @@ type Spec = [string, Record<string, Schema>?, string[]?];
 const EL: Spec[1] = { elementId: elementIdS(), viewportId };
 const SPECS: Record<McpType, Spec> = {
   list_tabs: [
-    'List the tabs where the user turned PixelLens on: {tabs: [{tabId, title, url, active}]}.',
+    'List tabs: {tabs: [{tabId, title, url, active, enabled}], canEnable}. Normally only tabs where the user turned PixelLens on; ' +
+      'with canEnable true every web-page tab is listed and you can turn PixelLens on yourself (enable_tab, or any command does it).',
   ],
   focus_tab: ['Bring a PixelLens tab to the front.'],
   get_page_info: [
@@ -245,6 +246,48 @@ const SPECS: Record<McpType, Spec> = {
   ],
   delete_element: ['Delete an element.', EL, ['elementId']],
   duplicate_element: ['Duplicate an element.', EL, ['elementId']],
+  enable_tab: [
+    'Turn PixelLens on in a tab (shows its dock to the user). Only works when list_tabs says canEnable; otherwise ask the user to click the PixelLens icon.',
+  ],
+  click_element: [
+    'Click an element like a user: scrolls it into view, checks nothing covers it, then fires pointer/mouse/click events. ' +
+      'Links navigate, buttons and checkboxes act. After a navigation, call list_tabs again. Events are synthetic (isTrusted false).',
+    { ...EL, double: { type: 'boolean', description: 'Double-click.' } },
+    ['elementId'],
+  ],
+  type_text: [
+    'Type into an input, textarea, contenteditable or <select> (option value or label). Fires key/input/change events so frameworks see it.',
+    {
+      ...EL,
+      text: str(LIMITS.text, 'Text to type.'),
+      clear: { type: 'boolean', default: true, description: 'Replace the current value (default) instead of appending.' },
+      submit: { type: 'boolean', default: false, description: 'Press Enter afterwards (submits a form).' },
+    },
+    ['elementId', 'text'],
+  ],
+  press_key: [
+    'Press a key on the focused element (or on elementId, focused first): one character or a name like Enter, Escape, Tab, ArrowDown.',
+    {
+      key: str(LIMITS.key, 'Key, e.g. "Enter", "Escape", "a".', 1),
+      elementId: elementIdS(),
+      shift: { type: 'boolean' },
+      ctrl: { type: 'boolean' },
+      alt: { type: 'boolean' },
+      meta: { type: 'boolean' },
+      viewportId,
+    },
+    ['key'],
+  ],
+  scroll_page: [
+    'Scroll: elementId brings that element to the middle of the screen; to "top"/"bottom"; or deltaX/deltaY in px. Returns the new scroll position.',
+    {
+      elementId: elementIdS(),
+      to: { type: 'string', enum: ['top', 'bottom'] },
+      deltaX: { type: 'number' },
+      deltaY: { type: 'number' },
+      viewportId,
+    },
+  ],
 };
 
 const NO_TAB: readonly string[] = ['list_tabs', 'fetch_stylesheet'];

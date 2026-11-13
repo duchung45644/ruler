@@ -30,7 +30,7 @@ import {
   openOptions,
   optionsHandlers,
 } from '../background/options';
-import { initMcp, isPixelLensTab, mcpHandlers } from '../background/mcp';
+import { initMcp, isPixelLensTab, mcpHandlers, setTabEnabler } from '../background/mcp';
 
 /** Toolbar icon: brand indigo while on, neutral grey while off (no red/blue pair). */
 export const ICON_ON = { 16: 'images/icon16.png', 32: 'images/icon32.png' } as const;
@@ -195,6 +195,10 @@ async function setup() {
 export default defineBackground(() => {
   initPanels();
   initResponsive(toggleTab);
+  // the agent may turn PixelLens on by itself when the user allows it (enable_tab, auto-enable)
+  setTabEnabler(async (tabId) => {
+    if (!(await isPixelLensTab(tabId))) await toggleTab(tabId);
+  });
   initMcp(); // dials only when the user left MCP on (10.04)
   browser.runtime.onInstalled.addListener(() => void setup().catch(() => {}));
   browser.runtime.onStartup.addListener(() => void setup().catch(() => {}));

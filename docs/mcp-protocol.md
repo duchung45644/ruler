@@ -39,8 +39,12 @@ If the port is taken the server must exit with a clear error. There is no port r
 4. **Neither side logs the token.**
 5. **Opt-in.** The extension opens no socket and runs no timer until the user presses Connect
    (dock popover or settings page). Disconnect closes the socket right away.
-6. **Tab scope.** Tab commands only reach tabs where the user turned PixelLens on; `list_tabs` lists
-   only those. The extension never injects itself into other tabs for MCP.
+6. **Tab scope.** By default tab commands only reach tabs where the user turned PixelLens on, and
+   `list_tabs` lists only those. Only when the user turns on **Let the agent turn PixelLens on** in
+   the settings (off by default; turning it on also asks for the `<all_urls>` grant) does
+   `list_tabs` list every web-page tab with `enabled`, `enable_tab` inject PixelLens, and a command
+   sent to a tab where it is off turn it on first. Revoking `<all_urls>` switches this off again.
+   Browser pages, the extension stores and `file://` are never injected.
 
 ## Frames
 
@@ -75,7 +79,7 @@ Server → extension
 
 ## Commands
 
-`MCP_TYPES` lists the 47 command names; `validateCall(command, payload)` is the schema. Every
+`MCP_TYPES` lists the 52 command names (the 47 legacy ones, then 5 agent-control ones); `validateCall(command, payload)` is the schema. Every
 command except `list_tabs` and `fetch_stylesheet` needs `tabId` (an integer from `list_tabs`);
 without it the error is "`<command>` requires a numeric tabId.". Unknown fields are dropped.
 An unknown command gives "Unknown action. Update the PixelLens extension to the latest version.".
@@ -92,7 +96,8 @@ Common fields:
 
 | Command | Payload (besides `tabId`) | Notes |
 | --- | --- | --- |
-| `list_tabs` | — (no tabId) | `{tabs: [{tabId, title, url, active}]}`, PixelLens tabs only |
+| `list_tabs` | — (no tabId) | `{tabs: [{tabId, title, url, active, enabled}], canEnable}`; every web tab when `canEnable`, else PixelLens tabs only |
+| `enable_tab` | — | turns PixelLens on (shows the dock); `{success, alreadyOn}`; needs `canEnable` |
 | `focus_tab` | — | PixelLens tabs only |
 | `fetch_stylesheet` | `url` (no tabId) | http(s), public hosts only; needs the optional `<all_urls>` grant |
 | `get_page_info` | — | url, title, lang, meta, h1, viewport, page size, scroll, DPR |
@@ -127,6 +132,15 @@ Common fields:
 | `revert_all_edits` | — | also clears the edits saved for the site |
 | `set_element_classes` | `elementId`, `classes` | |
 | `delete_element`, `duplicate_element` | `elementId` | |
+| `click_element` | `elementId`, `double?` | scrolls into view, refuses when covered, then pointer/mouse/click events; replies before dispatching (a navigation cannot lose the reply) |
+| `type_text` | `elementId`, `text`, `clear?` (default true), `submit?` | input / textarea / contenteditable, or a `<select>` option by value or label; native value setter + key/input/change events |
+| `press_key` | `key` (one character or a name such as `Enter`), `elementId?`, `shift?` `ctrl?` `alt?` `meta?` | on the focused element; Enter submits a form, Tab moves focus |
+| `scroll_page` | `elementId?` or `to?` (`top`/`bottom`) or `deltaX?`/`deltaY?` | returns `{scrollX, scrollY, scrollHeight, viewportHeight}` |
+
+Agent input is synthetic (`isTrusted` is false): sites that check it ignore these events. PixelLens's
+own listeners (inspector click-to-select, measure, ruler, keyboard shortcuts, drag guard) let agent
+events through to the page, so a click is not swallowed by the inspector and a typed "1" does not
+switch tools.
 
 Edits from MCP go through the same edit handlers as the side panel: they show in the side panel's
 change list and are saved per site. Only HTML edits (`set_text_content`, `set_inner_html`,

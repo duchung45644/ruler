@@ -1,4 +1,5 @@
 import { isCheatSheetKey, isPaletteKey } from './palette';
+import { agentEvents } from './events';
 import { itemLocked, items, type DockItem } from './registry.svelte';
 import { state } from './state.svelte';
 
@@ -87,6 +88,7 @@ export function runShortcut(key: string): boolean {
 const NOT_PAUSED = { paused: false };
 
 export function routeKey(e: KeyboardEvent): void {
+  if (agentEvents.has(e)) return; // keys the agent presses belong to the page, never our shortcuts
   if (isQuitKey(e)) {
     e.preventDefault();
     return items.find((i) => i.id === 'quit')?.run();

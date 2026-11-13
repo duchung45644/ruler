@@ -8,7 +8,7 @@ PixelLens không chạy được trên:
 - trang của các tiện ích,
 - trang Chrome Web Store và Edge Add-ons.
 
-Tiện ích chạy trên các trang `http`, `https`, `ftp` và `file`. Ở những trang kể trên, biểu tượng và `Alt+Shift+S` đơn giản là không làm gì.
+Tiện ích chạy trên các trang `http`, `https`, `ftp` và `file`. Ở những trang kể trên, biểu tượng và `Ctrl+Shift+F` đơn giản là không làm gì.
 
 Tab đã bị trình duyệt cho "ngủ" (discarded) cần được tải lại trước.
 
@@ -45,7 +45,7 @@ Cách chụp nhanh không chạy được khi DevTools đang mở ở tab đó. 
 - PixelLens có thể đang tạm dừng: khi đó dock chỉ còn **Tiếp tục** và **Thoát**. Nhấn `H`.
 - Phím bị bỏ qua khi con trỏ đang ở trong ô nhập liệu.
 - Khi **Sửa văn bản** đang bật, chỉ còn **Trình kiểm tra**, **Bật/Tắt Bảng Bên** và **Thoát** dùng được.
-- Phím tắt của trình duyệt (`Alt+Shift+S`, `Alt+Shift+↑`, `Alt+Shift+↓`) có thể trùng với tiện ích khác. Kiểm tra ở `edge://extensions/shortcuts`.
+- Phím tắt của trình duyệt (`Ctrl+Shift+F`, `Alt+Shift+↑`, `Alt+Shift+↓`) có thể trùng với tiện ích khác. Kiểm tra ở `edge://extensions/shortcuts`. Nếu bạn gõ tiếng Việt bằng Unikey hay EVKey, tổ hợp có `Alt+Shift` có thể không tới được trình duyệt; hãy chọn tổ hợp có `Ctrl+Shift`.
 
 ## Công cụ chọn màu không hoạt động
 

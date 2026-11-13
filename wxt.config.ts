@@ -49,7 +49,9 @@ export default defineConfig({
       },
     ],
     commands: {
-      _execute_action: { suggested_key: { default: 'Alt+Shift+S', mac: 'Alt+Shift+S' } },
+      // Ctrl+Shift+F: free in Chrome and Edge, and Vietnamese IMEs (Unikey) swallow Alt+Shift combos.
+      // macOS keeps Alt+Shift+S: Cmd+Shift+F is Chrome's full-screen toolbar toggle there.
+      _execute_action: { suggested_key: { default: 'Ctrl+Shift+F', mac: 'Alt+Shift+S' } },
       select_parent: {
         description: '__MSG_cmdSelectParent__',
         suggested_key: { default: 'Alt+Shift+Up', mac: 'Alt+Shift+Up' },

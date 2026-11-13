@@ -69,7 +69,7 @@ Press `Ctrl+K` (`Cmd+K` on macOS) or `?` to open **Commands**. It lists every to
 | `Alt+Shift+←` / `Alt+Shift+→` | Select the previous / next sibling                               |
 | `Space`                       | Pin the floating inspector panel                                 |
 
-`Alt+Shift+S`, `Alt+Shift+↑` and `Alt+Shift+↓` are browser shortcuts. You can change them at `edge://extensions/shortcuts` (`chrome://extensions/shortcuts` in Chrome).
+`Ctrl+Shift+F`, `Alt+Shift+↑` and `Alt+Shift+↓` are browser shortcuts. You can change them at `edge://extensions/shortcuts` (`chrome://extensions/shortcuts` in Chrome).
 
 ### Editing the page
 

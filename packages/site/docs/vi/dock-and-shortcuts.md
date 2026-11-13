@@ -69,7 +69,7 @@ Nhấn `Ctrl+K` (`Cmd+K` trên macOS) hoặc `?` để mở bảng **Lệnh**. B
 | `Alt+Shift+←` / `Alt+Shift+→` | Chọn phần tử anh em liền trước / liền sau             |
 | `Space`                       | Ghim bảng thông tin nổi của trình kiểm tra            |
 
-`Alt+Shift+S`, `Alt+Shift+↑` và `Alt+Shift+↓` là phím tắt của trình duyệt. Bạn đổi được chúng ở `edge://extensions/shortcuts` (`chrome://extensions/shortcuts` trên Chrome).
+`Ctrl+Shift+F`, `Alt+Shift+↑` và `Alt+Shift+↓` là phím tắt của trình duyệt. Bạn đổi được chúng ở `edge://extensions/shortcuts` (`chrome://extensions/shortcuts` trên Chrome).
 
 ### Sửa trang
 

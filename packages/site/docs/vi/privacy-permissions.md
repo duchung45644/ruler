@@ -6,7 +6,7 @@ Toàn văn có trong [chính sách quyền riêng tư](privacy-policy).
 
 ## Khi nào PixelLens chạy
 
-PixelLens chỉ chạy trên một tab sau khi bạn bật nó ở tab đó. Tiện ích không có quyền truy cập thường trực vào các website bạn ghé thăm: nó không khai báo sẵn quyền truy cập trang nào, và script của nó chỉ được thêm vào tab khi bạn bấm biểu tượng, nhấn `Alt+Shift+S` hoặc dùng menu chuột phải.
+PixelLens chỉ chạy trên một tab sau khi bạn bật nó ở tab đó. Tiện ích không có quyền truy cập thường trực vào các website bạn ghé thăm: nó không khai báo sẵn quyền truy cập trang nào, và script của nó chỉ được thêm vào tab khi bạn bấm biểu tượng, nhấn `Ctrl+Shift+F` hoặc dùng menu chuột phải.
 
 ## Các quyền
 

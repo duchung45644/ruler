@@ -15,7 +15,7 @@ beforeEach(() => {
   // fakeBrowser has no i18n / commands / tabs.connect: labels render as keys
   fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
   vi.spyOn(fakeBrowser.commands, 'getAll').mockResolvedValue([
-    { name: '_execute_action', shortcut: 'Alt+Shift+S' },
+    { name: '_execute_action', shortcut: 'Ctrl+Shift+F' },
     { name: 'select_parent', shortcut: 'Alt+Shift+Up' },
     { name: 'select_child', shortcut: '' },
   ] as never);

@@ -30,7 +30,7 @@ Bản build có sẵn khoá của Edge Add-ons nên ID tiện ích luôn là `bk
 PixelLens không làm gì trên một tab cho tới khi bạn bật nó ở tab đó. Có ba cách bật hoặc tắt cho tab hiện tại:
 
 - Bấm biểu tượng PixelLens trên thanh công cụ trình duyệt. Biểu tượng có màu khi PixelLens đang bật ở tab đó và xám khi đang tắt.
-- Nhấn `Alt+Shift+S`.
+- Nhấn `Ctrl+Shift+F`.
 - Nhấp chuột phải vào trang và chọn **PixelLens** trong menu ngữ cảnh.
 
 PixelLens tự tắt khi tab tải trang mới (tải lại hoặc chuyển trang). Bật lại để làm tiếp. Những công cụ bạn để bật, như trình kiểm tra, X-Ray, thước, breakpoint và lưới bố cục, sẽ tự bật lại ở lần sau.

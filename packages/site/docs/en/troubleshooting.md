@@ -8,7 +8,7 @@ PixelLens cannot run on:
 - extension pages,
 - the Chrome Web Store and Edge Add-ons pages.
 
-It runs on `http`, `https`, `ftp` and `file` pages. On the pages above, the icon and `Alt+Shift+S` simply do nothing.
+It runs on `http`, `https`, `ftp` and `file` pages. On the pages above, the icon and `Ctrl+Shift+F` simply do nothing.
 
 A tab that the browser has put to sleep (discarded) must be reloaded first.
 
@@ -45,7 +45,7 @@ The fast capture fails when DevTools is open on the tab. Close DevTools and capt
 - PixelLens may be paused: the dock then shows only **Resume** and **Quit**. Press `H`.
 - Keys are ignored while the focus is in a text field.
 - While **Edit Text** is on, only **Inspector**, **Toggle Side Panel** and **Quit** work.
-- The browser shortcuts (`Alt+Shift+S`, `Alt+Shift+↑`, `Alt+Shift+↓`) may clash with another extension. Check them at `edge://extensions/shortcuts`.
+- The browser shortcuts (`Ctrl+Shift+F`, `Alt+Shift+↑`, `Alt+Shift+↓`) may clash with another extension. Check them at `edge://extensions/shortcuts`. If you type Vietnamese with Unikey or EVKey, shortcuts with `Alt+Shift` may never reach the browser; pick a `Ctrl+Shift` combination instead.
 
 ## The color picker does nothing
 

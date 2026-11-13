@@ -30,7 +30,7 @@ The build carries the Edge Add-ons key, so the extension ID is always `bkgdfebic
 PixelLens does nothing on a tab until you turn it on there. Any of these toggles it on or off for the current tab:
 
 - Click the PixelLens icon in the browser toolbar. The icon is colored while PixelLens is on in that tab and grey while it is off.
-- Press `Alt+Shift+S`.
+- Press `Ctrl+Shift+F`.
 - Right-click anywhere on the page and choose **PixelLens** from the context menu.
 
 PixelLens turns off when the tab loads a new page (a reload or a navigation). Turn it on again to continue. Tools you left on, such as the inspector, X-Ray, rulers, breakpoints and the layout grid, come back the next time you turn it on.

@@ -6,7 +6,7 @@ The full text is in the [privacy policy](privacy-policy).
 
 ## When PixelLens runs
 
-PixelLens runs on a tab only after you turn it on for that tab. It has no standing access to the sites you visit: the extension declares no site access up front, and its script is added to a tab only when you click the icon, press `Alt+Shift+S` or use the context menu.
+PixelLens runs on a tab only after you turn it on for that tab. It has no standing access to the sites you visit: the extension declares no site access up front, and its script is added to a tab only when you click the icon, press `Ctrl+Shift+F` or use the context menu.
 
 ## Permissions
 

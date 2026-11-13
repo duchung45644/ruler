@@ -13,7 +13,7 @@ beforeEach(() => {
   fakeBrowser.reset();
   fakeBrowser.i18n.getMessage = ((key: string) => key) as typeof fakeBrowser.i18n.getMessage;
   vi.spyOn(fakeBrowser.commands, 'getAll').mockResolvedValue([
-    { name: '_execute_action', shortcut: 'Alt+Shift+S' },
+    { name: '_execute_action', shortcut: 'Ctrl+Shift+F' },
   ] as never);
   const port = { disconnect: vi.fn(), onDisconnect: { addListener: vi.fn() } };
   fakeBrowser.tabs.connect = vi.fn(() => port) as never;
